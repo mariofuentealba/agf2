@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" click="vgroup1_clickHandler(event)" paddingLeft="10" paddingTop="0" paddingBottom="0" paddingRight="0">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			import spark.components.Button;
+			
+			public var arrEtiquetas:Array = [];
+			
+			protected function vgroup1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				
+				for(var i:int = 0; i < this.numElements; i++){
+					//Alert.show('' + this.getElementAt(i)['uid'] + ' ' + event.target.parent['uid']);
+					//Alert.show('' + this.getElementAt(i)['btnExpandir']['name'] + ' ------ ' + event.target['name']);
+					var a:String = this.getElementAt(i)['currentState'];
+					var b:String = this.getElementAt(i)['btnExpandir']['name'];
+					var c:String = event.target['name'];
+					if(this.getElementAt(i)['currentState'] == 'click' && this.getElementAt(i)['btnExpandir']['name'] != event.target['name']){
+						(this.getElementAt(i) as ContenidoAcordeon).contenidoAcordeon_clickHandler(new MouseEvent(MouseEvent.CLICK), 'LinkButton');	
+					}
+				}
+				
+				
+				/*
+				
+				var padre:Object = event.target.parent;
+				while(padre.className != 'ContenidoAcordeon'){
+					padre = padre.parent;
+				}
+				
+				
+				var seleccionado:int = this.getElementIndex(padre as ContenidoAcordeon);
+				for(var i:int = 0; i < seleccionado; i++){
+					if(this.getElementAt(i)['currentState'] == 'click'){
+						(this.getElementAt(i) as ContenidoAcordeon).linkbutton1_clickHandler(new MouseEvent(MouseEvent.CLICK));	
+					}
+					
+				}
+				for(i = seleccionado + 1; i < this.numElements; i++){
+					if(this.getElementAt(i)['currentState'] == 'click'){
+						(this.getElementAt(i) as ContenidoAcordeon).linkbutton1_clickHandler(new MouseEvent(MouseEvent.CLICK));	
+					}
+				}
+				switch(event.target.className){
+					case 'Button':
+						padre.currentState = 'click';
+						padre.vgOpciones.height = padre.vgOpciones.maxHeight;
+						padre.resizeShow.heightTo = padre.vgOpciones.height + 30;
+						padre.fadeResizeHide.end();
+						padre.fadeResizeHide.play();
+						break;
+					case 'LinkButton':
+						padre.fadeResizeShow.end();
+						padre.fadeResizeShow.play();
+						break;
+				}
+				*/
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+</s:VGroup>

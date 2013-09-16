@@ -1,0 +1,18 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+
+global
+{
+	cornerRadius: 5;
+	chromeColor: #E5AB10;
+	fontWeight: normal;
+	font-family: Arial;
+}
+s|BorderContainer
+{
+	borderWeight: 1;
+	cornerRadius: 15;
+}
+	

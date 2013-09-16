@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				   xmlns:s="library://ns.adobe.com/flex/spark"
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   xmlns:Componentes="Componentes.*"
+				   width="100%" click="contenidoAcordeon_clickHandler(event)" cornerRadius="10"
+				   creationComplete="bordercontainer1_creationCompleteHandler(event)"
+				   height.normal="{btnExpandir.height}"
+				   height.click="{heightClick}">
+	
+	<fx:Script>
+		<![CDATA[
+			import Componentes.ContenidoAcordeon;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.controls.LinkButton;
+			import mx.core.IVisualElement;
+			import mx.events.EffectEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			import valueObjects.SubGruposDatatype;
+			
+			[Bindable]public var btnLabel:String;
+			[Bindable]public var heightClick:int;
+			public var contenido:Array = [];
+			public var claseDespliegue:String = 'ComboBox';
+			public var numElement:int;
+		
+			
+			
+			
+			
+			
+			protected function fadeResizeShow_effectEndHandler(event:EffectEvent):void
+			{
+				// TODO Auto-generated method stub
+				currentState = 'normal';
+			}
+			
+			
+			public function contenidoAcordeon_clickHandler(event:MouseEvent, eventoManual:String = ''):void
+			{
+				// TODO Auto-generated method stub
+				var sw:String;
+				if(event.target != null){
+					sw = event.target.className;
+				} else {
+					sw = eventoManual;
+					event.stopPropagation();
+				}
+				switch(sw){
+					case 'Button':
+						currentState = 'click';
+					//	resizeShow.heightTo = vgOpciones.height;
+						//Alert.show('' + vgOpciones.height + ' ' + heightClick );
+						/*fadeResizeHide.end();
+						fadeResizeHide.play();*/
+						heightClick = 0;
+						for(var i:int = 0; i  < vgOpciones.numElements; i++){
+							heightClick += vgOpciones.getElementAt(i).height	
+						}
+						heightClick += btnExpandir.height + 20;
+						//heightClick = btnExpandir.height + vgOpciones.height;
+		//				Alert.show('' + heightClick);
+						break;
+					case 'LinkButton':
+						currentState = 'normal';
+						/*fadeResizeShow.end();
+						fadeResizeShow.play();*/
+						break;
+				}
+			}
+			
+			protected function bordercontainer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				var x:ContenidoAcordeon = new ContenidoAcordeon();
+				addItems();
+			}
+			
+			private function addItems():void{
+				for(var i:int = 0; i < contenido.length; i++){
+					vgOpciones.addElement(contenido[i]);
+					
+				}
+				//vgOpciones.height = this.heightClick;
+			}
+			
+			protected function listAsync_resultHandler(event:ResultEvent):void
+			{
+				// TODO Auto-generated method stub
+				var arr:ArrayCollection = listAsync.lastResult;
+				for(var i:int = 0; i < arr.length; i++){
+					switch(claseDespliegue){
+						case 'ContenidoAcordeon':
+							try{
+								var grupo:ContenidoAcordeon = new ContenidoAcordeon();
+								if(arr.getItemAt(i) is SubGruposDatatype){
+									grupo.btnLabel = arr.getItemAt(i)['nombre'];
+									grupo.height = 20;
+									grupo.width = this.width;
+									contenido[i] = grupo;
+									this.heightClick += grupo.height;
+									
+								}	
+							} catch(e:*) {
+								//Alert.show('' + e); 
+								break;
+							}
+							break;
+						}
+					
+					
+				}
+				addItems();
+				
+			}
+			
+			
+			
+			
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="click"/>
+	</s:states>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:Sequence id="fadeResizeHide"
+					target="{this}"
+					duration="500"
+					>			
+			<s:Resize id="resizeShow" 					  
+					  />
+			<s:Fade target="{vgOpciones}" alphaFrom="0" alphaTo="1"/>
+		</s:Sequence>        
+		
+		<s:Sequence id="fadeResizeShow"
+					target="{this}"
+					duration="500"
+					effectEnd="fadeResizeShow_effectEndHandler(event)">
+			<s:Fade target="{vgOpciones}" alphaFrom="1" alphaTo="0"/>
+			<s:Resize id="resizeHide" 
+					  heightTo="20"/>
+			
+		</s:Sequence>
+		
+		<s:Fade id="visual">
+			
+		</s:Fade>
+		
+		<!--s:Transition fromState="normal" toState="click">
+			<s:Resize id="resizeShow2" 					  
+					  heightTo="100"/>
+		</s:Transition>
+		<s:Transition fromState="click" toState="normal">
+			<s:Resize id="resizeHide2" 
+					  heightTo="32"/>
+		</s:Transition-->
+		<s:CallResponder id="listAsync" result="listAsync_resultHandler(event)"/>
+	</fx:Declarations>
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	
+			
+		<s:Button id="btnExpandir" includeIn="normal" width="100%" height="20" label="{btnLabel}"
+				  digitWidth="default" dominantBaseline="auto"
+				  horizontalCenter="0" textAlignLast="center"/><!--cornerRadius="10"  iconPlacement="left"-->
+		<mx:LinkButton height="20" id="btnLink" includeIn="click" top="5" label="{btnLabel}" horizontalCenter="0"/>
+		
+		<s:VGroup id="vgOpciones" includeIn="click, normal" gap="0" horizontalCenter="0"
+				  horizontalCenter.click="0" paddingLeft.click="10" width="100%"
+				  alpha.normal="0" alpha.click="1" showEffect="{visible}"  visible.normal="false" visible.click="true">		
+		</s:VGroup>
+		
+</s:BorderContainer>

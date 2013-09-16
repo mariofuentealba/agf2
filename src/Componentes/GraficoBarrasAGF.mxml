@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			[Bindable]public var serie:Array;
+			[Bindable]public var prov:ArrayCollection;
+			
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:RadioButtonGroup id="rgOption"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:HGroup width="100%">
+		<s:RadioButton label="Normal" groupName="rgOption" selected="true"/>
+		<s:RadioButton label="Referente" groupName="rgOption"/>
+		<s:RadioButton label="Variación" groupName="rgOption"/>
+	</s:HGroup>
+	<s:HGroup width="100%" height="100%">
+		<mx:ColumnChart id="columnchart" showDataTips="true" width="100%" height="100%" series="{serie}" dataProvider="{prov}">
+			<mx:horizontalAxis>
+				<mx:CategoryAxis
+					id="barra"
+					categoryField="label">
+					
+				</mx:CategoryAxis>
+			</mx:horizontalAxis>
+		</mx:ColumnChart>
+			
+		
+		<mx:Legend dataProvider="{columnchart}"/>
+	</s:HGroup>
+</s:VGroup>

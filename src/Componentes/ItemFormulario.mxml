@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  width="100%" height="25">
+	
+	<fx:Script>
+		
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			public var clickGuardar:Function;
+			public var deleteGuardar:Function;
+			[Bindable]public var label:String;
+			public var valor:String = '';
+			public var idTagAgf:int;
+			
+			
+			protected function btnGuardar_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				label = txtAgregarItem.text;
+				clickGuardar.call(null,event);
+			}
+			
+			protected function txtValorItem_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				txtValorItem.text = valor;
+			}
+			
+			protected function btnEliminar_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				deleteGuardar.call(null, event);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="creando"/>
+	</s:states>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:HGroup horizontalCenter="0" verticalCenter="0" width="100%" height="100%" includeIn="creando">
+		<s:Label includeIn="creando" text="Agrega el nombre del nuevo Item: "/>
+		<s:TextInput id="txtAgregarItem" includeIn="creando"/>
+		<s:Button id="btnGuardar" includeIn="creando" label="Guarda" click="btnGuardar_clickHandler(event)"/>
+		<s:Button id="btnCancelar" includeIn="creando" label="Cancelar"/>
+	</s:HGroup>
+	<s:Label id="lblItem" includeIn="normal" left="10" text="{label}"/>
+	<s:TextInput id="txtValorItem" includeIn="normal" right="45" width="30%" creationComplete="txtValorItem_creationCompleteHandler(event)"/>
+	<s:Button id="btnEliminar" includeIn="normal" right="10" width="30" height="20" label="X"
+			  verticalCenter="0" click="btnEliminar_clickHandler(event)"/>
+	
+	
+</s:Group>

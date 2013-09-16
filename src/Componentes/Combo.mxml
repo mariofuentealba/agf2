@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				   xmlns:s="library://ns.adobe.com/flex/spark"
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   width="100%" height.extendido="20" click="bordercontainer1_clickHandler(event)"
+				   borderWeight.extendido="9"
+				   height.normal="20">
+	
+	<fx:Script>
+		<![CDATA[
+			import spark.components.Button;
+			protected function bordercontainer1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				switch(event.target){
+					case TextInput:
+						currentState = 'extendido';
+						break;
+					case List:
+						currentState = 'normal';
+						break;
+				}
+			}
+			
+			protected function textinput1_keyUpHandler(event:KeyboardEvent):void
+			{
+				// TODO Auto-generated method stub
+				currentState = 'extendido';
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="extendido"/>
+	</s:states>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TextInput width="100%" horizontalCenter="0"
+				 top.extendido="0" horizontalCenter.extendido="0"
+				 top.normal="0" height.normal="20" horizontalCenter.normal="0" keyUp="textinput1_keyUpHandler(event)"/>
+	<s:List includeIn="extendido" x="0" y="30" width="712" labelField="data">
+		<s:ArrayCollection>
+			<fx:Object data="hola">
+				
+			</fx:Object>
+			<fx:Object data="hola">
+			</fx:Object>
+		</s:ArrayCollection>
+	</s:List>
+</s:BorderContainer>
