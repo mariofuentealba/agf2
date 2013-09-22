@@ -9,8 +9,11 @@
 		<![CDATA[
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
-			import mx.controls.ComboBox;
 			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.components.ComboBox;
+			import spark.events.IndexChangeEvent;
 			public var formula:Array = [];
 			public var formulaAux:Array = [];
 			public var arrXBRL:ArrayCollection = new ArrayCollection();
@@ -18,6 +21,9 @@
 			public var cerrando:Function;
 			private var c:int = 1;
 			private var f:int = 1;
+			private var opciones:TiempoItem = new TiempoItem();
+			private var _datos:ArrayCollection 
+			private var _s:String;
 			
 			protected function bordercontainer1_clickHandler(event:MouseEvent):void
 			{
@@ -57,30 +63,66 @@
 			protected function titlewindow1_closeHandler(event:CloseEvent):void
 			{
 				// TODO Auto-generated method stub
-				cerrando.call(this, txtFormula.text);
+				cerrando.call(this, txtFormula.text, vgCombos);
 			}
 			
-			protected function linkbutton1_clickHandler(datos:ArrayCollection, s:String):void
-			{
-				// TODO Auto-generated method stub
-				var cb:ComboBox = new ComboBox();
+			protected function actualiza(event:IndexChangeEvent):void{
+			//	Alert.show('' + event.target);
 				
-				cb.dataProvider = datos;
+			}
+			
+			private function selectTime(ob:Object):void{
+				
+				PopUpManager.removePopUp(opciones);
+				
+				var cb:ComboBox = new ComboBox();
+				cb.addEventListener(IndexChangeEvent.CHANGE, actualiza);
+				
+				cb.dataProvider = this._datos;
 				cb.labelField = 'etiqueta';
+				var complemento:String = '';
+				switch(ob){
+					case 'Periodo Anterior':
+						complemento = 'A';
+						break;
+					case 'Periodos Anteriores dentro del año':
+						complemento = 'AA'
+						break;
+					case 'Periodo anterior de la selección':
+						complemento = 'AS'
+						break;
+				}
 				
 				var bt:Button = new Button();
-				bt.label = s + c;
+				bt.label = this._s + complemento + c;
 				c++;
+				cb.name = bt.label; 
 				vgCombos.addElement(cb);
 				hgBotones.addElement(bt);
 				bt.percentWidth = 100;
 				cb.percentWidth = 100;
 			}
 			
+			protected function linkbutton1_clickHandler(datos:ArrayCollection, s:String):void
+			{
+				// TODO Auto-generated method stub
+				opciones.width = this.width;
+				opciones.height = this.height;
+				opciones.cerrando = selectTime;
+				this._datos = datos;
+				this._s = s;
+				PopUpManager.addPopUp(opciones, this);
+				
+				
+				
+			}
+			
 		]]>
 	</fx:Script>
 	
-	<s:TitleWindow id="twFormula" y="35" width="500" height="350" horizontalCenter="4" title="Fórmula" close="titlewindow1_closeHandler(event)">
+	<s:TitleWindow id="twFormula" y="200" width="500" height="350"
+				   close="titlewindow1_closeHandler(event)" direction="ltr" horizontalCenter="0"
+				   title="Fórmula">
 		
 		<s:BorderContainer y="51" width="350" height="100"
 						   click="bordercontainer1_clickHandler(event)" horizontalCenter="0">
@@ -112,7 +154,7 @@
 			</s:HGroup>
 		</s:BorderContainer>
 		<s:TextInput id="txtFormula" y="10" width="300" height="40" enabled="true" horizontalCenter="0" text="_" editable="false"/>
-		<s:Button bottom="10" label="Aceptar" horizontalCenter="0"/>
+		<s:Button bottom="10" label="Aceptar" horizontalCenter="0" click="titlewindow1_closeHandler(new CloseEvent(CloseEvent.CLOSE));"/>
 		<s:BorderContainer y="159" width="350" height="120" horizontalCenter="0">
 			<s:Label top="5" horizontalCenter="0" text="Campos"/>
 			<s:VGroup top="15" bottom="0" width="320" horizontalCenter="0" id="vgCombos">

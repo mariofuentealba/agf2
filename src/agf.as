@@ -74,30 +74,11 @@ private var arrAct2:ArrayCollection = new ArrayCollection();
 private var arrAct3:ArrayCollection = new ArrayCollection();
 import mx.managers.PopUpManager;
 import Componentes.Formula;
-var alert:Formula = new Formula();
-protected function linkbutton1_clickHandler(event:MouseEvent):void
-{
-	// TODO Auto-generated method stub
-	
-	
-	comboItemsResult.token = modelo.comboItems();
-	comboItemsResult.addEventListener(ResultEvent.RESULT, items);
-}
+import spark.components.ComboBox;
 
-private function items(datos:ResultEvent):void{
-	alert.width = this.width;
-	alert.height = this.height;
-	alert.cerrando = cerrando;
-	var arr:ArrayCollection = datos.result as ArrayCollection;
-	for each(var o:Object in arr){
-		if(o['origen'] == 1){
-			alert.arrXBRL.addItem(o);
-		} else {
-			alert.arrFormulas.addItem(o);
-		}
-	}
-	PopUpManager.addPopUp(alert, this);
-}
+var alert:Formula = new Formula();
+
+
 
 private function vbarScroll():void {
 	
@@ -1508,7 +1489,4 @@ protected function columnasChart_clickHandler(event:MouseEvent):void
 		
 	}
 }
-protected function cerrando(formula:String):void{
-	Ind7.text = formula;
-	PopUpManager.removePopUp(alert);
-}
+	

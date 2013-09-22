@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:s="library://ns.adobe.com/flex/spark" 
+				   xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%">
+	
+	<fx:Script>
+		<![CDATA[
+			public var cerrando:Function;
+			
+			protected function cerrando_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				cerrando.call(this, radiogroup1.selectedValue);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:RadioButtonGroup id="radiogroup1"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TitleWindow x="282" y="72" width="250" height="200" title="Periodo del Item">
+		<s:VGroup y="10" width="200" height="100" horizontalCenter="0">
+			<s:RadioButton label="Normal" groupName="radiogroup1" selected="true"/>
+			<s:RadioButton label="Periodo Anterior" groupName="radiogroup1"/>
+			<s:RadioButton label="Periodos Anteriores dentro del año" groupName="radiogroup1"/>
+			<s:RadioButton label="Periodo anterior de la selección" groupName="radiogroup1"/>
+		</s:VGroup>
+		<s:Button bottom="20" label="Aceptar" horizontalCenter="0" click="cerrando_clickHandler(event)"/>
+	</s:TitleWindow>
+</s:BorderContainer>

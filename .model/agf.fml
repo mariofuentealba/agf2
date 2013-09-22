@@ -199,10 +199,10 @@
     </annotation>
     <annotation name="ServiceConfig">
       <item name="PHP_RELATIVE_LOCATION">servicios/modelo.php</item>
-      <item name="PHP_SERVER_ROOT">C:\wamp\www</item>
+      <item name="PHP_SERVER_ROOT">C:\xampp\htdocs</item>
       <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
-      <item name="PHP_SERVICES_FOLDER">C:\wamp\www\agf\services</item>
-      <item name="PHP_LOCATION">C:/wamp/www/servicios/modelo.php</item>
+      <item name="PHP_SERVICES_FOLDER">C:\xampp\htdocs\agf\services</item>
+      <item name="PHP_LOCATION">C:/xampp/htdocs/servicios/modelo.php</item>
       <item name="LINKED_FILE">modelo.php</item>
       <item name="PHP_SERVER_ROOT_URL">http://localhost/</item>
       <item name="ABSOLUTE_ENDPOINT">http://localhost/agf/gateway.php</item>

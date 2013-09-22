@@ -10,7 +10,7 @@
 			   height="1500" 
 			   creationComplete="crearEsquema_creationCompleteHandler(event)"
 			   
-			   width="100%">
+			   width="1500">
 	<s:layout>
 		<s:BasicLayout/>
 	</s:layout>
@@ -20,6 +20,68 @@
 		<![CDATA[
 			import mx.managers.PopUpManager;
 			include "agf.as";
+			
+			
+			private function items(datos:ResultEvent):void{
+				alert.width = this.width;
+				alert.height = this.height;
+				alert.cerrando = cerrando;
+				var arr:ArrayCollection = datos.result as ArrayCollection;
+				for each(var o:Object in arr){
+					if(o['origen'] == 1){
+						alert.arrXBRL.addItem(o);
+					} else {
+						alert.arrFormulas.addItem(o);
+					}
+				}
+				PopUpManager.addPopUp(alert, this);
+			}
+			
+			protected function linkbutton1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				
+				comboItemsResult.token = modelo.comboItems();
+				comboItemsResult.addEventListener(ResultEvent.RESULT, items);
+			}
+
+			
+			public function cerrando(formula:String, vg:VGroup):void{
+				Ind7.text = formula;
+				var arr:ArrayCollection = new ArrayCollection();
+				
+				
+				var obj:Object = {};
+				obj.a = 1;
+				obj.b = 2;
+				obj.c = 3;
+				for (var s:String in obj)
+				{
+					trace(s + " = " + obj[s]);
+				}
+				
+				
+				
+				
+				for(var i:int = 1; i < vg.numElements; i++){
+					if((vg.getElementAt(i) as ComboBox).selectedIndex > -1){
+						var o:Object = {};
+						var str:String = ''
+						
+						o['campo'] = (vg.getElementAt(i) as ComboBox).name;
+						o['ID_tag_agf'] = (vg.getElementAt(i) as ComboBox).selectedItem['ID_tag_agf'];
+						o['etiqueta'] = (vg.getElementAt(i) as ComboBox).selectedItem['etiqueta'];
+						o['periodo'] = (vg.getElementAt(i) as ComboBox).name;
+						
+						arr.addItem(o);
+					}
+				}
+				//var dg:DataGrid
+				
+				dgc.dataProvider = arr;
+				PopUpManager.removePopUp(alert);
+			}
 			
 		]]>
 	</fx:Script>
@@ -745,9 +807,9 @@
 									<s:Label y="527" left="20" height="13" fontWeight="bold"
 											 text="Expression Formula:"
 											 y.State1="460"/>
-									<s:TextArea id="Ind7" y="544" left="20" height="70"
+									<s:TextArea id="Ind7" y="544" left="20" width="500" height="70"
 												right.item="20"
-												y.State1="480" left.State1="20" width="500"
+												y.State1="480" left.State1="20" width.State1="50%"
 												height.State1="100" editable.State1="false"
 												text.State1="_"/>
 									<s:Label y="575" left="20" height="13" fontWeight="bold"
@@ -772,8 +834,24 @@
 									<s:Button x="24" bottom="20" label="Guardar"
 											  click="guardarIndice_clickHandler(event)"/>
 									<s:Button x="102" bottom="20" label="Volver"/>
-									<mx:LinkButton x="537" y="480" label="Editar Fórmula"
-												   width.State1="150" click="linkbutton1_clickHandler(event)"/>
+									<mx:LinkButton x="520" y="440" label="Editar Fórmula"
+												   click="linkbutton1_clickHandler(event)"
+												   x.State1="213" y.State1="455" width.State1="150"/>
+									<s:DataGrid id="dgc" includeIn="State1" y="478" right="20"
+												width="45%" height="100" requestedRowCount="5">
+										<s:columns>
+											<s:ArrayList>
+												<s:GridColumn dataField="campo"
+															  headerText="Campo" width="30"></s:GridColumn>
+												<s:GridColumn dataField="etiqueta"
+															  headerText="Descripción"></s:GridColumn>
+												<s:GridColumn dataField="periodo"
+															  headerText="Periodo"></s:GridColumn>
+											</s:ArrayList>
+										</s:columns>
+										
+									</s:DataGrid>
+									<s:Label includeIn="State1" x="438" y="460" text="Campos"/>
 								</s:BorderContainer>
 								<s:Label x="98" y="24" fontSize="20" text="Indice"
 										 x.State1="10" y.State1="6"/>
@@ -1079,7 +1157,7 @@
 		</s:DataGrid>	
 		<s:Button click="button5_clickHandler(event)" bottom="10" label="Agregar" horizontalCenter="0"/>
 	</s:TitleWindow>
-	<s:Label includeIn="State1" y="39" right="5" text="version: 1.0.71"/>
+	<s:Label includeIn="State1" y="39" right="5" text="version: 1.0.80"/>
 	
 	
 	
