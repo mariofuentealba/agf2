@@ -83,18 +83,21 @@
 				var complemento:String = '';
 				switch(ob){
 					case 'Periodo Anterior':
-						complemento = 'A';
+						complemento = '.AN';
 						break;
 					case 'Periodos Anteriores dentro del año':
-						complemento = 'AA'
+						complemento = '.AA'
 						break;
 					case 'Periodo anterior de la selección':
-						complemento = 'AS'
+						complemento = '.AS'
+						break;
+					case 'Normal':
+						complemento = '.NN';
 						break;
 				}
 				
 				var bt:Button = new Button();
-				bt.label = this._s + complemento + c;
+				bt.label = this._s + complemento + '.' + c;
 				c++;
 				cb.name = bt.label; 
 				vgCombos.addElement(cb);

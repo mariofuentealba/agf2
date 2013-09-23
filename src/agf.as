@@ -381,32 +381,7 @@ protected function guardar_clickHandler(event:MouseEvent):void
 }
 
 
-protected function guardarIndice_clickHandler(event:MouseEvent):void
-{
-	// TODO Auto-generated method stub
-	var b:Boolean;
-	//Alert.show('' + event.target);
-	var tabla:String;
-	var fn:Function;
-	var arr:Array = [];
-	var dat:String = (event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).id;
-	
-	tabla = 'Indices_Financieros';
-	
-//	arr.push(Ind1.text, Ind2.text, Ind3.text, Ind4.text, Ind5.text, Ind6.text, Ind7.text, Ind8.text, dropDownListC1.selectedItem['ID_tag_agf'], dropDownListC2.selectedItem['ID_tag_agf'], dropDownListC3.selectedItem['ID_tag_agf'], dropDownListC4.selectedItem['ID_tag_agf'], dropDownListC5.selectedItem['ID_tag_agf'], dropDownListC1.selectedItem['origen'], dropDownListC2.selectedItem['origen'], dropDownListC3.selectedItem['origen'], dropDownListC4.selectedItem['origen'], dropDownListC5.selectedItem['origen'], DD_ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO']); 
-	
-	
-	modelo.insertarIndicesFinancieros(arr, tabla);
 
-	
-	/*var results:String = ((((event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedChild as NavigatorContent).getElementAt(1) as mx.controls.TextInput).text);
-	
-	
-	(this[results] as CallResponder).token = modelo.grillaIndicesFinancieros();
-	*/
-	
-	
-}
 
 protected function editar_clickHandler(event:MouseEvent):void
 {

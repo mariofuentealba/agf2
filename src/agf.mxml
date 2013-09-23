@@ -52,7 +52,7 @@
 				var arr:ArrayCollection = new ArrayCollection();
 				
 				
-				var obj:Object = {};
+			/*	var obj:Object = {};
 				obj.a = 1;
 				obj.b = 2;
 				obj.c = 3;
@@ -61,7 +61,7 @@
 					trace(s + " = " + obj[s]);
 				}
 				
-				
+				*/
 				
 				
 				for(var i:int = 1; i < vg.numElements; i++){
@@ -73,6 +73,7 @@
 						o['ID_tag_agf'] = (vg.getElementAt(i) as ComboBox).selectedItem['ID_tag_agf'];
 						o['etiqueta'] = (vg.getElementAt(i) as ComboBox).selectedItem['etiqueta'];
 						o['periodo'] = (vg.getElementAt(i) as ComboBox).name;
+						o['origen'] = (vg.getElementAt(i) as ComboBox).selectedItem['origen'];
 						
 						arr.addItem(o);
 					}
@@ -82,6 +83,48 @@
 				dgc.dataProvider = arr;
 				PopUpManager.removePopUp(alert);
 			}
+			
+			
+			protected function guardarIndice_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				var b:Boolean;
+				//Alert.show('' + event.target);
+				var tabla:String;
+				var fn:Function;
+				var arr:Array = [];
+				var dat:String = (event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).id;
+				
+				tabla = 'Indices_Financieros';
+				var c1:Object = (dgc.dataProvider as ArrayCollection).length > 0 ? (dgc.dataProvider as ArrayCollection).getItemAt(0) : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c2:Object = (dgc.dataProvider as ArrayCollection).length > 1 ? (dgc.dataProvider as ArrayCollection).getItemAt(1) : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c3:Object = (dgc.dataProvider as ArrayCollection).length > 2 ? (dgc.dataProvider as ArrayCollection).getItemAt(2) : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c4:Object = (dgc.dataProvider as ArrayCollection).length > 3 ? (dgc.dataProvider as ArrayCollection).getItemAt(3) : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c5:Object = (dgc.dataProvider as ArrayCollection).length > 4 ? (dgc.dataProvider as ArrayCollection).getItemAt(4) : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				/*
+				var cm1:Object = (dgc.dataProvider as ArrayCollection).length > 0 ? (dgc.dataProvider as ArrayCollection).getItemAt(0) : {ID_tag_agf : -1, origen : 0} ;
+				var cm2:Object = (dgc.dataProvider as ArrayCollection).length > 1 ? (dgc.dataProvider as ArrayCollection).getItemAt(1) : {ID_tag_agf : -1, origen : 0} ;
+				var cm3:Object = (dgc.dataProvider as ArrayCollection).length > 2 ? (dgc.dataProvider as ArrayCollection).getItemAt(2) : {ID_tag_agf : -1, origen : 0} ;
+				var cm4:Object = (dgc.dataProvider as ArrayCollection).length > 3 ? (dgc.dataProvider as ArrayCollection).getItemAt(3) : {ID_tag_agf : -1, origen : 0} ;
+				var cm5:Object = (dgc.dataProvider as ArrayCollection).length > 4 ? (dgc.dataProvider as ArrayCollection).getItemAt(4) : {ID_tag_agf : -1, origen : 0}*/ ;
+				
+				
+				
+				arr.push(Ind1.text, Ind2.text, Ind3.text, Ind4.text, Ind5.text, Ind6.text, Ind7.text, Ind8.text, c1['ID_tag_agf'], c2['ID_tag_agf'], c3['ID_tag_agf'], c4['ID_tag_agf'], c5['ID_tag_agf'], c1['origen'], c2['origen'], c3['origen'], c4['origen'], c5['origen'], DD_ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO'], c1['campo'], c2['campo'], c3['campo'], c4['campo'], c5['campo']); 
+				
+				
+				modelo.insertarIndicesFinancieros(arr, tabla);
+				
+				
+				/*var results:String = ((((event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedChild as NavigatorContent).getElementAt(1) as mx.controls.TextInput).text);
+				
+				
+				(this[results] as CallResponder).token = modelo.grillaIndicesFinancieros();
+				*/
+				
+				
+			}
+			
 			
 		]]>
 	</fx:Script>
@@ -324,7 +367,8 @@
 			</s:Rect>
 			<s:BorderContainer x="10" y="10" width="200" height="354"
 							   click="bordercontainerOpcionesMenu_clickHandler(event)"
-							   cornerRadius="10">
+							   cornerRadius="10"
+							   height.State1="255">
 				<s:VGroup width="100%" gap="0">
 					<mx:LinkButton height="30" label="Grupos" width="100%"/>
 					<mx:HRule width="100%"/>
@@ -340,14 +384,14 @@
 					<mx:HRule width="100%"/>
 					<mx:LinkButton height="30" label="Monedas" width="100%"/>
 					<mx:HRule width="100%"/>
-					<mx:LinkButton width="100%" height="30" label="Asociar AGF-XBLR"
+					<!--mx:LinkButton width="100%" height="30" label="Asociar AGF-XBLR"
 								   label.State1="Asociar AGF-XBRL"/>
 					<mx:HRule width="100%"/>
 					<mx:LinkButton height="30" label="Admin. AGF" width="100%"/>
 					<mx:HRule width="100%"/>
 					<mx:LinkButton width="100%" height="30" label="Admin. XBLR"
 								   label.State1="Admin. XBRL"/>
-					<mx:HRule width="100%"/>
+					<mx:HRule width="100%"/-->
 					<mx:LinkButton width="100%" height="30" label="Formulario Empresa"/>
 				</s:VGroup>
 				
@@ -398,7 +442,7 @@
 									<s:Label x="28" y="86" fontWeight="bold" text="Descripción:"/>
 									<s:TextInput id="txtGrupos" visible="false" text="1"/>
 									<s:Button x="23" y="256" label="Guardar" click="guardar_clickHandler(event)"/>
-									<s:Button x="101" y="256" label="Volver"/>
+									<s:Button includeIn="item" x="101" y="256" label="Volver"/>
 								</s:BorderContainer>
 								<s:Label x="121" y="43" fontSize="20" text="Grupo"/>
 								
@@ -413,7 +457,7 @@
 												height="128" text="{dgGrupo.selectedItem['descripcion']}"/>
 									<s:Label x="28" y="86" fontWeight="bold" text="Descripción:"/>
 									<s:Button x="23" y="256" label="Guardar" click="editar_clickHandler(event)"/>
-									<s:Button x="101" y="256" label="Volver"/>
+									<s:Button includeIn="item" x="101" y="256" label="Volver"/>
 									
 								</s:BorderContainer>
 								<s:Label x="121" y="43" fontSize="20" text="Grupo"/>
@@ -507,7 +551,7 @@
 									<s:Label x="28" y="86" fontWeight="bold" text="Descripción:"/>
 									<s:Button x="23" bottom="10" label="Guardar"
 											  click="guardar_clickHandler(event)"/>
-									<s:Button x="101" bottom="10" label="Volver"/>
+									<s:Button includeIn="item" x="101" bottom="10" label="Volver"/>
 									<s:DropDownList name="ID_TIPO_EMPRESA" id="dropDownList0" x="29" y="266" width="342"
 													creationComplete="dropDownList_creationCompleteHandler(event);"
 													labelField="nombre">
@@ -528,7 +572,7 @@
 												height="128" text="{dgSubGrupo.selectedItem['descripcion']}"/>
 									<s:Label x="28" y="86" fontWeight="bold" text="Descripción:"/>
 									<s:Button x="28" y="319" label="Guardar" click="editar_clickHandler(event)"/>
-									<s:Button x="106" y="319" label="Volver"/>
+									<s:Button includeIn="item" x="106" y="319" label="Volver"/>
 									<s:DropDownList name="ID_TIPO_EMPRESA" id="ID_TIPO_EMPRESA" x="29" y="266" width="342"
 													creationComplete="dropDownList_creationCompleteHandler(event);"
 													labelField="nombre">
@@ -590,7 +634,7 @@
 									
 									<s:Button x="29" bottom="10" label="Guardar"
 											  click="guardar_clickHandler(event)"/>
-									<s:Button x="108" bottom="10" label="Volver"/>
+									<s:Button includeIn="item" x="108" bottom="10" label="Volver"/>
 									<s:TextInput y="93" left="10" right="10"/>
 									<s:Label y="123" left="10" fontWeight="bold"
 											 text="Nombre Fantasía:"/>
@@ -636,7 +680,7 @@
 									
 									<s:Button x="29" bottom="10" label="Guardar"
 											  click="editar_clickHandler(event)"/>
-									<s:Button x="108" bottom="10" label="Volver"/>
+									<s:Button includeIn="item" x="108" bottom="10" label="Volver"/>
 									<s:TextInput name="RSO" y="93" left="10" right="10" text="{dgEmpresa.selectedItem['RSO']}"/>
 									<s:Label y="123" left="10" fontWeight="bold"
 											 text="Nombre Fantasía:"/>
@@ -713,7 +757,7 @@
 								<s:HGroup>
 									<s:Button x="29" bottom="10" label="Guardar"
 											  click="button3_clickHandler(event)"/>
-									<s:Button x="108" bottom="10" label="Volver"/>	
+									<s:Button includeIn="item" x="108" bottom="10" label="Volver"/>	
 								</s:HGroup>
 								
 								
@@ -833,7 +877,7 @@
 									</s:DropDownList>
 									<s:Button x="24" bottom="20" label="Guardar"
 											  click="guardarIndice_clickHandler(event)"/>
-									<s:Button x="102" bottom="20" label="Volver"/>
+									<s:Button includeIn="item" x="102" bottom="20" label="Volver"/>
 									<mx:LinkButton x="520" y="440" label="Editar Fórmula"
 												   click="linkbutton1_clickHandler(event)"
 												   x.State1="213" y.State1="455" width.State1="150"/>
@@ -944,8 +988,7 @@
 									<s:Button x="24" bottom="200" label="Guardar"
 											  click="editar_clickHandler(event)"
 											  bottom.State1="10"/>
-									<s:Button x="102" bottom="200" label="Volver"
-											  bottom.State1="10"/>
+									
 								</s:BorderContainer>
 								<s:Label x="98" y="24" fontSize="20" text="Indice"
 										 y.State1="20"/>
@@ -986,7 +1029,7 @@
 												height="128"/>
 									<s:Label x="28" y="86" fontWeight="bold" text="Descripción:"/>									
 									<s:Button x="23" y="256" label="Guardar" click="guardar_clickHandler(event)"/>
-									<s:Button x="101" y="256" label="Volver"/>
+									<s:Button includeIn="item" x="101" y="256" label="Volver"/>
 								</s:BorderContainer>
 								<s:Label x="121" y="43" fontSize="20" text="Grupo"/>
 								
@@ -1001,7 +1044,7 @@
 												height="128" text="{dgGrupoIndices.selectedItem['descripcion']}"/>
 									<s:Label x="28" y="86" fontWeight="bold" text="Descripción:"/>
 									<s:Button x="23" y="256" label="Guardar" click="editar_clickHandler(event)"/>
-									<s:Button x="101" y="256" label="Volver"/>
+									<s:Button includeIn="item" x="101" y="256" label="Volver"/>
 									
 								</s:BorderContainer>
 								<s:Label x="121" y="43" fontSize="20" text="Grupo"/>
@@ -1073,7 +1116,7 @@
 									
 									<s:Label x="22" y="257" fontWeight="bold" text="Operacion:"/>
 									<s:Button x="11" y="310" label="Guardar" click="guardar_clickHandler(event)"/>
-									<s:Button x="89" y="310" label="Volver"/>
+									<s:Button includeIn="item" x="89" y="310" label="Volver"/>
 								</s:BorderContainer>
 								<s:Label x="121" y="43" fontSize="20" text="Moneda"/>
 								
@@ -1114,18 +1157,18 @@
 									</s:DropDownList>
 									
 									<s:Button x="11" y="310" label="Guardar" click="guardar_clickHandler(event)"/>
-									<s:Button x="89" y="310" label="Volver"/>
+									<s:Button includeIn="item" x="89" y="310" label="Volver"/>
 								</s:BorderContainer>
 								<s:Label x="121" y="43" fontSize="20" text="Moneda"/>
 							</s:NavigatorContent>
 						</mx:TabNavigator>
 					</s:NavigatorContent>
-					<s:NavigatorContent width="100%" height="100%" label="Asociar AGF-XBRL">
+					<!--s:NavigatorContent width="100%" height="100%" label="Asociar AGF-XBRL">
 					</s:NavigatorContent>
 					<s:NavigatorContent width="100%" height="100%" label="Admin. AGF">
 					</s:NavigatorContent>
 					<s:NavigatorContent width="100%" height="100%" label="Admin. XBRL">
-					</s:NavigatorContent>
+					</s:NavigatorContent-->
 				</mx:ViewStack>
 			</s:BorderContainer>
 			
@@ -1157,7 +1200,7 @@
 		</s:DataGrid>	
 		<s:Button click="button5_clickHandler(event)" bottom="10" label="Agregar" horizontalCenter="0"/>
 	</s:TitleWindow>
-	<s:Label includeIn="State1" y="39" right="5" text="version: 1.0.80"/>
+	<s:Label includeIn="State1" y="39" right="5" text="version: 1.0.88"/>
 	
 	
 	
