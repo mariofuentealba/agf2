@@ -116,6 +116,7 @@
 				modelo.insertarIndicesFinancieros(arr, tabla);
 				
 				
+				
 				/*var results:String = ((((event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedChild as NavigatorContent).getElementAt(1) as mx.controls.TextInput).text);
 				
 				
@@ -123,6 +124,14 @@
 				*/
 				
 				
+			}
+			
+			private function actualiza(event:ResultEvent):void{
+				grillaIndicesFinancierosResult.token = modelo.grillaTodoIndicesFinancieros();
+				grillaGrupoIndicesResult.token = modelo.grillaTodosGrupoIndices();
+				
+				grillaIndicesFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina2);
+				grillaGrupoIndicesResult.addEventListener(ResultEvent.RESULT, generaPagina2);
 			}
 			
 			
@@ -183,7 +192,7 @@
 		<s:CallResponder id="grillaAgfResult"/>
 		<s:CallResponder id="insertarResult"/>
 		<s:CallResponder id="valores2Result"/>
-		<!--s:CallResponder id="insertItemResult"/-->
+		<s:CallResponder id="insertarIndiceResult"/>
 		<s:CallResponder id="valoresGuardadosResult"/>
 		<s:CallResponder id="formGuardadosResult"/>
 		<s:CallResponder id="grillaGruposResult"/>
@@ -1063,7 +1072,7 @@
 		<s:Button x="159" label="Mostrar Matriz"  verticalCenter="0"/><!--cornerRadius="5"-->
 	</s:BorderContainer>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
-	<s:Label y="39" right="5" text="version: 1.0.95"/>
+	<s:Label y="39" right="5" text="version: 1.0.99"/>
 	
 	
 	

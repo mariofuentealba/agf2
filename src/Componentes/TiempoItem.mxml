@@ -20,7 +20,7 @@
 		<s:RadioButtonGroup id="radiogroup1"/>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<s:TitleWindow x="282" y="72" width="250" height="200" title="Periodo del Item">
+	<s:TitleWindow y="72" width="250" height="200" horizontalCenter="0" title="Periodo del Item">
 		<s:VGroup y="10" width="200" height="100" horizontalCenter="0">
 			<s:RadioButton label="Normal" groupName="radiogroup1" selected="true"/>
 			<s:RadioButton label="Periodo Anterior" groupName="radiogroup1"/>

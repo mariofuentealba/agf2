@@ -17,13 +17,13 @@
 //
 $mysqli = new mysqli("localhost","agf","agf","agf");
 
-$mysqli->query("INSERT INTO tag_agf value (null, 'Margen Retail', 'Margen Retail', 'NO ESPECIFICA', 'MANUAL', 1)");
+$mysqli->query("INSERT INTO tag_agf value (null, 'Ingresos Retail Anuales', 'Ingresos Retail Anuales', 'NO ESPECIFICA', 'MANUAL', 1)");
 
 
 
 $tag_agf = $mysqli->insert_id;
 
-$sql = "INSERT INTO formulas values (null, '" . $tag_agf . "', '-1', '-1', '-1', '-1', 'C1', '1', '2');";
+$sql = "INSERT INTO formulas values (null, '" . $tag_agf . "', '-1', '-1', '-1', '-1', 1, 1, 1, 1, 1, 'C1', '1', '2', 'C.NN.1', 'no', 'no', 'no', 'no');";
 			    $sql2 = str_replace("'", "''", $sql);
 				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			    				     
@@ -33,7 +33,7 @@ $sql = "INSERT INTO formulas values (null, '" . $tag_agf . "', '-1', '-1', '-1',
 			    $mysqli->query($sql);
 	            $ultimo_id = $mysqli->insert_id;
 			    
-			    $sql = "INSERT INTO indices_financieros VALUES (null, '3', 4, 'Margen Retail', '..', '" . $ultimo_id . "', '..', '1000', '0', '..', 1);";
+			    $sql = "INSERT INTO indices_financieros VALUES (null, '3', 4, 'Ingresos Retail Anuales', '..', '" . $ultimo_id . "', '..', '1000', '0', '..', 1);";
 			    $sql2 = str_replace("'", "''", $sql);
 				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			       				
@@ -43,14 +43,14 @@ $sql = "INSERT INTO formulas values (null, '" . $tag_agf . "', '-1', '-1', '-1',
 
 
 
-$str = "25.7+0;28.9+0;27.2+0;33.0+0;29.6+0;31.4+0;28.9+0;32.7+0;28.7+0;29.9+0;26.2+0;30.8+0;24.9+0;30.2+0;30.2+0;31.6+0;28.5
-20.8+0;27.2+0;27.4+0;28.4+0;27.0+0;28.7+0;28.7+0;28.3+0;27.5+0;29.8+0;25.5+0;27.7+0;25.7+0;29.6+0;24.7+0;28.3+0;27.1
-22.2+0;26.5+0;20.4+0;28.3+0;25.2+0;29.4+0;24.8+0;29.0+0;26.5+0;31.7+0;25.1+0;27.9+0;23.9+0;26.9+0;23.4+0;29.6+0;26.1
-0;0;0;0;13.8+0;37.3+0;-7.0+0;24.3+0;18.4+0;25.9+0;15.2+0;16.8+0;20.5+0;20.0+0;19.5+0;18.2+0;20.0
-0;0;0;0;0;0;0;0;0;0;0;20.9+0;20.1+0;24.2+0;19.2+0;23.9+0;23.0
-17.6+0;20.3+0;19.9+0;21.9+0;19.1+0;24.4+0;23.2+0;27.6+0;21.3+0;24.6+0;21.1+0;26.7+0;21.0+0;25.2+0;24.6+0;28.4+0;24.8";
+$str = ";;;786818;798974;847160;875734;930042;968998;984151;1006992;1024120;1063265;1068734;1081053;1104669;1115540
+;;;516536;528618;564679;590901;622719;649974;656930;671042;690773;731641;777464;824212;886075;906989
+;;;485996;498056;532406;550387;569575;588341;590033;598094;612027;626328;633446;651772;673876;677447
+;;;;;;;142131;149942;153483;162394;169882;172519;173802;182408;192350;199459
+;;;;;;;;;;;;;;;293754;301723
+;;;93793;95156;103494;108337;119763;126126;130372;138423;148088;154949;160765;163919;165403;166787";
 $arr = explode("\n", $str);
-$emp = array(719, 720, 715, 716, 717, 718);
+$emp = array(731, 732, 727, 728, 729, 730);
 $s = 0;
 $per = array(13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 28, 29); 
 
@@ -58,7 +58,7 @@ for($i = 0; $i < count($arr); $i++){
 	$arr[$i] = trim($arr[$i]);
 	$arr[$i] = explode(";", $arr[$i]);
 	for($j = 0; $j < count($arr[$i]); $j++){
-		$arr[$i][$j] = "INSERT INTO valores (`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `VALOR`, `DT_MODIFICACION`) VALUES (null, '" . $tag_agf . "', " . $emp[$i] . ", " . $per[$s++] . ", " . $arr[$i][$j] . ", null);";
+		$arr[$i][$j] = "INSERT INTO valores (`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `VALOR`, `DT_MODIFICACION`, `origen`) VALUES (null, '" . $tag_agf . "', " . $emp[$i] . ", " . $per[$s++] . ", " . $arr[$i][$j] . ", null, 1);";
 		$mysqli->query($arr[$i][$j]);
 	}
 	$s = 0;

@@ -18,7 +18,7 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<s:HGroup width="100%">
-		<s:RadioButton label="Normal" groupName="rgOption" selected="true"/>
+		<s:RadioButton id="rbInicial" label="Normal" groupName="rgOption" selected="true"/>
 		<s:RadioButton label="Referente" groupName="rgOption"/>
 		<s:RadioButton label="Variación" groupName="rgOption"/>
 	</s:HGroup>

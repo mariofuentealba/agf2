@@ -21,6 +21,7 @@ import mx.rpc.AsyncToken;
 import mx.rpc.remoting.Operation;
 import mx.rpc.remoting.RemoteObject;
 import valueObjects.AgfDatatype;
+import valueObjects.EmpresaDatatype;
 import valueObjects.EmpresasDatatype;
 import valueObjects.GrupoIndDatatype;
 import valueObjects.GrupoIndiceFinancieroDatatype;
@@ -188,6 +189,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         valueObjects.ItemDatatype._initRemoteClassAlias();
         valueObjects.SubGruposDatatype._initRemoteClassAlias();
         valueObjects.AgfDatatype._initRemoteClassAlias();
+        valueObjects.EmpresaDatatype._initRemoteClassAlias();
         valueObjects.GrupoIndiceFinancieroDatatype._initRemoteClassAlias();
         valueObjects.GruposDatatype._initRemoteClassAlias();
         valueObjects.IndicesFinancierosDatatype._initRemoteClassAlias();
@@ -256,7 +258,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultType = Object;
         operations["grillaEmpresaDelSubGrupo"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaEmpresaSinSubGrupo");
-         operation.resultType = Object;
+         operation.resultElementType = valueObjects.EmpresaDatatype;
         operations["grillaEmpresaSinSubGrupo"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaGrupoIndices");
          operation.resultElementType = valueObjects.GrupoIndiceFinancieroDatatype;
@@ -878,10 +880,10 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function grillaEmpresaSinSubGrupo() : mx.rpc.AsyncToken
+    public function grillaEmpresaSinSubGrupo(id:int) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaEmpresaSinSubGrupo");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(id) ;
         return _internal_token;
     }
      

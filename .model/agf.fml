@@ -144,48 +144,6 @@
     <property name="etiqueta" type="string" required="true"/>
     <property name="origen" type="string" required="true"/>
   </entity>
-  <entity name="EmpresaDatatype" persistent="true">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">EmpresaDatatype</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">Modelo</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="grillaEmpresa">
-      <item name="propertySpecifier">ID_SUBGRUPO,RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
-      <item name="pagingEnabled">true</item>
-      <item name="positionalPagingParameters">true</item>
-      <item name="countOperation">countEmpresa</item>
-      <item name="pageSize">30</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <annotation name="grillaEmpresaDelSubGrupo">
-      <item name="propertySpecifier">RSO,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
-    </annotation>
-    <annotation name="grillaEmpresaSinSubGrupo">
-      <item name="propertySpecifier">RSO,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
-    </annotation>
-    <annotation name="grillaTodasEmpresa">
-      <item name="propertySpecifier">ID_SUBGRUPO,RSO,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
-    </annotation>
-    <annotation name="comboEmpresa">
-      <item name="propertySpecifier">RSO,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
-    </annotation>
-    <id name="ID_SUBGRUPO" type="string"/>
-    <property name="RSO" type="string" required="true"/>
-    <property name="color" type="string" required="true"/>
-    <property name="TIPO_IFRS" type="string" required="true"/>
-    <property name="TIPO_BALANCE" type="string" required="true"/>
-    <property name="RUT" type="string" required="true"/>
-    <property name="NOMBRE_BOLSA" type="string" required="true"/>
-    <property name="NOMBRE_FANTASIA" type="string" required="true"/>
-    <id name="ID_EMPRESA" type="string"/>
-  </entity>
   <service name="Modelo">
     <annotation name="ActionScriptGeneration">
       <item name="Source">modelo</item>
@@ -400,16 +358,19 @@
       </annotation>
       <parameter name="cod" type="integer"/>
     </function>
-    <function name="grillaEmpresaSinSubGrupo" return-type="opaque">
+    <function name="grillaEmpresaSinSubGrupo" return-type="EmpresaDatatype[]">
       <annotation name="analyze group">
-        <item name="analyzed">false</item>
+        <item name="analyzed">true</item>
       </annotation>
       <annotation name="original signature">
         <item name="returnType">opaque</item>
+        <item name="inputParams">opaque</item>
+        <item name="inputParamNames">id</item>
       </annotation>
       <annotation name="ValidProperties">
-        <item name="propertySpecifier">RSO,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
+        <item name="propertySpecifier">RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
       </annotation>
+      <parameter name="id" type="integer"/>
     </function>
     <function name="grillaGrupoIndices" return-type="GrupoIndiceFinancieroDatatype[]">
       <annotation name="analyze group">
@@ -661,6 +622,45 @@
       <parameter name="periodo" type="opaque"/>
     </function>
   </service>
+  <entity name="EmpresaDatatype" persistent="true">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">EmpresaDatatype</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Modelo,ModeloDummy</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="grillaEmpresa">
+      <item name="propertySpecifier">ID_SUBGRUPO,RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
+      <item name="positionalPagingParameters">true</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="grillaEmpresaDelSubGrupo">
+      <item name="propertySpecifier">RSO,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
+    </annotation>
+    <annotation name="grillaEmpresaSinSubGrupo">
+      <item name="propertySpecifier">RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
+    </annotation>
+    <annotation name="grillaTodasEmpresa">
+      <item name="propertySpecifier">ID_SUBGRUPO,RSO,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
+    </annotation>
+    <annotation name="comboEmpresa">
+      <item name="propertySpecifier">RSO,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
+    </annotation>
+    <id name="ID_SUBGRUPO" type="string"/>
+    <property name="RSO" type="string" required="true"/>
+    <property name="color" type="string" required="true"/>
+    <property name="TIPO_IFRS" type="string" required="true"/>
+    <property name="TIPO_BALANCE" type="string" required="true"/>
+    <property name="RUT" type="string" required="true"/>
+    <property name="NOMBRE_BOLSA" type="string" required="true"/>
+    <property name="NOMBRE_FANTASIA" type="string" required="true"/>
+    <id name="ID_EMPRESA" type="string"/>
+  </entity>
   <entity name="GrupoIndDatatype" persistent="true">
     <annotation name="EntityProperties">
       <item name="EntityOriginalName">GrupoIndDatatype</item>

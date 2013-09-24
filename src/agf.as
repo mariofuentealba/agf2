@@ -328,9 +328,9 @@ protected function guardar_clickHandler(event:MouseEvent):void
 		case 'tnSubGrupos':
 			modelo.insertarSubgrupo(arr, tabla, param);
 			break;
-		case 'tnIndicesFinancieros':
+		/*case 'tnIndicesFinancieros':
 			modelo.insertarIndicesFinancieros(arr, tabla);
-			break;
+			break;*/
 		default:
 			modelo.insertar(arr, tabla);
 			break;
@@ -555,7 +555,7 @@ protected function dropDownList2_changeHandler(event:IndexChangeEvent):void
 {
 	// TODO Auto-generated method stub
 	grillaEmpresaDelSubGrupoResult.token = modelo.grillaEmpresaDelSubGrupo((event.target as DropDownList).selectedItem['ID_SUBGRUPO']);
-	grillaEmpresaSinSubGrupoResult.token = modelo.grillaEmpresaSinSubGrupo();
+	grillaEmpresaSinSubGrupoResult.token = modelo.grillaEmpresaSinSubGrupo((event.target as DropDownList).selectedItem['ID_SUBGRUPO']);
 }
 
 protected function button1_clickHandler(event:MouseEvent):void
@@ -1024,6 +1024,7 @@ protected function button4_clickHandler(event:MouseEvent):void
 		
 		valoresResult.token = modelo.valores(ComboBoxEmpresaPrincipal.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
 		valoresResult.addEventListener(ResultEvent.RESULT, grafica);	
+		nvGrafico.removeAllElements();
 	} catch(e:*){
 		Alert.show('Debe completar todos los campos para poder graficar', 'Atención');
 	}
@@ -1057,7 +1058,7 @@ private function grafica(event:ResultEvent):void{
 		var series2:Array = new Array();
 		seriesColumn = new Array();
 		
-		for(var x:int = 0; x < listEmpresaSelect.dataProvider.length + listIndices.dataProvider.length; x++){
+		for(var x:int = 0; x < listEmpresaSelect.dataProvider.length * listIndices.dataProvider.length; x++){
 			seriesColumn[x] = new ColumnSeries();
 			(seriesColumn[x] as ColumnSeries).yField = 'a'+x;
 			(seriesColumn[x] as ColumnSeries).visible = false;
@@ -1088,13 +1089,16 @@ private function grafica(event:ResultEvent):void{
 				colorLine.alpha = 1;
 				stro.color = o['color'];
 				colorLine.color = o['color'];
-				(seriesColumn[i] as ColumnSeries).setStyle('fill', colorLine);
-				(seriesColumn[i] as ColumnSeries).displayName = o['nombre_final'];
-				(seriesColumn[i] as ColumnSeries).setStyle('showDataEffect', interpolateIn);				
-				(seriesColumn[i] as ColumnSeries).visible = true;
+				if(sw){
+					(seriesColumn[i] as ColumnSeries).setStyle('fill', colorLine);
+					(seriesColumn[i] as ColumnSeries).displayName = o['nombre_final'];
+					(seriesColumn[i] as ColumnSeries).setStyle('showDataEffect', interpolateIn);				
+					(seriesColumn[i] as ColumnSeries).visible = true;					
+				}
+				
 				//	}
 			} else{
-				//sw = false;
+				sw = false;
 				
 				arrAct.addItem(obAdd);
 				obAdd = {};
@@ -1127,12 +1131,13 @@ private function grafica(event:ResultEvent):void{
 			arrAct3.addItem(o);
 		}
 		
-		obAdd = null;
-		
+		obAdd = {};
+		idPeriodo = arr[0]['label'];
+		i = 0;
 		for each(o in arr){
 			if(o['graf'] == 2){
 				
-				if(idPeriodo == o['label'] && obAdd){
+				if(idPeriodo == o['label']){
 					obAdd['nombre'] = o['nombre_final'] + '(' + o['label'] + ')';
 					obAdd['a'+i] = o['valor'];
 					if(sw){
@@ -1154,13 +1159,10 @@ private function grafica(event:ResultEvent):void{
 			}
 		}
 		arrAct2.addItem(obAdd);
-		/*	linechart.series = series;
-		linechart.dataProvider = arrAct;
-		line.dataProvider = arrAct;*/
-	//	colGraf.serie = seriesColumn;
 		columnas = arrAct;	
-//		colGraf.prov = arrAct;
-	//	nvGrafico.addElement(colGraf);
+		nvGrafico.addElement(columnasChart);
+		columnasChart.rbInicial.selected = true;
+		columnasChart.rbInicial.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 	}
 	
 	
