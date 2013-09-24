@@ -97,9 +97,10 @@
 				}
 				
 				var bt:Button = new Button();
-				bt.label = this._s + complemento + '.' + c;
+				bt.label = 'C' + c;
+				bt.name = this._s + complemento + '.' + c;
 				c++;
-				cb.name = bt.label; 
+				cb.name = bt.name; 
 				vgCombos.addElement(cb);
 				hgBotones.addElement(bt);
 				bt.percentWidth = 100;

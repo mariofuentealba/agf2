@@ -967,155 +967,226 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 			
 			    
 			    
-			    $sql = "INSERT INTO indices_financieros VALUES (null, '" . $arrInf[13] . "', 4, '" . $arrInf[0] . "', '" . $arrInf[1] . "', '" . $ultimo_id . "', '" . $arrInf[2] . "', '" . $arrInf[5] . "', '" . $arrInf[4] . "', '" . $arrInf[3] . "', 1);";
+			    $sql = "INSERT INTO indices_financieros VALUES (null, '" . $arrInf[18] . "', 4, '" . $arrInf[0] . "', '" . $arrInf[1] . "', '" . $ultimo_id . "', '" . $arrInf[2] . "', '" . $arrInf[5] . "', '" . $arrInf[4] . "', '" . $arrInf[3] . "', 1);";
 			    $sql2 = str_replace("'", "''", $sql);
 				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			       				
 			    $mysqli->query($sql);			    
-			    
+			    $indiceNuevo = $mysqli->insert_id;
 	                 //   $mysqli->close();
 	                //mysql_close($con);
 	                
 	            //retornamos el largo del arreglo
 		  //  $ultimo_id = mysql_insert_id($con);
 	            //return $ultimo_id;
-		    
+		    $formula1[0] = $formula1[0] == 'C' ? 1 : 2;
+			$formula2[0] = $formula2[0] == 'C' ? 1 : 2;
+			$formula3[0] = $formula3[0] == 'C' ? 1 : 2;
+			$formula4[0] = $formula4[0] == 'C' ? 1 : 2;
+			$formula5[0] = $formula5[0] == 'C' ? 1 : 2;
+			
+			$comp1 = ' AND x.id_periodo = a.id_periodo ';
+			$comp2 = ' AND x.id_periodo = a.id_periodo ';
+			$comp3 = ' AND x.id_periodo = a.id_periodo ';
+			$comp4 = ' AND x.id_periodo = a.id_periodo ';
+			$comp5 = ' AND x.id_periodo = a.id_periodo ';
+			
+			
+			
+			if(count($formula1) > 1){
+					switch($formula1[1]){
+						case 'NN':
+							$comp1 = ' AND x.id_periodo = a.id_periodo ';
+							break;
+						case 'AN':
+							$comp1 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+							break;
+						case 'AA':
+							$comp1 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																			FROM periodos r, periodos p
+																			WHERE r.ano = p.ano
+																				  AND r.mes < p.mes
+																				  AND r.oa = 1
+																				  AND p.id_periodo = a.id_periodo) ';
+							break;
+						case 'AS':
+							$comp1 = " AND 'QUERY' ";
+							break;	
+					
+					}
+				}
+				
+				if(count($formula2) > 1){
+					switch($formula2[1]){
+						case 'NN':
+							$comp2 = ' AND x.id_periodo = a.id_periodo ';
+							break;
+						case 'AN':
+							$comp2 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+							break;
+						case 'AA':
+							$comp2 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																			FROM periodos r, periodos p
+																			WHERE r.ano = p.ano
+																				  AND r.mes < p.mes
+																				  AND r.oa = 1
+																				  AND p.id_periodo = a.id_periodo) ';
+							break;
+						case 'AS':
+							$comp2 = " AND 'QUERY' ";
+							break;	
+					
+					}
+				}
+				
+				if(count($formula3) > 1){
+					switch($formula3[1]){
+						case 'NN':
+							$comp3 = ' AND x.id_periodo = a.id_periodo ';
+							break;
+						case 'AN':
+							$comp3 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+							break;
+						case 'AA':
+							$comp3 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																			FROM periodos r, periodos p
+																			WHERE r.ano = p.ano
+																				  AND r.mes < p.mes
+																				  AND r.oa = 1
+																				  AND p.id_periodo = a.id_periodo) ';
+							break;
+						case 'AS':
+							$comp3 = " AND 'QUERY' ";
+							break;	
+					
+					}
+				}
+				$mysqli->query("INSERT INTO log values ('" . $formula4[0] . "');");
+				
+				if(count($formula4) > 1){
+					switch($formula4[1]){
+						case 'NN':
+							$comp4 = ' AND x.id_periodo = a.id_periodo ';
+							break;
+						case 'AN':
+							$comp4 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+							break;
+						case 'AA':
+							$comp4 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																			FROM periodos r, periodos p
+																			WHERE r.ano = p.ano
+																				  AND r.mes < p.mes
+																				  AND r.oa = 1
+																				  AND p.id_periodo = a.id_periodo) ';
+							break;
+						case 'AS':
+							$comp4 = " AND 'QUERY' ";
+							break;	
+					
+					}
+				}
+				
+				if(count($formula5) > 1){
+					switch($formula5[1]){
+						case 'NN':
+							$comp5 = ' AND x.id_periodo = a.id_periodo ';
+							break;
+						case 'AN':
+							$comp5 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+							break;
+						case 'AA':
+							$comp5 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																			FROM periodos r, periodos p
+																			WHERE r.ano = p.ano
+																				  AND r.mes < p.mes
+																				  AND r.oa = 1
+																				  AND p.id_periodo = a.id_periodo) ';
+							break;
+						case 'AS':
+							$comp5 = " AND 'QUERY' ";
+							break;	
+					
+					}
+				}
+			
 			$sql = "select c.id_formula, a.id_empresa, a.id_periodo,
-						CASE '" . $formula1[0] . "'
-						WHEN 'C' 
-						THEN (select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo1
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo
-										 AND w.tipoc1 = 1
-								 AND x.tipo = 'TRIMESTRAL' )
-						WHEN 'F'
-						THEN (select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo1
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo
-										 AND w.tipoc1 = 2
-								 AND x.tipo = 'TRIMESTRAL' )		 
-						END
-					       C1, 
-			                	CASE '" . $formula2[0] . "'
-						WHEN 'C' 
-						THEN (select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo2
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo
-										 AND w.tipoc2 = 1
-								 AND x.tipo = 'TRIMESTRAL' )
-						WHEN 'F'
-						THEN (select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo2
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo
-										 AND w.tipoc2 = 2
-								 AND x.tipo = 'TRIMESTRAL' )		 
-						END C2,
-			                	CASE '" . $formula3[0] . "'
-						WHEN 'C' 
-						THEN (select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo3
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo
-										 AND w.tipoc3 = 1
-								 AND x.tipo = 'TRIMESTRAL' )
-						WHEN 'F'
-						THEN (select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo3
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo
-										 AND w.tipoc3 = 2
-								 AND x.tipo = 'TRIMESTRAL' )		 
-						END C3,
-			                	CASE '" . $formula4[0] . "'
-						WHEN 'C' 
-						THEN (select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo4
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo
-										 AND w.tipoc4 = 1
-								 AND x.tipo = 'TRIMESTRAL' )
-						WHEN 'F'
-						THEN (select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo4
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo
-										 AND w.tipoc4 = 2
-								 AND x.tipo = 'TRIMESTRAL' )		 
-						END C4,
-			                	CASE '" . $formula5[0] . "'
-						WHEN 'C' 
-						THEN (select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo5
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo
-										 AND w.tipoc5 = 1
-								 AND x.tipo = 'TRIMESTRAL' )
-						WHEN 'F'
-						THEN (select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo5
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo
-										 AND w.tipoc5 = 2
-								 AND x.tipo = 'TRIMESTRAL' )		 
-						END C5, concat(d.rso, ': ', b.nombre), label, formula, e.ano, e.mes, d.color
+						(select SUM(valor)
+								   from valores x, indices_financieros z, formulas w
+						   where w.id_formula = z.id_formula
+								 AND x.id_tag_agf = w.campo1
+								 AND z.id_indice_financiero = b.id_indice_financiero
+								 AND x.id_empresa = a.id_empresa
+								 " . $comp1 . "
+								 AND w.tipoc1 = " . $formula1[0] . "
+						 AND x.tipo = 'TRIMESTRAL' )		 				
+					       C1, 			                	
+						(select SUM(valor)
+								   from valores x, indices_financieros z, formulas w
+						   where w.id_formula = z.id_formula
+								 AND x.id_tag_agf = w.campo2
+								 AND z.id_indice_financiero = b.id_indice_financiero
+								 AND x.id_empresa = a.id_empresa
+								 " . $comp2 . "
+								 AND w.tipoc1 = " . $formula2[0] . "
+						 AND x.tipo = 'TRIMESTRAL' )
+						C2,
+			                	(select SUM(valor)
+								   from valores x, indices_financieros z, formulas w
+						   where w.id_formula = z.id_formula
+								 AND x.id_tag_agf = w.campo3
+								 AND z.id_indice_financiero = b.id_indice_financiero
+								 AND x.id_empresa = a.id_empresa
+								 " . $comp3 . "									
+								 AND w.tipoc1 = " . $formula3[0] . "
+						 AND x.tipo = 'TRIMESTRAL' ) C3,
+			                	(select SUM(valor)
+								   from valores x, indices_financieros z, formulas w
+						   where w.id_formula = z.id_formula
+								 AND x.id_tag_agf = w.campo4
+								 AND z.id_indice_financiero = b.id_indice_financiero
+								 AND x.id_empresa = a.id_empresa
+								 " . $comp4 . "									
+								 AND w.tipoc1 = " . $formula4[0] . "
+						 AND x.tipo = 'TRIMESTRAL' ) C4,
+			                	(select SUM(valor)
+								   from valores x, indices_financieros z, formulas w
+						   where w.id_formula = z.id_formula
+								 AND x.id_tag_agf = w.campo5
+								 AND z.id_indice_financiero = b.id_indice_financiero
+								 AND x.id_empresa = a.id_empresa
+								 " . $comp5 . "									
+								 AND w.tipoc1 = " . $formula5[0] . "
+						 AND x.tipo = 'TRIMESTRAL' ) C5, concat(d.rso, ': ', b.nombre), label, formula, e.ano, e.mes, d.color
 			                From valores a, indices_financieros b, formulas c, empresas d, periodos e
 			                where c.id_formula = b.id_formula
 			                    AND a.id_tag_agf = c.campo1
 			                    AND a.id_empresa = d.id_empresa
 			                    AND a.id_periodo = e.id_periodo
+								AND c.id_formula = " . $ultimo_id . "
 					    AND a.tipo = 'TRIMESTRAL';";
 		$sql2 = str_replace("'", "''", $sql);
 	        $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
 		
-           /*     $result = $mysqli->query($sql)
+                $result = $mysqli->query($sql)
                 or die(mysql_error());
                 $i = 0;
-		/*$formula = '';
+		$formula = '';
 		$operacion = array();
 		$arrInf = array();	
-		/*while($row = $result->fetch_array(MYSQLI_NUM))
-                {
+		while($row = $result->fetch_array(MYSQLI_NUM))
+		{
                     //almacenamos los registros en la var array
-		     $mysqli->query("INSERT INTO log values ('" . print_r($row, 1) . "');");
+		    /* $mysqli->query("INSERT INTO log values ('" . print_r($row, 1) . "');");
 		     $arr[$i]['id_tag_agf']=$row[0];
 		     $arr[$i]['id_empresa']=$row[1];
-                     $arr[$i]['id_periodo']=$row[2];	     
+                     $arr[$i]['id_periodo']=$row[2];	     */
 		     $operacion = $row[10];
-		     $mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+		     //$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
 		        if(!isset($row[3]))
 				$row[3] = 0;
 			$operacion = str_replace('C1', $row[3], $operacion);
@@ -1141,7 +1212,37 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 			$arr[$i]['color'] = $row[18];
 			$arr[$i]['graf'] = 1;	
 			
-			$arr2[$i]['id_tag_agf']=$row[0];
+			$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
+			VALUES (null," . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'TRIMESTRAL'," . $res . ",'2013',2);";
+			$sql2 = str_replace("'", "''", $sql);
+	   //     $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
+			$mysqli->query($sql);	
+		/*	$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
+			VALUES (null," . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'TRIMESTRAL'," . $res . ",'2013',2);";
+			$sql2 = str_replace("'", "''", $sql);
+	  //      $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
+			$mysqli->query($sql);	
+			$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
+			VALUES (null," . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'TRIMESTRAL'," . $res . ",'2013',2);";
+			$sql2 = str_replace("'", "''", $sql);
+	   //     $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
+			$mysqli->query($sql);	
+			$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
+			VALUES (null," . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'TRIMESTRAL'," . $res . ",'2013',2);";
+			$sql2 = str_replace("'", "''", $sql);
+	   //     $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
+			$mysqli->query($sql);	
+			$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
+			VALUES (null," . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'TRIMESTRAL'," . $res . ",'2013',2);";
+			$sql2 = str_replace("'", "''", $sql);
+	    //    $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
+			$mysqli->query($sql);	*/
+			
+			
+			
+			
+			
+			/*$arr2[$i]['id_tag_agf']=$row[0];
 		        $arr2[$i]['id_empresa']=$row[1];
                         $arr2[$i]['id_periodo']=$row[2];	     
 		        $operacion = $row[10];
@@ -1162,7 +1263,7 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 				$row[17] = 0;
 			$operacion = str_replace('C5', $row[17], $operacion);
 			$formula = ($row[0] . " " . $row[1] . " "  . $row[2]);
-			$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+			//$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
 			eval( "\$res2 = " . $operacion . ";");	
 			if($res2 != 0){
 				$arr2[$i]['valor'] = $res/$res2;
@@ -1174,9 +1275,9 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 			$arr2[$i]['nombre_final']=$row[8];
 			$arr2[$i]['label'] = $row[9];			
 			$arr2[$i]['color'] = $row[18];
-			$arr2[$i]['graf'] = 2;				
+			$arr2[$i]['graf'] = 2;		*/		
 			$i++;
-            }*/
+            }
 			$arr = array();
 		    $arr[0]['ID'] = $ultimo_id;
 		    
@@ -1687,390 +1788,417 @@ public function grillaTodosGrupoIndices(){
 	        $arr = array();
 		$arr2 = array();
 		$arr3 = array();
+		
+		
+		
 	        //conectamos con la mysql
 		if($idPeriodos == 'AND a.id_periodo in (0)'){
 				$idPeriodos=' and d.mes <> 0 ';
 			}
 			
-	        $mysqli = new mysqli("localhost","agf","agf","agf");
+	    $mysqli = new mysqli("localhost","agf","agf","agf");
 	            //validamos que la conexion sea exitosa
-            	if (mysqli_connect_errno()) 
-                {
-                  //si existe error en conexion
-                  die('Error conectando: ' . mysql_error());
-                }
+		if (mysqli_connect_errno()) 
+		{
+		  //si existe error en conexion
+		  die('Error conectando: ' . mysql_error());
+		}
                 //si no existe error de conexion
                 //seleccionamos base de datos
                // $op = 'Trimestral';
-                switch($op){
-			case 'Trimestral':
-			$sql = "select c.id_formula, a.id_empresa, a.id_periodo,
-					      (select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo1
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo
-								 AND x.tipo = 'TRIMESTRAL' ) C1, 
-			                	(select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo2
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo 
-								 AND x.tipo = 'TRIMESTRAL') C2,
-			                	(select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo3
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo 
-								 AND x.tipo = 'TRIMESTRAL') C3,
-			                	(select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo4
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo 
-								 AND x.tipo = 'TRIMESTRAL') C4,
-			                	(select valor
-			                               from valores x, indices_financieros z, formulas w
-			                       where w.id_formula = z.id_formula
-			                             AND x.id_tag_agf = w.campo5
-			                             AND z.id_indice_financiero = b.id_indice_financiero
-			                			 AND x.id_empresa = a.id_empresa
-			                			 AND x.id_periodo = a.id_periodo 
-								 AND x.tipo = 'TRIMESTRAL') C5, concat(d.rso, ': ', b.nombre), label, formula, e.ano, e.mes,
-								 					      (select valor
-								 			                               from valores x, indices_financieros z, formulas w
-								 			                       where w.id_formula = z.id_formula
-								 			                             AND x.id_tag_agf = w.campo1
-								 			                             AND z.id_indice_financiero = b.id_indice_financiero
-								 			                			 AND x.id_empresa = " . $principal . "
-								 			                			 AND x.id_periodo = a.id_periodo
-								 								 AND x.tipo = 'TRIMESTRAL' ) P1, 
-								 			                	(select valor
-								 			                               from valores x, indices_financieros z, formulas w
-								 			                       where w.id_formula = z.id_formula
-								 			                             AND x.id_tag_agf = w.campo2
-								 			                             AND z.id_indice_financiero = b.id_indice_financiero
-								 			                			 AND x.id_empresa = " . $principal . "
-								 			                			 AND x.id_periodo = a.id_periodo 
-								 								 AND x.tipo = 'TRIMESTRAL') P2,
-								 			                	(select valor
-								 			                               from valores x, indices_financieros z, formulas w
-								 			                       where w.id_formula = z.id_formula
-								 			                             AND x.id_tag_agf = w.campo3
-								 			                             AND z.id_indice_financiero = b.id_indice_financiero
-								 			                			 AND x.id_empresa = " . $principal . "
-								 			                			 AND x.id_periodo = a.id_periodo 
-								 								 AND x.tipo = 'TRIMESTRAL') P3,
-								 			                	(select valor
-								 			                               from valores x, indices_financieros z, formulas w
-								 			                       where w.id_formula = z.id_formula
-								 			                             AND x.id_tag_agf = w.campo4
-								 			                             AND z.id_indice_financiero = b.id_indice_financiero
-								 			                			 AND x.id_empresa = " . $principal . "
-								 			                			 AND x.id_periodo = a.id_periodo 
-								 								 AND x.tipo = 'TRIMESTRAL') P4,
-								 			                	(select valor
-								 			                               from valores x, indices_financieros z, formulas w
-								 			                       where w.id_formula = z.id_formula
-								 			                             AND x.id_tag_agf = w.campo5
-								 			                             AND z.id_indice_financiero = b.id_indice_financiero
-								 			                			 AND x.id_empresa = " . $principal . "
-								 			                			 AND x.id_periodo = a.id_periodo 
-								 								 AND x.tipo = 'TRIMESTRAL') P5, d.color
-			                From valores a, indices_financieros b, formulas c, empresas d, periodos e
-			                where c.id_formula = b.id_formula
-			                    AND a.id_tag_agf = c.campo1
-			                    AND a.id_empresa = d.id_empresa
-			                    AND a.id_periodo = e.id_periodo
-					    AND a.tipo = 'TRIMESTRAL'
-			                     " . $formulas . " " . $idEmpresas . " " . $idPeriodos . "
-					      Order By 12, 13;";
-			break;
-			case 'Anual':
-			$sql = "select DISTINCT c.id_formula, a.id_empresa, a.id_periodo,(select valor + (SELECT sum( VALOR )
-					                     FROM `valores` a, periodos b
-					                     WHERE a.id_periodo = b.id_periodo
-					                    		AND a.id_empresa = x.id_empresa
-					                    		AND a.id_tag_agf = x.id_tag_agf
-					                     	AND b.orden in (e.orden - 1, e.orden - 2, e.orden - 3, e.orden - 4) )
-					                               from valores x, indices_financieros z, formulas w
-					                       where w.id_formula = z.id_formula
-					                             AND x.id_tag_agf = w.campo1
-					                             AND z.id_indice_financiero = b.id_indice_financiero
-					                             AND x.id_empresa = a.id_empresa
-					                             AND x.id_periodo = a.id_periodo
-					                     AND x.tipo = 'TRIMESTRAL' ) C1,
-					                    (select valor + (SELECT sum( VALOR )
-					                     FROM `valores` a, periodos b
-					                     WHERE a.id_periodo = b.id_periodo
-					                    		AND a.id_empresa = x.id_empresa
-					                    		AND a.id_tag_agf = x.id_tag_agf
-					                     	AND b.orden in (e.orden - 1, e.orden - 2, e.orden - 3, e.orden - 4) )
-					                               from valores x, indices_financieros z, formulas w
-					                       where w.id_formula = z.id_formula
-					                             AND x.id_tag_agf = w.campo2
-					                             AND z.id_indice_financiero = b.id_indice_financiero
-					                             AND x.id_empresa = a.id_empresa
-					                             AND x.id_periodo = a.id_periodo
-					                     AND x.tipo = 'TRIMESTRAL') C2,
-					                    (select valor + (SELECT sum( VALOR )
-					                     FROM `valores` a, periodos b
-					                     WHERE a.id_periodo = b.id_periodo
-					                    		AND a.id_empresa = x.id_empresa
-					                    		AND a.id_tag_agf = x.id_tag_agf
-					                     	AND b.orden in (e.orden - 1, e.orden - 2, e.orden - 3, e.orden - 4) )
-					                               from valores x, indices_financieros z, formulas w
-					                       where w.id_formula = z.id_formula
-					                             AND x.id_tag_agf = w.campo3
-					                             AND z.id_indice_financiero = b.id_indice_financiero
-					                             AND x.id_empresa = a.id_empresa
-					                             AND x.id_periodo = a.id_periodo
-					                     AND x.tipo = 'TRIMESTRAL') C3,
-					                    (select valor + (SELECT sum( VALOR )
-					                     FROM `valores` a, periodos b
-					                     WHERE a.id_periodo = b.id_periodo
-					                    		AND a.id_empresa = x.id_empresa
-					                    		AND a.id_tag_agf = x.id_tag_agf
-					                     	AND b.orden in (e.orden - 1, e.orden - 2, e.orden - 3, e.orden - 4) )
-					                               from valores x, indices_financieros z, formulas w
-					                       where w.id_formula = z.id_formula
-					                             AND x.id_tag_agf = w.campo4
-					                             AND z.id_indice_financiero = b.id_indice_financiero
-					                             AND x.id_empresa = a.id_empresa
-					                             AND x.id_periodo = a.id_periodo
-					                     AND x.tipo = 'TRIMESTRAL') C4,
-					                    (select valor + (SELECT sum( VALOR )
-							                     FROM `valores` a, periodos b
-							                     WHERE a.id_periodo = b.id_periodo
-							                    		AND a.id_empresa = x.id_empresa
-							                    		AND a.id_tag_agf = x.id_tag_agf
-							                     		AND b.orden in (e.orden - 1, e.orden - 2, e.orden - 3, e.orden - 4) )
-					                               from valores x, indices_financieros z, formulas w
-					                       where w.id_formula = z.id_formula
-					                             AND x.id_tag_agf = w.campo5
-					                             AND z.id_indice_financiero = b.id_indice_financiero
-					                             AND x.id_empresa = a.id_empresa
-					                             AND x.id_periodo = a.id_periodo
-					                     AND x.tipo = 'TRIMESTRAL') C5, concat(d.rso, ': ', b.nombre), label, formula, e.ano, e.mes
-					                From valores a, indices_financieros b, formulas c, empresas d, periodos e
-					                where c.id_formula = b.id_formula
-					                    AND a.id_tag_agf = c.campo1
-					                    AND a.id_empresa = d.id_empresa
-					                    AND a.id_periodo = e.id_periodo
-					                     " . $formulas . " " . $idEmpresas . " " . $idPeriodos . "
-					                     		      Order By 12, 13;";
-			break;
-			case 'Acumulado':
-				$sql = "select DISTINCT c.id_formula, a.id_empresa, a.id_periodo,
-						(select valor + (SELECT sum( VALOR )
-				                     FROM `valores` a, periodos b
-				                     WHERE a.id_periodo = b.id_periodo
-				                    		AND a.id_empresa = x.id_empresa
-				                    		AND a.id_tag_agf = x.id_tag_agf
-				                     	AND b.orden in (e.orden - 1, e.orden - 2, e.orden - 3, e.orden - 4) )
-				                               from valores x, indices_financieros z, formulas w
-				                       where w.id_formula = z.id_formula
-				                             AND x.id_tag_agf = w.campo1
-				                             AND z.id_indice_financiero = b.id_indice_financiero
-				                             AND x.id_empresa = a.id_empresa
-				                             AND x.id_periodo = a.id_periodo
-				                     AND x.tipo = 'TRIMESTRAL' ) C1,
-				                    (select valor + (SELECT sum( VALOR )
-				                     FROM `valores` a, periodos b
-				                     WHERE a.id_periodo = b.id_periodo
-				                    		AND a.id_empresa = x.id_empresa
-				                    		AND a.id_tag_agf = x.id_tag_agf
-				                     	AND b.orden in (e.orden - 1, e.orden - 2, e.orden - 3, e.orden - 4) )
-				                               from valores x, indices_financieros z, formulas w
-				                       where w.id_formula = z.id_formula
-				                             AND x.id_tag_agf = w.campo2
-				                             AND z.id_indice_financiero = b.id_indice_financiero
-				                             AND x.id_empresa = a.id_empresa
-				                             AND x.id_periodo = a.id_periodo
-				                     AND x.tipo = 'TRIMESTRAL') C2,
-				                    (select valor + (SELECT sum( VALOR )
-				                     FROM `valores` a, periodos b
-				                     WHERE a.id_periodo = b.id_periodo
-				                    		AND a.id_empresa = x.id_empresa
-				                    		AND a.id_tag_agf = x.id_tag_agf
-				                     	AND b.orden in (e.orden - 1, e.orden - 2, e.orden - 3, e.orden - 4) )
-				                               from valores x, indices_financieros z, formulas w
-				                       where w.id_formula = z.id_formula
-				                             AND x.id_tag_agf = w.campo3
-				                             AND z.id_indice_financiero = b.id_indice_financiero
-				                             AND x.id_empresa = a.id_empresa
-				                             AND x.id_periodo = a.id_periodo
-				                     AND x.tipo = 'TRIMESTRAL') C3,
-				                    (select valor + (SELECT sum( VALOR )
-				                     FROM `valores` a, periodos b
-				                     WHERE a.id_periodo = b.id_periodo
-				                    		AND a.id_empresa = x.id_empresa
-				                    		AND a.id_tag_agf = x.id_tag_agf
-				                     	AND b.orden in (e.orden - 1, e.orden - 2, e.orden - 3, e.orden - 4) )
-				                               from valores x, indices_financieros z, formulas w
-				                       where w.id_formula = z.id_formula
-				                             AND x.id_tag_agf = w.campo4
-				                             AND z.id_indice_financiero = b.id_indice_financiero
-				                             AND x.id_empresa = a.id_empresa
-				                             AND x.id_periodo = a.id_periodo
-				                     AND x.tipo = 'TRIMESTRAL') C4,
-				                    (select valor + (SELECT sum( VALOR )
-						                     FROM `valores` a, periodos b
-						                     WHERE a.id_periodo = b.id_periodo
-						                    		AND a.id_empresa = x.id_empresa
-						                    		AND a.id_tag_agf = x.id_tag_agf
-						                     		AND b.orden in (e.orden - 1, e.orden - 2, e.orden - 3, e.orden - 4) )
-				                               from valores x, indices_financieros z, formulas w
-				                       where w.id_formula = z.id_formula
-				                             AND x.id_tag_agf = w.campo5
-				                             AND z.id_indice_financiero = b.id_indice_financiero
-				                             AND x.id_empresa = a.id_empresa
-				                             AND x.id_periodo = a.id_periodo
-				                     AND x.tipo = 'TRIMESTRAL') C5, concat(d.rso, ': ', b.nombre), label, formula, e.ano, e.mes
-				                From valores a, indices_financieros b, formulas c, empresas d, periodos e
-				                where c.id_formula = b.id_formula
-				                    AND a.id_tag_agf = c.campo1
-				                    AND a.id_empresa = d.id_empresa
-				                    AND a.id_periodo = e.id_periodo
-				                     " . $formulas . " " . $idEmpresas . " " . $idPeriodos . "
-				                     		      Order By 12, 13;";
-			break;
-		}
-                
-                	       
-                 
-		 
-		 
-		 
-		 
-		 
-		 
-			  //" order by 5, 1, 2, 3, 7";						 
-								 
-		$sql2 = str_replace("'", "''", $sql);
+       //$mysqli->query("INSERT INTO log values ('$principal, $idEmpresas, $idPeriodos, $formulas, $op');");		
+		
+		$comp1 = ' AND x.id_periodo = a.id_periodo ';
+		$comp2 = ' AND x.id_periodo = a.id_periodo ';
+		$comp3 = ' AND x.id_periodo = a.id_periodo ';
+		$comp4 = ' AND x.id_periodo = a.id_periodo ';
+		$comp5 = ' AND x.id_periodo = a.id_periodo ';
+		$f = explode("b.id_indice_financiero in (", $formulas);
+		$f = explode(")", $f[1]);
+		$f = explode(", ", $f[0]);
+		$arrResult = array();
+		$ind = 0;
+		
+		for($j = 1; $j < count($f); $j++){
+		
+			$result = $mysqli->query("SELECT `cod1`, `cod2`, `cod3`, `cod4`, `cod5`, a.`ID_FORMULA`
+									FROM `formulas` a, `indices_financieros` b
+									WHERE a.`ID_FORMULA` = b.`ID_FORMULA` 
+										AND b.`id_indice_financiero` = " . $f[$j] . ";");	
+			while($row = $result->fetch_array(MYSQLI_NUM)){
+				$formula1 = explode(".", $row[0]);
+				$formula2 = explode(".", $row[1]);
+				$formula3 = explode(".", $row[2]);
+				$formula4 = explode(".", $row[3]);
+				$formula5 = explode(".", $row[4]);
+				$mysqli->query("INSERT INTO log values ('" . print_r($formula4, 1) . "');");		
+				$formula1[0] = $formula1[0] == 'C' ? 1 : 2;
+				$formula2[0] = $formula2[0] == 'C' ? 1 : 2;
+				$formula3[0] = $formula3[0] == 'C' ? 1 : 2;
+				$formula4[0] = $formula4[0] == 'C' ? 1 : 2;
+				$formula5[0] = $formula5[0] == 'C' ? 1 : 2;
+	
+				$comp1 = ' AND x.id_periodo = a.id_periodo ';
+				$comp2 = ' AND x.id_periodo = a.id_periodo ';
+				$comp3 = ' AND x.id_periodo = a.id_periodo ';
+				$comp4 = ' AND x.id_periodo = a.id_periodo ';
+				$comp5 = ' AND x.id_periodo = a.id_periodo ';
+				
+				if(count($formula1) > 1){
+					switch($formula1[1]){
+						case 'NN':
+							$comp1 = ' AND x.id_periodo = a.id_periodo ';
+							break;
+						case 'AN':
+							$comp1 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+							break;
+						case 'AA':
+							$comp1 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																			FROM periodos r, periodos p
+																			WHERE r.ano = p.ano
+																				  AND r.mes < p.mes
+																				  AND r.oa = 1
+																				  AND p.id_periodo = a.id_periodo) ';
+							break;
+						case 'AS':
+							$comp1 = " AND 'QUERY' ";
+							break;	
+					
+					}
+				}
+				
+				if(count($formula2) > 1){
+					switch($formula2[1]){
+						case 'NN':
+							$comp2 = ' AND x.id_periodo = a.id_periodo ';
+							break;
+						case 'AN':
+							$comp2 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+							break;
+						case 'AA':
+							$comp2 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																			FROM periodos r, periodos p
+																			WHERE r.ano = p.ano
+																				  AND r.mes < p.mes
+																				  AND r.oa = 1
+																				  AND p.id_periodo = a.id_periodo) ';
+							break;
+						case 'AS':
+							$comp2 = " AND 'QUERY' ";
+							break;	
+					
+					}
+				}
+				
+				if(count($formula3) > 1){
+					switch($formula3[1]){
+						case 'NN':
+							$comp3 = ' AND x.id_periodo = a.id_periodo ';
+							break;
+						case 'AN':
+							$comp3 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+							break;
+						case 'AA':
+							$comp3 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																			FROM periodos r, periodos p
+																			WHERE r.ano = p.ano
+																				  AND r.mes < p.mes
+																				  AND r.oa = 1
+																				  AND p.id_periodo = a.id_periodo) ';
+							break;
+						case 'AS':
+							$comp3 = " AND 'QUERY' ";
+							break;	
+					
+					}
+				}
+				$mysqli->query("INSERT INTO log values ('" . $formula4[0] . "');");
+				
+				if(count($formula4) > 1){
+					switch($formula4[1]){
+						case 'NN':
+							$comp4 = ' AND x.id_periodo = a.id_periodo ';
+							break;
+						case 'AN':
+							$comp4 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+							break;
+						case 'AA':
+							$comp4 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																			FROM periodos r, periodos p
+																			WHERE r.ano = p.ano
+																				  AND r.mes < p.mes
+																				  AND r.oa = 1
+																				  AND p.id_periodo = a.id_periodo) ';
+							break;
+						case 'AS':
+							$comp4 = " AND 'QUERY' ";
+							break;	
+					
+					}
+				}
+				
+				if(count($formula5) > 1){
+					switch($formula5[1]){
+						case 'NN':
+							$comp5 = ' AND x.id_periodo = a.id_periodo ';
+							break;
+						case 'AN':
+							$comp5 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+							break;
+						case 'AA':
+							$comp5 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																			FROM periodos r, periodos p
+																			WHERE r.ano = p.ano
+																				  AND r.mes < p.mes
+																				  AND r.oa = 1
+																				  AND p.id_periodo = a.id_periodo) ';
+							break;
+						case 'AS':
+							$comp5 = " AND 'QUERY' ";
+							break;	
+					
+					}
+				}
+			
+				$sql = "select c.id_formula, a.id_empresa, a.id_periodo,
+							(select SUM(valor)
+									   from valores x, indices_financieros z, formulas w
+							   where w.id_formula = z.id_formula
+									 AND x.id_tag_agf = w.campo1
+									 AND z.id_indice_financiero = b.id_indice_financiero
+									 AND x.id_empresa = a.id_empresa
+									 " . $comp1 . "
+									 AND w.tipoc1 = " . $formula1[0] . "
+							 AND x.tipo = 'TRIMESTRAL' )		 				
+							   C1, 			                	
+							(select SUM(valor)
+									   from valores x, indices_financieros z, formulas w
+							   where w.id_formula = z.id_formula
+									 AND x.id_tag_agf = w.campo2
+									 AND z.id_indice_financiero = b.id_indice_financiero
+									 AND x.id_empresa = a.id_empresa
+									 " . $comp2 . "
+									 AND w.tipoc1 = " . $formula2[0] . "
+							 AND x.tipo = 'TRIMESTRAL' )
+							C2,
+									(select SUM(valor)
+									   from valores x, indices_financieros z, formulas w
+							   where w.id_formula = z.id_formula
+									 AND x.id_tag_agf = w.campo3
+									 AND z.id_indice_financiero = b.id_indice_financiero
+									 AND x.id_empresa = a.id_empresa
+									 " . $comp3 . "									
+									 AND w.tipoc1 = " . $formula3[0] . "
+							 AND x.tipo = 'TRIMESTRAL' ) C3,
+									(select SUM(valor)
+									   from valores x, indices_financieros z, formulas w
+							   where w.id_formula = z.id_formula
+									 AND x.id_tag_agf = w.campo4
+									 AND z.id_indice_financiero = b.id_indice_financiero
+									 AND x.id_empresa = a.id_empresa
+									 " . $comp4 . "									
+									 AND w.tipoc1 = " . $formula4[0] . "
+							 AND x.tipo = 'TRIMESTRAL' ) C4,
+									(select SUM(valor)
+									   from valores x, indices_financieros z, formulas w
+							   where w.id_formula = z.id_formula
+									 AND x.id_tag_agf = w.campo5
+									 AND z.id_indice_financiero = b.id_indice_financiero
+									 AND x.id_empresa = a.id_empresa
+									 " . $comp5 . "									
+									 AND w.tipoc1 = " . $formula5[0] . "
+							 AND x.tipo = 'TRIMESTRAL' ) C5, concat(d.rso, ': ', b.nombre), label, formula, e.ano, e.mes,
+												 (select SUM(valor)
+																   from valores x, indices_financieros z, formulas w
+														   where w.id_formula = z.id_formula
+																 AND x.id_tag_agf = w.campo1
+																 AND z.id_indice_financiero = b.id_indice_financiero
+																 AND x.id_empresa = " . $principal . "
+																 " . $comp1 . "									
+																AND w.tipoc1 = " . $formula1[0] . "
+														 AND x.tipo = 'TRIMESTRAL' ) P1, 
+														(select SUM(valor)
+																   from valores x, indices_financieros z, formulas w
+														   where w.id_formula = z.id_formula
+																 AND x.id_tag_agf = w.campo2
+																 AND z.id_indice_financiero = b.id_indice_financiero
+																 AND x.id_empresa = " . $principal . "
+																 " . $comp2 . "									
+																AND w.tipoc1 = " . $formula2[0] . "
+														 AND x.tipo = 'TRIMESTRAL') P2,
+														(select SUM(valor)
+																   from valores x, indices_financieros z, formulas w
+														   where w.id_formula = z.id_formula
+																 AND x.id_tag_agf = w.campo3
+																 AND z.id_indice_financiero = b.id_indice_financiero
+																 AND x.id_empresa = " . $principal . "
+																 " . $comp3 . "									
+																AND w.tipoc1 = " . $formula3[0] . "
+														 AND x.tipo = 'TRIMESTRAL') P3,
+														(select SUM(valor)
+																   from valores x, indices_financieros z, formulas w
+														   where w.id_formula = z.id_formula
+																 AND x.id_tag_agf = w.campo4
+																 AND z.id_indice_financiero = b.id_indice_financiero
+																 AND x.id_empresa = " . $principal . "
+																 " . $comp4 . "									
+																AND w.tipoc1 = " . $formula4[0] . "
+														 AND x.tipo = 'TRIMESTRAL') P4,
+														(select SUM(valor)
+																   from valores x, indices_financieros z, formulas w
+														   where w.id_formula = z.id_formula
+																 AND x.id_tag_agf = w.campo5
+																 AND z.id_indice_financiero = b.id_indice_financiero
+																 AND x.id_empresa = " . $principal . "
+																 " . $comp5 . "									
+																AND w.tipoc1 = " . $formula5[0] . "
+														 AND x.tipo = 'TRIMESTRAL') P5, d.color
+								From valores a, indices_financieros b, formulas c, empresas d, periodos e
+								where c.id_formula = b.id_formula
+									AND a.id_tag_agf = c.campo1
+									AND a.id_empresa = d.id_empresa
+									AND a.id_periodo = e.id_periodo
+									AND c.id_formula = " . $row[5] . "
+							AND a.tipo = 'TRIMESTRAL'
+							" . $idEmpresas . " " . $idPeriodos . "
+				  Order By 12, 13;";
+			}
+			
+			$sql2 = str_replace("'", "''", $sql);
 	        $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
 		
                 $result = $mysqli->query($sql)
                 or die(mysql_error());
                 $i = 0;
-		$formula = '';
-		$operacion = array();
-		$arrInf = array();
-		
-		
-		while($row = $result->fetch_array(MYSQLI_NUM))
-                {
-                    //almacenamos los registros en la var array
-		     $mysqli->query("INSERT INTO log values ('" . print_r($row, 1) . "');");
-		     $arr[$i]['id_tag_agf']=$row[0];
-		     $arr[$i]['id_empresa']=$row[1];
-                     $arr[$i]['id_periodo']=$row[2];	     
-		     $operacion = $row[10];
-		     $mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
-		        if(!isset($row[3]))
-				$row[3] = 0;
-			$operacion = str_replace('C1', $row[3], $operacion);
-			if(!isset($row[4]))
-				$row[4] = 0;
-			$operacion = str_replace('C2', $row[4], $operacion);
-			if(!isset($row[5]))			
-				$row[5] = 0;
-			$operacion = str_replace('C3', $row[5], $operacion);
-			if(!isset($row[6]))
-				$row[6] = 0;
-			$operacion = str_replace('C4', $row[6], $operacion);
-			if(!isset($row[7]))
-				$row[7] = 0;
-			$operacion = str_replace('C5', $row[7], $operacion);
-			$formula = ($row[0] . " " . $row[1] . " "  . $row[2]);
-			$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
-			eval( "\$res = " . $operacion . ";");		
-			$arr[$i]['valor'] = $res;
+			$formula = '';
+			$operacion = array();
+			$arrInf = array();
 			
-			$arr[$i]['nombre_final']=$row[8];
-			$arr[$i]['label'] = $row[9];			
-			$arr[$i]['color'] = $row[18];
-			$arr[$i]['graf'] = 1;	
 			
-			$arr2[$i]['id_tag_agf']=$row[0];
-		        $arr2[$i]['id_empresa']=$row[1];
-                        $arr2[$i]['id_periodo']=$row[2];	     
-		        $operacion = $row[10];
-		        $mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
-		        if(!isset($row[13]))
-				$row[13] = 0;
-			$operacion = str_replace('C1', $row[13], $operacion);
-			if(!isset($row[14]))
-				$row[14] = 0;
-			$operacion = str_replace('C2', $row[14], $operacion);
-			if(!isset($row[15]))			
-				$row[15] = 0;
-			$operacion = str_replace('C3', $row[15], $operacion);
-			if(!isset($row[16]))
-				$row[16] = 0;
-			$operacion = str_replace('C4', $row[16], $operacion);
-			if(!isset($row[17]))
-				$row[17] = 0;
-			$operacion = str_replace('C5', $row[17], $operacion);
-			$formula = ($row[0] . " " . $row[1] . " "  . $row[2]);
-			$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
-			eval( "\$res2 = " . $operacion . ";");	
-			if($res2 != 0){
-				$arr2[$i]['valor'] = $res/$res2;
-			} else {
-				$arr2[$i]['valor'] = 0;
-			}	
-			
-			$res = 0;
-			$arr2[$i]['nombre_final']=$row[8];
-			$arr2[$i]['label'] = $row[9];			
-			$arr2[$i]['color'] = $row[18];
-			$arr2[$i]['graf'] = 2;				
-			$i++;
-                }	
-		
-	
-		
-		
-		
-		$mysqli->query("INSERT INTO log values ('" . print_r($arr, 1) . "');");	
-		
-		$acum = 0;
-		if($idPeriodos == ' and d.mes <> 0 '){
-			$var = $arr[0];
-			for($i = 0; i < count($arr); $i++){
-				if($var['id_periodo'] == $arr[$i]['id_periodo']){
-					$arr[$i]['valor'] += $acum;
-					$acum = $arr[$i]['valor'];
+			while($row = $result->fetch_array(MYSQLI_NUM))
+	                {
+	                    //almacenamos los registros en la var array
+			     $mysqli->query("INSERT INTO log values ('" . print_r($row, 1) . "');");
+			     $arr[$i]['id_tag_agf']=$row[0];
+			     $arr[$i]['id_empresa']=$row[1];
+	                     $arr[$i]['id_periodo']=$row[2];	     
+			     $operacion = $row[10];
+			     $mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+			        if(!isset($row[3]))
+					$row[3] = 0;
+				$operacion = str_replace('C1', $row[3], $operacion);
+				if(!isset($row[4]))
+					$row[4] = 0;
+				$operacion = str_replace('C2', $row[4], $operacion);
+				if(!isset($row[5]))			
+					$row[5] = 0;
+				$operacion = str_replace('C3', $row[5], $operacion);
+				if(!isset($row[6]))
+					$row[6] = 0;
+				$operacion = str_replace('C4', $row[6], $operacion);
+				if(!isset($row[7]))
+					$row[7] = 0;
+				$operacion = str_replace('C5', $row[7], $operacion);
+				$formula = ($row[0] . " " . $row[1] . " "  . $row[2]);
+				$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+				eval( "\$res = " . $operacion . ";");		
+				$arr[$i]['valor'] = $res;
+				
+				$arr[$i]['nombre_final']=$row[8];
+				$arr[$i]['label'] = $row[9];			
+				$arr[$i]['color'] = $row[18];
+				$arr[$i]['graf'] = 1;	
+				
+				$arr2[$i]['id_tag_agf']=$row[0];
+			        $arr2[$i]['id_empresa']=$row[1];
+	                        $arr2[$i]['id_periodo']=$row[2];	     
+			        $operacion = $row[10];
+			        $mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+			        if(!isset($row[13]))
+					$row[13] = 0;
+				$operacion = str_replace('C1', $row[13], $operacion);
+				if(!isset($row[14]))
+					$row[14] = 0;
+				$operacion = str_replace('C2', $row[14], $operacion);
+				if(!isset($row[15]))			
+					$row[15] = 0;
+				$operacion = str_replace('C3', $row[15], $operacion);
+				if(!isset($row[16]))
+					$row[16] = 0;
+				$operacion = str_replace('C4', $row[16], $operacion);
+				if(!isset($row[17]))
+					$row[17] = 0;
+				$operacion = str_replace('C5', $row[17], $operacion);
+				$formula = ($row[0] . " " . $row[1] . " "  . $row[2]);
+				$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+				eval( "\$res2 = " . $operacion . ";");	
+				if($res2 != 0){
+					$arr2[$i]['valor'] = $res/$res2;
 				} else {
-					$acum = $arr[$i]['valor'];
-					$var = $arr[$i];
+					$arr2[$i]['valor'] = 0;
+				}	
+				
+				$res = 0;
+				$arr2[$i]['nombre_final']=$row[8];
+				$arr2[$i]['label'] = $row[9];			
+				$arr2[$i]['color'] = $row[18];
+				$arr2[$i]['graf'] = 2;				
+				$i++;
+	        }	
+			
+		
+			
+			
+			
+			$mysqli->query("INSERT INTO log values ('" . print_r($arr, 1) . "');");	
+			
+			$acum = 0;
+			if($idPeriodos == ' and d.mes <> 0 '){
+				$var = $arr[0];
+				for($i = 0; i < count($arr); $i++){
+					if($var['id_periodo'] == $arr[$i]['id_periodo']){
+						$arr[$i]['valor'] += $acum;
+						$acum = $arr[$i]['valor'];
+					} else {
+						$acum = $arr[$i]['valor'];
+						$var = $arr[$i];
+						
+					}
 					
 				}
+			}
+			
+	            //cerramos la conexion con mysql
+		    $result = array_merge($arr, $arr2);    
+			$arrResult[$ind++] = $result; 	
+		    /*$mysqli->query("INSERT INTO log values ('" . print_r($arr, 1) . "');");
+		    $mysqli->query("INSERT INTO log values ('" . print_r($arr2, 1) . "');");
+		    $mysqli->query("INSERT INTO log values ('" . print_r($result, 1) . "');");*/
+			
+		}
 				
+		$result2 = array();
+		$s = 0;
+		for($i = 0; $i < count($result); $i++){
+			for($j = 0; $j < count($f) - 1; $j++){
+				$result2[$s++] = $arrResult[$j][$i];
 			}
 		}
+        $mysqli->query("INSERT INTO log values ('" . print_r($result, 1) . "');");						 
+		$mysqli->query("INSERT INTO log values ('" . print_r($result2, 1) . "');");						 
 		
-            //cerramos la conexion con mysql
-	    $result = array_merge($arr, $arr2);    
-	    $mysqli->query("INSERT INTO log values ('" . print_r($arr, 1) . "');");
-	    $mysqli->query("INSERT INTO log values ('" . print_r($arr2, 1) . "');");
-	    $mysqli->query("INSERT INTO log values ('" . print_r($result, 1) . "');");
 	    
 	    
 	     
-            $mysqli->close();
+        $mysqli->close();
         
         //retornamos el arreglo
-        return $result;
+        return $result2;
 	        
 	    }//fin metodo
 
@@ -2343,11 +2471,11 @@ public function insertarValor($arrInf){
 			    				    
 			    				    
 			    				    
-				    $sql = "INSERT INTO valores (`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `VALOR`, `DT_MODIFICACION`) VALUES (null";
+				    $sql = "INSERT INTO valores (`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `VALOR`, `DT_MODIFICACION`, origen) VALUES (null";
 				    for($i = 0; $i < count($arrInf); $i++){
 				    	$sql .= ", '" . $arrInf[$i] . "'";
 				    }
-				    $sql .= ");";
+				    $sql .= ", 1);";
 			    				    
 			    }
 			    			    

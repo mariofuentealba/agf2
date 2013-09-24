@@ -75,8 +75,10 @@ private var arrAct3:ArrayCollection = new ArrayCollection();
 import mx.managers.PopUpManager;
 import Componentes.Formula;
 import spark.components.ComboBox;
+import Componentes.SelectItem;
 
-var alert:Formula = new Formula();
+private var alert:Formula = new Formula();
+private var agregaItem:SelectItem = new SelectItem();
 
 
 
@@ -355,7 +357,8 @@ protected function guardar_clickHandler(event:MouseEvent):void
 	}
 	(event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedIndex = 0
 	//(this[((((event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedChild as NavigatorContent).getElementAt(1) as TextInput).text)] as CallResponder).token = modelo.grillaGrupos();
-	var results:String = ((((event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedChild as NavigatorContent).getElementAt(1) as mx.controls.TextInput).text);	
+	//var results:String = ((((event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedChild as NavigatorContent).getElementAt(1) as mx.controls.TextInput).text);
+	var results:String = event.target.parent.parent.parent.parent.parent.parent.parent.selectedChild.getElementAt(1).text
 	//Alert.show('' + (this['grillaGruposResult'] as CallResponder).token);
 	switch(results){
 		case 'grillaGruposResult':
@@ -1054,7 +1057,7 @@ private function grafica(event:ResultEvent):void{
 		var series2:Array = new Array();
 		seriesColumn = new Array();
 		
-		for(var x:int = 0; x < listEmpresaSelect.dataProvider.length; x++){
+		for(var x:int = 0; x < listEmpresaSelect.dataProvider.length + listIndices.dataProvider.length; x++){
 			seriesColumn[x] = new ColumnSeries();
 			(seriesColumn[x] as ColumnSeries).yField = 'a'+x;
 			(seriesColumn[x] as ColumnSeries).visible = false;
@@ -1225,7 +1228,7 @@ protected function listPeriodo_creationCompleteHandler(event:FlexEvent):void
 
 
 private function resp(event:ResultEvent):void{
-	dataGrid.dataProvider = event.result as ArrayCollection;
+	agregaItem.dataGrid.dataProvider = event.result as ArrayCollection;
 	
 }
 
@@ -1301,12 +1304,18 @@ protected function btnAccion_clickHandler(event:MouseEvent):void
 			}
 			break;
 		case 'Agregar Item':
-			this.currentState = 'item';
+			agregaItem.dataGrid_completo = dataGrid_creationCompleteHandler;
+			agregaItem.button_clickHandler = button5_clickHandler;
+			agregaItem.titlewindow_closeHandler = titlewindow1_closeHandler;
+			agregaItem.width = this.width;
+			agregaItem.height = this.height;
+			
+			PopUpManager.addPopUp(agregaItem, this);
 			break;
 	}
 }
 
-protected function button5_clickHandler(event:MouseEvent):void
+protected function button5_clickHandler(dataGrid:DataGrid):void
 {
 	// TODO Auto-generated method stub
 	if(dataGrid.selectedIndex > -1){
@@ -1315,7 +1324,8 @@ protected function button5_clickHandler(event:MouseEvent):void
 		item.clickGuardar = guardaItem;
 		item.deleteGuardar = EliminaItemFormulario;
 		tbFormulario.selectedIndex = tbFormulario.numElements - 1;
-		if((tbFormulario.selectedChild as NavigatorContent).numElements > 7){
+		
+		if(tbFormulario.numElements == 0 || (tbFormulario.selectedChild as NavigatorContent).numElements > 7){
 			var nc:NavigatorContent = new NavigatorContent();
 			nc.layout = new VerticalLayout();
 			nc.label = 'Parte ' + tbFormulario.numElements;
@@ -1328,7 +1338,7 @@ protected function button5_clickHandler(event:MouseEvent):void
 		item.lblItem.text = dataGrid.selectedItem['nombre'];
 		tbFormulario.selectedIndex = tbFormulario.numElements - 1;
 		(tbFormulario.getElementAt(tbFormulario.selectedIndex) as NavigatorContent).addElement(item);
-		this.currentState = 'State1';
+		PopUpManager.removePopUp(agregaItem);
 		insertarResult.token = modelo.insertarItemExistente(dropDownListEmpresa.selectedItem['ID_EMPRESA'], dataGrid.selectedItem['id_tag_agf']);
 		tbFormulario.removeAll();
 		nc = new NavigatorContent();
@@ -1337,10 +1347,10 @@ protected function button5_clickHandler(event:MouseEvent):void
 		insertarResult.addEventListener(ResultEvent.RESULT, reCreaForm);
 	}
 }
-protected function titlewindow1_closeHandler(event:CloseEvent):void
+protected function titlewindow1_closeHandler():void
 {
 	// TODO Auto-generated method stub
-	this.currentState = 'State1';
+	PopUpManager.removePopUp(agregaItem);
 }
 
 
@@ -1406,24 +1416,6 @@ protected function dropDownListEmpresa_changeHandler(event:IndexChangeEvent):voi
 		valores2Result.token = modelo.valores2(dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo']);
 	}
 }
-
-
-protected function piechart_showHandler(event:FlexEvent):void
-{
-	// TODO Auto-generated method stub
-	piechart.series = seriesPie;
-}
-
-
-/*protected function dgGrupo_creationCompleteHandler(event:FlexEvent):void
-{
-grillaGruposResult.token = modelo.grillaGrupos();
-
-//grillaSubGruposResult.token = modelo.grillaSubGrupos();
-}*/
-
-
-
 
 
 protected function dgGrupo_creationCompleteHandler(event:FlexEvent):void

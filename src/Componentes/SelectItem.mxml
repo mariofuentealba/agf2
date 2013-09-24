@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:s="library://ns.adobe.com/flex/spark" 
+				   xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%" alpha=".7">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ModuleEvent;
+			public var dataGrid_completo:Function;
+			public var button_clickHandler:Function;
+			public var titlewindow_closeHandler:Function;
+			
+			private function dataGrid_creationCompleteHandler(event:FlexEvent):void{
+				dataGrid_completo.call(this, event);
+			}
+			
+			protected function button5_clickHandler(event:MouseEvent):void{
+				button_clickHandler.call(this, dataGrid);
+			}
+			
+			protected function titlewindow1_closeHandler(event:CloseEvent):void
+			{
+				// TODO Auto-generated method stub
+				titlewindow_closeHandler.call(this);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TitleWindow top="150" width="506" height="368" horizontalCenter="0" close="titlewindow1_closeHandler(event)">
+		<s:DataGrid id="dataGrid" left="12" right="8" top="14" height="282"
+					creationComplete="dataGrid_creationCompleteHandler(event)"  requestedRowCount="4">
+			<s:columns>
+				<s:ArrayList>
+					<s:source>
+						<s:GridColumn dataField="nombre" headerText="nombre"></s:GridColumn>
+						<s:GridColumn visible="false" dataField="id_tag_agf"
+									  headerText="id_tag_agf"></s:GridColumn>
+						<s:GridColumn dataField="etiqueta"
+									  headerText="etiqueta"></s:GridColumn>
+						<s:GridColumn dataField="origen" headerText="origen"></s:GridColumn>
+					</s:source>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>	
+		<s:Button click="button5_clickHandler(event)" bottom="10" label="Agregar" horizontalCenter="0"/>
+	</s:TitleWindow>
+</s:BorderContainer>
