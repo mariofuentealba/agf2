@@ -1748,7 +1748,7 @@ public function grillaTodosGrupoIndices(){
                 //si no existe error de conexion
                 //seleccionamos base de datos
                // $op = 'Trimestral';
-       //$mysqli->query("INSERT INTO log values ('$principal, $idEmpresas, $idPeriodos, $formulas, $op');");		
+       $mysqli->query("INSERT INTO log values ('$principal, $idEmpresas, $idPeriodos, $formulas, $op');");		
 		
 		$comp1 = ' AND x.id_periodo = a.id_periodo ';
 		$comp2 = ' AND x.id_periodo = a.id_periodo ';
@@ -1999,7 +1999,7 @@ public function grillaTodosGrupoIndices(){
 																 AND x.id_empresa = " . $principal . "
 																 " . $comp5 . "									
 																AND w.tipoc1 = " . $formula5[0] . "
-														 AND x.tipo = 'TRIMESTRAL') P5, d.color
+														 AND x.tipo = 'TRIMESTRAL') P5, d.color, d.rso, b.nombre
 								From valores a, indices_financieros b, formulas c, empresas d, periodos e
 								where c.id_formula = b.id_formula									
 									AND a.id_empresa = d.id_empresa
@@ -2054,6 +2054,9 @@ public function grillaTodosGrupoIndices(){
 				$arr[$i]['label'] = $row[9];			
 				$arr[$i]['color'] = $row[18];
 				$arr[$i]['graf'] = 1;	
+				$arr[$i]['rso'] = $row[19];
+				$arr[$i]['indice'] = $row[20];
+				$arr[$i]['year'] = $row[11];
 				
 				$arr2[$i]['id_tag_agf']=$row[0];
 			        $arr2[$i]['id_empresa']=$row[1];
@@ -2088,7 +2091,10 @@ public function grillaTodosGrupoIndices(){
 				$arr2[$i]['nombre_final']=$row[8];
 				$arr2[$i]['label'] = $row[9];			
 				$arr2[$i]['color'] = $row[18];
-				$arr2[$i]['graf'] = 2;				
+				$arr2[$i]['graf'] = 2;		
+				$arr2[$i]['rso'] = $row[19];
+				$arr2[$i]['indice'] = $row[20];
+				$arr2[$i]['year'] = $row[11];
 				$i++;
 	        }	
 			
