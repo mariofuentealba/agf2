@@ -602,7 +602,7 @@
         <item name="returnType">opaque</item>
       </annotation>
       <annotation name="ValidProperties">
-        <item name="propertySpecifier">id_tag_agf,color,valor,id_periodo,label,nombre_final,graf,id_empresa</item>
+        <item name="propertySpecifier">id_tag_agf,rso,color,valor,indice,id_periodo,year,label,nombre_final,graf,id_empresa</item>
       </annotation>
       <parameter name="principal" type="string"/>
       <parameter name="idEmpresas" type="string"/>
@@ -700,15 +700,18 @@
       <item name="IncludeRemoteClass">nonempty</item>
     </annotation>
     <annotation name="valores">
-      <item name="propertySpecifier">id_tag_agf,color,valor,id_periodo,label,nombre_final,graf,id_empresa</item>
+      <item name="propertySpecifier">id_tag_agf,rso,color,valor,indice,id_periodo,year,label,nombre_final,graf,id_empresa</item>
     </annotation>
     <annotation name="ActionScriptGeneration">
       <item name="Package">valueObjects</item>
     </annotation>
     <property name="id_tag_agf" type="string" required="true"/>
+    <property name="rso" type="string" required="true"/>
     <property name="color" type="string" required="true"/>
-    <property name="valor" type="double" required="true" default="0"/>
+    <property name="valor" type="integer" required="true"/>
+    <property name="indice" type="string" required="true"/>
     <property name="id_periodo" type="string" required="true"/>
+    <property name="year" type="string" required="true"/>
     <property name="label" type="string" required="true"/>
     <property name="nombre_final" type="string" required="true"/>
     <property name="graf" type="integer" required="true"/>

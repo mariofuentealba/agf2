@@ -18,9 +18,85 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.events.CubeEvent;
 			import mx.managers.PopUpManager;
+			import mx.olap.IOLAPCube;
+			import mx.olap.IOLAPQuery;
+			import mx.olap.IOLAPQueryAxis;
+			import mx.olap.OLAPQuery;
+			import mx.olap.OLAPResult;
+			import mx.olap.OLAPSet;
+			import mx.rpc.AsyncResponder;
+			import mx.rpc.AsyncToken;
 			include "agf.as";
 			
+			[Bindable]private var flatData:ArrayCollection = new ArrayCollection();
+			[Bindable]private var olapData:OLAPResult;
+			
+			private function creationCompleteHandler():void {
+				// You must initialize the cube before you 
+				// can execute a query on it.
+				myMXMLCube.refresh();
+			}
+			
+			// Create the OLAP query.
+			private function getQuery(cube:IOLAPCube):IOLAPQuery {
+				// Create an instance of OLAPQuery to represent the query. 
+				var query:OLAPQuery = new OLAPQuery;
+				
+				// Get the row axis from the query instance.
+				var rowQueryAxis:IOLAPQueryAxis = 
+					query.getAxis(OLAPQuery.ROW_AXIS);
+				// Create an OLAPSet instance to configure the axis.
+				var productSet:OLAPSet = new OLAPSet;
+				// Add the Product to the row to aggregate data 
+				// by the Product dimension.
+				productSet.addElements(
+					cube.findDimension("RSODim").findAttribute("RSO").children);
+				// Add the OLAPSet instance to the axis.
+				rowQueryAxis.addSet(productSet);
+				
+				// Get the column axis from the query instance, and configure it
+				// to aggregate the columns by the Quarter dimension. 
+				var colQueryAxis:IOLAPQueryAxis = query.getAxis(OLAPQuery.COLUMN_AXIS);  
+				var yearSet:OLAPSet= new OLAPSet;
+				yearSet.addElements(
+					cube.findDimension("TimeDim").findAttribute("Year").children);
+				var quarterSet:OLAPSet= new OLAPSet;
+				quarterSet.addElements(
+					cube.findDimension("TimeDim").findAttribute("Periodo").children);
+				colQueryAxis.addSet(yearSet.crossJoin(quarterSet));
+				
+				return query;       
+			}
+			
+			// Event handler to execute the OLAP query 
+			// after the cube completes initialization.
+			private function runQuery(event:CubeEvent):void {
+				// Get cube.
+				var cube:IOLAPCube = IOLAPCube(event.currentTarget);
+				// Create a query instance.
+				var query:IOLAPQuery = getQuery(cube);
+				// Execute the query.
+				var token:AsyncToken = cube.execute(query);
+				// Setup handlers for the query results.
+				token.addResponder(new AsyncResponder(showResult, showFault));
+			}
+			
+			// Handle a query fault.
+			private function showFault(result:Object, token:Object):void {
+				Alert.show("Error in query.");
+			}
+			
+			// Handle a successful query by passing the query results to 
+			// the OLAPDataGrid control..
+			private function showResult(result:Object, token:Object):void {
+				if (!result) {
+					Alert.show("No results from query.");
+					return;
+				}
+				olapData= result as OLAPResult;            
+			}        
 			
 			private function items(datos:ResultEvent):void{
 				alert.width = this.width;
@@ -101,29 +177,9 @@
 				var c3:Object = (dgc.dataProvider as ArrayCollection).length > 2 ? (dgc.dataProvider as ArrayCollection).getItemAt(2) : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 				var c4:Object = (dgc.dataProvider as ArrayCollection).length > 3 ? (dgc.dataProvider as ArrayCollection).getItemAt(3) : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 				var c5:Object = (dgc.dataProvider as ArrayCollection).length > 4 ? (dgc.dataProvider as ArrayCollection).getItemAt(4) : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
-				/*
-				var cm1:Object = (dgc.dataProvider as ArrayCollection).length > 0 ? (dgc.dataProvider as ArrayCollection).getItemAt(0) : {ID_tag_agf : -1, origen : 0} ;
-				var cm2:Object = (dgc.dataProvider as ArrayCollection).length > 1 ? (dgc.dataProvider as ArrayCollection).getItemAt(1) : {ID_tag_agf : -1, origen : 0} ;
-				var cm3:Object = (dgc.dataProvider as ArrayCollection).length > 2 ? (dgc.dataProvider as ArrayCollection).getItemAt(2) : {ID_tag_agf : -1, origen : 0} ;
-				var cm4:Object = (dgc.dataProvider as ArrayCollection).length > 3 ? (dgc.dataProvider as ArrayCollection).getItemAt(3) : {ID_tag_agf : -1, origen : 0} ;
-				var cm5:Object = (dgc.dataProvider as ArrayCollection).length > 4 ? (dgc.dataProvider as ArrayCollection).getItemAt(4) : {ID_tag_agf : -1, origen : 0}*/ ;
-				
-				
-				
 				arr.push(Ind1.text, Ind2.text, Ind3.text, Ind4.text, Ind5.text, Ind6.text, Ind7.text, Ind8.text, c1['ID_tag_agf'], c2['ID_tag_agf'], c3['ID_tag_agf'], c4['ID_tag_agf'], c5['ID_tag_agf'], c1['origen'], c2['origen'], c3['origen'], c4['origen'], c5['origen'], DD_ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO'], c1['campo'], c2['campo'], c3['campo'], c4['campo'], c5['campo']); 
 				
-				
 				modelo.insertarIndicesFinancieros(arr, tabla);
-				
-				
-				
-				/*var results:String = ((((event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedChild as NavigatorContent).getElementAt(1) as mx.controls.TextInput).text);
-				
-				
-				(this[results] as CallResponder).token = modelo.grillaIndicesFinancieros();
-				*/
-				
-				
 			}
 			
 			private function actualiza(event:ResultEvent):void{
@@ -142,6 +198,34 @@
 	</s:states>
 	
 	<fx:Declarations>
+		<mx:OLAPCube name="FlatSchemaCube" dataProvider="{flatData}" id="myMXMLCube" complete="runQuery(event);">
+			<!--mx:OLAPDimension name="CustomerDim">
+				<mx:OLAPAttribute name="Customer" dataField="customer"/>
+				<mx:OLAPHierarchy name="CustomerHier" hasAll="true">
+					<mx:OLAPLevel attributeName="Customer"/>
+				</mx:OLAPHierarchy>
+			</mx:OLAPDimension-->
+			
+			<mx:OLAPDimension name="RSODim">
+				<mx:OLAPAttribute name="RSO" dataField="rso"/>
+				<mx:OLAPHierarchy name="RSOHier" hasAll="true">
+					<mx:OLAPLevel attributeName="RSO"/>
+				</mx:OLAPHierarchy>
+			</mx:OLAPDimension>
+			
+			<mx:OLAPDimension name="TimeDim">
+				<mx:OLAPAttribute name="Year" dataField="year"/>
+				<mx:OLAPAttribute name="Periodo" dataField="periodo"/>
+				<mx:OLAPHierarchy name="TimeHier" hasAll="true">
+					<mx:OLAPLevel attributeName="Year"/>					
+					<mx:OLAPLevel attributeName="Periodo"/>
+				</mx:OLAPHierarchy> 
+			</mx:OLAPDimension>
+			
+			<mx:OLAPMeasure name="Valor" 
+							dataField="valor" 
+							aggregator="SUM"/><!--aggregator="SUM"-->
+		</mx:OLAPCube>
 		<mx:SeriesInterpolate id="interpolateIn" duration="1000"/>
 		<s:SolidColor id="sc1" color="blue" alpha=".3"/>
 		<s:SolidColor id="sc2" color="red" alpha=".3"/>
@@ -297,6 +381,9 @@
 										
 									</s:AsyncListView>
 								</s:DataGrid>
+							</s:NavigatorContent>
+							<s:NavigatorContent width="100%" height="100%" label="olap">
+								<mx:OLAPDataGrid id="olap" left="10" top="10" dataProvider="{olapData}"/>
 							</s:NavigatorContent>
 						</mx:TabNavigator>
 						
@@ -1072,7 +1159,7 @@
 		<s:Button x="159" label="Mostrar Matriz"  verticalCenter="0"/><!--cornerRadius="5"-->
 	</s:BorderContainer>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
-	<s:Label y="39" right="5" text="version: 1.0.99"/>
+	<s:Label y="39" right="5" text="version: 1.0.100"/>
 	
 	
 	

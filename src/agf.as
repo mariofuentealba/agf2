@@ -1166,6 +1166,14 @@ private function grafica(event:ResultEvent):void{
 	}
 	
 	
+	for each(o in arr){
+		if(o['graf'] == 1){
+			flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
+		}
+		
+	}
+	myMXMLCube.refresh();
+	
 	//nvGrafico.addElement(columnasChart);
 }
 

@@ -52,9 +52,12 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
      * properties
      */
     private var _internal_id_tag_agf : String;
+    private var _internal_rso : String;
     private var _internal_color : String;
-    private var _internal_valor : Number = Number(0);
+    private var _internal_valor : int;
+    private var _internal_indice : String;
     private var _internal_id_periodo : String;
+    private var _internal_year : String;
     private var _internal_label : String;
     private var _internal_nombre_final : String;
     private var _internal_graf : int;
@@ -62,8 +65,6 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
 
     private static var emptyArray:Array = new Array();
 
-    // Change this value according to your application's floating-point precision
-    private static var epsilon:Number = 0.0001;
 
     /**
      * derived property cache initialization
@@ -78,8 +79,11 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
 
         // Bind to own data or source properties for cache invalidation triggering
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "id_tag_agf", model_internal::setterListenerId_tag_agf));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "rso", model_internal::setterListenerRso));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "color", model_internal::setterListenerColor));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "indice", model_internal::setterListenerIndice));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "id_periodo", model_internal::setterListenerId_periodo));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "year", model_internal::setterListenerYear));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "label", model_internal::setterListenerLabel));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "nombre_final", model_internal::setterListenerNombre_final));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "id_empresa", model_internal::setterListenerId_empresa));
@@ -97,21 +101,39 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
     }
 
     [Bindable(event="propertyChange")]
+    public function get rso() : String
+    {
+        return _internal_rso;
+    }
+
+    [Bindable(event="propertyChange")]
     public function get color() : String
     {
         return _internal_color;
     }
 
     [Bindable(event="propertyChange")]
-    public function get valor() : Number
+    public function get valor() : int
     {
         return _internal_valor;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get indice() : String
+    {
+        return _internal_indice;
     }
 
     [Bindable(event="propertyChange")]
     public function get id_periodo() : String
     {
         return _internal_id_periodo;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get year() : String
+    {
+        return _internal_year;
     }
 
     [Bindable(event="propertyChange")]
@@ -156,6 +178,16 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
         }
     }
 
+    public function set rso(value:String) : void
+    {
+        var oldValue:String = _internal_rso;
+        if (oldValue !== value)
+        {
+            _internal_rso = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "rso", oldValue, _internal_rso));
+        }
+    }
+
     public function set color(value:String) : void
     {
         var oldValue:String = _internal_color;
@@ -166,13 +198,23 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
         }
     }
 
-    public function set valor(value:Number) : void
+    public function set valor(value:int) : void
     {
-        var oldValue:Number = _internal_valor;
-        if (isNaN(_internal_valor) == true || Math.abs(oldValue - value) > epsilon)
+        var oldValue:int = _internal_valor;
+        if (oldValue !== value)
         {
             _internal_valor = value;
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "valor", oldValue, _internal_valor));
+        }
+    }
+
+    public function set indice(value:String) : void
+    {
+        var oldValue:String = _internal_indice;
+        if (oldValue !== value)
+        {
+            _internal_indice = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "indice", oldValue, _internal_indice));
         }
     }
 
@@ -183,6 +225,16 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
         {
             _internal_id_periodo = value;
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "id_periodo", oldValue, _internal_id_periodo));
+        }
+    }
+
+    public function set year(value:String) : void
+    {
+        var oldValue:String = _internal_year;
+        if (oldValue !== value)
+        {
+            _internal_year = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "year", oldValue, _internal_year));
         }
     }
 
@@ -243,14 +295,29 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
         _model.invalidateDependentOnId_tag_agf();
     }
 
+    model_internal function setterListenerRso(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnRso();
+    }
+
     model_internal function setterListenerColor(value:flash.events.Event):void
     {
         _model.invalidateDependentOnColor();
     }
 
+    model_internal function setterListenerIndice(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnIndice();
+    }
+
     model_internal function setterListenerId_periodo(value:flash.events.Event):void
     {
         _model.invalidateDependentOnId_periodo();
+    }
+
+    model_internal function setterListenerYear(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnYear();
     }
 
     model_internal function setterListenerLabel(value:flash.events.Event):void
@@ -294,15 +361,30 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_id_tag_agfValidationFailureMessages);
         }
+        if (!_model.rsoIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_rsoValidationFailureMessages);
+        }
         if (!_model.colorIsValid)
         {
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_colorValidationFailureMessages);
         }
+        if (!_model.indiceIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_indiceValidationFailureMessages);
+        }
         if (!_model.id_periodoIsValid)
         {
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_id_periodoValidationFailureMessages);
+        }
+        if (!_model.yearIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_yearValidationFailureMessages);
         }
         if (!_model.labelIsValid)
         {
@@ -425,6 +507,33 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
         return validationFailures;
     }
     
+    model_internal var _doValidationCacheOfRso : Array = null;
+    model_internal var _doValidationLastValOfRso : String;
+
+    model_internal function _doValidationForRso(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfRso != null && model_internal::_doValidationLastValOfRso == value)
+           return model_internal::_doValidationCacheOfRso ;
+
+        _model.model_internal::_rsoIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isRsoAvailable && _internal_rso == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "rso is required"));
+        }
+
+        model_internal::_doValidationCacheOfRso = validationFailures;
+        model_internal::_doValidationLastValOfRso = value;
+
+        return validationFailures;
+    }
+    
     model_internal var _doValidationCacheOfColor : Array = null;
     model_internal var _doValidationLastValOfColor : String;
 
@@ -452,6 +561,33 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
         return validationFailures;
     }
     
+    model_internal var _doValidationCacheOfIndice : Array = null;
+    model_internal var _doValidationLastValOfIndice : String;
+
+    model_internal function _doValidationForIndice(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfIndice != null && model_internal::_doValidationLastValOfIndice == value)
+           return model_internal::_doValidationCacheOfIndice ;
+
+        _model.model_internal::_indiceIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isIndiceAvailable && _internal_indice == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "indice is required"));
+        }
+
+        model_internal::_doValidationCacheOfIndice = validationFailures;
+        model_internal::_doValidationLastValOfIndice = value;
+
+        return validationFailures;
+    }
+    
     model_internal var _doValidationCacheOfId_periodo : Array = null;
     model_internal var _doValidationLastValOfId_periodo : String;
 
@@ -475,6 +611,33 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
 
         model_internal::_doValidationCacheOfId_periodo = validationFailures;
         model_internal::_doValidationLastValOfId_periodo = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfYear : Array = null;
+    model_internal var _doValidationLastValOfYear : String;
+
+    model_internal function _doValidationForYear(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfYear != null && model_internal::_doValidationLastValOfYear == value)
+           return model_internal::_doValidationCacheOfYear ;
+
+        _model.model_internal::_yearIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isYearAvailable && _internal_year == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "year is required"));
+        }
+
+        model_internal::_doValidationCacheOfYear = validationFailures;
+        model_internal::_doValidationLastValOfYear = value;
 
         return validationFailures;
     }

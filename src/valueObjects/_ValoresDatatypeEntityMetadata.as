@@ -22,14 +22,14 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
 {
     private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("id_tag_agf", "color", "valor", "id_periodo", "label", "nombre_final", "graf", "id_empresa");
+    model_internal static var allProperties:Array = new Array("id_tag_agf", "rso", "color", "valor", "indice", "id_periodo", "year", "label", "nombre_final", "graf", "id_empresa");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("id_tag_agf", "color", "valor", "id_periodo", "label", "nombre_final", "graf", "id_empresa");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("id_tag_agf", "color", "valor", "id_periodo", "label", "nombre_final", "graf", "id_empresa");
+    model_internal static var allRequiredProperties:Array = new Array("id_tag_agf", "rso", "color", "valor", "indice", "id_periodo", "year", "label", "nombre_final", "graf", "id_empresa");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("id_tag_agf", "rso", "color", "valor", "indice", "id_periodo", "year", "label", "nombre_final", "graf", "id_empresa");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("id_tag_agf", "color", "valor", "id_periodo", "label", "nombre_final", "graf", "id_empresa");
+    model_internal static var dataProperties:Array = new Array("id_tag_agf", "rso", "color", "valor", "indice", "id_periodo", "year", "label", "nombre_final", "graf", "id_empresa");
     model_internal static var sourceProperties:Array = emptyArray
-    model_internal static var nonDerivedProperties:Array = new Array("id_tag_agf", "color", "valor", "id_periodo", "label", "nombre_final", "graf", "id_empresa");
+    model_internal static var nonDerivedProperties:Array = new Array("id_tag_agf", "rso", "color", "valor", "indice", "id_periodo", "year", "label", "nombre_final", "graf", "id_empresa");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;
@@ -44,15 +44,30 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     model_internal var _id_tag_agfIsValidCacheInitialized:Boolean = false;
     model_internal var _id_tag_agfValidationFailureMessages:Array;
     
+    model_internal var _rsoIsValid:Boolean;
+    model_internal var _rsoValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _rsoIsValidCacheInitialized:Boolean = false;
+    model_internal var _rsoValidationFailureMessages:Array;
+    
     model_internal var _colorIsValid:Boolean;
     model_internal var _colorValidator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _colorIsValidCacheInitialized:Boolean = false;
     model_internal var _colorValidationFailureMessages:Array;
     
+    model_internal var _indiceIsValid:Boolean;
+    model_internal var _indiceValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _indiceIsValidCacheInitialized:Boolean = false;
+    model_internal var _indiceValidationFailureMessages:Array;
+    
     model_internal var _id_periodoIsValid:Boolean;
     model_internal var _id_periodoValidator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _id_periodoIsValidCacheInitialized:Boolean = false;
     model_internal var _id_periodoValidationFailureMessages:Array;
+    
+    model_internal var _yearIsValid:Boolean;
+    model_internal var _yearValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _yearIsValidCacheInitialized:Boolean = false;
+    model_internal var _yearValidationFailureMessages:Array;
     
     model_internal var _labelIsValid:Boolean;
     model_internal var _labelValidator:com.adobe.fiber.styles.StyleValidator;
@@ -80,9 +95,12 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
             // dependents map
             model_internal::dependentsOnMap = new Object();
             model_internal::dependentsOnMap["id_tag_agf"] = new Array();
+            model_internal::dependentsOnMap["rso"] = new Array();
             model_internal::dependentsOnMap["color"] = new Array();
             model_internal::dependentsOnMap["valor"] = new Array();
+            model_internal::dependentsOnMap["indice"] = new Array();
             model_internal::dependentsOnMap["id_periodo"] = new Array();
+            model_internal::dependentsOnMap["year"] = new Array();
             model_internal::dependentsOnMap["label"] = new Array();
             model_internal::dependentsOnMap["nombre_final"] = new Array();
             model_internal::dependentsOnMap["graf"] = new Array();
@@ -95,9 +113,12 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
         // Property type Map
         model_internal::propertyTypeMap = new Object();
         model_internal::propertyTypeMap["id_tag_agf"] = "String";
+        model_internal::propertyTypeMap["rso"] = "String";
         model_internal::propertyTypeMap["color"] = "String";
-        model_internal::propertyTypeMap["valor"] = "Number";
+        model_internal::propertyTypeMap["valor"] = "int";
+        model_internal::propertyTypeMap["indice"] = "String";
         model_internal::propertyTypeMap["id_periodo"] = "String";
+        model_internal::propertyTypeMap["year"] = "String";
         model_internal::propertyTypeMap["label"] = "String";
         model_internal::propertyTypeMap["nombre_final"] = "String";
         model_internal::propertyTypeMap["graf"] = "int";
@@ -109,16 +130,31 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
         model_internal::_id_tag_agfValidator.requiredFieldError = "id_tag_agf is required";
         //model_internal::_id_tag_agfValidator.source = model_internal::_instance;
         //model_internal::_id_tag_agfValidator.property = "id_tag_agf";
+        model_internal::_rsoValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForRso);
+        model_internal::_rsoValidator.required = true;
+        model_internal::_rsoValidator.requiredFieldError = "rso is required";
+        //model_internal::_rsoValidator.source = model_internal::_instance;
+        //model_internal::_rsoValidator.property = "rso";
         model_internal::_colorValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForColor);
         model_internal::_colorValidator.required = true;
         model_internal::_colorValidator.requiredFieldError = "color is required";
         //model_internal::_colorValidator.source = model_internal::_instance;
         //model_internal::_colorValidator.property = "color";
+        model_internal::_indiceValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForIndice);
+        model_internal::_indiceValidator.required = true;
+        model_internal::_indiceValidator.requiredFieldError = "indice is required";
+        //model_internal::_indiceValidator.source = model_internal::_instance;
+        //model_internal::_indiceValidator.property = "indice";
         model_internal::_id_periodoValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForId_periodo);
         model_internal::_id_periodoValidator.required = true;
         model_internal::_id_periodoValidator.requiredFieldError = "id_periodo is required";
         //model_internal::_id_periodoValidator.source = model_internal::_instance;
         //model_internal::_id_periodoValidator.property = "id_periodo";
+        model_internal::_yearValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForYear);
+        model_internal::_yearValidator.required = true;
+        model_internal::_yearValidator.requiredFieldError = "year is required";
+        //model_internal::_yearValidator.source = model_internal::_instance;
+        //model_internal::_yearValidator.property = "year";
         model_internal::_labelValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForLabel);
         model_internal::_labelValidator.required = true;
         model_internal::_labelValidator.requiredFieldError = "label is required";
@@ -367,6 +403,12 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     }
 
     [Bindable(event="propertyChange")]
+    public function get isRsoAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
     public function get isColorAvailable():Boolean
     {
         return true;
@@ -379,7 +421,19 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     }
 
     [Bindable(event="propertyChange")]
+    public function get isIndiceAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
     public function get isId_periodoAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isYearAvailable():Boolean
     {
         return true;
     }
@@ -420,6 +474,14 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
             model_internal::calculateId_tag_agfIsValid();
         }
     }
+    public function invalidateDependentOnRso():void
+    {
+        if (model_internal::_rsoIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfRso = null;
+            model_internal::calculateRsoIsValid();
+        }
+    }
     public function invalidateDependentOnColor():void
     {
         if (model_internal::_colorIsValidCacheInitialized )
@@ -428,12 +490,28 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
             model_internal::calculateColorIsValid();
         }
     }
+    public function invalidateDependentOnIndice():void
+    {
+        if (model_internal::_indiceIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfIndice = null;
+            model_internal::calculateIndiceIsValid();
+        }
+    }
     public function invalidateDependentOnId_periodo():void
     {
         if (model_internal::_id_periodoIsValidCacheInitialized )
         {
             model_internal::_instance.model_internal::_doValidationCacheOfId_periodo = null;
             model_internal::calculateId_periodoIsValid();
+        }
+    }
+    public function invalidateDependentOnYear():void
+    {
+        if (model_internal::_yearIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfYear = null;
+            model_internal::calculateYearIsValid();
         }
     }
     public function invalidateDependentOnLabel():void
@@ -567,6 +645,106 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     }
 
     [Bindable(event="propertyChange")]   
+    public function get rsoStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get rsoValidator() : StyleValidator
+    {
+        return model_internal::_rsoValidator;
+    }
+
+    model_internal function set _rsoIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_rsoIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_rsoIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "rsoIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get rsoIsValid():Boolean
+    {
+        if (!model_internal::_rsoIsValidCacheInitialized)
+        {
+            model_internal::calculateRsoIsValid();
+        }
+
+        return model_internal::_rsoIsValid;
+    }
+
+    model_internal function calculateRsoIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_rsoValidator.validate(model_internal::_instance.rso)
+        model_internal::_rsoIsValid_der = (valRes.results == null);
+        model_internal::_rsoIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::rsoValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::rsoValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get rsoValidationFailureMessages():Array
+    {
+        if (model_internal::_rsoValidationFailureMessages == null)
+            model_internal::calculateRsoIsValid();
+
+        return _rsoValidationFailureMessages;
+    }
+
+    model_internal function set rsoValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_rsoValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_rsoValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "rsoValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
     public function get colorStyle():com.adobe.fiber.styles.Style
     {
         return model_internal::_nullStyle;
@@ -673,6 +851,106 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     }
 
     [Bindable(event="propertyChange")]   
+    public function get indiceStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get indiceValidator() : StyleValidator
+    {
+        return model_internal::_indiceValidator;
+    }
+
+    model_internal function set _indiceIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_indiceIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_indiceIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "indiceIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get indiceIsValid():Boolean
+    {
+        if (!model_internal::_indiceIsValidCacheInitialized)
+        {
+            model_internal::calculateIndiceIsValid();
+        }
+
+        return model_internal::_indiceIsValid;
+    }
+
+    model_internal function calculateIndiceIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_indiceValidator.validate(model_internal::_instance.indice)
+        model_internal::_indiceIsValid_der = (valRes.results == null);
+        model_internal::_indiceIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::indiceValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::indiceValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get indiceValidationFailureMessages():Array
+    {
+        if (model_internal::_indiceValidationFailureMessages == null)
+            model_internal::calculateIndiceIsValid();
+
+        return _indiceValidationFailureMessages;
+    }
+
+    model_internal function set indiceValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_indiceValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_indiceValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "indiceValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
     public function get id_periodoStyle():com.adobe.fiber.styles.Style
     {
         return model_internal::_nullStyle;
@@ -763,6 +1041,106 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
         {
             model_internal::_id_periodoValidationFailureMessages = value;   
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "id_periodoValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get yearStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get yearValidator() : StyleValidator
+    {
+        return model_internal::_yearValidator;
+    }
+
+    model_internal function set _yearIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_yearIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_yearIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "yearIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get yearIsValid():Boolean
+    {
+        if (!model_internal::_yearIsValidCacheInitialized)
+        {
+            model_internal::calculateYearIsValid();
+        }
+
+        return model_internal::_yearIsValid;
+    }
+
+    model_internal function calculateYearIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_yearValidator.validate(model_internal::_instance.year)
+        model_internal::_yearIsValid_der = (valRes.results == null);
+        model_internal::_yearIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::yearValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::yearValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get yearValidationFailureMessages():Array
+    {
+        if (model_internal::_yearValidationFailureMessages == null)
+            model_internal::calculateYearIsValid();
+
+        return _yearValidationFailureMessages;
+    }
+
+    model_internal function set yearValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_yearValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_yearValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "yearValidationFailureMessages", oldValue, value));
             // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
             // the entire entity.
             if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
@@ -1107,13 +1485,25 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
             {
                 return id_tag_agfValidationFailureMessages;
             }
+            case("rso"):
+            {
+                return rsoValidationFailureMessages;
+            }
             case("color"):
             {
                 return colorValidationFailureMessages;
             }
+            case("indice"):
+            {
+                return indiceValidationFailureMessages;
+            }
             case("id_periodo"):
             {
                 return id_periodoValidationFailureMessages;
+            }
+            case("year"):
+            {
+                return yearValidationFailureMessages;
             }
             case("label"):
             {
