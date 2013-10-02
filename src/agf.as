@@ -1035,13 +1035,6 @@ protected function button4_clickHandler(event:MouseEvent):void
 
 
 private function grafica(event:ResultEvent):void{
-	
-	/*var colGraf:GraficoBarrasAGF = new GraficoBarrasAGF();
-	columnasChart.serie = new Array();
-	columnasChart.prov = new ArrayCollection();*/
-//	nvGrafico.removeAllElements();
-	
-	
 	if(ArrayCollection(event.result).length){
 		var arr:ArrayCollection = event.result as ArrayCollection;
 		arrAct = new ArrayCollection();

@@ -18,6 +18,9 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.as3xls.xls.Sheet;
+			
+			import mx.collections.IList;
 			import mx.events.CubeEvent;
 			import mx.managers.PopUpManager;
 			import mx.olap.IOLAPCube;
@@ -32,6 +35,9 @@
 			
 			[Bindable]private var flatData:ArrayCollection = new ArrayCollection();
 			[Bindable]private var olapData:OLAPResult;
+			
+			private var olapx:IList;
+			private var olapy:IList;
 			
 			private function creationCompleteHandler():void {
 				// You must initialize the cube before you 
@@ -67,6 +73,8 @@
 					cube.findDimension("TimeDim").findAttribute("Periodo").children);
 				colQueryAxis.addSet(yearSet.crossJoin(quarterSet));
 				
+				olapx = cube.findDimension("TimeDim").findAttribute("Periodo").children
+				olapy = cube.findDimension("RSODim").findAttribute("RSO").children;
 				return query;       
 			}
 			
@@ -190,6 +198,38 @@
 				grillaGrupoIndicesResult.addEventListener(ResultEvent.RESULT, generaPagina2);
 			}
 			
+			
+			protected function export_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				
+				
+				
+				var request:URLRequest = new URLRequest('http://localhost:8888/servicios/export.php');
+				
+				request.method = URLRequestMethod.POST;
+				
+				request.data = new URLVariables();
+				var val:String = ';';
+				olap.dataProvider.query.getAxis(0);
+				var n:int = (olap.dataProvider as OLAPResult).axes[1].positions.length;
+				var m:int = (olap.dataProvider as OLAPResult).axes[0].positions.length;
+				for(var i:int = 0; i < m; i++){
+					val += olapx[i]['name'] + ';';
+				}
+				val += '\n';
+				for(i = 0; i < n; i++){
+					val += olapy[i]['name'] + ';';
+					for(var j:int = 0; j < m; j++){
+						val += (olap.dataProvider as OLAPResult).getCell(i, j).value + ';';
+					}
+					val += '\n';
+				}
+				
+				request.data.nombre = val;
+				navigateToURL(request,"_blank");
+			}
 			
 		]]>
 	</fx:Script>
@@ -383,7 +423,17 @@
 								</s:DataGrid>
 							</s:NavigatorContent>
 							<s:NavigatorContent width="100%" height="100%" label="olap">
-								<mx:OLAPDataGrid id="olap" left="10" top="10" dataProvider="{olapData}"/>
+								<s:VGroup horizontalCenter="0" verticalCenter="0" width="100%" height="100%">
+									<s:HGroup id="hgOLAP" horizontalCenter="0" verticalCenter="0" width="100%">
+										<mx:OLAPDataGrid id="olap" left="10" top="10" height="300" dataProvider="{olapData}"/>
+										
+									</s:HGroup>
+									<s:HScrollBar viewport="{hgOLAP}" 
+												  left="{hgOLAP.left}" 
+												  width ="{hgOLAP.width}"/>	
+								</s:VGroup>
+								
+								
 							</s:NavigatorContent>
 						</mx:TabNavigator>
 						
@@ -1156,7 +1206,7 @@
 	<s:BorderContainer y="117" left="249" right="31" height="29"><!-- backgroundColor="#776D6D"-->
 		<s:Button left="40" label="Mostrar Gráfico" click="button4_clickHandler(event)"
 				  verticalCenter="0"/>
-		<s:Button x="159" label="Mostrar Matriz"  verticalCenter="0"/><!--cornerRadius="5"-->
+		<s:Button x="159" width="86" label="Exportar" verticalCenter="0" click="export_clickHandler(event)"/><!--cornerRadius="5"-->
 	</s:BorderContainer>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
 	<s:Label y="39" right="5" text="version: 1.0.100"/>
