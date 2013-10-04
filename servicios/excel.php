@@ -1,27 +1,14 @@
 <?php
-
-error_reporting(E_ALL);
-ini_set('display_errors', TRUE);
-ini_set('display_startup_errors', TRUE);
-date_default_timezone_set('Europe/London');
-
-define('EOL',(PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
-
-date_default_timezone_set('Europe/London');
-/*//print_r($_REQUEST);
-header("Content-Type: application/vnd.ms-excel");
-
+/*header('Content-type: application/vnd.ms-excel;charset=utf-8');
+header("Content-Disposition: attachment; filename=oportunidad.xls");
+header("Pragma: no-cache");
 header("Expires: 0");
+*/
 
-header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-
-header("content-disposition: attachment;filename=NOMBRE.xls");
-echo $_REQUEST["nombre"];*/
-
-require_once '../PHPExcel/Classes/PHPExcel.php';
-$f = explode("\n", trim($_REQUEST["nombre"]));
+require_once 'PHPExcel/Classes/PHPExcel.php';
+//$f = explode("\n", $_REQUEST["nombre"]);
 //agregar registro vacio en el flex
-/*$f = ";;;;;;;;;;;;;;;;;
+$f = ";;;;;;;;;;;;;;;;;
 ;3/2009;6/2009;9/2009;12/2009;3/2010;6/2010;9/2010;12/2010;3/2011;6/2011;9/2011;12/2011;3/2012;6/2012;9/2012;12/2012;3/2013
 Falabella (Chile+CMR) ;233542;254770;246159;313263;239524;298623;275302;374579;282887;323310;302521;395808;320630;333045;321947;419376;340662
 Cencosud (Paris+Mas) ;167280;177713;168046;232725;162751;206590;190009;256034;197796;227685;211603;276250;243087;268116;260445;338153;259031
@@ -29,8 +16,8 @@ Ripley Chile;153558;163183;149899;204105;146943;185685;168268;230886;171694;1946
 ABCDIN;0;0;0;0;46561;60811;66874;68830;60297;71891;59426;83423;68002;72012;71332;95113;75063
 La Polar Chile;0;0;0;0;0;0;0;0;0;0;0;104093;74686;85098;80213;111933;82991
 Hites;29510;35315;32630;48906;32223;45917;41370;64401;42968;54256;53014;77275;52444;62514;58831;80041;54081";
-*/
 
+$f = explode("\n", $f);
 
 
 $arr = array();
@@ -107,7 +94,7 @@ for($i = 0; $i < count($arr2); $i++){
 $str .= '</table>';
 
 
-//echo $str;
+echo $str;
 
 
 $objPHPExcel = new PHPExcel();
@@ -174,7 +161,7 @@ $plotarea = new PHPExcel_Chart_PlotArea(NULL, array($series));
 $legend = new PHPExcel_Chart_Legend(PHPExcel_Chart_Legend::POSITION_BOTTOM, NULL, false);
 
 $title = new PHPExcel_Chart_Title('Test Grouped Column Chart');
-$xAxisLabel = new PHPExcel_Chart_Title('Periodo Financiero');
+$xAxisLabel = new PHPExcel_Chart_Title('Financial Period');
 $yAxisLabel = new PHPExcel_Chart_Title('Value ($k)');
 
 
@@ -199,24 +186,18 @@ $objWorksheet->addChart($chart);
 
 
 // Save Excel 2007 file
-//echo date('H:i:s') , " Write to Excel2007 format" , EOL;
+echo date('H:i:s') , " Write to Excel2007 format" , EOL;
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 $objWriter->setIncludeCharts(TRUE);
 $objWriter->save(str_replace('.php', '.xlsx', __FILE__));
-//echo date('H:i:s') , " File written to " , str_replace('.php', '.xlsx', pathinfo(__FILE__, PATHINFO_BASENAME)) , EOL;
+echo date('H:i:s') , " File written to " , str_replace('.php', '.xlsx', pathinfo(__FILE__, PATHINFO_BASENAME)) , EOL;
 
 
 // Echo memory peak usage
-//echo date('H:i:s') , " Peak memory usage: " , (memory_get_peak_usage(true) / 1024 / 1024) , " MB" , EOL;
+echo date('H:i:s') , " Peak memory usage: " , (memory_get_peak_usage(true) / 1024 / 1024) , " MB" , EOL;
 
 // Echo done
-//echo date('H:i:s') , " Done writing file" , EOL;
-//echo 'File has been created in ' , getcwd() , EOL;
-//$enlace = $path_a_tu_doc."/".$id;
-header ("Content-Disposition: attachment; filename=export.xlsx ");
-header ("Content-Type: application/octet-stream");
-header ("Content-Length: ".filesize("export.xlsx"));
-readfile("export.xlsx");
+echo date('H:i:s') , " Done writing file" , EOL;
+echo 'File has been created in ' , getcwd() , EOL;
 
 
-?>

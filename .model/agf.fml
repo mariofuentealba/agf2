@@ -162,8 +162,8 @@
       <item name="PHP_SERVICES_FOLDER">C:\xampp\htdocs\agf\services</item>
       <item name="PHP_LOCATION">C:/xampp/htdocs/servicios/modelo.php</item>
       <item name="LINKED_FILE">modelo.php</item>
-      <item name="PHP_SERVER_ROOT_URL">http://localhost/</item>
-      <item name="ABSOLUTE_ENDPOINT">http://localhost/agf/gateway.php</item>
+      <item name="PHP_SERVER_ROOT_URL">http://localhost:8888/</item>
+      <item name="ABSOLUTE_ENDPOINT">http://localhost:8888/agf/gateway.php</item>
       <item name="PHP_CLASS_NAME">modelo</item>
     </annotation>
     <function name="comboEmpresa" return-type="EmpresasDatatype[]">

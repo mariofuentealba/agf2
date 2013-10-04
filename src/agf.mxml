@@ -18,6 +18,8 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import Componentes.Bloqueo;
+			
 			import com.as3xls.xls.Sheet;
 			
 			import mx.collections.IList;
@@ -38,6 +40,7 @@
 			
 			private var olapx:IList;
 			private var olapy:IList;
+			private var bloqueo:Bloqueo = new Bloqueo();
 			
 			private function creationCompleteHandler():void {
 				// You must initialize the cube before you 
@@ -215,15 +218,21 @@
 				olap.dataProvider.query.getAxis(0);
 				var n:int = (olap.dataProvider as OLAPResult).axes[1].positions.length;
 				var m:int = (olap.dataProvider as OLAPResult).axes[0].positions.length;
-				for(var i:int = 0; i < m; i++){
+				for(var i:int = 0; i < m - 1; i++){
+					val += ';';
+				}
+				val += '\n;';
+				for(i = 0; i < m; i++){
 					val += olapx[i]['name'] + ';';
 				}
+				val = val.substring(0, val.length - 1);				
 				val += '\n';
 				for(i = 0; i < n; i++){
 					val += olapy[i]['name'] + ';';
 					for(var j:int = 0; j < m; j++){
 						val += (olap.dataProvider as OLAPResult).getCell(i, j).value + ';';
 					}
+					val = val.substring(0, val.length - 1);
 					val += '\n';
 				}
 				
