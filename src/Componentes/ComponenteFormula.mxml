@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:RadioButtonGroup id="radiogroup1"/>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import spark.events.IndexChangeEvent;
+			[Bindable] public var campo:String; 
+			
+			protected function ddl_changeHandler(event:IndexChangeEvent):void
+			{
+				// TODO Auto-generated method stub
+				ddl.name = campo + ddl.selectedItem['cod'];
+			}
+			
+		]]>
+	</fx:Script>
+	<s:ComboBox width="70%" id="cb"/>
+	<s:DropDownList width="30%" id="ddl" selectedIndex="0" change="ddl_changeHandler(event)">
+		<s:ArrayList>
+			<fx:Object label="Normal" cod=".NN"/>
+			<fx:Object label="Periodo Anterior" cod=".AN"/>
+			<fx:Object label="Periodos Anteriores dentro del año" cod=".AA"/>				
+		</s:ArrayList>
+		<!--s:RadioButton label="Normal" groupName="radiogroup1" selected="true"/>
+		<s:RadioButton label="Periodo Anterior" groupName="radiogroup1"/>
+		<s:RadioButton label="Periodos Anteriores dentro del año" groupName="radiogroup1"/>
+		<s:RadioButton label="Periodo anterior de la selección" groupName="radiogroup1"/-->
+	</s:DropDownList>
+</s:HGroup>

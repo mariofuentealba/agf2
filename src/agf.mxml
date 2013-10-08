@@ -19,6 +19,7 @@
 	<fx:Script>
 		<![CDATA[
 			import Componentes.Bloqueo;
+			import Componentes.ComponenteFormula;
 			
 			import com.as3xls.xls.Sheet;
 			
@@ -152,15 +153,15 @@
 				
 				
 				for(var i:int = 1; i < vg.numElements; i++){
-					if((vg.getElementAt(i) as ComboBox).selectedIndex > -1){
+					if((vg.getElementAt(i) as ComponenteFormula).cb.selectedIndex > -1){
 						var o:Object = {};
 						var str:String = ''
 						
-						o['campo'] = (vg.getElementAt(i) as ComboBox).name;
-						o['ID_tag_agf'] = (vg.getElementAt(i) as ComboBox).selectedItem['ID_tag_agf'];
-						o['etiqueta'] = (vg.getElementAt(i) as ComboBox).selectedItem['etiqueta'];
-						o['periodo'] = (vg.getElementAt(i) as ComboBox).name;
-						o['origen'] = (vg.getElementAt(i) as ComboBox).selectedItem['origen'];
+						o['campo'] = (vg.getElementAt(i)['ddl'] as DropDownList).name;
+						o['ID_tag_agf'] = (vg.getElementAt(i)['cb'] as ComboBox).selectedItem['ID_tag_agf'];
+						o['etiqueta'] = (vg.getElementAt(i)['cb'] as ComboBox).selectedItem['etiqueta'];
+						o['periodo'] = (vg.getElementAt(i)['ddl'] as DropDownList).selectedItem['label'];
+						o['origen'] = (vg.getElementAt(i)['cb'] as ComboBox).selectedItem['origen'];
 						
 						arr.addItem(o);
 					}
@@ -884,68 +885,76 @@
 								</s:TextInput>
 							</s:NavigatorContent>
 							<s:NavigatorContent label="Nuevo">
-								<s:BorderContainer x="88" top="5" width="700" height="740"
+								<s:BorderContainer x="88" top="20" width="700" height="740"
 												   cornerRadius="15">
-									<s:Label y="20" left="20" height="13" fontWeight="bold"
-											 text="Nombre:"/>
-									<s:TextInput id="Ind1" y="32" left="20" right="20"
-												 height="25"/>
-									<s:Label y="67" left="20" fontWeight="bold" text="Descripción:"/>
-									<s:TextArea id="Ind2" y="87" left="20" right="20" height="70"/>
-									
-									<s:Label y="250" left="20" fontWeight="bold"
-											 text="Explicación Resultado:"/>
-									<s:TextArea id="Ind3" y="174" left="20" right="20" height="70"/>
-									<s:Label y="161" left="19" fontWeight="bold"
-											 text="Descripcion Formula:"/>
-									<s:TextArea id="Ind4" y="265" left="20" right="20" height="70"/>
-									
-									
-									<s:Label y="340" left="20" height="13" fontWeight="bold"
-											 text="Rango Inferior:"/>
-									<s:TextInput id="Ind5" y="360" left="20" right="20" height="25"/>
-									<s:Label y="390" left="20" height="13" fontWeight="bold"
-											 text="Rango Superior:"/>
-									<s:TextInput id="Ind6" y="410" left="20" right="20" height="25"/>
-									<s:Label x="20" y="440" text="Formula"/>
-									<s:Label y="460" left="20" height="13" fontWeight="bold"
-											 text="Expression Formula:"/>
-									<s:TextArea id="Ind7" y="480" left="20" width="50%" height="100"
-												editable="false" text="_"/>
-									<s:Label y="585" left="20" height="13" fontWeight="bold"
-											 text="Decimales:"/>
-									<s:TextInput id="Ind8" y="602" left="20" right="20" height="25"/>
-									
-									<s:Label x="26" y="630" fontWeight="bold" text="Grupo:"/>
-									<s:DropDownList id="DD_ID_GRUPO_INDICE_FINANCIERO" x="26" y="652"
-													width="200"
-													creationComplete="dropDownList9_creationCompleteHandler(event)"
-													labelField="nombre"
-													name="ID_GRUPO_INDICE_FINANCIERO"
-													prompt="Seleccione">
-										<s:AsyncListView list="{comboGrupoIndicesFinancierosResult.lastResult}"/>
-									</s:DropDownList>
-									<s:Button x="24" bottom="20" label="Guardar"
-											  click="guardarIndice_clickHandler(event)"/>
-									<mx:LinkButton x="213" y="455" width="150" label="Editar Fórmula"
-												   click="linkbutton1_clickHandler(event)"/>
-									<s:DataGrid id="dgc" y="478" right="20" width="45%" height="100"
-												requestedRowCount="5">
-										<s:columns>
-											<s:ArrayList>
-												<s:GridColumn dataField="campo"
-															  headerText="Campo" width="30"></s:GridColumn>
-												<s:GridColumn dataField="etiqueta"
-															  headerText="Descripción"></s:GridColumn>
-												<s:GridColumn dataField="periodo"
-															  headerText="Periodo"></s:GridColumn>
-											</s:ArrayList>
-										</s:columns>
+									<s:VGroup left="20" right="20" top="5" horizontalAlign="left">
+										<s:Label fontWeight="bold" text="Grupo:"/>
+										<s:DropDownList id="DD_ID_GRUPO_INDICE_FINANCIERO"
+														width="200"
+														creationComplete="dropDownList9_creationCompleteHandler(event)"
+														labelField="nombre"
+														name="ID_GRUPO_INDICE_FINANCIERO"
+														prompt="Seleccione">
+											<s:AsyncListView list="{comboGrupoIndicesFinancierosResult.lastResult}"/>
+										</s:DropDownList>
 										
-									</s:DataGrid>
-									<s:Label x="438" y="460" text="Campos"/>
+										<s:Label y="20" left="20" height="13" fontWeight="bold"
+												 text="Nombre:"/>
+										<s:TextInput id="Ind1" y="32" left="20" right="20"
+													 width="100%" height="25"/>
+										<s:Label y="67" left="20" fontWeight="bold" text="Descripción:"/>
+										<s:TextArea id="Ind2" y="87" left="20" right="20" width="100%" height="70"/>
+										
+										<s:Label y="250" left="20" fontWeight="bold"
+												 text="Explicación Resultado:"/>
+										<s:TextArea id="Ind3" y="174" left="20" right="20" width="100%" height="70"/>
+										<s:Label y="161" left="19" fontWeight="bold"
+												 text="Descripcion Formula:"/>
+										<s:TextArea id="Ind4" y="265" left="20" right="20" width="100%" height="70"/>
+										
+										
+										<s:Label y="340" left="20" height="13" fontWeight="bold"
+												 text="Rango Inferior:"/>
+										<s:TextInput id="Ind5" y="360" left="20" right="20" width="100%" height="25"/>
+										<s:Label y="390" left="20" height="13" fontWeight="bold"
+												 text="Rango Superior:"/>
+										<s:TextInput id="Ind6" y="410" left="20" right="20" width="100%" height="25"/>
+										<s:Label x="20" y="440" text="Formula"/>
+										<s:HGroup width="464" horizontalAlign="left">
+											<s:Label y="460" left="20" width="210" height="13"
+													 fontWeight="bold" text="Expression Formula:"/>
+											<s:Button x="164" y="455" width="112" label="Editar Fórmula"
+													  click="linkbutton1_clickHandler(event)"/>
+											<s:Label text="           Campos"/>
+										</s:HGroup>
+										
+										<s:HGroup width="100%">
+											<s:TextArea id="Ind7" y="480" left="20" width="50%" height="100"
+														editable="false" text="_"/>
+											<s:DataGrid id="dgc" y="478" right="20" width="45%" height="100"
+														requestedRowCount="5">
+												<s:columns>
+													<s:ArrayList>
+														<s:GridColumn dataField="campo"
+																	  headerText="Campo" width="30"></s:GridColumn>
+														<s:GridColumn dataField="etiqueta"
+																	  headerText="Descripción"></s:GridColumn>
+														<s:GridColumn dataField="periodo"
+																	  headerText="Periodo"></s:GridColumn>
+													</s:ArrayList>
+												</s:columns>
+												
+											</s:DataGrid>
+										</s:HGroup>
+										
+										<s:Label y="585" left="20" height="13" fontWeight="bold"
+												 text="Decimales:"/>
+										<s:TextInput id="Ind8" y="602" left="20" right="20" width="100%" height="25"/>
+										<s:Button x="24" bottom="20" label="Guardar"
+												  click="guardarIndice_clickHandler(event)"/>
+									</s:VGroup>
 								</s:BorderContainer>
-								<s:Label x="10" y="6" fontSize="20" text="Indice"/>
+								<s:Label x="54" y="10" fontSize="20" text="Indice"/>
 								
 							</s:NavigatorContent>
 							<s:NavigatorContent width="100%" height="100%" label="Editar" enabled="false">
@@ -1218,7 +1227,7 @@
 		<s:Button x="159" width="86" label="Exportar" verticalCenter="0" click="export_clickHandler(event)"/><!--cornerRadius="5"-->
 	</s:BorderContainer>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
-	<s:Label y="39" right="5" text="version: 1.0.100"/>
+	<s:Label y="39" right="5" text="version: 1.0.101"/>
 	
 	
 	

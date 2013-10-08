@@ -73,7 +73,7 @@
 			
 			private function selectTime(ob:Object):void{
 				
-				PopUpManager.removePopUp(opciones);
+				/*PopUpManager.removePopUp(opciones);
 				
 				var cb:ComboBox = new ComboBox();
 				cb.addEventListener(IndexChangeEvent.CHANGE, actualiza);
@@ -105,18 +105,52 @@
 				hgBotones.addElement(bt);
 				bt.percentWidth = 100;
 				cb.percentWidth = 100;
+				
+				var cb:ComponenteFormula = new ComponenteFormula();
+				var bt:Button = new Button();
+				bt.label = 'C' + c;
+				bt.name = this._s + complemento + '.' + c;
+				c++;
+				cb.name = bt.name; 
+				vgCombos.addElement(cb);
+				hgBotones.addElement(bt);
+				bt.percentWidth = 100;
+				cb.percentWidth = 100;*/
 			}
 			
 			protected function linkbutton1_clickHandler(datos:ArrayCollection, s:String):void
 			{
 				// TODO Auto-generated method stub
-				opciones.width = this.width;
+				/*opciones.width = this.width;
 				opciones.height = this.height;
 				opciones.cerrando = selectTime;
 				this._datos = datos;
-				this._s = s;
-				PopUpManager.addPopUp(opciones, this);
 				
+				PopUpManager.addPopUp(opciones, this);*/
+				this._datos = datos;
+				this._s = s;
+				var cb:ComponenteFormula = new ComponenteFormula();
+				cb.cb.dataProvider = this._datos;
+				cb.cb.labelField = 'etiqueta';
+				
+				var bt:Button = new Button();
+				bt.label = 'C' + c;
+				/******bt.name = this._s + cb.ddl.selectedItem['label'] + '.' + c;*/
+				cb.campo = this._s + '.' + c;
+				cb.ddl.name = this._s + '.' + c + '.NN';
+				c++;
+				cb.name = bt.name; 
+				vgCombos.addElement(cb);
+				hgBotones.addElement(bt);
+				bt.percentWidth = 100;
+				cb.percentWidth = 100;
+				
+				
+				c++;
+				cb.name = bt.name; 
+				vgCombos.addElement(cb);
+				bt.percentWidth = 100;
+				cb.percentWidth = 100;
 				
 				
 			}
@@ -124,11 +158,11 @@
 		]]>
 	</fx:Script>
 	
-	<s:TitleWindow id="twFormula" y="200" width="500" height="350"
+	<s:TitleWindow id="twFormula" y="200" width="600" height="500"
 				   close="titlewindow1_closeHandler(event)" direction="ltr" horizontalCenter="0"
 				   title="Fórmula">
 		
-		<s:BorderContainer y="51" width="350" height="100"
+		<s:BorderContainer y="51" width="500" height="100"
 						   click="bordercontainer1_clickHandler(event)" horizontalCenter="0">
 			<s:HGroup id="hgBotones" left="5" right="5" top="5" height="20">
 			</s:HGroup>
@@ -157,13 +191,16 @@
 				<s:Button label="9" width="100%"/>
 			</s:HGroup>
 		</s:BorderContainer>
-		<s:TextInput id="txtFormula" y="10" width="300" height="40" enabled="true" horizontalCenter="0" text="_" editable="false"/>
+		<s:Label id="txtFormula" y="10" width="500" height="40" horizontalCenter="0" text="_"/>
 		<s:Button bottom="10" label="Aceptar" horizontalCenter="0" click="titlewindow1_closeHandler(new CloseEvent(CloseEvent.CLOSE));"/>
-		<s:BorderContainer y="159" width="350" height="120" horizontalCenter="0">
+		<s:BorderContainer y="159" width="500" height="250" horizontalCenter="0">
 			<s:Label top="5" horizontalCenter="0" text="Campos"/>
-			<s:VGroup top="15" bottom="0" width="320" horizontalCenter="0" id="vgCombos">
+			<s:VGroup top="15" bottom="0" width="500" horizontalCenter="0" id="vgCombos">
 				<s:HGroup width="100%">
-					<mx:LinkButton width="100%" label="Agregar Campo" click="linkbutton1_clickHandler(arrXBRL, 'C')"/>
+					<mx:LinkButton width="100%" label="Agregar Campo"
+								   click="linkbutton1_clickHandler(arrXBRL, 'C')"
+								   rollOverColor="#F6C877" selectionColor="#9B9999"
+								   themeColor="#149E24"/>
 					<mx:LinkButton width="100%" label="Agregar Fórmula" click="linkbutton1_clickHandler(arrFormulas, 'F')"/>
 				</s:HGroup>
 			</s:VGroup>
