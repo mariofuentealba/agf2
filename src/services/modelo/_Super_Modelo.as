@@ -27,6 +27,7 @@ import valueObjects.GrupoIndDatatype;
 import valueObjects.GrupoIndiceFinancieroDatatype;
 import valueObjects.GrupoIndicesDataType;
 import valueObjects.GruposDatatype;
+import valueObjects.IndicesDatatype;
 import valueObjects.IndicesFinancierosDatatype;
 import valueObjects.ItemDatatype;
 import valueObjects.MonedasDatatype;
@@ -42,24 +43,24 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
 {
     private var _grupoIndDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _subGrupoDatatype1RPCDataManager : mx.data.RPCDataManager;
-    private var _monedasDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _grupoIndiceFinancieroDatatypeRPCDataManager : mx.data.RPCDataManager;
+    private var _monedasDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _grupoIndicesDataTypeRPCDataManager : mx.data.RPCDataManager;
+    private var _subGruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _indicesFinancierosDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _agfDatatypeRPCDataManager : mx.data.RPCDataManager;
-    private var _subGruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _gruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _empresasDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var managersArray : Array = new Array();
 
     public const DATA_MANAGER_GRUPOINDDATATYPE : String = "GrupoIndDatatype";
     public const DATA_MANAGER_SUBGRUPODATATYPE1 : String = "SubGrupoDatatype1";
-    public const DATA_MANAGER_MONEDASDATATYPE : String = "MonedasDatatype";
     public const DATA_MANAGER_GRUPOINDICEFINANCIERODATATYPE : String = "GrupoIndiceFinancieroDatatype";
+    public const DATA_MANAGER_MONEDASDATATYPE : String = "MonedasDatatype";
     public const DATA_MANAGER_GRUPOINDICESDATATYPE : String = "GrupoIndicesDataType";
+    public const DATA_MANAGER_SUBGRUPOSDATATYPE : String = "SubGruposDatatype";
     public const DATA_MANAGER_INDICESFINANCIEROSDATATYPE : String = "IndicesFinancierosDatatype";
     public const DATA_MANAGER_AGFDATATYPE : String = "AgfDatatype";
-    public const DATA_MANAGER_SUBGRUPOSDATATYPE : String = "SubGruposDatatype";
     public const DATA_MANAGER_GRUPOSDATATYPE : String = "GruposDatatype";
     public const DATA_MANAGER_EMPRESASDATATYPE : String = "EmpresasDatatype";
 
@@ -71,18 +72,18 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
                 return _grupoIndDatatypeRPCDataManager;
              case (DATA_MANAGER_SUBGRUPODATATYPE1):
                 return _subGrupoDatatype1RPCDataManager;
-             case (DATA_MANAGER_MONEDASDATATYPE):
-                return _monedasDatatypeRPCDataManager;
              case (DATA_MANAGER_GRUPOINDICEFINANCIERODATATYPE):
                 return _grupoIndiceFinancieroDatatypeRPCDataManager;
+             case (DATA_MANAGER_MONEDASDATATYPE):
+                return _monedasDatatypeRPCDataManager;
              case (DATA_MANAGER_GRUPOINDICESDATATYPE):
                 return _grupoIndicesDataTypeRPCDataManager;
+             case (DATA_MANAGER_SUBGRUPOSDATATYPE):
+                return _subGruposDatatypeRPCDataManager;
              case (DATA_MANAGER_INDICESFINANCIEROSDATATYPE):
                 return _indicesFinancierosDatatypeRPCDataManager;
              case (DATA_MANAGER_AGFDATATYPE):
                 return _agfDatatypeRPCDataManager;
-             case (DATA_MANAGER_SUBGRUPOSDATATYPE):
-                return _subGruposDatatypeRPCDataManager;
              case (DATA_MANAGER_GRUPOSDATATYPE):
                 return _gruposDatatypeRPCDataManager;
              case (DATA_MANAGER_EMPRESASDATATYPE):
@@ -196,6 +197,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         valueObjects.MonedasDatatype._initRemoteClassAlias();
         valueObjects.GrupoIndDatatype._initRemoteClassAlias();
         valueObjects.ValoresDatatype._initRemoteClassAlias();
+        valueObjects.IndicesDatatype._initRemoteClassAlias();
 
         var operations:Object = new Object();
         var operation:mx.rpc.remoting.Operation;
@@ -326,6 +328,12 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         operation = new mx.rpc.remoting.Operation(null, "valores2");
          operation.resultType = Object;
         operations["valores2"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "insertarConfig");
+         operation.resultType = Boolean;
+        operations["insertarConfig"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "indicesFinancieros");
+         operation.resultElementType = valueObjects.IndicesDatatype;
+        operations["indicesFinancieros"] = operation;
 
         _serviceControl.operations = operations;
         _serviceControl.convertResultHandler = com.adobe.serializers.utility.TypeUtility.convertResultHandler;
@@ -357,18 +365,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _subGrupoDatatype1RPCDataManager.itemClass = valueObjects.SubGrupoDatatype1; 
 
 
-        // initialize MonedasDatatype data manager
-        _monedasDatatypeRPCDataManager = new mx.data.RPCDataManager();
-        managersArray.push(_monedasDatatypeRPCDataManager);
-
-        managedAssocsArray = new Array();
-
-        _monedasDatatypeRPCDataManager.destination = "monedasDatatypeRPCDataManager";
-        _monedasDatatypeRPCDataManager.service = _serviceControl;        
-        _monedasDatatypeRPCDataManager.identities =  "id";      
-        _monedasDatatypeRPCDataManager.itemClass = valueObjects.MonedasDatatype; 
-
-
         // initialize GrupoIndiceFinancieroDatatype data manager
         _grupoIndiceFinancieroDatatypeRPCDataManager = new mx.data.RPCDataManager();
         managersArray.push(_grupoIndiceFinancieroDatatypeRPCDataManager);
@@ -381,6 +377,18 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _grupoIndiceFinancieroDatatypeRPCDataManager.itemClass = valueObjects.GrupoIndiceFinancieroDatatype; 
 
 
+        // initialize MonedasDatatype data manager
+        _monedasDatatypeRPCDataManager = new mx.data.RPCDataManager();
+        managersArray.push(_monedasDatatypeRPCDataManager);
+
+        managedAssocsArray = new Array();
+
+        _monedasDatatypeRPCDataManager.destination = "monedasDatatypeRPCDataManager";
+        _monedasDatatypeRPCDataManager.service = _serviceControl;        
+        _monedasDatatypeRPCDataManager.identities =  "id";      
+        _monedasDatatypeRPCDataManager.itemClass = valueObjects.MonedasDatatype; 
+
+
         // initialize GrupoIndicesDataType data manager
         _grupoIndicesDataTypeRPCDataManager = new mx.data.RPCDataManager();
         managersArray.push(_grupoIndicesDataTypeRPCDataManager);
@@ -391,6 +399,18 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _grupoIndicesDataTypeRPCDataManager.service = _serviceControl;        
         _grupoIndicesDataTypeRPCDataManager.identities =  "ID_GRUPO_INDICE_FINANCIERO";      
         _grupoIndicesDataTypeRPCDataManager.itemClass = valueObjects.GrupoIndicesDataType; 
+
+
+        // initialize SubGruposDatatype data manager
+        _subGruposDatatypeRPCDataManager = new mx.data.RPCDataManager();
+        managersArray.push(_subGruposDatatypeRPCDataManager);
+
+        managedAssocsArray = new Array();
+
+        _subGruposDatatypeRPCDataManager.destination = "subGruposDatatypeRPCDataManager";
+        _subGruposDatatypeRPCDataManager.service = _serviceControl;        
+        _subGruposDatatypeRPCDataManager.identities =  "ID_SUBGRUPO,ID_TIPO_EMPRESA";      
+        _subGruposDatatypeRPCDataManager.itemClass = valueObjects.SubGruposDatatype; 
 
 
         // initialize IndicesFinancierosDatatype data manager
@@ -415,18 +435,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _agfDatatypeRPCDataManager.service = _serviceControl;        
         _agfDatatypeRPCDataManager.identities =  "id_tag_agf";      
         _agfDatatypeRPCDataManager.itemClass = valueObjects.AgfDatatype; 
-
-
-        // initialize SubGruposDatatype data manager
-        _subGruposDatatypeRPCDataManager = new mx.data.RPCDataManager();
-        managersArray.push(_subGruposDatatypeRPCDataManager);
-
-        managedAssocsArray = new Array();
-
-        _subGruposDatatypeRPCDataManager.destination = "subGruposDatatypeRPCDataManager";
-        _subGruposDatatypeRPCDataManager.service = _serviceControl;        
-        _subGruposDatatypeRPCDataManager.identities =  "ID_SUBGRUPO,ID_TIPO_EMPRESA";      
-        _subGruposDatatypeRPCDataManager.itemClass = valueObjects.SubGruposDatatype; 
 
 
         // initialize GruposDatatype data manager
@@ -500,9 +508,11 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
 
         dmQuery = new mx.data.ManagedQuery("grillaGrupoIndices");
         dmQuery.propertySpecifier = "nombre,descripcion,ID_GRUPO_INDICE_FINANCIERO";
+        dmQuery.countOperation = "countGrupoIndices";
+        dmQuery.pagingEnabled = true;
         dmQuery.positionalPagingParameters = true;
         dmQuery.parameters = "startIndex,numItems";
-        _grupoIndicesDataTypeRPCDataManager.addManagedOperation(dmQuery);
+        _grupoIndiceFinancieroDatatypeRPCDataManager.addManagedOperation(dmQuery);
 
         dmQuery = new mx.data.ManagedQuery("grillaSubGrupos");
         dmQuery.propertySpecifier = "nombre,ID_SUBGRUPO,ID_TIPO_EMPRESA,descripcion";
@@ -898,10 +908,10 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function grillaGrupoIndices(startIndex:Object, numItems:Object) : mx.rpc.AsyncToken
+    public function grillaGrupoIndices() : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaGrupoIndices");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(startIndex,numItems) ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
         return _internal_token;
     }
      
@@ -1280,6 +1290,42 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("valores2");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(empresa,periodo) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'insertarConfig' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function insertarConfig(arrInf:Object) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarConfig");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'indicesFinancieros' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function indicesFinancieros() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("indicesFinancieros");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
         return _internal_token;
     }
      

@@ -371,7 +371,7 @@ protected function guardar_clickHandler(event:MouseEvent):void
 			(this[results] as CallResponder).token = modelo.grillaIndicesFinancieros();
 			break;
 		case 'grillaGrupoIndicesResult':
-			(this[results] as CallResponder).token = modelo.grillaGrupoIndices(0, 10);
+			(this[results] as CallResponder).token = modelo.grillaGrupoIndices();
 			break;
 		case 'grillaMonedasResult':
 			(this[results] as CallResponder).token = modelo.grillaMonedas();
@@ -484,7 +484,7 @@ protected function editar_clickHandler(event:MouseEvent):void
 			(this[results] as CallResponder).token = modelo.grillaIndicesFinancieros();
 			break;
 		case 'grillaGrupoIndicesResult':
-			(this[results] as CallResponder).token = modelo.grillaGrupoIndices(0, 10); 
+			(this[results] as CallResponder).token = modelo.grillaGrupoIndices(); 
 			break;
 	}
 	
@@ -742,7 +742,7 @@ protected function completaIndices(event:ResultEvent):void{
 
 protected function dgGrupoIndices_creationCompleteHandler(event:FlexEvent):void
 {
-	grillaGrupoIndicesResult.token = modelo.grillaGrupoIndices(0,10);
+	grillaGrupoIndicesResult.token = modelo.grillaGrupoIndices();
 	grillaGrupoIndicesResult.addEventListener(ResultEvent.RESULT, completaIndices)
 }
 

@@ -2514,5 +2514,72 @@ function valores2($empresa, $periodo){
 	    	$mysqli->close();
 		return true;
 	    }
+		
+		function insertarConfig($arrInf){
+			    
+	        $mysqli = new mysqli("localhost","agf","agf","agf");
+            if (mysqli_connect_errno()) 
+			{
+			  //si existe error en conexion
+			  die('Error conectando: ' . mysql_error());
+			}
+	            
+			    
+			$sql = "DELETE FROM configexport";
+			$mysqli->query($sql);			    		
+			$sql = "";
+			for($i = 0; $i < count($arrInf); $i++){
+				$sql = "INSERT INTO configexport VALUES ('" . $arrInf[$i] . "');";
+				$mysqli->query($sql);	
+				
+			}	
+			$sql2 = str_replace("'", "''", $sql);
+			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+			$mysqli->query("INSERT INTO log values ('" . print_r($arrInf, 1) . "');");
+			        
+		    return true;
+	            
+	    }
+		
+		function indicesFinancieros(){
+	        //creando variable array
+	        $arr = array();
+	        //conectamos con la mysql
+	        $con = mysql_connect("localhost","agf","agf");
+	            //validamos que la conexion sea exitosa
+	            if (!$con)
+	            {
+	              //si existe error en conexion
+	              die('Error conectando: ' . mysql_error());
+	            }
+	                
+	                mysql_select_db("agf", $con);
+	                
+	                //seleccionamos registros de tabla tb_persona
+	                $result = mysql_query("SELECT a.id_indice_financiero, a.nombre, case isnull(b.id_indice) when true then 0 else false end as oa
+	                	                FROM `indices_financieros` a left join configexport b 
+										ON a.id_indice_financiero = b.id_indice")
+	                or die(mysql_error());
+	                //el LIMIT se configura con los parametros recibidos
+	                //$startIndex
+	                //$numItems
+	                //EJ. seleccione desde el registro 0 hasta el 10
+	                $i=0;
+	                while($row = mysql_fetch_row($result))
+	                {
+	                    //almacenamos los registros en la var array
+					     $arr[$i]['id_indice_financiero']=$row[0];
+					     $arr[$i]['nombre']=$row[1];
+	                     $arr[$i]['oa']=$row[2];
+	                   
+	                 $i++; 
+	                }
+	            //cerramos la conexion con mysql
+	            mysql_close($con);
+	            
+	        //retornamos el arreglo
+	        return $arr;
+	        
+	    }//fin metodo
 }
 ?>

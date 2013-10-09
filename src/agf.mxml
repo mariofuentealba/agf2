@@ -20,6 +20,7 @@
 		<![CDATA[
 			import Componentes.Bloqueo;
 			import Componentes.ComponenteFormula;
+			import Componentes.ConfigExport;
 			
 			import com.as3xls.xls.Sheet;
 			
@@ -42,6 +43,7 @@
 			private var olapx:IList;
 			private var olapy:IList;
 			private var bloqueo:Bloqueo = new Bloqueo();
+			private var config:ConfigExport = new ConfigExport();
 			
 			private function creationCompleteHandler():void {
 				// You must initialize the cube before you 
@@ -207,9 +209,12 @@
 			{
 				// TODO Auto-generated method stub
 				
+				config.width = this.width;
+				config.height = this.height;
+				config.ejecutando = finConfig;
+				PopUpManager.addPopUp(config, this);
 				
-				
-				
+				/*
 				var request:URLRequest = new URLRequest('http://localhost:8888/servicios/export.php');
 				
 				request.method = URLRequestMethod.POST;
@@ -238,7 +243,11 @@
 				}
 				
 				request.data.nombre = val;
-				navigateToURL(request,"_blank");
+				navigateToURL(request,"_blank");*/
+			}
+			
+			public function finConfig():void{
+				PopUpManager.removePopUp(config);
 			}
 			
 		]]>
