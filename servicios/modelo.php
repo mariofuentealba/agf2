@@ -2554,12 +2554,18 @@ function valores2($empresa, $periodo){
 	            }
 	                
 	                mysql_select_db("agf", $con);
-	                
+	                $sql = "SELECT a.id_indice_financiero, a.nombre,
+							CASE isnull( b.id_indice )
+							WHEN TRUE THEN 0
+							ELSE b.id_indice
+							END AS oa, b.id_indice
+							FROM `indices_financieros` a
+							LEFT JOIN configexport b ON a.id_indice_financiero = b.id_indice";
 	                //seleccionamos registros de tabla tb_persona
-	                $result = mysql_query("SELECT a.id_indice_financiero, a.nombre, case isnull(b.id_indice) when true then 0 else false end as oa
-	                	                FROM `indices_financieros` a left join configexport b 
-										ON a.id_indice_financiero = b.id_indice")
+	                $result = mysql_query($sql)
 	                or die(mysql_error());
+					$sql2 = str_replace("'", "''", $sql);
+					mysql_query("INSERT INTO log values ('" . $sql2 . "');");
 	                //el LIMIT se configura con los parametros recibidos
 	                //$startIndex
 	                //$numItems

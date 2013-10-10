@@ -40,10 +40,10 @@
 			[Bindable]private var flatData:ArrayCollection = new ArrayCollection();
 			[Bindable]private var olapData:OLAPResult;
 			
-			private var olapx:IList;
-			private var olapy:IList;
-			private var bloqueo:Bloqueo = new Bloqueo();
-			private var config:ConfigExport = new ConfigExport();
+			public var olapx:IList;
+			public var olapy:IList;
+			public var bloqueo:Bloqueo = new Bloqueo();
+			public var config:ConfigExport = new ConfigExport();
 			
 			private function creationCompleteHandler():void {
 				// You must initialize the cube before you 
@@ -212,38 +212,11 @@
 				config.width = this.width;
 				config.height = this.height;
 				config.ejecutando = finConfig;
+				config.agf = this;
 				PopUpManager.addPopUp(config, this);
 				
-				/*
-				var request:URLRequest = new URLRequest('http://localhost:8888/servicios/export.php');
 				
-				request.method = URLRequestMethod.POST;
 				
-				request.data = new URLVariables();
-				var val:String = ';';
-				olap.dataProvider.query.getAxis(0);
-				var n:int = (olap.dataProvider as OLAPResult).axes[1].positions.length;
-				var m:int = (olap.dataProvider as OLAPResult).axes[0].positions.length;
-				for(var i:int = 0; i < m - 1; i++){
-					val += ';';
-				}
-				val += '\n;';
-				for(i = 0; i < m; i++){
-					val += olapx[i]['name'] + ';';
-				}
-				val = val.substring(0, val.length - 1);				
-				val += '\n';
-				for(i = 0; i < n; i++){
-					val += olapy[i]['name'] + ';';
-					for(var j:int = 0; j < m; j++){
-						val += (olap.dataProvider as OLAPResult).getCell(i, j).value + ';';
-					}
-					val = val.substring(0, val.length - 1);
-					val += '\n';
-				}
-				
-				request.data.nombre = val;
-				navigateToURL(request,"_blank");*/
 			}
 			
 			public function finConfig():void{
@@ -1236,7 +1209,7 @@
 		<s:Button x="159" width="86" label="Exportar" verticalCenter="0" click="export_clickHandler(event)"/><!--cornerRadius="5"-->
 	</s:BorderContainer>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
-	<s:Label y="39" right="5" text="version: 1.0.101"/>
+	<s:Label y="39" right="5" text="version: 1.0.102"/>
 	
 	
 	
