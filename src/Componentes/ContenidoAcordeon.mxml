@@ -21,7 +21,6 @@
 			import mx.rpc.events.ResultEvent;
 			
 			import valueObjects.SubGruposDatatype;
-			
 			[Bindable]public var btnLabel:String;
 			[Bindable]public var heightClick:int;
 			public var contenido:Array = [];
@@ -43,6 +42,7 @@
 			public function contenidoAcordeon_clickHandler(event:MouseEvent, eventoManual:String = ''):void
 			{
 				// TODO Auto-generated method stub
+			//	event.stopPropagation();
 				var sw:String;
 				if(event.target != null){
 					sw = event.target.className;
@@ -64,8 +64,18 @@
 						heightClick += btnExpandir.height + 20;
 						//heightClick = btnExpandir.height + vgOpciones.height;
 		//				Alert.show('' + heightClick);
+						if(this.parent.parent.parent.parent['height'] == 'ContenidoAcordeon'){
+							this.parent.parent.parent.parent['height'] += heightClick; 
+							event.stopPropagation();
+						}
 						break;
 					case 'LinkButton':
+						
+						event.stopPropagation();
+						if(this.parent.parent.parent.parent['className'] == 'ContenidoAcordeon'){
+							this.parent.parent.parent.parent['height'] -= this.height; 
+							this.parent.parent.parent.parent['height'] += 20; 
+						}
 						currentState = 'normal';
 						/*fadeResizeShow.end();
 						fadeResizeShow.play();*/
@@ -130,6 +140,7 @@
 	</s:states>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		
 		<s:Sequence id="fadeResizeHide"
 					target="{this}"
 					duration="500"

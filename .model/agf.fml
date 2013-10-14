@@ -513,11 +513,13 @@
         <item name="analyzed">false</item>
       </annotation>
       <annotation name="original signature">
-        <item name="inputParams">opaque,opaque</item>
+        <item name="inputParams">opaque,opaque,opaque,opaque</item>
         <item name="returnType">opaque</item>
       </annotation>
       <parameter name="arrInf" type="opaque"/>
       <parameter name="tabla" type="opaque"/>
+      <parameter name="arrEmp" type="opaque"/>
+      <parameter name="tipo" type="opaque"/>
     </function>
     <function name="insertarItem" return-type="opaque">
       <annotation name="analyze group">
@@ -641,6 +643,27 @@
       <annotation name="original signature">
         <item name="returnType">opaque</item>
       </annotation>
+    </function>
+    <function name="listEmpresa" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParamNames">arr</item>
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="integer"/>
+    </function>
+    <function name="listSubgrupo" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="integer"/>
     </function>
   </service>
   <entity name="GrupoIndDatatype" persistent="true">

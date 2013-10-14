@@ -882,348 +882,360 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 					        
 					    }//fin metodo
 					    
-					    public function comboGrupoIndicesFinancieros(){
-    					        //creando variable array
-    					        $arr = array();
-    					        //conectamos con la mysql
-    					        $con = mysql_connect("localhost","agf","agf");
-    					            //validamos que la conexion sea exitosa
-    					            if (!$con)
-    					            {
-    					              //si existe error en conexion
-    					              die('Error conectando: ' . mysql_error());
-    					            }
-    					                //si no existe error de conexion
-    					                //seleccionamos base de datos
-    					                mysql_select_db("agf", $con);
-    					                
-    					                //seleccionamos registros de tabla tb_persona
-    					                $result = mysql_query("SELECT * FROM Grupos_Indices_Financieros")
-    					                or die(mysql_error());
-    					                //el LIMIT se configura con los parametros recibidos
-    					                //$startIndex
-    					                //$numItems
-    					                //EJ. seleccione desde el registro 0 hasta el 10
-    					                $i=0;
-    					                while($row = mysql_fetch_row($result))
-    					                {
-    					                    //almacenamos los registros en la var array
-    							     $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[0];
-    					                     $arr[$i]['nombre']=$row[1];
-    							     $arr[$i]['descripcion']=$row[2];
-    							     			                     
-    					                 $i++; 
-    					                }
-    					            //cerramos la conexion con mysql
-    					            mysql_close($con);
-    					            
-    					        //retornamos el arreglo
-    					        return $arr;
-    					        
-    					    }//fin metodo
+	public function comboGrupoIndicesFinancieros(){
+		//creando variable array
+		$arr = array();
+		//conectamos con la mysql
+		$con = mysql_connect("localhost","agf","agf");
+			//validamos que la conexion sea exitosa
+			if (!$con)
+			{
+			  //si existe error en conexion
+			  die('Error conectando: ' . mysql_error());
+			}
+				//si no existe error de conexion
+				//seleccionamos base de datos
+				mysql_select_db("agf", $con);
+				
+				//seleccionamos registros de tabla tb_persona
+				$result = mysql_query("SELECT * FROM Grupos_Indices_Financieros")
+				or die(mysql_error());
+				//el LIMIT se configura con los parametros recibidos
+				//$startIndex
+				//$numItems
+				//EJ. seleccione desde el registro 0 hasta el 10
+				$i=0;
+				while($row = mysql_fetch_row($result))
+				{
+					//almacenamos los registros en la var array
+			 $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[0];
+					 $arr[$i]['nombre']=$row[1];
+			 $arr[$i]['descripcion']=$row[2];
+											 
+				 $i++; 
+				}
+			//cerramos la conexion con mysql
+			mysql_close($con);
+			
+		//retornamos el arreglo
+		return $arr;
+		
+	}//fin metodo
 					    			
 					    	
-	   	public function insertarIndicesFinancieros($arrInf, $tabla){
-	   					    
-	   	//conectamos con la mysql
-	   			    
-	   			    
-	            //$con = mysql_connect("localhost","agf","agf");
-		    $mysqli = new mysqli("localhost","agf","agf","agf");
-	                //validamos que la conexion sea exitosa
-	                //if (!$con)
-			if (mysqli_connect_errno()) 
-	                {
-	                  //si existe error en conexion
-	                  die('Error conectando: ' . mysql_error());
-	                }
-	                    //si no existe error de conexion
-	                    //seleccionamos base de datos
-	                    ///////////////////////mysql_select_db("agf", $con);
-	                    
-	                    //seleccionamos todos los registros de tabla tb_persona
-			    $mysqli->query("INSERT INTO log values ('" . print_r($arrInf, 1) . "');");
-				$mysqli->query("INSERT INTO log values ('" . $tabla . "');");
-			    $sum = 0;   
-			    for($i = 8; $i < 13 ; $i++){
-			    	if($arrInf[$i] != -1){
-					$sum++;
-				}
-			    }   
-			    $arrInf[6] = str_replace('_', '', $arrInf[6]);
-			    $sql = "INSERT INTO formulas values (null, '" . $arrInf[8] . "', '" . $arrInf[9] . "', '" . $arrInf[10] . "', '" . $arrInf[11] . "', '" . $arrInf[12] ."', '" . $arrInf[13] . "', '" . $arrInf[14] . "', '" . $arrInf[15] . "', '" . $arrInf[16] . "', '" . $arrInf[17]. "', '" . $arrInf[6] . "', '" . $sum . "', '" . $arrInf[7]. "', '" . $arrInf[19]. "', '" . $arrInf[20]. "', '" . $arrInf[21]. "', '" . $arrInf[22]. "', '" . $arrInf[23] . "');";
-			    $sql2 = str_replace("'", "''", $sql);
-				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
-			    $mysqli->query("INSERT INTO log values ('" . print_r($arrInf, 1) . "');");				     
-				$mysqli->query($sql);
-	            $ultimo_id = $mysqli->insert_id;
-	                    /*$result = mysql_query($sql)
-	                    or die(mysql_error());*/
-			    
-				$formula1 = explode(".", $arrInf[19]);
-				$formula2 = explode(".", $arrInf[20]);
-				$formula3 = explode(".", $arrInf[21]);
-				$formula4 = explode(".", $arrInf[22]);
-				$formula5 = explode(".", $arrInf[23]);
-			
-			    
-			    
-			    $sql = "INSERT INTO indices_financieros VALUES (null, '" . $arrInf[18] . "', 4, '" . $arrInf[0] . "', '" . $arrInf[1] . "', '" . $ultimo_id . "', '" . $arrInf[2] . "', '" . $arrInf[5] . "', '" . $arrInf[4] . "', '" . $arrInf[3] . "', 1);";
-			    $sql2 = str_replace("'", "''", $sql);
-				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
-			       				
-			    $mysqli->query($sql);			    
-			    $indiceNuevo = $mysqli->insert_id;
-	                 //   $mysqli->close();
-	                //mysql_close($con);
-	                
-	            //retornamos el largo del arreglo
-		  //  $ultimo_id = mysql_insert_id($con);
-	            //return $ultimo_id;
-		    $formula1[0] = $formula1[0] == 'C' ? 1 : 2;
-			$formula2[0] = $formula2[0] == 'C' ? 1 : 2;
-			$formula3[0] = $formula3[0] == 'C' ? 1 : 2;
-			$formula4[0] = $formula4[0] == 'C' ? 1 : 2;
-			$formula5[0] = $formula5[0] == 'C' ? 1 : 2;
-			
-			$comp1 = ' AND x.id_periodo = a.id_periodo ';
-			$comp2 = ' AND x.id_periodo = a.id_periodo ';
-			$comp3 = ' AND x.id_periodo = a.id_periodo ';
-			$comp4 = ' AND x.id_periodo = a.id_periodo ';
-			$comp5 = ' AND x.id_periodo = a.id_periodo ';
-			
-			
-			
-			if(count($formula1) > 1){
-					switch($formula1[1]){
-						case 'NN':
-							$comp1 = ' AND x.id_periodo = a.id_periodo ';
-							break;
-						case 'AN':
-							$comp1 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
-																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
-							break;
-						case 'AA':
-							$comp1 = ' AND x.id_periodo	in (SELECT r.id_periodo
-																			FROM periodos r, periodos p
-																			WHERE r.ano = p.ano
-																				  AND r.mes < p.mes
-																				  AND r.oa = 1
-																				  AND p.id_periodo = a.id_periodo) ';
-							break;
-						case 'AS':
-							$comp1 = " AND 'QUERY' ";
-							break;	
-					
-					}
-				}
+	public function insertarIndicesFinancieros($arrInf, $tabla, $arrEmp, $tipo){
+						
+	//conectamos con la mysql
 				
-				if(count($formula2) > 1){
-					switch($formula2[1]){
-						case 'NN':
-							$comp2 = ' AND x.id_periodo = a.id_periodo ';
-							break;
-						case 'AN':
-							$comp2 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
-																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
-							break;
-						case 'AA':
-							$comp2 = ' AND x.id_periodo	in (SELECT r.id_periodo
-																			FROM periodos r, periodos p
-																			WHERE r.ano = p.ano
-																				  AND r.mes < p.mes
-																				  AND r.oa = 1
-																				  AND p.id_periodo = a.id_periodo) ';
-							break;
-						case 'AS':
-							$comp2 = " AND 'QUERY' ";
-							break;	
-					
-					}
-				}
 				
-				if(count($formula3) > 1){
-					switch($formula3[1]){
-						case 'NN':
-							$comp3 = ' AND x.id_periodo = a.id_periodo ';
-							break;
-						case 'AN':
-							$comp3 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
-																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
-							break;
-						case 'AA':
-							$comp3 = ' AND x.id_periodo	in (SELECT r.id_periodo
-																			FROM periodos r, periodos p
-																			WHERE r.ano = p.ano
-																				  AND r.mes < p.mes
-																				  AND r.oa = 1
-																				  AND p.id_periodo = a.id_periodo) ';
-							break;
-						case 'AS':
-							$comp3 = " AND 'QUERY' ";
-							break;	
-					
-					}
-				}
-				//$mysqli->query("INSERT INTO log values ('" . $formula4[0] . "');");
-				
-				if(count($formula4) > 1){
-					switch($formula4[1]){
-						case 'NN':
-							$comp4 = ' AND x.id_periodo = a.id_periodo ';
-							break;
-						case 'AN':
-							$comp4 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
-																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
-							break;
-						case 'AA':
-							$comp4 = ' AND x.id_periodo	in (SELECT r.id_periodo
-																			FROM periodos r, periodos p
-																			WHERE r.ano = p.ano
-																				  AND r.mes < p.mes
-																				  AND r.oa = 1
-																				  AND p.id_periodo = a.id_periodo) ';
-							break;
-						case 'AS':
-							$comp4 = " AND 'QUERY' ";
-							break;	
-					
-					}
-				}
-				
-				if(count($formula5) > 1){
-					switch($formula5[1]){
-						case 'NN':
-							$comp5 = ' AND x.id_periodo = a.id_periodo ';
-							break;
-						case 'AN':
-							$comp5 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
-																			FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
-							break;
-						case 'AA':
-							$comp5 = ' AND x.id_periodo	in (SELECT r.id_periodo
-																			FROM periodos r, periodos p
-																			WHERE r.ano = p.ano
-																				  AND r.mes < p.mes
-																				  AND r.oa = 1
-																				  AND p.id_periodo = a.id_periodo) ';
-							break;
-						case 'AS':
-							$comp5 = " AND 'QUERY' ";
-							break;	
-					
-					}
-				}
-			
-			$sql = "select distinct c.id_formula, a.id_empresa, a.id_periodo,
-						(select SUM(valor)
-								   from valores x, indices_financieros z, formulas w
-						   where w.id_formula = z.id_formula
-								 AND x.id_tag_agf = w.campo1
-								 AND z.id_indice_financiero = b.id_indice_financiero
-								 AND x.id_empresa = a.id_empresa
-								 " . $comp1 . "
-								 AND w.tipoc1 = " . $formula1[0] . "
-						 AND x.tipo = 'TRIMESTRAL' )		 				
-					       C1, 			                	
-						(select SUM(valor)
-								   from valores x, indices_financieros z, formulas w
-						   where w.id_formula = z.id_formula
-								 AND x.id_tag_agf = w.campo2
-								 AND z.id_indice_financiero = b.id_indice_financiero
-								 AND x.id_empresa = a.id_empresa
-								 " . $comp2 . "
-								 AND w.tipoc1 = " . $formula2[0] . "
-						 AND x.tipo = 'TRIMESTRAL' )
-						C2,
-			                	(select SUM(valor)
-								   from valores x, indices_financieros z, formulas w
-						   where w.id_formula = z.id_formula
-								 AND x.id_tag_agf = w.campo3
-								 AND z.id_indice_financiero = b.id_indice_financiero
-								 AND x.id_empresa = a.id_empresa
-								 " . $comp3 . "									
-								 AND w.tipoc1 = " . $formula3[0] . "
-						 AND x.tipo = 'TRIMESTRAL' ) C3,
-			                	(select SUM(valor)
-								   from valores x, indices_financieros z, formulas w
-						   where w.id_formula = z.id_formula
-								 AND x.id_tag_agf = w.campo4
-								 AND z.id_indice_financiero = b.id_indice_financiero
-								 AND x.id_empresa = a.id_empresa
-								 " . $comp4 . "									
-								 AND w.tipoc1 = " . $formula4[0] . "
-						 AND x.tipo = 'TRIMESTRAL' ) C4,
-			                	(select SUM(valor)
-								   from valores x, indices_financieros z, formulas w
-						   where w.id_formula = z.id_formula
-								 AND x.id_tag_agf = w.campo5
-								 AND z.id_indice_financiero = b.id_indice_financiero
-								 AND x.id_empresa = a.id_empresa
-								 " . $comp5 . "									
-								 AND w.tipoc1 = " . $formula5[0] . "
-						 AND x.tipo = 'TRIMESTRAL' ) C5, concat(d.rso, ': ', b.nombre), label, formula, e.ano, e.mes, d.color
-			                From valores a, indices_financieros b, formulas c, empresas d, periodos e
-			                where c.id_formula = b.id_formula			                    
-			                    AND a.id_empresa = d.id_empresa
-			                    AND a.id_periodo = e.id_periodo
-								AND c.id_formula = " . $ultimo_id . "
-					    AND a.tipo = 'TRIMESTRAL';";
-		$sql2 = str_replace("'", "''", $sql);
-	        $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
-		
-                $result = $mysqli->query($sql)
-                or die(mysql_error());
-                $i = 0;
-		$formula = '';
-		$operacion = array();
-		$arrInf = array();	
-		while($row = $result->fetch_array(MYSQLI_NUM))
+			//$con = mysql_connect("localhost","agf","agf");
+		$mysqli = new mysqli("localhost","agf","agf","agf");
+				//validamos que la conexion sea exitosa
+				//if (!$con)
+		if (mysqli_connect_errno()) 
 		{
-                    //almacenamos los registros en la var array
-		    /* $mysqli->query("INSERT INTO log values ('" . print_r($row, 1) . "');");
-		     $arr[$i]['id_tag_agf']=$row[0];
-		     $arr[$i]['id_empresa']=$row[1];
-                     $arr[$i]['id_periodo']=$row[2];	     */
-		     $operacion = $row[10];
-		     //$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
-		        if(!isset($row[3]))
-				$row[3] = 0;
-			$operacion = str_replace('C1', $row[3], $operacion);
-			if(!isset($row[4]))
-				$row[4] = 0;
-			$operacion = str_replace('C2', $row[4], $operacion);
-			if(!isset($row[5]))			
-				$row[5] = 0;
-			$operacion = str_replace('C3', $row[5], $operacion);
-			if(!isset($row[6]))
-				$row[6] = 0;
-			$operacion = str_replace('C4', $row[6], $operacion);
-			if(!isset($row[7]))
-				$row[7] = 0;
-			$operacion = str_replace('C5', $row[7], $operacion);
-			$formula = ($row[0] . " " . $row[1] . " "  . $row[2]);
-			$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
-			eval( "\$res = " . $operacion . ";");		
-			$arr[$i]['valor'] = $res;
+		  //si existe error en conexion
+		  die('Error conectando: ' . mysql_error());
+		}
+					//si no existe error de conexion
+					//seleccionamos base de datos
+					///////////////////////mysql_select_db("agf", $con);
+					
+					//seleccionamos todos los registros de tabla tb_persona
+		$mysqli->query("INSERT INTO log values ('" . print_r($arrInf, 1) . "');");
+		$mysqli->query("INSERT INTO log values ('" . print_r($arrEmp, 1) . "');");
+		$mysqli->query("INSERT INTO log values ('" . $tabla . "');");
+		$sum = 0;   
+		for($i = 8; $i < 13 ; $i++){
+			if($arrInf[$i] != -1){
+			$sum++;
+		}
+		}   
+		$arrInf[6] = str_replace('_', '', $arrInf[6]);
+		$sql = "INSERT INTO formulas values (null, '" . $arrInf[8] . "', '" . $arrInf[9] . "', '" . $arrInf[10] . "', '" . $arrInf[11] . "', '" . $arrInf[12] ."', '" . $arrInf[13] . "', '" . $arrInf[14] . "', '" . $arrInf[15] . "', '" . $arrInf[16] . "', '" . $arrInf[17]. "', '" . $arrInf[6] . "', '" . $sum . "', '" . $arrInf[7]. "', '" . $arrInf[19]. "', '" . $arrInf[20]. "', '" . $arrInf[21]. "', '" . $arrInf[22]. "', '" . $arrInf[23] . "');";
+		$sql2 = str_replace("'", "''", $sql);
+		$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+		$mysqli->query("INSERT INTO log values ('" . print_r($arrInf, 1) . "');");				     
+		$mysqli->query($sql);
+		$ultimo_id = $mysqli->insert_id;
+					/*$result = mysql_query($sql)
+					or die(mysql_error());*/
 			
-			$arr[$i]['nombre_final']=$row[8];
-			$arr[$i]['label'] = $row[9];			
-			$arr[$i]['color'] = $row[18];
-			$arr[$i]['graf'] = 1;	
+			$formula1 = explode(".", $arrInf[19]);
+			$formula2 = explode(".", $arrInf[20]);
+			$formula3 = explode(".", $arrInf[21]);
+			$formula4 = explode(".", $arrInf[22]);
+			$formula5 = explode(".", $arrInf[23]);
+		
 			
-			$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
-			VALUES (null," . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'TRIMESTRAL'," . $res . ",'2013',2);";
+			
+			$sql = "INSERT INTO indices_financieros VALUES (null, '" . $arrInf[18] . "', 4, '" . $arrInf[0] . "', '" . $arrInf[1] . "', '" . $ultimo_id . "', '" . $arrInf[2] . "', '" . $arrInf[5] . "', '" . $arrInf[4] . "', '" . $arrInf[3] . "', 1);";
 			$sql2 = str_replace("'", "''", $sql);
-	   //     $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
-			$mysqli->query($sql);	
+			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+							
+			$mysqli->query($sql);			    
+			$indiceNuevo = $mysqli->insert_id;
+			
+			for($i = 0; $i < count($arrEmp); $i++){
+				$sql = "INSERT INTO indice_empresa values ('" . $indiceNuevo . "', '" . $arrEmp[$i] . "', '" . $tipo ."');";
+				$sql2 = str_replace("'", "''", $sql);
+				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+				$mysqli->query("INSERT INTO log values ('" . print_r($arrInf, 1) . "');");				     
+				$mysqli->query($sql);
+			}
+			
+			
+			
+				 //   $mysqli->close();
+				//mysql_close($con);
 				
-			$i++;
-            }
-			$arr = array();
-		    //$arr[0]['ID'] = $ultimo_id;
-		    
-		    return $ultimo_id;
+			//retornamos el largo del arreglo
+	  //  $ultimo_id = mysql_insert_id($con);
+			//return $ultimo_id;
+		$formula1[0] = $formula1[0] == 'C' ? 1 : 2;
+		$formula2[0] = $formula2[0] == 'C' ? 1 : 2;
+		$formula3[0] = $formula3[0] == 'C' ? 1 : 2;
+		$formula4[0] = $formula4[0] == 'C' ? 1 : 2;
+		$formula5[0] = $formula5[0] == 'C' ? 1 : 2;
+		
+		$comp1 = ' AND x.id_periodo = a.id_periodo ';
+		$comp2 = ' AND x.id_periodo = a.id_periodo ';
+		$comp3 = ' AND x.id_periodo = a.id_periodo ';
+		$comp4 = ' AND x.id_periodo = a.id_periodo ';
+		$comp5 = ' AND x.id_periodo = a.id_periodo ';
+		
+		
+		
+		if(count($formula1) > 1){
+				switch($formula1[1]){
+					case 'NN':
+						$comp1 = ' AND x.id_periodo = a.id_periodo ';
+						break;
+					case 'AN':
+						$comp1 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																		FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+						break;
+					case 'AA':
+						$comp1 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r, periodos p
+																		WHERE r.ano = p.ano
+																			  AND r.mes < p.mes
+																			  AND r.oa = 1
+																			  AND p.id_periodo = a.id_periodo) ';
+						break;
+					case 'AS':
+						$comp1 = " AND 'QUERY' ";
+						break;	
+				
+				}
+			}
+			
+			if(count($formula2) > 1){
+				switch($formula2[1]){
+					case 'NN':
+						$comp2 = ' AND x.id_periodo = a.id_periodo ';
+						break;
+					case 'AN':
+						$comp2 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																		FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+						break;
+					case 'AA':
+						$comp2 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r, periodos p
+																		WHERE r.ano = p.ano
+																			  AND r.mes < p.mes
+																			  AND r.oa = 1
+																			  AND p.id_periodo = a.id_periodo) ';
+						break;
+					case 'AS':
+						$comp2 = " AND 'QUERY' ";
+						break;	
+				
+				}
+			}
+			
+			if(count($formula3) > 1){
+				switch($formula3[1]){
+					case 'NN':
+						$comp3 = ' AND x.id_periodo = a.id_periodo ';
+						break;
+					case 'AN':
+						$comp3 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																		FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+						break;
+					case 'AA':
+						$comp3 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r, periodos p
+																		WHERE r.ano = p.ano
+																			  AND r.mes < p.mes
+																			  AND r.oa = 1
+																			  AND p.id_periodo = a.id_periodo) ';
+						break;
+					case 'AS':
+						$comp3 = " AND 'QUERY' ";
+						break;	
+				
+				}
+			}
+			//$mysqli->query("INSERT INTO log values ('" . $formula4[0] . "');");
+			
+			if(count($formula4) > 1){
+				switch($formula4[1]){
+					case 'NN':
+						$comp4 = ' AND x.id_periodo = a.id_periodo ';
+						break;
+					case 'AN':
+						$comp4 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																		FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+						break;
+					case 'AA':
+						$comp4 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r, periodos p
+																		WHERE r.ano = p.ano
+																			  AND r.mes < p.mes
+																			  AND r.oa = 1
+																			  AND p.id_periodo = a.id_periodo) ';
+						break;
+					case 'AS':
+						$comp4 = " AND 'QUERY' ";
+						break;	
+				
+				}
+			}
+			
+			if(count($formula5) > 1){
+				switch($formula5[1]){
+					case 'NN':
+						$comp5 = ' AND x.id_periodo = a.id_periodo ';
+						break;
+					case 'AN':
+						$comp5 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																		FROM periodos m WHERE m.id_periodo = a.id_periodo) ';
+						break;
+					case 'AA':
+						$comp5 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r, periodos p
+																		WHERE r.ano = p.ano
+																			  AND r.mes < p.mes
+																			  AND r.oa = 1
+																			  AND p.id_periodo = a.id_periodo) ';
+						break;
+					case 'AS':
+						$comp5 = " AND 'QUERY' ";
+						break;	
+				
+				}
+			}
+		
+		$sql = "select distinct c.id_formula, a.id_empresa, a.id_periodo,
+					(select SUM(valor)
+							   from valores x, indices_financieros z, formulas w
+					   where w.id_formula = z.id_formula
+							 AND x.id_tag_agf = w.campo1
+							 AND z.id_indice_financiero = b.id_indice_financiero
+							 AND x.id_empresa = a.id_empresa
+							 " . $comp1 . "
+							 AND w.tipoc1 = " . $formula1[0] . "
+					 AND x.tipo = 'TRIMESTRAL' )		 				
+					   C1, 			                	
+					(select SUM(valor)
+							   from valores x, indices_financieros z, formulas w
+					   where w.id_formula = z.id_formula
+							 AND x.id_tag_agf = w.campo2
+							 AND z.id_indice_financiero = b.id_indice_financiero
+							 AND x.id_empresa = a.id_empresa
+							 " . $comp2 . "
+							 AND w.tipoc1 = " . $formula2[0] . "
+					 AND x.tipo = 'TRIMESTRAL' )
+					C2,
+							(select SUM(valor)
+							   from valores x, indices_financieros z, formulas w
+					   where w.id_formula = z.id_formula
+							 AND x.id_tag_agf = w.campo3
+							 AND z.id_indice_financiero = b.id_indice_financiero
+							 AND x.id_empresa = a.id_empresa
+							 " . $comp3 . "									
+							 AND w.tipoc1 = " . $formula3[0] . "
+					 AND x.tipo = 'TRIMESTRAL' ) C3,
+							(select SUM(valor)
+							   from valores x, indices_financieros z, formulas w
+					   where w.id_formula = z.id_formula
+							 AND x.id_tag_agf = w.campo4
+							 AND z.id_indice_financiero = b.id_indice_financiero
+							 AND x.id_empresa = a.id_empresa
+							 " . $comp4 . "									
+							 AND w.tipoc1 = " . $formula4[0] . "
+					 AND x.tipo = 'TRIMESTRAL' ) C4,
+							(select SUM(valor)
+							   from valores x, indices_financieros z, formulas w
+					   where w.id_formula = z.id_formula
+							 AND x.id_tag_agf = w.campo5
+							 AND z.id_indice_financiero = b.id_indice_financiero
+							 AND x.id_empresa = a.id_empresa
+							 " . $comp5 . "									
+							 AND w.tipoc1 = " . $formula5[0] . "
+					 AND x.tipo = 'TRIMESTRAL' ) C5, concat(d.rso, ': ', b.nombre), label, formula, e.ano, e.mes, d.color
+						From valores a, indices_financieros b, formulas c, empresas d, periodos e
+						where c.id_formula = b.id_formula			                    
+							AND a.id_empresa = d.id_empresa
+							AND a.id_periodo = e.id_periodo
+							AND c.id_formula = " . $ultimo_id . "
+					AND a.tipo = 'TRIMESTRAL';";
+	$sql2 = str_replace("'", "''", $sql);
+		$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
+	
+			$result = $mysqli->query($sql)
+			or die(mysql_error());
+			$i = 0;
+	$formula = '';
+	$operacion = array();
+	$arrInf = array();	
+	while($row = $result->fetch_array(MYSQLI_NUM))
+	{
+				//almacenamos los registros en la var array
+		/* $mysqli->query("INSERT INTO log values ('" . print_r($row, 1) . "');");
+		 $arr[$i]['id_tag_agf']=$row[0];
+		 $arr[$i]['id_empresa']=$row[1];
+				 $arr[$i]['id_periodo']=$row[2];	     */
+		 $operacion = $row[10];
+		 //$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+			if(!isset($row[3]))
+			$row[3] = 0;
+		$operacion = str_replace('C1', $row[3], $operacion);
+		if(!isset($row[4]))
+			$row[4] = 0;
+		$operacion = str_replace('C2', $row[4], $operacion);
+		if(!isset($row[5]))			
+			$row[5] = 0;
+		$operacion = str_replace('C3', $row[5], $operacion);
+		if(!isset($row[6]))
+			$row[6] = 0;
+		$operacion = str_replace('C4', $row[6], $operacion);
+		if(!isset($row[7]))
+			$row[7] = 0;
+		$operacion = str_replace('C5', $row[7], $operacion);
+		$formula = ($row[0] . " " . $row[1] . " "  . $row[2]);
+		$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+		eval( "\$res = " . $operacion . ";");		
+		$arr[$i]['valor'] = $res;
+		
+		$arr[$i]['nombre_final']=$row[8];
+		$arr[$i]['label'] = $row[9];			
+		$arr[$i]['color'] = $row[13];
+		$arr[$i]['graf'] = 1;	
+		
+		$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
+		VALUES (null," . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'TRIMESTRAL'," . $res . ",'2013',2);";
+		$sql2 = str_replace("'", "''", $sql);
+   //     $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
+		$mysqli->query($sql);	
+			
+		$i++;
+		}
+		$arr = array();
+		//$arr[0]['ID'] = $ultimo_id;
+		
+		return $ultimo_id;
 	   			            
 	}
 	
@@ -2587,5 +2599,107 @@ function valores2($empresa, $periodo){
 	        return $arr;
 	        
 	    }//fin metodo
+		
+		function listEmpresa($id){
+			$where = "";
+	        if($id == 0){
+				$sql = "SELECT a.`ID_EMPRESA` , `RUT` , `RSO` , `NOMBRE_FANTASIA` , `NOMBRE_BOLSA` , `VALOR_ACCION` , `TIPO_BALANCE` , 
+						`TIPO_IFRS`, color, 0 as oa
+						FROM `empresas` a 
+						";
+			} else {
+				$sql = "SELECT a.`ID_EMPRESA` , `RUT` , `RSO` , `NOMBRE_FANTASIA` , `NOMBRE_BOLSA` , `VALOR_ACCION` , `TIPO_BALANCE` , 
+						`TIPO_IFRS`, color, CASE isnull( b.id_empresa )
+						WHEN TRUE THEN 0
+						ELSE b.id_indice
+						END AS oa
+						FROM `empresas` a LEFT JOIN `indice_empresa` b ON a.id_empresa = b.id_empresa									
+						WHERE b.id_indice = " . $id;
+			}
+	        $arr = array();
+	        //conectamos con la mysql
+	        $con = mysql_connect("localhost","agf","agf");
+	            //validamos que la conexion sea exitosa
+	            if (!$con)
+	            {
+	              //si existe error en conexion
+	              die('Error conectando: ' . mysql_error());
+	            }
+				mysql_select_db("agf", $con);
+				
+				
+				$result = mysql_query($sql)
+				or die(mysql_error());
+				$i=0;
+				while($row = mysql_fetch_row($result))
+				{
+					 $arr[$i]['ID_EMPRESA']=$row[0];
+					 $arr[$i]['RUT']=$row[1];
+					 $arr[$i]['RSO']=$row[2];
+					 $arr[$i]['NOMBRE_FANTASIA']=$row[3];
+					 $arr[$i]['NOMBRE_BOLSA']=$row[4];
+					 $arr[$i]['TIPO_BALANCE']=$row[6];			     
+					 $arr[$i]['TIPO_IFRS']=$row[7];
+					 $arr[$i]['color']=$row[8];
+					 $arr[$i]['oa']=$row[9];
+					 $i++; 
+				}
+			mysql_close($con);
+	            
+	        return $arr;
+	        
+	    }//fin metod
+		
+		function listSubgrupo($id){
+			$where = "";
+	        if($id == 0){
+				$sql = "SELECT a.*, 0 AS oa 
+						FROM subgrupos a";
+			} else {
+				$sql = "SELECT a.*, CASE isnull( b.id_subgrupo )
+						WHEN TRUE THEN 0
+						ELSE b.id_subgrupo
+						END AS oa 
+						FROM subgrupos a LEFT JOIN indice_subgrupo_empresa b On a.id_subgrupo = b.id_subgrupo 
+						WHERE b.id_indice = " . $id;
+			}
+	         //creando variable array
+				$arr = array();
+				//conectamos con la mysql
+				$con = mysql_connect("localhost","agf","agf");
+			//validamos que la conexion sea exitosa
+			if (!$con)
+			{
+			  //si existe error en conexion
+			  die('Error conectando: ' . mysql_error());
+			}
+				//si no existe error de conexion
+				//seleccionamos base de datos
+				mysql_select_db("agf", $con);
+				
+				//seleccionamos registros de tabla tb_persona
+				$result = mysql_query($sql)
+				or die(mysql_error());
+				//el LIMIT se configura con los parametros recibidos
+				//$startIndex
+				//$numItems
+				//EJ. seleccione desde el registro 0 hasta el 10
+				$i=0;
+				while($row = mysql_fetch_row($result))
+				{
+					//almacenamos los registros en la var array
+					$arr[$i]['ID_SUBGRUPO']=$row[0];
+					$arr[$i]['nombre']=$row[1];
+					$arr[$i]['descripcion']=$row[2];			                     
+					$arr[$i]['oa']=$row[3];			                     
+					$i++; 
+				}
+			//cerramos la conexion con mysql
+			mysql_close($con);
+				
+			//retornamos el arreglo
+			return $arr;
+	        
+	    }//fin metod
 }
 ?>

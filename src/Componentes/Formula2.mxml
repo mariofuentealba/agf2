@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+				   xmlns:s="library://ns.adobe.com/flex/spark"
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   width="100%" height="100%" alpha="0.7" color="#050505"				   
+				   close="titlewindow1_closeHandler(event)" direction="ltr" horizontalCenter="0"
+				   title="Fórmula"
+				   >
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.components.ComboBox;
+			import spark.events.IndexChangeEvent;
+			public var formula:Array = [];
+			public var formulaAux:Array = [];
+			public var arrXBRL:ArrayCollection = new ArrayCollection();
+			public var arrFormulas:ArrayCollection = new ArrayCollection();
+			public var cerrando:Function;
+			private var c:int = 1;
+			private var f:int = 1;
+			private var opciones:TiempoItem = new TiempoItem();
+			private var _datos:ArrayCollection 
+			private var _s:String;
+		
+			
+			protected function bordercontainer1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				// TODO Auto-generated method stub
+				if(event.target.className == 'Button'){
+					switch(event.target.label){
+						case '()':
+							txtFormula.text = txtFormula.text.replace('_', "(_)");
+							formula.push("(_)");
+							break;
+						case '..':
+							txtFormula.text = txtFormula.text.replace('_)', ")_");
+							formula.push(")_");
+							break;
+						case 'Retroceder':
+							txtFormula.text = "_";
+							formulaAux.push(formula.pop());
+							for(var i:int = 0; i < formula.length; i++){
+								txtFormula.text = txtFormula.text.replace('_', formula[i]);
+							}
+							break;
+						case 'Avanzar':
+							txtFormula.text = "_";
+							formula.push(formulaAux.pop());
+							for(i = 0; i < formula.length; i++){
+								txtFormula.text = txtFormula.text.replace('_', formula[i]);
+							}
+							break;
+						default:
+							txtFormula.text = txtFormula.text.replace('_', event.target.label + "_");
+							formula.push(event.target.label + "_");
+					}	
+				}
+			}
+			
+			protected function titlewindow1_closeHandler(event:CloseEvent):void
+			{
+				// TODO Auto-generated method stub
+				cerrando.call(this, txtFormula.text, vgCombos);
+			}
+			
+			protected function actualiza(event:IndexChangeEvent):void{
+				//	Alert.show('' + event.target);
+				
+			}
+			
+			protected function linkbutton1_clickHandler(datos:ArrayCollection, s:String):void
+			{
+				if(c < 6){
+					this._s = s;
+					var cb:ComponenteFormula = new ComponenteFormula();
+					cb.cb.dataProvider = datos;
+					cb.cb.labelField = 'etiqueta';
+					var bt:Button = new Button();
+					bt.label = 'C' + c;
+					/******bt.name = this._s + cb.ddl.selectedItem['label'] + '.' + c;*/
+					cb.campo = this._s + '.' + c;
+					cb.ddl.name = this._s + '.' + c + '.NN';
+					cb.name = bt.name; 
+					vgCombos.addElement(cb);
+					hgBotones.addElement(bt);
+					bt.percentWidth = 100;
+					cb.percentWidth = 100;
+					c++;
+					cb.name = bt.name; 
+					vgCombos.addElement(cb);
+					bt.percentWidth = 100;
+					cb.percentWidth = 100;	
+				} else {
+					var a:Alert = new Alert();
+					a.move(200,200);
+					
+					Alert.show('Maximo cinco Campos', 'Atención');
+				}
+				
+				
+				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+		<s:BorderContainer y="51" width="500" height="100"
+						   click="bordercontainer1_clickHandler(event)" horizontalCenter="0">
+			<s:HGroup id="hgBotones" left="5" right="5" top="5" height="20">
+			</s:HGroup>
+			<s:HGroup y="29" left="4" right="6" height="20">
+				<s:Button width="100%" label="()"/>
+				<s:Button width="100%" label=".."/>
+				<s:Button width="100%" label="+"/>
+				<s:Button width="100%" label="-"/>
+				<s:Button width="100%" label="*"/>
+				<s:Button width="100%" label="/"/>
+			</s:HGroup>
+			<s:HGroup left="5" right="5" bottom="3" height="20">
+				<s:Button width="100%" label="Retroceder"/>
+				<s:Button width="100%" label="Avanzar"/>
+			</s:HGroup>
+			<s:HGroup y="52" left="5" gap="1" right="5" height="20">
+				<s:Button label="0" width="100%"/>
+				<s:Button label="1" width="100%"/>
+				<s:Button label="2" width="100%"/>
+				<s:Button label="3" width="100%"/>
+				<s:Button label="4" width="100%"/>
+				<s:Button label="5" width="100%"/>
+				<s:Button label="6" width="100%"/>
+				<s:Button label="7" width="100%"/>
+				<s:Button label="8" width="100%"/>
+				<s:Button label="9" width="100%"/>
+			</s:HGroup>
+		</s:BorderContainer>
+		<s:Label id="txtFormula" y="10" width="500" height="40" horizontalCenter="0" text="_"/>
+		<s:BorderContainer y="159" width="500" horizontalCenter="0">
+			<s:VGroup>
+				<s:Label top="5" width="100%" fontSize="12" fontWeight="bold" horizontalCenter="0"
+						 text="Campos" textAlign="center"/>
+				<s:HGroup width="100%">
+					<mx:LinkButton width="100%" label="Agregar Campo"
+								   click="linkbutton1_clickHandler(arrXBRL, 'C')"
+								   rollOverColor="#F6C877" selectionColor="#9B9999"
+								   themeColor="#149E24"/>
+					<mx:LinkButton width="100%" label="Agregar Fórmula" click="linkbutton1_clickHandler(arrFormulas, 'F')"/>
+				</s:HGroup>
+				<s:VGroup id="vgCombos" top="15" width="500" horizontalCenter="0">
+					
+				</s:VGroup>	
+			</s:VGroup>
+			
+		</s:BorderContainer>
+		
+	
+	
+</s:TitleWindow>

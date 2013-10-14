@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%" xmlns:modelo="services.modelo.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.DragEvent;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			import services.modelo.Modelo;
+			
+			[Bindable]private var arrTodos:ArrayCollection = new ArrayCollection();
+			[Bindable]private var arrSelect:ArrayCollection = new ArrayCollection();
+			public var idn:int = 0;
+			[Bindable]public var codInsert:String = '';
+			[Bindable]public var labelInsert:String = '';
+			public var modelo:Modelo;
+			public var servicioInvocado:String;
+			
+			
+			protected function lTodos_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				infoResult.token = modelo[servicioInvocado](idn);
+				infoResult.addEventListener(ResultEvent.RESULT, llenaList);
+				
+			}
+			
+			private function llenaList(event:ResultEvent):void{
+				var arr:ArrayCollection = event.result as ArrayCollection;
+				for each(var o:Object in arr){
+					if(o['oa'] == 0){
+						arrTodos.addItem(o);
+					} else {
+						arrSelect.addItem(o);
+					}
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:RadioButtonGroup id="radiogroup"/>
+		<s:CallResponder id="infoResult"/>
+		
+	</fx:Declarations>
+	<s:List id="lTodos" left="30" top="0" bottom="20" width="250"
+			creationComplete="lTodos_creationCompleteHandler(event)" dataProvider="{arrTodos}"
+			dragMoveEnabled="true" dragEnabled="true" dropEnabled="true"
+			labelField="{labelInsert}" allowMultipleSelection="true"			
+			>
+		
+	</s:List>
+	
+	<s:List id="lSelect" right="30" top="0" bottom="20" width="250" dataProvider="{arrSelect}"
+			dragMoveEnabled="true"  dragEnabled="true" dropEnabled="true"
+			labelField="{labelInsert}" allowMultipleSelection="true"
+			></s:List>
+</s:Group>

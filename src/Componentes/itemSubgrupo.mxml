@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				xmlns:Componentes="Componentes.*"
+				width="400" height="300">
+	<s:states>
+		<s:State name="Normal"/>
+		<s:State name="Subgrupo"/>
+	</s:states>
+	<fx:Script>
+		<![CDATA[
+			public var dato:String = ''
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Label id="lb" text="{data[dato]}" top="5" left="5" bottom="5" includeIn="Normal"/>
+	<Componentes:ContenidoAcordeon includeIn="Subgrupo" x="0" y="10">
+	</Componentes:ContenidoAcordeon>
+</s:ItemRenderer>
