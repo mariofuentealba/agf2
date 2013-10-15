@@ -336,7 +336,7 @@ public function insertarSubgrupo($arrInf, $table, $param){
 	            
 	        }
 
-public function grillaSubGrupos($startIndex, $numItems){
+public function grillaSubGrupos(){
 	        //creando variable array
 	        $arr = array();
 	        //conectamos con la mysql
@@ -352,7 +352,7 @@ public function grillaSubGrupos($startIndex, $numItems){
 	                mysql_select_db("agf", $con);
 	                
 	                //seleccionamos registros de tabla tb_persona
-	                $result = mysql_query("SELECT a.ID_SUBGRUPO, nombre, descripcion, ID_TIPO_EMPRESA  FROM subgrupos a, grupos_subgrupos b where a.id_subgrupo = b.id_subgrupo  LIMIT $startIndex, $numItems")
+	                $result = mysql_query("SELECT a.ID_SUBGRUPO, nombre, descripcion, ID_TIPO_EMPRESA  FROM subgrupos a, grupos_subgrupos b where a.id_subgrupo = b.id_subgrupo")
 	                or die(mysql_error());
 	                //el LIMIT se configura con los parametros recibidos
 	                //$startIndex
@@ -557,9 +557,8 @@ public function grillaEmpresa($startIndex, $numItems){
 	                mysql_select_db("agf", $con);
 	                
 	                //seleccionamos registros de tabla tb_persona
-	                $result = mysql_query("SELECT a.`ID_EMPRESA` , `RUT` , `RSO` , `NOMBRE_FANTASIA` , `NOMBRE_BOLSA` , `VALOR_ACCION` , `TIPO_BALANCE` , `TIPO_IFRS` , a.`ID_SUBGRUPO`, color
-	                FROM `subgrupos_empresas` a, `empresas` b
-	                WHERE a.`ID_EMPRESA` = b.`ID_EMPRESA`  LIMIT $startIndex, $numItems")
+	                $result = mysql_query("SELECT b.`ID_EMPRESA` , `RUT` , `RSO` , `NOMBRE_FANTASIA` , `NOMBRE_BOLSA` , `VALOR_ACCION` , `TIPO_BALANCE` , `TIPO_IFRS` , color
+	                FROM `empresas` b  LIMIT $startIndex, $numItems")
 	                or die(mysql_error());
 	                //el LIMIT se configura con los parametros recibidos
 	                //$startIndex
@@ -576,8 +575,8 @@ public function grillaEmpresa($startIndex, $numItems){
 			     $arr[$i]['NOMBRE_BOLSA']=$row[4];
 			     $arr[$i]['TIPO_BALANCE']=$row[6];			     
 			     $arr[$i]['TIPO_IFRS']=$row[7];
-			     $arr[$i]['ID_SUBGRUPO']=$row[8];
-			     $arr[$i]['color']=$row[9];
+			     //$arr[$i]['ID_SUBGRUPO']=$row[8];
+			     $arr[$i]['color']=$row[8];
 	                 $i++; 
 	                }
 	            //cerramos la conexion con mysql
@@ -699,9 +698,8 @@ public function grillaEmpresa($startIndex, $numItems){
 	                    mysql_select_db("agf", $con);
 	                    
 	                    //seleccionamos todos los registros de tabla tb_persona
-	                    $result = mysql_query("SELECT a.`ID_EMPRESA` , `RUT` , `RSO` , `NOMBRE_FANTASIA` , `NOMBRE_BOLSA` , `VALOR_ACCION` , `TIPO_BALANCE` , `TIPO_IFRS` , a.`ID_SUBGRUPO`
-	                    FROM `subgrupos_empresas` a, `empresas` b
-	                    WHERE a.`ID_EMPRESA` = b.`ID_EMPRESA` ")
+	                    $result = mysql_query("SELECT b.`ID_EMPRESA` , `RUT` , `RSO` , `NOMBRE_FANTASIA` , `NOMBRE_BOLSA` , `VALOR_ACCION` , `TIPO_BALANCE` , `TIPO_IFRS` , color
+	                FROM `empresas` b")
 	                    or die(mysql_error());
 	                    $i=0;
 	                    while($row = mysql_fetch_row($result))
@@ -2036,12 +2034,12 @@ public function grillaTodosGrupoIndices(){
 			while($row = $result->fetch_array(MYSQLI_NUM))
 	                {
 	                    //almacenamos los registros en la var array
-			     $mysqli->query("INSERT INTO log values ('" . print_r($row, 1) . "');");
+			   //  $mysqli->query("INSERT INTO log values ('" . print_r($row, 1) . "');");
 			     $arr[$i]['id_tag_agf']=$row[0];
 			     $arr[$i]['id_empresa']=$row[1];
-	                     $arr[$i]['id_periodo']=$row[2];	     
+	             $arr[$i]['id_periodo']=$row[2];	     
 			     $operacion = $row[10];
-			     $mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+			     //$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
 			        if(!isset($row[3]))
 					$row[3] = 0;
 				$operacion = str_replace('C1', $row[3], $operacion);
@@ -2058,10 +2056,10 @@ public function grillaTodosGrupoIndices(){
 					$row[7] = 0;
 				$operacion = str_replace('C5', $row[7], $operacion);
 				$formula = ($row[0] . " " . $row[1] . " "  . $row[2]);
-				$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+				//$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
 				eval( "\$res = " . $operacion . ";");		
-				$arr[$i]['valor'] = $res;
-				
+				$arr[$i]['valor'] = (float)$res;
+				//$mysqli->query("INSERT INTO log values ('" . $res . "');");	
 				$arr[$i]['nombre_final']=$row[8];
 				$arr[$i]['label'] = $row[9];			
 				$arr[$i]['color'] = $row[18];
@@ -2069,12 +2067,12 @@ public function grillaTodosGrupoIndices(){
 				$arr[$i]['rso'] = $row[19];
 				$arr[$i]['indice'] = $row[20];
 				$arr[$i]['year'] = $row[11];
-				
+				$mysqli->query("INSERT INTO log values ('" . print_r($arr[$i], true) . "');");	
 				$arr2[$i]['id_tag_agf']=$row[0];
 			        $arr2[$i]['id_empresa']=$row[1];
 	                        $arr2[$i]['id_periodo']=$row[2];	     
 			        $operacion = $row[10];
-			        $mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+			    //    $mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
 			        if(!isset($row[13]))
 					$row[13] = 0;
 				$operacion = str_replace('C1', $row[13], $operacion);
@@ -2091,10 +2089,10 @@ public function grillaTodosGrupoIndices(){
 					$row[17] = 0;
 				$operacion = str_replace('C5', $row[17], $operacion);
 				$formula = ($row[0] . " " . $row[1] . " "  . $row[2]);
-				$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+				//$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
 				eval( "\$res2 = " . $operacion . ";");	
 				if($res2 != 0){
-					$arr2[$i]['valor'] = $res/$res2;
+					$arr2[$i]['valor'] = (float)($res/$res2);
 				} else {
 					$arr2[$i]['valor'] = 0;
 				}	

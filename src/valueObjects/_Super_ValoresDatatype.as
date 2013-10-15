@@ -54,7 +54,7 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
     private var _internal_id_tag_agf : String;
     private var _internal_rso : String;
     private var _internal_color : String;
-    private var _internal_valor : int;
+    private var _internal_valor : Number = Number(0);
     private var _internal_indice : String;
     private var _internal_id_periodo : String;
     private var _internal_year : String;
@@ -65,6 +65,8 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
 
     private static var emptyArray:Array = new Array();
 
+    // Change this value according to your application's floating-point precision
+    private static var epsilon:Number = 0.0001;
 
     /**
      * derived property cache initialization
@@ -113,7 +115,7 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
     }
 
     [Bindable(event="propertyChange")]
-    public function get valor() : int
+    public function get valor() : Number
     {
         return _internal_valor;
     }
@@ -198,10 +200,10 @@ public class _Super_ValoresDatatype extends flash.events.EventDispatcher impleme
         }
     }
 
-    public function set valor(value:int) : void
+    public function set valor(value:Number) : void
     {
-        var oldValue:int = _internal_valor;
-        if (oldValue !== value)
+        var oldValue:Number = _internal_valor;
+        if (isNaN(_internal_valor) == true || Math.abs(oldValue - value) > epsilon)
         {
             _internal_valor = value;
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "valor", oldValue, _internal_valor));

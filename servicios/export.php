@@ -20,6 +20,7 @@ echo $_REQUEST["nombre"];*/
 
 require_once '../PHPExcel/Classes/PHPExcel.php';
 $f = explode("\n", trim($_REQUEST["nombre"]));
+$graf = explode("\n", trim($_REQUEST["graf"]));
 //agregar registro vacio en el flex
 /*$f = ";;;;;;;;;;;;;;;;;
 ;3/2009;6/2009;9/2009;12/2009;3/2010;6/2010;9/2010;12/2010;3/2011;6/2011;9/2011;12/2011;3/2012;6/2012;9/2012;12/2012;3/2013
@@ -173,7 +174,7 @@ $plotarea = new PHPExcel_Chart_PlotArea(NULL, array($series));
 //	Set the chart legend
 $legend = new PHPExcel_Chart_Legend(PHPExcel_Chart_Legend::POSITION_BOTTOM, NULL, false);
 
-$title = new PHPExcel_Chart_Title('Test Grouped Column Chart');
+$title = new PHPExcel_Chart_Title($graf);
 $xAxisLabel = new PHPExcel_Chart_Title('Periodo Financiero');
 $yAxisLabel = new PHPExcel_Chart_Title('Value ($k)');
 

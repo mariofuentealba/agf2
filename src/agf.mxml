@@ -10,7 +10,7 @@
 			   height="1500" 
 			   creationComplete="crearEsquema_creationCompleteHandler(event)"
 			   
-			   width="1500">
+			   width="1500" xmlns:metadata="org.osmf.metadata.*">
 	<s:layout>
 		<s:BasicLayout/>
 	</s:layout>
@@ -25,6 +25,7 @@
 			import com.as3xls.xls.Sheet;
 			
 			import mx.collections.IList;
+			import mx.containers.accordionClasses.AccordionHeader;
 			import mx.events.CubeEvent;
 			import mx.managers.PopUpManager;
 			import mx.olap.IOLAPCube;
@@ -193,13 +194,49 @@
 			protected function export_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				
+				/*
 				config.width = this.width;
 				config.height = this.height;
 				config.ejecutando = finConfig;
 				config.agf = this;
 				PopUpManager.addPopUp(config, this);
+				*/
+				try{
+					var request:URLRequest = new URLRequest('http://localhost:8888/servicios/export.php');
+					
+					request.method = URLRequestMethod.POST;
+					
+					request.data = new URLVariables();
+					var val:String = ';';
+					olap.dataProvider.query.getAxis(0);
+					var n:int = (olap.dataProvider as OLAPResult).axes[1].positions.length;
+					var m:int = (olap.dataProvider as OLAPResult).axes[0].positions.length;
+					for(var i:int = 0; i < m - 1; i++){
+						val += ';';
+					}
+					val += '\n;';
+					for(i = 0; i < m; i++){
+						val += olapx[i]['name'] + ';';
+					}
+					val = val.substring(0, val.length - 1);				
+					val += '\n';
+					for(i = 0; i < n; i++){
+						val += olapy[i]['name'] + ';';
+						for(var j:int = 0; j < m; j++){
+							val += (olap.dataProvider as OLAPResult).getCell(i, j).value + ';';
+						}
+						val = val.substring(0, val.length - 1);
+						val += '\n';
+					}
+					
+					request.data.nombre = val;
+					request.data.graf = 'Grafico';
+					navigateToURL(request,"_blank");
+				} catch(e:*) {
+					Alert.show('Debe generar el Gráfico antes de exportar', 'Atención');
+				} 
 				
+				//PopUpManager.removePopUp(this.agf.config);
 				
 				
 			}
@@ -227,6 +264,21 @@
 					}	
 				}
 				
+			}
+			[Bindable] var r:int = 44;
+			protected function accordion1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				r = r == 200 ? r = 44 : r = 200;	
+				
+				
+			}
+			
+			protected function accordion1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				Alert.show('' + (event.target as Accordion).selectedIndex);
 			}
 			
 		]]>
@@ -278,7 +330,6 @@
 				<editItem label="Guardar Formulario"/>
 			</root>
 		</fx:XML>
-		
 		
 		<modelo:Modelo id="modelo"
 					   fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
@@ -434,6 +485,12 @@
 								
 							</s:NavigatorContent>
 						</mx:TabNavigator>
+						<mx:Accordion x="300" y="859" width="200" height="{r}" creationComplete="accordion1_creationCompleteHandler(event)" click="accordion1_clickHandler(event)">
+							<s:NavigatorContent width="100%" height="100%" label="Accordion Pane 1">
+							</s:NavigatorContent>
+							<s:NavigatorContent width="100%" height="100%" label="ww">
+							</s:NavigatorContent>
+						</mx:Accordion>
 						
 					</s:Group>
 				</s:Scroller>
@@ -459,7 +516,7 @@
 					</s:LinearGradient>
 				</s:fill>
 			</s:Rect>
-			<s:BorderContainer x="10" y="10" width="200" height="255"
+			<s:BorderContainer x="10" y="10" width="200" height="227"
 							   click="bordercontainerOpcionesMenu_clickHandler(event)"
 							   cornerRadius="10">
 				<s:VGroup width="100%" gap="0">
@@ -473,10 +530,9 @@
 					<mx:HRule width="100%"/>
 					<mx:LinkButton height="30" label="Indices" width="100%"/>
 					<mx:HRule width="100%"/>
-					<mx:LinkButton height="30" label="Grupos de Indices" width="100%"/>
+					<mx:LinkButton height="30" label="Grupos de Indices" width="100%" enabled="false"/>
 					<mx:HRule width="100%"/>
-					<mx:LinkButton height="30" label="Monedas" width="100%"/>
-					<mx:HRule width="100%"/>
+					<mx:HRule width="100%" height="0"/>
 					<!--mx:LinkButton width="100%" height="30" label="Asociar AGF-XBLR"
 								   label.State1="Asociar AGF-XBRL"/>
 					<mx:HRule width="100%"/>
@@ -485,7 +541,7 @@
 					<mx:LinkButton width="100%" height="30" label="Admin. XBLR"
 								   label.State1="Admin. XBRL"/>
 					<mx:HRule width="100%"/-->
-					<mx:LinkButton width="100%" height="30" label="Formulario Empresa"/>
+					<mx:LinkButton width="100%" height="34" label="Formulario Empresa"/>
 				</s:VGroup>
 				
 				
@@ -614,7 +670,7 @@
 														  headerText="descripcion"></s:GridColumn>
 										</s:ArrayList>
 									</s:columns>
-									<s:AsyncListView list="{grillaSubGruposResult.lastResult}"/>
+									
 									
 									
 								</s:DataGrid>	
@@ -1238,7 +1294,7 @@
 		<s:Button x="159" width="86" label="Exportar" verticalCenter="0" click="export_clickHandler(event)"/><!--cornerRadius="5"-->
 	</s:BorderContainer>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
-	<s:Label y="39" right="5" text="version: 1.0.117"/>
+	<s:Label y="39" right="5" text="version: 1.0.121"/>
 	
 	
 	

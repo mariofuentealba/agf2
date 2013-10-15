@@ -32,6 +32,7 @@ import valueObjects.IndicesFinancierosDatatype;
 import valueObjects.ItemDatatype;
 import valueObjects.MonedasDatatype;
 import valueObjects.SubGrupoDatatype1;
+import valueObjects.SubGruposBetaDatatype;
 import valueObjects.SubGruposDatatype;
 import valueObjects.ValoresDatatype;
 
@@ -49,8 +50,8 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     private var _subGruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _indicesFinancierosDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _agfDatatypeRPCDataManager : mx.data.RPCDataManager;
-    private var _gruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _empresasDatatypeRPCDataManager : mx.data.RPCDataManager;
+    private var _gruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var managersArray : Array = new Array();
 
     public const DATA_MANAGER_GRUPOINDDATATYPE : String = "GrupoIndDatatype";
@@ -61,8 +62,8 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     public const DATA_MANAGER_SUBGRUPOSDATATYPE : String = "SubGruposDatatype";
     public const DATA_MANAGER_INDICESFINANCIEROSDATATYPE : String = "IndicesFinancierosDatatype";
     public const DATA_MANAGER_AGFDATATYPE : String = "AgfDatatype";
-    public const DATA_MANAGER_GRUPOSDATATYPE : String = "GruposDatatype";
     public const DATA_MANAGER_EMPRESASDATATYPE : String = "EmpresasDatatype";
+    public const DATA_MANAGER_GRUPOSDATATYPE : String = "GruposDatatype";
 
     public function getDataManager(dataManagerName:String) : mx.data.RPCDataManager
     {
@@ -84,10 +85,10 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
                 return _indicesFinancierosDatatypeRPCDataManager;
              case (DATA_MANAGER_AGFDATATYPE):
                 return _agfDatatypeRPCDataManager;
-             case (DATA_MANAGER_GRUPOSDATATYPE):
-                return _gruposDatatypeRPCDataManager;
              case (DATA_MANAGER_EMPRESASDATATYPE):
                 return _empresasDatatypeRPCDataManager;
+             case (DATA_MANAGER_GRUPOSDATATYPE):
+                return _gruposDatatypeRPCDataManager;
             default:
                 return null;
         }
@@ -195,6 +196,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         valueObjects.GruposDatatype._initRemoteClassAlias();
         valueObjects.IndicesFinancierosDatatype._initRemoteClassAlias();
         valueObjects.MonedasDatatype._initRemoteClassAlias();
+        valueObjects.SubGruposBetaDatatype._initRemoteClassAlias();
         valueObjects.GrupoIndDatatype._initRemoteClassAlias();
         valueObjects.ValoresDatatype._initRemoteClassAlias();
         valueObjects.IndicesDatatype._initRemoteClassAlias();
@@ -275,7 +277,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultElementType = valueObjects.MonedasDatatype;
         operations["grillaMonedas"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaSubGrupos");
-         operation.resultElementType = valueObjects.SubGruposDatatype;
+         operation.resultElementType = valueObjects.SubGruposBetaDatatype;
         operations["grillaSubGrupos"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaTodasEmpresa");
          operation.resultType = Object;
@@ -443,18 +445,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _agfDatatypeRPCDataManager.itemClass = valueObjects.AgfDatatype; 
 
 
-        // initialize GruposDatatype data manager
-        _gruposDatatypeRPCDataManager = new mx.data.RPCDataManager();
-        managersArray.push(_gruposDatatypeRPCDataManager);
-
-        managedAssocsArray = new Array();
-
-        _gruposDatatypeRPCDataManager.destination = "gruposDatatypeRPCDataManager";
-        _gruposDatatypeRPCDataManager.service = _serviceControl;        
-        _gruposDatatypeRPCDataManager.identities =  "ID_TIPO_EMPRESA";      
-        _gruposDatatypeRPCDataManager.itemClass = valueObjects.GruposDatatype; 
-
-
         // initialize EmpresasDatatype data manager
         _empresasDatatypeRPCDataManager = new mx.data.RPCDataManager();
         managersArray.push(_empresasDatatypeRPCDataManager);
@@ -465,6 +455,18 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _empresasDatatypeRPCDataManager.service = _serviceControl;        
         _empresasDatatypeRPCDataManager.identities =  "ID_SUBGRUPO,ID_EMPRESA";      
         _empresasDatatypeRPCDataManager.itemClass = valueObjects.EmpresasDatatype; 
+
+
+        // initialize GruposDatatype data manager
+        _gruposDatatypeRPCDataManager = new mx.data.RPCDataManager();
+        managersArray.push(_gruposDatatypeRPCDataManager);
+
+        managedAssocsArray = new Array();
+
+        _gruposDatatypeRPCDataManager.destination = "gruposDatatypeRPCDataManager";
+        _gruposDatatypeRPCDataManager.service = _serviceControl;        
+        _gruposDatatypeRPCDataManager.identities =  "ID_TIPO_EMPRESA";      
+        _gruposDatatypeRPCDataManager.itemClass = valueObjects.GruposDatatype; 
 
 
 
@@ -522,11 +524,8 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
 
         dmQuery = new mx.data.ManagedQuery("grillaSubGrupos");
         dmQuery.propertySpecifier = "nombre,ID_SUBGRUPO,ID_TIPO_EMPRESA,descripcion";
-        dmQuery.countOperation = "countSubGrupos";
-        dmQuery.pagingEnabled = true;
         dmQuery.positionalPagingParameters = true;
-        dmQuery.pageSize = 5;
-        dmQuery.parameters = "startIndex,numItems";
+        dmQuery.parameters = "";
         _subGruposDatatypeRPCDataManager.addManagedOperation(dmQuery);
 
         _serviceControl.managers = managersArray;

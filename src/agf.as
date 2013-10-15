@@ -729,9 +729,15 @@ protected function dropDownList10_creationCompleteHandler(event:FlexEvent):void
 	(event.currentTarget as DropDownList).addEventListener(Event.ENTER_FRAME, actID_GRUPO_INDICE_FINANCIERO);
 }
 
+private function llenaSubGrupos(event:ResultEvent):void{
+	dgSubGrupo.dataProvider = event.result as ArrayCollection;
+}
+
+
 protected function dgSubGrupo_creationCompleteHandler(event:FlexEvent):void
 {
 	grillaSubGruposResult.token = modelo.grillaSubGrupos();
+	grillaSubGruposResult.addEventListener(ResultEvent.RESULT, llenaSubGrupos);
 }
 
 
@@ -1021,10 +1027,13 @@ protected function button4_clickHandler(event:MouseEvent):void
 			tagAgf += ', ' + o['cod'];
 		}
 		tagAgf += ')';
-		
+		bloqueo.width = this.width;
+		bloqueo.height = this.height;
+		PopUpManager.addPopUp(bloqueo, this);
 		valoresResult.token = modelo.valores(ComboBoxEmpresaPrincipal.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
 		valoresResult.addEventListener(ResultEvent.RESULT, grafica);	
 		nvGrafico.removeAllElements();
+		
 	} catch(e:*){
 		Alert.show('Debe completar todos los campos para poder graficar', 'Atención');
 	}
@@ -1156,6 +1165,7 @@ private function grafica(event:ResultEvent):void{
 		nvGrafico.addElement(columnasChart);
 		columnasChart.rbInicial.selected = true;
 		columnasChart.rbInicial.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+		PopUpManager.removePopUp(bloqueo);
 	}
 	
 	

@@ -115,7 +115,7 @@ internal class _ValoresDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
         model_internal::propertyTypeMap["id_tag_agf"] = "String";
         model_internal::propertyTypeMap["rso"] = "String";
         model_internal::propertyTypeMap["color"] = "String";
-        model_internal::propertyTypeMap["valor"] = "int";
+        model_internal::propertyTypeMap["valor"] = "Number";
         model_internal::propertyTypeMap["indice"] = "String";
         model_internal::propertyTypeMap["id_periodo"] = "String";
         model_internal::propertyTypeMap["year"] = "String";

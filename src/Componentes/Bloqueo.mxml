@@ -6,9 +6,9 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<s:BorderContainer top="200" width="200" height="95" borderColor="#5B5C5D" borderStyle="inset"
-					   horizontalCenter="0">
+					   left="500">
 		<s:Label top="20" fontSize="12" fontWeight="bold" horizontalCenter="0"
 				 text="Espere u momento"/>
-		<mx:ProgressBar y="40" left="10" right="10"/>
+		<!--mx:ProgressBar y="40" left="10" right="10"/-->
 	</s:BorderContainer>
 </s:BorderContainer>
