@@ -27,6 +27,7 @@
 			import mx.collections.IList;
 			import mx.containers.accordionClasses.AccordionHeader;
 			import mx.events.CubeEvent;
+			import mx.events.IndexChangedEvent;
 			import mx.managers.PopUpManager;
 			import mx.olap.IOLAPCube;
 			import mx.olap.IOLAPQuery;
@@ -281,6 +282,16 @@
 				Alert.show('' + (event.target as Accordion).selectedIndex);
 			}
 			
+			protected function acAplicacion_changeHandler(event:IndexChangedEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(acAplicacion.selectedIndex == 0){
+					acAplicacion.height = 400;
+				} else {
+					acAplicacion.percentHeight = 100;
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	<s:states>
@@ -288,6 +299,7 @@
 	</s:states>
 	
 	<fx:Declarations>
+			
 		<mx:OLAPCube name="FlatSchemaCube" dataProvider="{flatData}" id="myMXMLCube" complete="runQuery(event);">
 			<!--mx:OLAPDimension name="CustomerDim">
 				<mx:OLAPAttribute name="Customer" dataField="customer"/>
@@ -437,60 +449,80 @@
 							<s:TextInput visible="false" x="10" y="505"/>
 							<s:DropDownList visible="false" x="146" y="506"></s:DropDownList>
 						</s:VGroup>
-						<mx:TabNavigator x="218" y="7" width="1013" height="700">
-							<s:NavigatorContent id="nvGrafico" width="100%" height="100%"
-												label="Gráfico">
-								<Componentes:GraficoBarrasAGF name="columnasChart" id="columnasChart" left="0"
-															  right="0" top="0" bottom="0"
-															  serie="{seriesColumn}"
-															  prov="{arrAct}"
-															  click="columnasChart_clickHandler(event)">
-								</Componentes:GraficoBarrasAGF>
-							</s:NavigatorContent>
-							<s:NavigatorContent width="100%" height="100%" label="Matriz">
-								<s:DataGrid id="dataGrid2" left="10" right="50" top="40"
-											requestedRowCount="15">
-									<s:columns>		
-										<s:ArrayList>
-											<s:GridColumn dataField="nombre_final"
-														  headerText="nombre_final"></s:GridColumn>
-											<s:GridColumn dataField="label" headerText="periodo"></s:GridColumn>
-											<s:GridColumn visible="false" dataField="id_tag_agf"
-														  headerText="id_tag_agf"></s:GridColumn>
-											<s:GridColumn dataField="valor" headerText="valor"></s:GridColumn>
-											<s:GridColumn visible="false" dataField="id_periodo"
-														  headerText="id_periodo"></s:GridColumn>
-											
-											
-											<s:GridColumn visible="false" dataField="id_empresa"
-														  headerText="id_empresa"></s:GridColumn>
-										</s:ArrayList>
-									</s:columns>
-									<s:AsyncListView list="{valoresResult.lastResult}">
-										
-									</s:AsyncListView>
-								</s:DataGrid>
-							</s:NavigatorContent>
-							<s:NavigatorContent width="100%" height="100%" label="olap">
-								<s:VGroup horizontalCenter="0" verticalCenter="0" width="100%" height="100%">
-									<s:HGroup id="hgOLAP" horizontalCenter="0" verticalCenter="0" width="100%">
-										<mx:OLAPDataGrid id="olap" left="10" top="10" height="300" dataProvider="{olapData}"/>
-										
-									</s:HGroup>
-									<s:HScrollBar viewport="{hgOLAP}" 
-												  left="{hgOLAP.left}" 
-												  width ="{hgOLAP.width}"/>	
-								</s:VGroup>
-								
+						<mx:Accordion id="acAplicacion" width="90%" height="200" horizontalCenter="0" change="acAplicacion_changeHandler(event)">
+							<s:NavigatorContent label="Parametrización"  width="100%" height="100%">
+								<s:HGroup width="100%" horizontalCenter="0" height="100%">
+									<s:BorderContainer width="100%" height="100%">
+										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 1"/>
+										<s:RichText x="23" y="32" text="Arrastre los indices que desee hacia la grilla del centro"/>	
+										<s:List left="40" right="40" top="50" bottom="5"></s:List>
+									</s:BorderContainer>
+									<s:BorderContainer width="100%" height="100%">
+										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 2"/>
+										<s:RichText x="23" y="32" text="Seleccione las Empresas del Indice"/>	
+										<s:List left="40" right="40" top="50" bottom="5"></s:List>
+									</s:BorderContainer>
+									<s:BorderContainer width="100%" height="100%">
+										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 3"/>
+										<s:RichText x="23" y="32" text="Seleccione periodo"/>	
+										<s:List left="40" right="40" top="50" bottom="5"></s:List>
+									</s:BorderContainer>	
+								</s:HGroup>
 								
 							</s:NavigatorContent>
-						</mx:TabNavigator>
-						<mx:Accordion x="300" y="859" width="200" height="{r}" creationComplete="accordion1_creationCompleteHandler(event)" click="accordion1_clickHandler(event)">
-							<s:NavigatorContent width="100%" height="100%" label="Accordion Pane 1">
-							</s:NavigatorContent>
-							<s:NavigatorContent width="100%" height="100%" label="ww">
+								
+							<s:NavigatorContent label="Gráfico">
+								<mx:TabNavigator x="218" y="7" width="1013" height="700">
+									<s:NavigatorContent id="nvGrafico" width="100%" height="100%"
+														label="Gráfico">
+										<Componentes:GraficoBarrasAGF name="columnasChart" id="columnasChart" left="0"
+																	  right="0" top="0" bottom="0"
+																	  serie="{seriesColumn}"
+																	  prov="{arrAct}"
+																	  click="columnasChart_clickHandler(event)">
+										</Componentes:GraficoBarrasAGF>
+									</s:NavigatorContent>
+									<s:NavigatorContent width="100%" height="100%" label="Matriz">
+										<s:DataGrid id="dataGrid2" left="10" right="50" top="40"
+													requestedRowCount="15">
+											<s:columns>		
+												<s:ArrayList>
+													<s:GridColumn dataField="nombre_final"
+																  headerText="nombre_final"></s:GridColumn>
+													<s:GridColumn dataField="label" headerText="periodo"></s:GridColumn>
+													<s:GridColumn visible="false" dataField="id_tag_agf"
+																  headerText="id_tag_agf"></s:GridColumn>
+													<s:GridColumn dataField="valor" headerText="valor"></s:GridColumn>
+													<s:GridColumn visible="false" dataField="id_periodo"
+																  headerText="id_periodo"></s:GridColumn>
+													
+													
+													<s:GridColumn visible="false" dataField="id_empresa"
+																  headerText="id_empresa"></s:GridColumn>
+												</s:ArrayList>
+											</s:columns>
+											<s:AsyncListView list="{valoresResult.lastResult}">
+												
+											</s:AsyncListView>
+										</s:DataGrid>
+									</s:NavigatorContent>
+									<s:NavigatorContent width="100%" height="100%" label="olap">
+										<s:VGroup horizontalCenter="0" verticalCenter="0" width="100%" height="100%">
+											<s:HGroup id="hgOLAP" horizontalCenter="0" verticalCenter="0" width="100%">
+												<mx:OLAPDataGrid id="olap" left="10" top="10" height="300" dataProvider="{olapData}"/>
+												
+											</s:HGroup>
+											<s:HScrollBar viewport="{hgOLAP}" 
+														  left="{hgOLAP.left}" 
+														  width ="{hgOLAP.width}"/>	
+										</s:VGroup>
+										
+										
+									</s:NavigatorContent>
+								</mx:TabNavigator>								
 							</s:NavigatorContent>
 						</mx:Accordion>
+						
 						
 					</s:Group>
 				</s:Scroller>
