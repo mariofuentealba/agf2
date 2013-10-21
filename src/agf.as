@@ -82,6 +82,8 @@ private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
 public var _cant:int = 0;
 private var _arr:ArrayCollection;
+private var _arrReferente:ArrayCollection;
+private var _arrVariacion:ArrayCollection;
 
 
 private function vbarScroll():void {
@@ -1063,9 +1065,11 @@ protected function button4_clickHandler(event:MouseEvent):void
 
 private function grafica(event:ResultEvent):void{
 	flatData = new ArrayCollection();
+	this._arrReferente = new ArrayCollection();
+	this._arrVariacion = new ArrayCollection();
 	if(ArrayCollection(event.result).length){
 		var arr:ArrayCollection = event.result as ArrayCollection;
-		this._arr = arr;
+		this._arr = new ArrayCollection();
 		arrAct = new ArrayCollection();
 		arrAct2 = new ArrayCollection();
 		arrAct3 = new ArrayCollection();
@@ -1094,12 +1098,12 @@ private function grafica(event:ResultEvent):void{
 			}
 			obAdd['nombre'] = o['nombre_final'] + '(' + o['label'] + ')';
 			if(idPeriodo == o['label']){
-				obAdd['a'+i] = o['valor'];///1000;
+				obAdd['a'+i] = roundDecimals(o['valor'] as Number, 1);///1000;
 				if(obAdd['arr'] == null){
 					var a:Array = [];
 					obAdd['arr'] = a;
 				}
-				obAdd['arr'].push(o['valor']);///1000);
+				obAdd['arr'].push(roundDecimals(o['valor'] as Number, 1));///1000);
 				//if(sw){
 				
 				
@@ -1127,12 +1131,12 @@ private function grafica(event:ResultEvent):void{
 				idPeriodo = o['label'];
 				obAdd['label'] = idPeriodo;
 				i = 0;
-				obAdd['a' + i] = o['valor'];///1000;
+				obAdd['a' + i] = roundDecimals(o['valor'] as Number, 1);///1000;
 				if(obAdd['arr'] == null){
 					a = [];
 					obAdd['arr'] = a;
 				}
-				obAdd['arr'].push(o['valor']);///1000);
+				obAdd['arr'].push(roundDecimals(o['valor'] as Number, 1));///1000);
 			}
 			i++;
 		}
@@ -1148,7 +1152,7 @@ private function grafica(event:ResultEvent):void{
 			}
 			for(var j:int = 0; j < arrAct.getItemAt(i)['arr'].length; j++){
 				arrAct.getItemAt(i)['QAnt' + j] = arrAct.getItemAt(i - 1)['arr'][j];	
-				o['a' + j] = ((o['a' + j]/arrAct.getItemAt(i - 1)['arr'][j]) - 1) * 100;
+				o['a' + j] = roundDecimals((((o['a' + j]/arrAct.getItemAt(i - 1)['arr'][j]) - 1) * 100) as Number, 1);
 			}
 			arrAct3.addItem(o);
 		}
@@ -1161,7 +1165,7 @@ private function grafica(event:ResultEvent):void{
 				
 				if(idPeriodo == o['label']){
 					obAdd['nombre'] = o['nombre_final'] + '(' + o['label'] + ')';
-					obAdd['a'+i] = o['valor'];
+					obAdd['a'+i] = roundDecimals(o['valor'] as Number, 1);
 					if(sw){
 						
 						
@@ -1175,7 +1179,7 @@ private function grafica(event:ResultEvent):void{
 					idPeriodo = o['label'];
 					obAdd['label'] = idPeriodo;
 					i = 0;
-					obAdd['a' + i] = o['valor'];
+					obAdd['a' + i] = roundDecimals(o['valor'] as Number, 1);
 				}
 				i++;
 			}
@@ -1189,12 +1193,56 @@ private function grafica(event:ResultEvent):void{
 	}
 	
 	
-	for each(o in arr){
+/*	for each(o in arr){
 		if(o['graf'] == 1){
 			flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
 		}
 		
 	}
+	
+	*/
+	
+	
+	
+	
+	for each(var o:Object in arr){
+		if(o['graf'] == 1){
+			this._arr.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(o['valor'] as Number, 1), year: o['year']});
+		}
+		
+	}
+	
+	for each(o in arr){
+		if(o['graf'] != 1){
+			this._arrReferente.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(o['valor'] as Number, 1), year: o['year']});
+		}
+		
+	}
+	var j:int = 0;
+	var count:int = 0;
+	var x:int = 0;
+	
+	count = arrAct3.getItemAt(0)['arr']['length'];
+	
+	
+	for(var i:int = count; i < arr.length; i++){
+		o = arr.getItemAt(i);
+		if(o['graf'] == 1){
+			if(j < count){
+			} else {
+				x++;
+				j = 0;
+			}
+			this._arrVariacion.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(arrAct3.getItemAt(x)['a' + (j++)] as Number, 1), year: o['year']});
+		}
+	}
+	
+	
+	
+	
+	
+	
+	flatData = this._arr;
 //	myMXMLCube = new OLAPCube();
 	myMXMLCube.refresh();
 	
@@ -1475,23 +1523,50 @@ protected function dgIndicesFinancieros_creationCompleteHandler(event:FlexEvent)
 protected function columnasChart_clickHandler(event:MouseEvent):void
 {
 	// TODO Auto-generated method stub
+	flatData = new ArrayCollection();
 	if(event.target.className == 'RadioButton'){
 		switch(event.target.label){
 			case 'Normal':
 				columnasChart.prov = arrAct;
+				flatData = this._arr;
+				/*for each(var o:Object in this._arr){
+					if(o['graf'] == 1){
+						flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
+					}
+					
+				}*/
 				break;
 			case 'Referente':
 				columnasChart.prov = arrAct2;
+				flatData = this._arrReferente;
+				/*for each(o in this._arr){
+					if(o['graf'] != 1){
+						flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
+					}
+					
+				}*/
 				break;
 			case 'Variación':
 				columnasChart.prov = arrAct3;
+				var j:int = 0;
+				var count:int = 0;
+				var x:int = 0;
+				
+				count = arrAct3.getItemAt(0)['arr']['length'];
+				flatData = this._arrVariacion;
+				
+				/*for(var i:int = count; i < this._arr.length; i++){
+					o = this._arr.getItemAt(i);
+					if(o['graf'] == 1){
+						if(j < count){
+						} else {
+							x++;
+							j = 0;
+						}
+						flatData.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(arrAct3.getItemAt(x)['a' + (j++)] as Number, 1), year: o['year']});
+					}
+				}*/
 				break;
-		}
-		
-	}
-	for each(var o:Object in this._arr){
-		if(o['graf'] == 1){
-			flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
 		}
 		
 	}
@@ -1499,3 +1574,14 @@ protected function columnasChart_clickHandler(event:MouseEvent):void
 	myMXMLCube.refresh();
 }
 	
+public function roundDecimals(value:Number, decimals:int):Number
+{
+	var multiple:String = "1";
+	for( var i = 0; i<decimals; i++)
+	{
+		multiple += "0";
+	}
+	var multi:Number = new Number(multiple)
+	return ( Math.round( value * multi ) / multi);
+	
+}
