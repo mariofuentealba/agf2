@@ -943,6 +943,60 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 		$mysqli->query("INSERT INTO log values ('" . print_r($arrInf, 1) . "');");
 		$mysqli->query("INSERT INTO log values ('" . print_r($arrEmp, 1) . "');");
 		$mysqli->query("INSERT INTO log values ('" . $tabla . "');");
+		$mysqli->query("INSERT INTO log values ('" . $tipo . "');");
+		
+		$formula1 = explode(".", $arrInf[19]);
+		$formula2 = explode(".", $arrInf[20]);
+		$formula3 = explode(".", $arrInf[21]);
+		$formula4 = explode(".", $arrInf[22]);
+		$formula5 = explode(".", $arrInf[23]);
+		
+		$formula1[0] = $formula1[0] == 'C' ? 1 : 2;
+		$formula2[0] = $formula2[0] == 'C' ? 1 : 2;
+		$formula3[0] = $formula3[0] == 'C' ? 1 : 2;
+		$formula4[0] = $formula4[0] == 'C' ? 1 : 2;
+		$formula5[0] = $formula5[0] == 'C' ? 1 : 2;
+		
+		if($arrInf[13] == 'C'){
+			$arrInf[13] = 1;
+		} elseif($arrInf[13] == 'F'){
+			$arrInf[13] = 2;
+		} else {
+			$arrInf[13] = 0;
+		}
+		
+		if($arrInf[14] == 'C'){
+			$arrInf[14] = 1;
+		} elseif($arrInf[14] == 'F'){
+			$arrInf[14] = 2;
+		} else {
+			$arrInf[14] = 0;
+		}
+		
+		if($arrInf[15] == 'C'){
+			$arrInf[15] = 1;
+		} elseif($arrInf[15] == 'F'){
+			$arrInf[15] = 2;
+		} else {
+			$arrInf[15] = 0;
+		}
+		
+		if($arrInf[16] == 'C'){
+			$arrInf[16] = 1;
+		} elseif($arrInf[16] == 'F'){
+			$arrInf[16] = 2;
+		} else {
+			$arrInf[16] = 0;
+		}
+		
+		if($arrInf[17] == 'C'){
+			$arrInf[17] = 1;
+		} elseif($arrInf[17] == 'F'){
+			$arrInf[17] = 2;
+		} else {
+			$arrInf[17] = 0;
+		}
+		
 		$sum = 0;   
 		for($i = 8; $i < 13 ; $i++){
 			if($arrInf[$i] != -1){
@@ -953,17 +1007,12 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 		$sql = "INSERT INTO formulas values (null, '" . $arrInf[8] . "', '" . $arrInf[9] . "', '" . $arrInf[10] . "', '" . $arrInf[11] . "', '" . $arrInf[12] ."', '" . $arrInf[13] . "', '" . $arrInf[14] . "', '" . $arrInf[15] . "', '" . $arrInf[16] . "', '" . $arrInf[17]. "', '" . $arrInf[6] . "', '" . $sum . "', '" . $arrInf[7]. "', '" . $arrInf[19]. "', '" . $arrInf[20]. "', '" . $arrInf[21]. "', '" . $arrInf[22]. "', '" . $arrInf[23] . "');";
 		$sql2 = str_replace("'", "''", $sql);
 		$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
-		$mysqli->query("INSERT INTO log values ('" . print_r($arrInf, 1) . "');");				     
 		$mysqli->query($sql);
 		$ultimo_id = $mysqli->insert_id;
 					/*$result = mysql_query($sql)
 					or die(mysql_error());*/
 			
-			$formula1 = explode(".", $arrInf[19]);
-			$formula2 = explode(".", $arrInf[20]);
-			$formula3 = explode(".", $arrInf[21]);
-			$formula4 = explode(".", $arrInf[22]);
-			$formula5 = explode(".", $arrInf[23]);
+			
 		
 			
 			
@@ -977,8 +1026,7 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 			for($i = 0; $i < count($arrEmp); $i++){
 				$sql = "INSERT INTO indice_empresa values ('" . $indiceNuevo . "', '" . $arrEmp[$i] . "', '" . $tipo ."');";
 				$sql2 = str_replace("'", "''", $sql);
-				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
-				$mysqli->query("INSERT INTO log values ('" . print_r($arrInf, 1) . "');");				     
+				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");				
 				$mysqli->query($sql);
 			}
 			
@@ -990,11 +1038,7 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 			//retornamos el largo del arreglo
 	  //  $ultimo_id = mysql_insert_id($con);
 			//return $ultimo_id;
-		$formula1[0] = $formula1[0] == 'C' ? 1 : 2;
-		$formula2[0] = $formula2[0] == 'C' ? 1 : 2;
-		$formula3[0] = $formula3[0] == 'C' ? 1 : 2;
-		$formula4[0] = $formula4[0] == 'C' ? 1 : 2;
-		$formula5[0] = $formula5[0] == 'C' ? 1 : 2;
+		
 		
 		$comp1 = ' AND x.id_periodo = a.id_periodo ';
 		$comp2 = ' AND x.id_periodo = a.id_periodo ';
@@ -1002,10 +1046,10 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 		$comp4 = ' AND x.id_periodo = a.id_periodo ';
 		$comp5 = ' AND x.id_periodo = a.id_periodo ';
 		
-		
+		$mysqli->query("INSERT INTO log values ('formula1 = " . print_r($formula1, 1) . "');");
 		
 		if(count($formula1) > 1){
-				switch($formula1[1]){
+				switch($formula1[2]){
 					case 'NN':
 						$comp1 = ' AND x.id_periodo = a.id_periodo ';
 						break;
@@ -1021,6 +1065,14 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 																			  AND r.oa = 1
 																			  AND p.id_periodo = a.id_periodo) ';
 						break;
+					case 'AC':
+						$comp1 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r
+																		WHERE r.oa = 1
+																			  AND r.orden in 
+																			  (e.orden, e.orden - 1, e.orden - 2,
+																			  e.orden - 3)) ';	
+						break;
 					case 'AS':
 						$comp1 = " AND 'QUERY' ";
 						break;	
@@ -1029,7 +1081,7 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 			}
 			
 			if(count($formula2) > 1){
-				switch($formula2[1]){
+				switch($formula2[2]){
 					case 'NN':
 						$comp2 = ' AND x.id_periodo = a.id_periodo ';
 						break;
@@ -1045,6 +1097,14 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 																			  AND r.oa = 1
 																			  AND p.id_periodo = a.id_periodo) ';
 						break;
+					case 'AC':
+						$comp2 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r
+																		WHERE r.oa = 1
+																			  AND r.orden in 
+																			  (e.orden, e.orden - 1, e.orden - 2,
+																			  e.orden - 3)) ';	
+						break;	
 					case 'AS':
 						$comp2 = " AND 'QUERY' ";
 						break;	
@@ -1053,7 +1113,7 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 			}
 			
 			if(count($formula3) > 1){
-				switch($formula3[1]){
+				switch($formula3[2]){
 					case 'NN':
 						$comp3 = ' AND x.id_periodo = a.id_periodo ';
 						break;
@@ -1069,6 +1129,14 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 																			  AND r.oa = 1
 																			  AND p.id_periodo = a.id_periodo) ';
 						break;
+					case 'AC':
+						$comp3 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r
+																		WHERE r.oa = 1
+																			  AND r.orden in 
+																			  (e.orden, e.orden - 1, e.orden - 2,
+																			  e.orden - 3)) ';	
+					break;
 					case 'AS':
 						$comp3 = " AND 'QUERY' ";
 						break;	
@@ -1078,7 +1146,7 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 			//$mysqli->query("INSERT INTO log values ('" . $formula4[0] . "');");
 			
 			if(count($formula4) > 1){
-				switch($formula4[1]){
+				switch($formula4[2]){
 					case 'NN':
 						$comp4 = ' AND x.id_periodo = a.id_periodo ';
 						break;
@@ -1094,6 +1162,14 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 																			  AND r.oa = 1
 																			  AND p.id_periodo = a.id_periodo) ';
 						break;
+					case 'AC':
+						$comp4 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r
+																		WHERE r.oa = 1
+																			  AND r.orden in 
+																			  (e.orden, e.orden - 1, e.orden - 2,
+																			  e.orden - 3)) ';	
+						break;
 					case 'AS':
 						$comp4 = " AND 'QUERY' ";
 						break;	
@@ -1102,7 +1178,7 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 			}
 			
 			if(count($formula5) > 1){
-				switch($formula5[1]){
+				switch($formula5[2]){
 					case 'NN':
 						$comp5 = ' AND x.id_periodo = a.id_periodo ';
 						break;
@@ -1118,6 +1194,14 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 																			  AND r.oa = 1
 																			  AND p.id_periodo = a.id_periodo) ';
 						break;
+					case 'AC':
+						$comp5 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r
+																		WHERE r.oa = 1
+																			  AND r.orden in 
+																			  (e.orden, e.orden - 1, e.orden - 2,
+																			  e.orden - 3)) ';	
+						break;	
 					case 'AS':
 						$comp5 = " AND 'QUERY' ";
 						break;	
@@ -1180,11 +1264,10 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 							AND c.id_formula = " . $ultimo_id . "
 					AND a.tipo = 'TRIMESTRAL';";
 	$sql2 = str_replace("'", "''", $sql);
-		$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
+	$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
 	
-			$result = $mysqli->query($sql)
-			or die(mysql_error());
-			$i = 0;
+	$result = $mysqli->query($sql);
+	$i = 0;
 	$formula = '';
 	$operacion = array();
 	$arrInf = array();	
@@ -1196,25 +1279,28 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 		 $arr[$i]['id_empresa']=$row[1];
 				 $arr[$i]['id_periodo']=$row[2];	     */
 		 $operacion = $row[10];
-		 //$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
-			if(!isset($row[3]))
-			$row[3] = 0;
-		$operacion = str_replace('C1', $row[3], $operacion);
+		 
+		if(!isset($row[3]))
+		$row[3] = 0;
+		$mysqli->query("INSERT INTO log values ('r3(C1) = " . $row[3] . "');");	
+		$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
 		if(!isset($row[4]))
 			$row[4] = 0;
-		$operacion = str_replace('C2', $row[4], $operacion);
+		$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
 		if(!isset($row[5]))			
 			$row[5] = 0;
-		$operacion = str_replace('C3', $row[5], $operacion);
+		$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
 		if(!isset($row[6]))
 			$row[6] = 0;
-		$operacion = str_replace('C4', $row[6], $operacion);
+		$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
 		if(!isset($row[7]))
 			$row[7] = 0;
-		$operacion = str_replace('C5', $row[7], $operacion);
-		$formula = ($row[0] . " " . $row[1] . " "  . $row[2]);
-		$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+		$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
+		
+		$mysqli->query("INSERT INTO log values ('operacion = " . $operacion . "');");	
+		$res = 0;
 		eval( "\$res = " . $operacion . ";");		
+		$mysqli->query("INSERT INTO log values ('res = " . $res . "');");	
 		$arr[$i]['valor'] = $res;
 		
 		$arr[$i]['nombre_final']=$row[8];
@@ -1225,7 +1311,7 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 		$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
 		VALUES (null," . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'TRIMESTRAL'," . $res . ",'2013',2);";
 		$sql2 = str_replace("'", "''", $sql);
-   //     $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
+        $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
 		$mysqli->query($sql);	
 			
 		$i++;
@@ -1737,7 +1823,7 @@ public function grillaTodosGrupoIndices(){
 	    
 	function valores($principal, $idEmpresas, $idPeriodos, $formulas, $op){//
 	        //creando variable array
-	        $arr = array();
+	    $arr = array();
 		$arr2 = array();
 		$arr3 = array();
 		
@@ -1772,18 +1858,20 @@ public function grillaTodosGrupoIndices(){
 		$ind = 0;
 		
 		for($j = 1; $j < count($f); $j++){
-		
-			$result = $mysqli->query("SELECT `cod1`, `cod2`, `cod3`, `cod4`, `cod5`, a.`ID_FORMULA`
+			$sql = "SELECT `cod1`, `cod2`, `cod3`, `cod4`, `cod5`, a.`ID_FORMULA`
 									FROM `formulas` a, `indices_financieros` b
 									WHERE a.`ID_FORMULA` = b.`ID_FORMULA` 
-										AND b.`id_indice_financiero` = " . $f[$j] . ";");	
+										AND b.`id_indice_financiero` = " . $f[$j] . ";";
+			$result = $mysqli->query($sql);	
+										
+										
 			while($row = $result->fetch_array(MYSQLI_NUM)){
 				$formula1 = explode(".", $row[0]);
 				$formula2 = explode(".", $row[1]);
 				$formula3 = explode(".", $row[2]);
 				$formula4 = explode(".", $row[3]);
 				$formula5 = explode(".", $row[4]);
-				$mysqli->query("INSERT INTO log values ('" . print_r($formula4, 1) . "');");		
+				$mysqli->query("INSERT INTO log values ('" . print_r($formula1, 1) . "');");		
 				$formula1[0] = $formula1[0] == 'C' ? 1 : 2;
 				$formula2[0] = $formula2[0] == 'C' ? 1 : 2;
 				$formula3[0] = $formula3[0] == 'C' ? 1 : 2;
@@ -1797,7 +1885,7 @@ public function grillaTodosGrupoIndices(){
 				$comp5 = ' AND x.id_periodo = a.id_periodo ';
 				
 				if(count($formula1) > 1){
-					switch($formula1[1]){
+					switch($formula1[2]){
 						case 'NN':
 							$comp1 = ' AND x.id_periodo = a.id_periodo ';
 							break;
@@ -1813,6 +1901,14 @@ public function grillaTodosGrupoIndices(){
 																				  AND r.oa = 1
 																				  AND p.id_periodo = a.id_periodo) ';
 							break;
+						case 'AC':
+						$comp1 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r
+																		WHERE r.oa = 1
+																			  AND r.orden in 
+																			  (e.orden, e.orden - 1, e.orden - 2,
+																			  e.orden - 3)) ';	
+						break;	
 						case 'AS':
 							$comp1 = " AND 'QUERY' ";
 							break;	
@@ -1821,7 +1917,7 @@ public function grillaTodosGrupoIndices(){
 				}
 				
 				if(count($formula2) > 1){
-					switch($formula2[1]){
+					switch($formula2[2]){
 						case 'NN':
 							$comp2 = ' AND x.id_periodo = a.id_periodo ';
 							break;
@@ -1837,6 +1933,14 @@ public function grillaTodosGrupoIndices(){
 																				  AND r.oa = 1
 																				  AND p.id_periodo = a.id_periodo) ';
 							break;
+						case 'AC':
+						$comp2 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r
+																		WHERE r.oa = 1
+																			  AND r.orden in 
+																			  (e.orden, e.orden - 1, e.orden - 2,
+																			  e.orden - 3)) ';	
+						break;	
 						case 'AS':
 							$comp2 = " AND 'QUERY' ";
 							break;	
@@ -1845,7 +1949,7 @@ public function grillaTodosGrupoIndices(){
 				}
 				
 				if(count($formula3) > 1){
-					switch($formula3[1]){
+					switch($formula3[2]){
 						case 'NN':
 							$comp3 = ' AND x.id_periodo = a.id_periodo ';
 							break;
@@ -1861,6 +1965,14 @@ public function grillaTodosGrupoIndices(){
 																				  AND r.oa = 1
 																				  AND p.id_periodo = a.id_periodo) ';
 							break;
+						case 'AC':
+						$comp3 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r
+																		WHERE r.oa = 1
+																			  AND r.orden in 
+																			  (e.orden, e.orden - 1, e.orden - 2,
+																			  e.orden - 3)) ';	
+						break;
 						case 'AS':
 							$comp3 = " AND 'QUERY' ";
 							break;	
@@ -1870,7 +1982,7 @@ public function grillaTodosGrupoIndices(){
 				$mysqli->query("INSERT INTO log values ('" . $formula4[0] . "');");
 				
 				if(count($formula4) > 1){
-					switch($formula4[1]){
+					switch($formula4[2]){
 						case 'NN':
 							$comp4 = ' AND x.id_periodo = a.id_periodo ';
 							break;
@@ -1886,6 +1998,14 @@ public function grillaTodosGrupoIndices(){
 																				  AND r.oa = 1
 																				  AND p.id_periodo = a.id_periodo) ';
 							break;
+						case 'AC':
+						$comp4 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r
+																		WHERE r.oa = 1
+																			  AND r.orden in 
+																			  (e.orden, e.orden - 1, e.orden - 2,
+																			  e.orden - 3)) ';	
+						break;	
 						case 'AS':
 							$comp4 = " AND 'QUERY' ";
 							break;	
@@ -1894,7 +2014,7 @@ public function grillaTodosGrupoIndices(){
 				}
 				
 				if(count($formula5) > 1){
-					switch($formula5[1]){
+					switch($formula5[2]){
 						case 'NN':
 							$comp5 = ' AND x.id_periodo = a.id_periodo ';
 							break;
@@ -1910,6 +2030,14 @@ public function grillaTodosGrupoIndices(){
 																				  AND r.oa = 1
 																				  AND p.id_periodo = a.id_periodo) ';
 							break;
+						case 'AC':
+						$comp5 = ' AND x.id_periodo	in (SELECT r.id_periodo
+																		FROM periodos r
+																		WHERE r.oa = 1
+																			  AND r.orden in 
+																			  (e.orden, e.orden - 1, e.orden - 2,
+																			  e.orden - 3)) ';	
+						break;	
 						case 'AS':
 							$comp5 = " AND 'QUERY' ";
 							break;	
@@ -2042,20 +2170,20 @@ public function grillaTodosGrupoIndices(){
 			     //$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
 			        if(!isset($row[3]))
 					$row[3] = 0;
-				$operacion = str_replace('C1', $row[3], $operacion);
+				$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
 				if(!isset($row[4]))
 					$row[4] = 0;
-				$operacion = str_replace('C2', $row[4], $operacion);
+				$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
 				if(!isset($row[5]))			
 					$row[5] = 0;
-				$operacion = str_replace('C3', $row[5], $operacion);
+				$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
 				if(!isset($row[6]))
 					$row[6] = 0;
-				$operacion = str_replace('C4', $row[6], $operacion);
+				$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
 				if(!isset($row[7]))
 					$row[7] = 0;
-				$operacion = str_replace('C5', $row[7], $operacion);
-				$formula = ($row[0] . " " . $row[1] . " "  . $row[2]);
+				$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
+				
 				//$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
 				eval( "\$res = " . $operacion . ";");		
 				$arr[$i]['valor'] = (float)$res;
@@ -2069,35 +2197,37 @@ public function grillaTodosGrupoIndices(){
 				$arr[$i]['year'] = $row[11];
 				$mysqli->query("INSERT INTO log values ('" . print_r($arr[$i], true) . "');");	
 				$arr2[$i]['id_tag_agf']=$row[0];
-			        $arr2[$i]['id_empresa']=$row[1];
-	                        $arr2[$i]['id_periodo']=$row[2];	     
-			        $operacion = $row[10];
+			    $arr2[$i]['id_empresa']=$row[1];
+	            $arr2[$i]['id_periodo']=$row[2];	     
+			    $operacion = $row[10];
 			    //    $mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
-			        if(!isset($row[13]))
+			    if(!isset($row[13]))
 					$row[13] = 0;
-				$operacion = str_replace('C1', $row[13], $operacion);
+				$mysqli->query("INSERT INTO log values ('operacion = " . $operacion . "');");	
+				$operacion = str_replace('C1', '(' . $row[13] . ')', $operacion);
 				if(!isset($row[14]))
 					$row[14] = 0;
-				$operacion = str_replace('C2', $row[14], $operacion);
+				$operacion = str_replace('C2', '(' . $row[14] . ')', $operacion);
 				if(!isset($row[15]))			
 					$row[15] = 0;
-				$operacion = str_replace('C3', $row[15], $operacion);
+				$operacion = str_replace('C3', '(' . $row[15] . ')', $operacion);
 				if(!isset($row[16]))
 					$row[16] = 0;
-				$operacion = str_replace('C4', $row[16], $operacion);
+				$operacion = str_replace('C4', '(' . $row[16] . ')', $operacion);
 				if(!isset($row[17]))
 					$row[17] = 0;
-				$operacion = str_replace('C5', $row[17], $operacion);
-				$formula = ($row[0] . " " . $row[1] . " "  . $row[2]);
-				//$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+				$operacion = str_replace('C5', '(' . $row[17] . ')', $operacion);
+				
+				$mysqli->query("INSERT INTO log values ('operacion = " . $operacion . "');");	
 				eval( "\$res2 = " . $operacion . ";");	
+				$mysqli->query("INSERT INTO log values ('res2 = " . $res2 . "');");	
 				if($res2 != 0){
 					$arr2[$i]['valor'] = (float)($res/$res2);
 				} else {
 					$arr2[$i]['valor'] = 0;
 				}	
 				
-				$res = 0;
+				$res2 = 0;
 				$arr2[$i]['nombre_final']=$row[8];
 				$arr2[$i]['label'] = $row[9];			
 				$arr2[$i]['color'] = $row[18];
@@ -2546,7 +2676,7 @@ function valores2($empresa, $periodo){
 			$sql2 = str_replace("'", "''", $sql);
 			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			$mysqli->query("INSERT INTO log values ('" . print_r($arrInf, 1) . "');");
-			        
+			$mysqli->close();        
 		    return true;
 	            
 	    }
@@ -2698,6 +2828,58 @@ function valores2($empresa, $periodo){
 			//retornamos el arreglo
 			return $arr;
 	        
-	    }//fin metod
+	   }//fin metod
+		
+	function parametrosGrafico(){
+		$mysqli = new mysqli("localhost","agf","agf","agf");
+		if (mysqli_connect_errno()) 
+		{
+		  die('Error conectando: ' . mysql_error());
+		}
+		$sql = "SELECT a.id_indice_financiero, a.nombre, c.id_empresa, c.RSO, 0
+				FROM indices_financieros a inner join 
+					 indice_empresa b on id_indice_financiero = id_indice inner join 
+					 empresas c on b.id_empresa = c.id_empresa
+				WHERE b.tipo = 0					
+				UNION
+				SELECT a.id_indice_financiero, a.nombre, c.id_subgrupo, c.nombre, 1
+				FROM indices_financieros a inner join 
+					 indice_empresa b on a.id_indice_financiero = b.id_indice inner join 
+					 subgrupos c on b.id_empresa = c.id_subgrupo
+				WHERE b.tipo <> 0
+				ORDER BY 1;";
+		$sql2 = str_replace("'", "''", $sql);
+		$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+		$result = $mysqli->query($sql);		
+		$i = 0;
+		$arr = array();
+		$mysqli->query("INSERT INTO log values ('" . $result->num_rows . "');");
+		while($row = $result->fetch_array(MYSQLI_NUM)){
+			$arr[$i]['id_indice']=$row[0];
+			$arr[$i]['indice']=$row[1];
+			$arr[$i]['id_empGrupo']=$row[2];
+			$arr[$i]['rso']=$row[3];
+			$arr[$i]['tipo']=$row[4];				
+			$i++;
+		}
+		$mysqli->close();   
+		return $arr;     
+	}	   
+
+	function deleteIndiceFinanciero($id){
+		$mysqli = new mysqli("localhost","agf","agf","agf");
+		if (mysqli_connect_errno()) 
+		{
+		  die('Error conectando: ' . mysql_error());
+		}
+		$sql = "DELETE FROM indices_financieros Where id_indice_financiero = " . $id . ";";
+		$sql2 = str_replace("'", "''", $sql);
+		$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+		$result = $mysqli->query($sql);		
+		
+		$mysqli->close();   
+		return true;     
+	}
+
 }
 ?>

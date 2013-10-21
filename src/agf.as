@@ -76,10 +76,12 @@ import mx.managers.PopUpManager;
 import Componentes.Formula;
 import spark.components.ComboBox;
 import Componentes.SelectItem;
+import mx.olap.OLAPCube;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
-
+public var _cant:int = 0;
+private var _arr:ArrayCollection;
 
 
 private function vbarScroll():void {
@@ -1005,12 +1007,26 @@ protected function button4_clickHandler(event:MouseEvent):void
 {
 	// TODO Auto-generated method stub
 	try{
+		acAplicacion.selectedIndex = 1;
 		var empresas:String = 'AND a.id_empresa in (0';
 		var periodos:String = 'AND a.id_periodo in (0';
 		var tagAgf:String = 'AND b.id_indice_financiero in (0';
-		for each(var o:Object in listEmpresaSelect.dataProvider){
-			empresas += ', ' + o['cod'];
+		listSeleccionEmpresas.dataGroup.getChildAt(0)
+		var item:Object;
+		var x:int = 0;
+		var y:int = 0;
+		for(var i:int = 0; i < listSeleccionEmpresas.dataGroup.numElements; i++){
+			item = listSeleccionEmpresas.dataGroup.getChildAt(i);
+			for each(var o:Object in item.listEmpresas.selectedItems){
+				empresas += ', ' + o['id_empGrupo'];
+				
+			}	
+			x += item.listEmpresas.selectedItems.length;
 		}
+		y = listSeleccionEmpresas.dataGroup.numElements
+		
+		_cant = x * y;
+		
 		empresas += ')';
 		
 		if(rbPeriodosActivos.selected == true){
@@ -1023,8 +1039,8 @@ protected function button4_clickHandler(event:MouseEvent):void
 		}
 		
 		
-		for each(o in listIndices.dataProvider){
-			tagAgf += ', ' + o['cod'];
+		for each(o in listSeleccionEmpresas.dataProvider){
+			tagAgf += ', ' + o['id_indice'];
 		}
 		tagAgf += ')';
 		bloqueo.width = this.width;
@@ -1034,8 +1050,10 @@ protected function button4_clickHandler(event:MouseEvent):void
 		valoresResult.addEventListener(ResultEvent.RESULT, grafica);	
 		nvGrafico.removeAllElements();
 		
+		
 	} catch(e:*){
 		Alert.show('Debe completar todos los campos para poder graficar', 'Atención');
+		PopUpManager.removePopUp(bloqueo);
 	}
 	
 }
@@ -1044,8 +1062,10 @@ protected function button4_clickHandler(event:MouseEvent):void
 
 
 private function grafica(event:ResultEvent):void{
+	flatData = new ArrayCollection();
 	if(ArrayCollection(event.result).length){
 		var arr:ArrayCollection = event.result as ArrayCollection;
+		this._arr = arr;
 		arrAct = new ArrayCollection();
 		arrAct2 = new ArrayCollection();
 		arrAct3 = new ArrayCollection();
@@ -1060,7 +1080,7 @@ private function grafica(event:ResultEvent):void{
 		var series2:Array = new Array();
 		seriesColumn = new Array();
 		
-		for(var x:int = 0; x < listEmpresaSelect.dataProvider.length * listIndices.dataProvider.length; x++){
+		for(var x:int = 0; x < _cant ; x++){
 			seriesColumn[x] = new ColumnSeries();
 			(seriesColumn[x] as ColumnSeries).yField = 'a'+x;
 			(seriesColumn[x] as ColumnSeries).visible = false;
@@ -1175,6 +1195,7 @@ private function grafica(event:ResultEvent):void{
 		}
 		
 	}
+//	myMXMLCube = new OLAPCube();
 	myMXMLCube.refresh();
 	
 	//nvGrafico.addElement(columnasChart);
@@ -1468,5 +1489,13 @@ protected function columnasChart_clickHandler(event:MouseEvent):void
 		}
 		
 	}
+	for each(var o:Object in this._arr){
+		if(o['graf'] == 1){
+			flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
+		}
+		
+	}
+	
+	myMXMLCube.refresh();
 }
 	

@@ -28,7 +28,7 @@
 		</s:stroke>
 	</s:Path>
 	
-	<s:Label id="lb" text="{data.RSO}" top="5" left="5" bottom="5"/>
+	<s:Label id="lb" text="{data.RSO ? data.RSO : data.rso}" top="5" left="5" bottom="5"/>
 	
 </s:ItemRenderer>
 

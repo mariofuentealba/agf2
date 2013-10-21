@@ -3,18 +3,22 @@
 				   xmlns:s="library://ns.adobe.com/flex/spark"
 				   xmlns:mx="library://ns.adobe.com/flex/mx"
 				   width="100%" height="100%" alpha="0.7" color="#050505"				   
-				   close="titlewindow1_closeHandler(event)" direction="ltr" horizontalCenter="0"
+				   direction="ltr" horizontalCenter="0"
 				   title="Fórmula"
 				   >
+		
 	
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			
 			import spark.components.ComboBox;
+			import spark.components.HGroup;
+			import spark.events.ElementExistenceEvent;
 			import spark.events.IndexChangeEvent;
 			public var formula:Array = [];
 			public var formulaAux:Array = [];
@@ -25,7 +29,7 @@
 			private var f:int = 1;
 			private var opciones:TiempoItem = new TiempoItem();
 			private var _datos:ArrayCollection 
-			private var _s:String;
+			public var _s:String;
 		
 			
 			protected function bordercontainer1_clickHandler(event:MouseEvent):void
@@ -81,20 +85,20 @@
 					var cb:ComponenteFormula = new ComponenteFormula();
 					cb.cb.dataProvider = datos;
 					cb.cb.labelField = 'etiqueta';
-					var bt:Button = new Button();
-					bt.label = 'C' + c;
+					cb.bt = new Button();
+					cb.bt.label = 'C' + c;
 					/******bt.name = this._s + cb.ddl.selectedItem['label'] + '.' + c;*/
 					cb.campo = this._s + '.' + c;
 					cb.ddl.name = this._s + '.' + c + '.NN';
-					cb.name = bt.name; 
+					cb.name = cb.bt.name; 
 					vgCombos.addElement(cb);
-					hgBotones.addElement(bt);
-					bt.percentWidth = 100;
+					hgBotones.addElement(cb.bt);
+					cb.bt.percentWidth = 100;
 					cb.percentWidth = 100;
 					c++;
-					cb.name = bt.name; 
+					cb.name = cb.bt.name; 
 					vgCombos.addElement(cb);
-					bt.percentWidth = 100;
+					cb.bt.percentWidth = 100;
 					cb.percentWidth = 100;	
 				} else {
 					var a:Alert = new Alert();
@@ -107,13 +111,37 @@
 				
 			}
 			
+			protected function hgBotones_elementRemoveHandler(event:ElementExistenceEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function hgBotones_updateCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(hgBotones.numElements + 1 != c){
+					c = 1;
+					for(var i:int = 0; i < vgCombos.numElements; i++){
+						var o:Object = vgCombos.getElementAt(i);					
+						o.bt.label = o.bt.label.replace(/.[1-5]/g, 'C' + c);
+						o.campo = o.campo.replace(/[1-5]/, c);
+						o.ddl.name = o.ddl.name.replace(/[1-5]/g, c);
+						o.name = o.bt.name; 
+						c++;
+						o.name = o.bt.name;
+						
+					}		
+				}
+
+			}
+			
 		]]>
-	</fx:Script>
-	
+	</fx:Script>			
 	
 		<s:BorderContainer y="51" width="500" height="100"
 						   click="bordercontainer1_clickHandler(event)" horizontalCenter="0">
-			<s:HGroup id="hgBotones" left="5" right="5" top="5" height="20">
+			<s:HGroup id="hgBotones" left="5" right="5" top="5" height="20" elementRemove="hgBotones_elementRemoveHandler(event)" updateComplete="hgBotones_updateCompleteHandler(event)">
 			</s:HGroup>
 			<s:HGroup y="29" left="4" right="6" height="20">
 				<s:Button width="100%" label="()"/>

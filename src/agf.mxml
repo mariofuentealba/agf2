@@ -7,10 +7,10 @@
 			   xmlns:c="*"
 			   xmlns:charts="com.charts.*"
 			   xmlns:valueObjects="valueObjects.*"
-			   height="1500" 
+			   height="1000" 
 			   creationComplete="crearEsquema_creationCompleteHandler(event)"
 			   
-			   width="1500" xmlns:metadata="org.osmf.metadata.*">
+			   width="100%" xmlns:metadata="org.osmf.metadata.*">
 	<s:layout>
 		<s:BasicLayout/>
 	</s:layout>
@@ -37,6 +37,7 @@
 			import mx.olap.OLAPSet;
 			import mx.rpc.AsyncResponder;
 			import mx.rpc.AsyncToken;
+			import mx.rpc.events.FaultEvent;
 			include "agf.as";
 			
 			[Bindable]private var flatData:ArrayCollection = new ArrayCollection();
@@ -46,6 +47,7 @@
 			public var olapy:IList;
 			public var bloqueo:Bloqueo = new Bloqueo();
 			public var config:ConfigExport = new ConfigExport();
+			[Bindable] private var arrListIndicesGrafico:ArrayCollection;
 			
 			private function creationCompleteHandler():void {
 				// You must initialize the cube before you 
@@ -102,6 +104,7 @@
 			// Handle a query fault.
 			private function showFault(result:Object, token:Object):void {
 				Alert.show("Error in query.");
+				PopUpManager.removePopUp(bloqueo);
 			}
 			
 			// Handle a successful query by passing the query results to 
@@ -162,11 +165,11 @@
 				
 				
 				tabla = 'Indices_Financieros';
-				var c1:Object = formulaIndice.vgCombos.numElements > 1 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).ddl.selectedItem['cod']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
-				var c2:Object = formulaIndice.vgCombos.numElements > 2 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).ddl.selectedItem['cod']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
-				var c3:Object = formulaIndice.vgCombos.numElements > 3 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).ddl.selectedItem['cod']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
-				var c4:Object = formulaIndice.vgCombos.numElements > 4 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).ddl.selectedItem['cod']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
-				var c5:Object = formulaIndice.vgCombos.numElements > 5 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).ddl.selectedItem['cod']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c1:Object = formulaIndice.vgCombos.numElements > 0 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c2:Object = formulaIndice.vgCombos.numElements > 1 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c3:Object = formulaIndice.vgCombos.numElements > 2 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c4:Object = formulaIndice.vgCombos.numElements > 3 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c5:Object = formulaIndice.vgCombos.numElements > 4 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 				arr.push(Ind1.text, Ind2.text, Ind3.text, Ind4.text, Ind5.text, Ind6.text, formulaIndice.txtFormula.text, Ind8.text, c1['ID_tag_agf'], c2['ID_tag_agf'], c3['ID_tag_agf'], c4['ID_tag_agf'], c5['ID_tag_agf'], c1['origen'], c2['origen'], c3['origen'], c4['origen'], c5['origen'], DD_ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO'], c1['campo'], c2['campo'], c3['campo'], c4['campo'], c5['campo']); 
 				var arrEmp:Array = [];
 				if(vwEmpresasIndice.selectedIndex == 0){
@@ -180,7 +183,7 @@
 				}
 				
 				
-				insertarIndiceResult.token = modelo.insertarIndicesFinancieros(arr, tabla, arrEmp, vwEmpresasIndice.selectedIndex);
+				insertarIndiceResult.token = modelo.insertarIndicesFinancieros(arr, tabla, arrEmp, vwEmpresasIndice.selectedIndex.toString());
 				insertarIndiceResult.addEventListener(ResultEvent.RESULT, indiceInsertado);
 			}
 			
@@ -190,6 +193,9 @@
 				
 				grillaIndicesFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina2);
 				grillaGrupoIndicesResult.addEventListener(ResultEvent.RESULT, generaPagina2);
+				
+				parametrosGraficoResult.token = modelo.parametrosGrafico();
+				parametrosGraficoResult.addEventListener(ResultEvent.RESULT, armaParametrizacion);
 			}
 			
 			protected function export_clickHandler(event:MouseEvent):void
@@ -285,11 +291,87 @@
 			protected function acAplicacion_changeHandler(event:IndexChangedEvent):void
 			{
 				// TODO Auto-generated method stub
-				if(acAplicacion.selectedIndex == 0){
-					acAplicacion.height = 400;
+			/*	if(acAplicacion.selectedIndex == 0){
+					acAplicacion.height = 600;
 				} else {
-					acAplicacion.percentHeight = 100;
+					acAplicacion.percentHeight = 600;
+				}*/
+			}
+			
+			protected function armaParametrizacion(event:ResultEvent):void{
+				var arr:ArrayCollection = event.result as ArrayCollection;
+				var arrResult:ArrayCollection = new ArrayCollection();
+				var arrDetalleResult:ArrayCollection = new ArrayCollection();
+				var item:Object = {};
+				var itemAdd:Object = {};
+				var str:String = arr.getItemAt(0)['indice'];
+				item['id_indice'] = arr.getItemAt(0)['id_indice'];
+				item['indice'] = arr.getItemAt(0)['indice'];
+				//itemAdd['id_indice'] = arr.getItemAt(0)['id_indice'];
+				itemAdd['id_empGrupo'] = arr.getItemAt(0)['id_empGrupo'];
+				itemAdd['rso'] = arr.getItemAt(0)['rso'];
+				itemAdd['tipo'] = arr.getItemAt(0)['tipo'];
+				
+				arrResult.addItem(item);
+				item = {};
+				itemAdd = {};
+				for each(var o:Object in arr){
+					item['id_indice'] = o['id_indice'];
+					item['indice'] = o['indice'];
+					itemAdd['id_indice'] = o['id_indice'];
+					itemAdd['id_empGrupo'] = o['id_empGrupo'];
+					itemAdd['rso'] = o['rso'];
+					itemAdd['tipo'] = o['tipo'];					
+					if(o['indice'] != str){
+						arrResult.getItemAt(arrResult.length - 1)['asociados'] = arrDetalleResult;
+						arrDetalleResult = new ArrayCollection();
+						arrResult.addItem(item);
+						item = {};
+						str = o['indice'];
+					}		
+					arrDetalleResult.addItem(itemAdd);
+					itemAdd = {};
 				}
+				arrResult.getItemAt(arrResult.length - 1)['asociados'] = arrDetalleResult;
+				arrDetalleResult = new ArrayCollection();
+				
+				arrListIndicesGrafico = arrResult;
+				
+			}
+			
+			protected function list1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				parametrosGraficoResult.token = modelo.parametrosGrafico();
+				parametrosGraficoResult.addEventListener(ResultEvent.RESULT, armaParametrizacion);
+			}
+			
+			protected function modelo_faultHandler(event:FaultEvent):void
+			{
+				// TODO Auto-generated method stub
+				Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)
+					PopUpManager.removePopUp(bloqueo);
+			}
+			
+			
+			private function eliminado(event:ResultEvent):void{
+				Alert.show('Operación exitosa', 'fin');
+			}
+			
+			
+			private function evaluar(event:CloseEvent):void{
+				if(event.detail == Alert.YES){
+					deleteIndiceFinanciero.token = modelo.deleteIndiceFinanciero(dgIndicesFinancieros.selectedItem['ID_INDICE_FINANCIERO']);
+					dgIndicesFinancieros.dataProvider.removeItemAt(dgIndicesFinancieros.selectedIndex);
+					deleteIndiceFinanciero.addEventListener(ResultEvent.RESULT, eliminado);
+				}
+			}
+			
+			protected function button7_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				Alert.show('Seguro de realizar esta acción', 'Eliminar indice', Alert.YES | Alert.NO, null, evaluar);
 			}
 			
 		]]>
@@ -344,7 +426,7 @@
 		</fx:XML>
 		
 		<modelo:Modelo id="modelo"
-					   fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+					   fault="modelo_faultHandler(event)"
 					   showBusyCursor="true"/>
 		<s:CallResponder id="comboGruposResult"/>
 		<s:CallResponder id="grillaEmpresaResult"/>
@@ -360,11 +442,11 @@
 		<s:CallResponder id="comboGrupoIndicesFinancierosResult"/>
 		<s:CallResponder id="comboGrupoIndicesFinancierosResult2"/>
 		<s:CallResponder id="grillaSubGruposResult"/>
-		
+		<s:CallResponder id="deleteIndiceFinanciero"/>
 		<s:CallResponder id="grillaGrupoIndicesResult"/>
 		<s:CallResponder id="grillaMonedasResult"/>
 		<!--s:CallResponder id="comboGruposResult2"/-->
-		
+		<s:CallResponder id="parametrosGraficoResult"/>
 		<s:CallResponder id="gruposFinancierosResult"/>
 		<s:CallResponder id="subGruposFinancierosResult"/>
 		<s:CallResponder id="empresasResult"/>
@@ -399,12 +481,8 @@
 				<s:Scroller width="100%" height="100%">
 					<s:Group id="myGroup"  width="100%" height="100%">
 						
-						<s:VGroup left="10">
+						<s:VGroup left="10" visible="false">
 							<s:Label x="6" y="10" text="Datos de Gráfico"/>
-							<s:Label x="10" y="30" text="Empresa Principal:"/>
-							<s:ComboBox id="ComboBoxEmpresaPrincipal" creationComplete="comboBox_creationCompleteHandler(event)"
-										dataProvider="{arrEmpresas}"
-										labelField="NOMBRE_FANTASIA"  keyUp="comboBox_keyDownHandler(event)"/>
 							<s:Label text="Empresas a Comparar:"/>
 							<s:ComboBox id="comboBoxEmpresa"
 										creationComplete="comboBox_creationCompleteHandler(event)"
@@ -430,15 +508,7 @@
 								</s:ArrayCollection>
 							</s:DropDownList>
 							<s:HGroup>
-								<s:RadioButton label="Standard" groupName="rbPeriodo" selected="true"/>
-								<s:RadioButton id="rbPeriodosActivos" label="Por Periodos" groupName="rbPeriodo"/>
 							</s:HGroup>
-							
-							
-							
-							<c:CheckList id="listPeriodo" x="10" y="317" width="160" height="71"
-										 creationComplete="listPeriodo_creationCompleteHandler(event)"
-										 itemRendererFunction="myRendererFunction" enabled="{rbPeriodosActivos.selected}"></c:CheckList>
 							<s:Label x="10" y="396" text="Indices:"/>
 							<s:List id="listIndices" height="0" visible="false"></s:List>
 							<s:VGroup id="vgIndices" creationComplete="vgIndices_creationCompleteHandler(event)"
@@ -449,30 +519,52 @@
 							<s:TextInput visible="false" x="10" y="505"/>
 							<s:DropDownList visible="false" x="146" y="506"></s:DropDownList>
 						</s:VGroup>
-						<mx:Accordion id="acAplicacion" width="90%" height="200" horizontalCenter="0" change="acAplicacion_changeHandler(event)">
+						<mx:Accordion id="acAplicacion" width="90%" horizontalCenter="0" selectedIndex="1" change="acAplicacion_changeHandler(event)" height="600">
 							<s:NavigatorContent label="Parametrización"  width="100%" height="100%">
 								<s:HGroup width="100%" horizontalCenter="0" height="100%">
 									<s:BorderContainer width="100%" height="100%">
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 1"/>
 										<s:RichText x="23" y="32" text="Arrastre los indices que desee hacia la grilla del centro"/>	
-										<s:List left="40" right="40" top="50" bottom="5"></s:List>
+										<s:List id="listIndicesGrafico" left="40" right="40" top="50" bottom="5" 
+												dragEnabled="true" dropEnabled="true" dragMoveEnabled="true"
+												labelField="indice" creationComplete="list1_creationCompleteHandler(event)" dataProvider="{arrListIndicesGrafico}"></s:List>
 									</s:BorderContainer>
 									<s:BorderContainer width="100%" height="100%">
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 2"/>
 										<s:RichText x="23" y="32" text="Seleccione las Empresas del Indice"/>	
-										<s:List left="40" right="40" top="50" bottom="5"></s:List>
+										<s:List id="listSeleccionEmpresas" left="40" right="40" top="85" bottom="5"
+												dragEnabled="true" dragMoveEnabled="true"
+												dropEnabled="true"
+												itemRenderer="Componentes.Listado"
+												labelField="indice"></s:List>
+										<s:Label x="36" y="50" text="Empresa Principal:"/>
+										<s:ComboBox id="ComboBoxEmpresaPrincipal" x="32" y="58"
+													creationComplete="comboBox_creationCompleteHandler(event)"
+													dataProvider="{arrEmpresas}"
+													keyUp="comboBox_keyDownHandler(event)"
+													labelField="NOMBRE_FANTASIA"/>
 									</s:BorderContainer>
 									<s:BorderContainer width="100%" height="100%">
+										<s:layout>
+											<s:VerticalLayout/>
+										</s:layout>
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 3"/>
 										<s:RichText x="23" y="32" text="Seleccione periodo"/>	
-										<s:List left="40" right="40" top="50" bottom="5"></s:List>
+										<s:HGroup>
+											<s:RadioButton label="Standard" groupName="rbPeriodo" selected="true"/>
+											<s:RadioButton id="rbPeriodosActivos" label="Por Periodos" groupName="rbPeriodo"/>
+												
+										</s:HGroup>
+										<c:CheckList id="listPeriodo" x="10" y="317" width="160" height="200"
+													 creationComplete="listPeriodo_creationCompleteHandler(event)"
+													 itemRendererFunction="myRendererFunction" enabled="{rbPeriodosActivos.selected}"></c:CheckList>
 									</s:BorderContainer>	
 								</s:HGroup>
 								
 							</s:NavigatorContent>
 								
 							<s:NavigatorContent label="Gráfico">
-								<mx:TabNavigator x="218" y="7" width="1013" height="700">
+								<mx:TabNavigator horizontalCenter="0" y="7" width="1013" height="100%">
 									<s:NavigatorContent id="nvGrafico" width="100%" height="100%"
 														label="Gráfico">
 										<Componentes:GraficoBarrasAGF name="columnasChart" id="columnasChart" left="0"
@@ -933,7 +1025,7 @@
 							<s:NavigatorContent label="Listado" >
 								
 								
-								<s:DataGrid id="dgIndicesFinancieros" x="23" top="0" bottom="20" width="100%"
+								<s:DataGrid id="dgIndicesFinancieros" x="23" top="20" bottom="20" width="100%"
 											creationComplete="dgIndicesFinancieros_creationCompleteHandler(event)"
 											doubleClick="dgGrupo_doubleClickHandler(event)"
 											doubleClickEnabled="true" requestedRowCount="4">
@@ -959,6 +1051,7 @@
 								<s:TextInput text="grillaIndicesFinancierosResult" visible="false">
 									
 								</s:TextInput>
+								<s:Button x="43" y="0" label="Eliminar Indice Seleccionado" click="button7_clickHandler(event)" enabled="{dgIndicesFinancieros.selectedIndex > -1 ? true : false}"/>
 							</s:NavigatorContent>
 							<s:NavigatorContent label="Nuevo">
 								<s:BorderContainer x="88" top="20" width="700" height="558"
@@ -1326,7 +1419,7 @@
 		<s:Button x="159" width="86" label="Exportar" verticalCenter="0" click="export_clickHandler(event)"/><!--cornerRadius="5"-->
 	</s:BorderContainer>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
-	<s:Label y="39" right="5" text="version: 1.0.121"/>
+	<s:Label y="39" right="5" text="version: 1.0.131"/>
 	
 	
 	

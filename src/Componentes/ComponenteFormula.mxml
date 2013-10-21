@@ -8,13 +8,24 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import spark.components.NavigatorContent;
+			import spark.components.VGroup;
 			import spark.events.IndexChangeEvent;
 			[Bindable] public var campo:String; 
+			
+			public var bt:Button;
 			
 			protected function ddl_changeHandler(event:IndexChangeEvent):void
 			{
 				// TODO Auto-generated method stub
 				ddl.name = campo + ddl.selectedItem['cod'];
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				(this.bt.parent as HGroup).removeElement(this.bt);
+				(this.parent as VGroup).removeElement(this);
 			}
 			
 		]]>
@@ -24,6 +35,7 @@
 		<s:ArrayList>
 			<fx:Object label="Normal" cod=".NN"/>
 			<fx:Object label="Periodo Anterior" cod=".AN"/>
+			<fx:Object label="Periodo Anual" cod=".AC"/>
 			<fx:Object label="Periodos Anteriores dentro del año" cod=".AA"/>				
 		</s:ArrayList>
 		<!--s:RadioButton label="Normal" groupName="radiogroup1" selected="true"/>
@@ -31,4 +43,5 @@
 		<s:RadioButton label="Periodos Anteriores dentro del año" groupName="radiogroup1"/>
 		<s:RadioButton label="Periodo anterior de la selección" groupName="radiogroup1"/-->
 	</s:DropDownList>
+	<s:Button width="34" label="X" fontWeight="bold" click="button1_clickHandler(event)"/>
 </s:HGroup>
