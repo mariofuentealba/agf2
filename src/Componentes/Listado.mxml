@@ -5,15 +5,50 @@
 				autoDrawBackground="true" xmlns:local="*" width="100%" height="100%">
 	<fx:Script>
 		<![CDATA[
+			import mx.managers.PopUpManager;
+			
+			import valueObjects.EmpresasDatatype;
+			
+			public var agregar:AgregarEmpresa;
 			public function myRendererFunction(item:*):IFactory
 			{
 				return new ClassFactory(DetailItemRenderer);
 				
 			}
+			
+			private function info(event:MouseEvent):void{
+				
+				for each(var o:EmpresasDatatype in agregar.listSeleccionEmpresas.selectedItems){
+					var oAjustado:Object = {};
+					oAjustado['id_empGrupo'] = o.ID_EMPRESA;
+					oAjustado['rso'] = o.RSO;
+					oAjustado['tipo'] = 0;
+					oAjustado['id_indice'] = data['id_indice'];
+					listEmpresas.dataProvider.addItem(oAjustado);	
+				}
+				PopUpManager.removePopUp(agregar);
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				agregar = new AgregarEmpresa();
+				agregar.width = this.parentApplication.width;
+				agregar.height = this.parentApplication.height;
+				
+				PopUpManager.addPopUp(agregar, this);
+				agregar.btnAccion.addEventListener(MouseEvent.CLICK, info);
+			}
+			
 		]]>
 	</fx:Script>
-	<s:VGroup horizontalCenter="0" verticalCenter="0" horizontalAlign="center" width="100%">
-		<s:Label fontSize="14" fontWeight="bold" text="{data['indice']}"/>
+	<s:VGroup horizontalCenter="0" verticalCenter="0" horizontalAlign="left" width="100%">
+		<s:HGroup>
+			<s:Label fontSize="14" fontWeight="bold" text="{data['indice']}"/>
+			<s:Button label="Agregar Empresa" click="button1_clickHandler(event)"/>
+		</s:HGroup>
+		
+		
 		<local:CheckList id="listEmpresas" labelField="rso" dataProvider="{data['asociados']}" 
 						 width="100%" height="100%" itemRendererFunction="myRendererFunction"/>
 		<!--s:List id="listEmpresas" labelField="rso" dataProvider="{data['asociados']}">

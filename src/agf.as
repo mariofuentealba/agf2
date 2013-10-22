@@ -333,8 +333,8 @@ protected function guardar_clickHandler(event:MouseEvent):void
 			modelo.insertarSubgrupo(arr, tabla, param);
 			break;
 		/*case 'tnIndicesFinancieros':
-			modelo.insertarIndicesFinancieros(arr, tabla);
-			break;*/
+		modelo.insertarIndicesFinancieros(arr, tabla);
+		break;*/
 		default:
 			modelo.insertar(arr, tabla);
 			break;
@@ -1051,7 +1051,7 @@ protected function button4_clickHandler(event:MouseEvent):void
 		valoresResult.token = modelo.valores(ComboBoxEmpresaPrincipal.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
 		valoresResult.addEventListener(ResultEvent.RESULT, grafica);	
 		nvGrafico.removeAllElements();
-		
+		tnGrafico.selectedIndex = 2;
 		
 	} catch(e:*){
 		Alert.show('Debe completar todos los campos para poder graficar', 'Atención');
@@ -1079,12 +1079,12 @@ private function grafica(event:ResultEvent):void{
 		var obAdd:Object = {};
 		obAdd['label'] = idPeriodo;
 		var sw:Boolean = true;
-		var i:int = 0;
+		i = 0;
 		var series:Array = new Array();
 		var series2:Array = new Array();
 		seriesColumn = new Array();
 		
-		for(var x:int = 0; x < _cant ; x++){
+		for(x = 0; x < _cant ; x++){
 			seriesColumn[x] = new ColumnSeries();
 			(seriesColumn[x] as ColumnSeries).yField = 'a'+x;
 			(seriesColumn[x] as ColumnSeries).visible = false;
@@ -1092,7 +1092,7 @@ private function grafica(event:ResultEvent):void{
 		}
 		
 		
-		for each(var o:Object in arr){
+		for each(o in arr){
 			if(o['graf'] == 2){
 				break;
 			}
@@ -1193,11 +1193,11 @@ private function grafica(event:ResultEvent):void{
 	}
 	
 	
-/*	for each(o in arr){
-		if(o['graf'] == 1){
-			flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
-		}
-		
+	/*	for each(o in arr){
+	if(o['graf'] == 1){
+	flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
+	}
+	
 	}
 	
 	*/
@@ -1243,9 +1243,9 @@ private function grafica(event:ResultEvent):void{
 	
 	
 	flatData = this._arr;
-//	myMXMLCube = new OLAPCube();
+	//	myMXMLCube = new OLAPCube();
 	myMXMLCube.refresh();
-	
+	tnGrafico.selectedIndex = 0;
 	//nvGrafico.addElement(columnasChart);
 }
 
@@ -1530,20 +1530,20 @@ protected function columnasChart_clickHandler(event:MouseEvent):void
 				columnasChart.prov = arrAct;
 				flatData = this._arr;
 				/*for each(var o:Object in this._arr){
-					if(o['graf'] == 1){
-						flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
-					}
-					
+				if(o['graf'] == 1){
+				flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
+				}
+				
 				}*/
 				break;
 			case 'Referente':
 				columnasChart.prov = arrAct2;
 				flatData = this._arrReferente;
 				/*for each(o in this._arr){
-					if(o['graf'] != 1){
-						flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
-					}
-					
+				if(o['graf'] != 1){
+				flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
+				}
+				
 				}*/
 				break;
 			case 'Variación':
@@ -1556,15 +1556,15 @@ protected function columnasChart_clickHandler(event:MouseEvent):void
 				flatData = this._arrVariacion;
 				
 				/*for(var i:int = count; i < this._arr.length; i++){
-					o = this._arr.getItemAt(i);
-					if(o['graf'] == 1){
-						if(j < count){
-						} else {
-							x++;
-							j = 0;
-						}
-						flatData.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(arrAct3.getItemAt(x)['a' + (j++)] as Number, 1), year: o['year']});
-					}
+				o = this._arr.getItemAt(i);
+				if(o['graf'] == 1){
+				if(j < count){
+				} else {
+				x++;
+				j = 0;
+				}
+				flatData.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(arrAct3.getItemAt(x)['a' + (j++)] as Number, 1), year: o['year']});
+				}
 				}*/
 				break;
 		}
@@ -1573,7 +1573,7 @@ protected function columnasChart_clickHandler(event:MouseEvent):void
 	
 	myMXMLCube.refresh();
 }
-	
+
 public function roundDecimals(value:Number, decimals:int):Number
 {
 	var multiple:String = "1";

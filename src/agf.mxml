@@ -236,9 +236,43 @@
 						val += '\n';
 					}
 					
+			/*		flatData = this._arrReferente;
+					myMXMLCube.refresh();
+					
+					
+					olap.dataProvider.query.getAxis(0);
+					
+					for(i = m; i < (m - 1) * 2; i++){
+						val += ';';
+					}
+					val += '\n;';
+					for(i = 0; i < m; i++){
+						val += olapx[i]['name'] + ';';
+					}
+					val = val.substring(0, val.length - 1);				
+					val += '\n';
+					for(i = 0; i < n; i++){
+						val += olapy[i]['name'] + ';';
+						for(j = 0; j < m; j++){
+							val += (olap.dataProvider as OLAPResult).getCell(i, j).value + ';';
+						}
+						val = val.substring(0, val.length - 1);
+						val += '\n';
+					}
+					
+					flatData = this._arrReferente;
+					myMXMLCube.refresh();
+				*/	
+					
+					
+					
+					
 					request.data.nombre = val;
 					request.data.graf = 'Grafico';
 					navigateToURL(request,"_blank");
+					
+					
+					
 				} catch(e:*) {
 					Alert.show('Debe generar el Gráfico antes de exportar', 'Atención');
 				} 
@@ -298,6 +332,8 @@
 				}*/
 			}
 			
+			
+			private var arrListIndicesGraficoTotal:ArrayCollection = new ArrayCollection();
 			protected function armaParametrizacion(event:ResultEvent):void{
 				var arr:ArrayCollection = event.result as ArrayCollection;
 				var arrResult:ArrayCollection = new ArrayCollection();
@@ -307,6 +343,7 @@
 				var str:String = arr.getItemAt(0)['indice'];
 				item['id_indice'] = arr.getItemAt(0)['id_indice'];
 				item['indice'] = arr.getItemAt(0)['indice'];
+				item['grupo'] = arr.getItemAt(0)['grupo'];
 				//itemAdd['id_indice'] = arr.getItemAt(0)['id_indice'];
 				itemAdd['id_empGrupo'] = arr.getItemAt(0)['id_empGrupo'];
 				itemAdd['rso'] = arr.getItemAt(0)['rso'];
@@ -318,6 +355,7 @@
 				for each(var o:Object in arr){
 					item['id_indice'] = o['id_indice'];
 					item['indice'] = o['indice'];
+					item['grupo'] = o['grupo'];
 					itemAdd['id_indice'] = o['id_indice'];
 					itemAdd['id_empGrupo'] = o['id_empGrupo'];
 					itemAdd['rso'] = o['rso'];
@@ -335,7 +373,11 @@
 				arrResult.getItemAt(arrResult.length - 1)['asociados'] = arrDetalleResult;
 				arrDetalleResult = new ArrayCollection();
 				
+				
+				
+				
 				arrListIndicesGrafico = arrResult;
+				arrListIndicesGraficoTotal = arrResult;
 				
 			}
 			
@@ -372,6 +414,26 @@
 				// TODO Auto-generated method stub
 				
 				Alert.show('Seguro de realizar esta acción', 'Eliminar indice', Alert.YES | Alert.NO, null, evaluar);
+			}
+			
+			
+			protected function gruposFinancieros_creationCompleteHandler(event:FlexEvent):void
+			{
+				comboGrupoIndicesFinancierosResult3.token = modelo.comboGrupoIndicesFinancieros();
+			}
+			
+			
+			
+			
+			protected function gruposFinancieros_changeHandler(event:IndexChangeEvent):void
+			{
+				// TODO Auto-generated method stub
+				arrListIndicesGrafico = new ArrayCollection();
+				for each(var o:Object in arrListIndicesGraficoTotal){
+					if(o['grupo'] == gruposFinancieros.selectedItem['ID_GRUPO_INDICE_FINANCIERO'] || o['grupo'] == 0){
+						arrListIndicesGrafico.addItem(o);
+					}
+				}
 			}
 			
 		]]>
@@ -465,6 +527,7 @@
 		<s:CallResponder id="grillaIndicesFinancierosResult"/>
 		<s:RadioButtonGroup id="rbPeriodo"/>
 		<s:RadioButtonGroup id="radiogroup1"/>
+		<s:CallResponder id="comboGrupoIndicesFinancierosResult3"/>
 		
 		
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -525,9 +588,14 @@
 									<s:BorderContainer width="100%" height="100%">
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 1"/>
 										<s:RichText x="23" y="32" text="Arrastre los indices que desee hacia la grilla del centro"/>	
-										<s:List id="listIndicesGrafico" left="40" right="40" top="50" bottom="5" 
+										<s:List id="listIndicesGrafico" left="40" right="40" top="85" bottom="5" 
 												dragEnabled="true" dropEnabled="true" dragMoveEnabled="true"
 												labelField="indice" creationComplete="list1_creationCompleteHandler(event)" dataProvider="{arrListIndicesGrafico}"></s:List>
+										<s:DropDownList id="gruposFinancieros" x="52" y="57"
+														creationComplete="gruposFinancieros_creationCompleteHandler(event)"
+														labelField="nombre" change="gruposFinancieros_changeHandler(event)">
+											<s:AsyncListView list="{comboGrupoIndicesFinancierosResult3.lastResult}"/>
+										</s:DropDownList>
 									</s:BorderContainer>
 									<s:BorderContainer width="100%" height="100%">
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 2"/>
@@ -564,7 +632,7 @@
 							</s:NavigatorContent>
 								
 							<s:NavigatorContent label="Gráfico">
-								<mx:TabNavigator horizontalCenter="0" y="7" width="1013" height="100%">
+								<mx:TabNavigator id="tnGrafico" horizontalCenter="0" y="7" width="1013" height="100%">
 									<s:NavigatorContent id="nvGrafico" width="100%" height="100%"
 														label="Gráfico">
 										<Componentes:GraficoBarrasAGF name="columnasChart" id="columnasChart" left="0"

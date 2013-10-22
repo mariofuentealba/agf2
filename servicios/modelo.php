@@ -2836,13 +2836,13 @@ function valores2($empresa, $periodo){
 		{
 		  die('Error conectando: ' . mysql_error());
 		}
-		$sql = "SELECT a.id_indice_financiero, a.nombre, c.id_empresa, c.RSO, 0
+		$sql = "SELECT a.id_indice_financiero, a.nombre, c.id_empresa, c.RSO, 0, ID_GRUPO_INDICE_FINANCIERO
 				FROM indices_financieros a inner join 
 					 indice_empresa b on id_indice_financiero = id_indice inner join 
 					 empresas c on b.id_empresa = c.id_empresa
 				WHERE b.tipo = 0					
 				UNION
-				SELECT a.id_indice_financiero, a.nombre, c.id_subgrupo, c.nombre, 1
+				SELECT a.id_indice_financiero, a.nombre, c.id_subgrupo, c.nombre, 1,ID_GRUPO_INDICE_FINANCIERO
 				FROM indices_financieros a inner join 
 					 indice_empresa b on a.id_indice_financiero = b.id_indice inner join 
 					 subgrupos c on b.id_empresa = c.id_subgrupo
@@ -2859,7 +2859,8 @@ function valores2($empresa, $periodo){
 			$arr[$i]['indice']=$row[1];
 			$arr[$i]['id_empGrupo']=$row[2];
 			$arr[$i]['rso']=$row[3];
-			$arr[$i]['tipo']=$row[4];				
+			$arr[$i]['tipo']=$row[4];
+			$arr[$i]['grupo']=$row[5];			
 			$i++;
 		}
 		$mysqli->close();   
