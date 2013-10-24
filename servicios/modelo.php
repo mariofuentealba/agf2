@@ -2189,7 +2189,7 @@ public function grillaTodosGrupoIndices(){
 									AND c.id_formula = " . $row[5] . "
 							AND a.tipo = 'TRIMESTRAL'
 							" . $idEmpresas . " " . $idPeriodos . "
-				  Order By 12, 13, 2;";
+				  Order By 11, 12, 13, 2;";
 			}
 			
 			$sql2 = str_replace("'", "''", $sql);

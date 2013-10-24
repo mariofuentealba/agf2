@@ -566,10 +566,9 @@
 	<s:Image left="0" right="0" top="0" source="assets/dsicback1.jpg"/>
 	<s:Image left="0" top="150" source="assets/dsicback2.jpg"/>
 	<s:Image left="0" top="0" width="256" alpha=".7" source="assets/chico 12.jpg"/>
-	<mx:LinkBar x="22" y="116" borderStyle="solid"  dataProvider="{viewstack1}"><!--borderVisible="true"-->
-	</mx:LinkBar>
-	<mx:ViewStack id="viewstack1" left="0" right="0" top="150" bottom="0">
-		
+	
+	
+	<mx:TabNavigator left="50" top="120" width="1200">
 		<s:NavigatorContent width="100%" height="100%" label="Analizador" >
 			<s:VGroup  width="100%" height="100%">
 				<s:Scroller width="100%" height="100%">
@@ -613,7 +612,9 @@
 							<s:TextInput visible="false" x="10" y="505"/>
 							<s:DropDownList visible="false" x="146" y="506"></s:DropDownList>
 						</s:VGroup>
-						<mx:Accordion id="acAplicacion" width="90%" horizontalCenter="0" selectedIndex="1" change="acAplicacion_changeHandler(event)" height="600">
+						<mx:Accordion id="acAplicacion" top="40" width="90%" height="600"
+									  change="acAplicacion_changeHandler(event)"
+									  horizontalCenter="0" selectedIndex="1">
 							<s:NavigatorContent label="Parametrización"  width="100%" height="100%">
 								<s:HGroup width="100%" horizontalCenter="0" height="100%">
 									<s:BorderContainer width="100%" height="100%">
@@ -652,7 +653,7 @@
 										<s:HGroup>
 											<s:RadioButton label="Standard" groupName="rbPeriodo" selected="true"/>
 											<s:RadioButton id="rbPeriodosActivos" label="Por Periodos" groupName="rbPeriodo"/>
-												
+											
 										</s:HGroup>
 										<c:CheckList id="listPeriodo" x="10" y="317" width="160" height="200"
 													 creationComplete="listPeriodo_creationCompleteHandler(event)"
@@ -661,16 +662,17 @@
 								</s:HGroup>
 								
 							</s:NavigatorContent>
-								
+							
 							<s:NavigatorContent label="Gráfico">
-								<mx:TabNavigator id="tnGrafico" horizontalCenter="0" y="7" width="1013" height="100%">
+								<mx:TabNavigator id="tnGrafico" width="700" height="100%"
+												 horizontalCenter="0">
 									<s:NavigatorContent id="nvGrafico" width="100%" height="100%"
 														label="Gráfico">
 										<Componentes:GraficoBarrasAGF name="columnasChart" id="columnasChart" left="0"
 																	  right="0" top="0" bottom="0"
 																	  serie="{seriesColumn}"
 																	  prov="{arrAct}"
-																	  click="columnasChart_clickHandler(event)">
+																	  click="columnasChart_clickHandler(event)" width="100%">
 										</Componentes:GraficoBarrasAGF>
 									</s:NavigatorContent>
 									<s:NavigatorContent width="100%" height="100%" label="Matriz">
@@ -713,6 +715,11 @@
 								</mx:TabNavigator>								
 							</s:NavigatorContent>
 						</mx:Accordion>
+						<s:BorderContainer left="249" right="31" top="0" height="29"><!-- backgroundColor="#776D6D"-->
+							<s:Button left="40" label="Mostrar Gráfico" click="button4_clickHandler(event)"
+									  verticalCenter="0"/>
+							<s:Button x="159" width="86" label="Exportar" verticalCenter="0" click="export_clickHandler(event)"/><!--cornerRadius="5"-->
+						</s:BorderContainer>
 						
 						
 					</s:Group>
@@ -757,12 +764,12 @@
 					<mx:HRule width="100%"/>
 					<mx:HRule width="100%" height="0"/>
 					<!--mx:LinkButton width="100%" height="30" label="Asociar AGF-XBLR"
-								   label.State1="Asociar AGF-XBRL"/>
+					label.State1="Asociar AGF-XBRL"/>
 					<mx:HRule width="100%"/>
 					<mx:LinkButton height="30" label="Admin. AGF" width="100%"/>
 					<mx:HRule width="100%"/>
 					<mx:LinkButton width="100%" height="30" label="Admin. XBLR"
-								   label.State1="Admin. XBRL"/>
+					label.State1="Admin. XBRL"/>
 					<mx:HRule width="100%"/-->
 					<mx:LinkButton width="100%" height="34" label="Formulario Empresa"/>
 				</s:VGroup>
@@ -857,12 +864,12 @@
 										<s:Button label="Guardar Formulario"/>
 										<s:Button label="Agregar Item"/>	
 									</s:HGroup>
-																		
+									
 								</s:BorderContainer>
 								<!--mx:PopUpMenuButton id="btnAccion" y="91" right="10"
-													
-													dataProvider="{dp2}" labelField="@label"
-													showRoot="false"/-->
+								
+								dataProvider="{dp2}" labelField="@label"
+								showRoot="false"/-->
 								
 								<s:BorderContainer x="18" y="10" width="315" height="99">
 									<s:ComboBox id="dropDownListEmpresa" x="74" y="29" width="227" change="dropDownListEmpresa_changeHandler(event)"
@@ -1347,26 +1354,26 @@
 						<mx:TabNavigator id="tnGrupoIndices" left="0" right="0" top="0" bottom="20">
 							<s:NavigatorContent label="Listado" >
 								<!--s:DataGrid id="dgGrupoIndices" x="23" top="0" bottom="20"
-											width="391" click="dgGrupo_clickHandler(event)"
-											creationComplete="dgGrupoIndices_creationCompleteHandler(event)"
-											doubleClick="dgGrupo_doubleClickHandler(event)"
-											doubleClickEnabled="true" requestedRowCount="4">
-									<s:columns>
-										<s:ArrayList>
-											<s:GridColumn dataField="nombre" headerText="nombre"></s:GridColumn>
-											<s:GridColumn dataField="descripcion"
-														  headerText="descripcion"></s:GridColumn>
-											<s:GridColumn visible="false" dataField="ID_GRUPO_INDICE_FINANCIERO"
-														  headerText="ID_GRUPO_INDICE_FINANCIERO"></s:GridColumn>
-										</s:ArrayList>
-									</s:columns>
-									
-									
-									
-									
+								width="391" click="dgGrupo_clickHandler(event)"
+								creationComplete="dgGrupoIndices_creationCompleteHandler(event)"
+								doubleClick="dgGrupo_doubleClickHandler(event)"
+								doubleClickEnabled="true" requestedRowCount="4">
+								<s:columns>
+								<s:ArrayList>
+								<s:GridColumn dataField="nombre" headerText="nombre"></s:GridColumn>
+								<s:GridColumn dataField="descripcion"
+								headerText="descripcion"></s:GridColumn>
+								<s:GridColumn visible="false" dataField="ID_GRUPO_INDICE_FINANCIERO"
+								headerText="ID_GRUPO_INDICE_FINANCIERO"></s:GridColumn>
+								</s:ArrayList>
+								</s:columns>
+								
+								
+								
+								
 								</s:DataGrid-->	
 								
-									
+								
 								
 								<s:DataGrid id="dgGrupoIndices" x="5" y="14"
 											creationComplete="dgGrupoIndices_creationCompleteHandler(event)"
@@ -1541,16 +1548,17 @@
 			</s:BorderContainer>
 			
 		</s:NavigatorContent>
-	</mx:ViewStack>
+	</mx:TabNavigator>
+	<!--mx:LinkBar x="22" y="116" borderStyle="solid"  dataProvider="{viewstack1}">
+	</mx:LinkBar>
+	<mx:ViewStack id="viewstack1" left="0" right="0" top="150" bottom="0">
+		
+		
+	</mx:ViewStack-->
 	<s:Label x="10" y="10" text="Sesion iniciada por:"/>
 	<s:Label id="txtUser" x="128" y="10" fontWeight="bold" text="CArriagada"/>
-	<s:BorderContainer y="117" left="249" right="31" height="29"><!-- backgroundColor="#776D6D"-->
-		<s:Button left="40" label="Mostrar Gráfico" click="button4_clickHandler(event)"
-				  verticalCenter="0"/>
-		<s:Button x="159" width="86" label="Exportar" verticalCenter="0" click="export_clickHandler(event)"/><!--cornerRadius="5"-->
-	</s:BorderContainer>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
-	<s:Label y="39" right="5" text="version: 1.0.134"/>
+	<s:Label y="39" right="5" text="version: 1.0.135"/>
 	
 	
 	

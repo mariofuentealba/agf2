@@ -72,6 +72,7 @@ private var formulaAux:Array = [];
 private var arrAct:ArrayCollection = new ArrayCollection();
 private var arrAct2:ArrayCollection = new ArrayCollection();
 private var arrAct3:ArrayCollection = new ArrayCollection();
+private var arrActTotal:ArrayCollection = new ArrayCollection();
 import mx.managers.PopUpManager;
 import Componentes.Formula;
 import spark.components.ComboBox;
@@ -1078,6 +1079,10 @@ private function grafica(event:ResultEvent):void{
 	this._arrVariacion = new ArrayCollection();
 	if(ArrayCollection(event.result).length){
 		var arr:ArrayCollection = event.result as ArrayCollection;
+		
+		var str_inicial:String = '' + arr.getItemAt(0)['id_tag_agf'];
+		
+		
 		this._arr = new ArrayCollection();
 		arrAct = new ArrayCollection();
 		arrAct2 = new ArrayCollection();
