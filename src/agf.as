@@ -472,7 +472,16 @@ protected function editar_clickHandler(event:MouseEvent):void
 	
 	(event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedIndex = 0
 	//(this[((((event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedChild as NavigatorContent).getElementAt(1) as TextInput).text)] as CallResponder).token = modelo.grillaGrupos();
-	var results:String = ((((event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedChild as NavigatorContent).getElementAt(1) as spark.components.TextInput).text);	
+	//((((event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedChild as NavigatorContent)	
+		
+	var nc:NavigatorContent = event.target.parent.parent.parent.parent.parent.parent.parent.selectedChild
+	for(i = 0; i < nc.numElements; i++){
+		if(nc.getElementAt(i) is spark.components.TextInput){
+			var results:String = nc.getElementAt(i)['text'];
+			break;
+		}
+	}
+	//	var results:String = '';
 	//Alert.show('' + (this['grillaGruposResult'] as CallResponder).token);
 	switch(results){
 		case 'grillaGruposResult':
@@ -749,12 +758,12 @@ protected function completaIndices(event:ResultEvent):void{
 	dgGrupoIndices.dataProvider = grillaGrupoIndicesResult.lastResult
 }
 
-
+/*
 protected function dgGrupoIndices_creationCompleteHandler(event:FlexEvent):void
 {
 	grillaGrupoIndicesResult.token = modelo.grillaGrupoIndices();
 	grillaGrupoIndicesResult.addEventListener(ResultEvent.RESULT, completaIndices)
-}
+}*/
 
 protected function dgMonedas_creationCompleteHandler(event:FlexEvent):void
 {
@@ -1345,7 +1354,7 @@ private function valorGuardado(event:ResultEvent):void{
 protected function btnAccion_clickHandler(event:MouseEvent):void
 {
 	// TODO Auto-generated method stub
-	switch(btnAccion.label){
+	switch(event.target.label){
 		case 'Crear Item':
 			var item:ItemFormulario = new ItemFormulario();
 			item.currentState = 'creando';

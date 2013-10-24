@@ -352,7 +352,11 @@ public function grillaSubGrupos(){
 	                mysql_select_db("agf", $con);
 	                
 	                //seleccionamos registros de tabla tb_persona
-	                $result = mysql_query("SELECT a.ID_SUBGRUPO, nombre, descripcion, ID_TIPO_EMPRESA  FROM subgrupos a, grupos_subgrupos b where a.id_subgrupo = b.id_subgrupo")
+					
+					
+					$sql = "SELECT a.ID_SUBGRUPO, nombre, descripcion, ID_TIPO_EMPRESA  FROM subgrupos a, grupos_subgrupos b where a.id_subgrupo = b.id_subgrupo";
+					mysql_query("insert into log values ('" . $sql . "');");
+	                $result = mysql_query($sql)
 	                or die(mysql_error());
 	                //el LIMIT se configura con los parametros recibidos
 	                //$startIndex
@@ -362,11 +366,11 @@ public function grillaSubGrupos(){
 	                while($row = mysql_fetch_row($result))
 	                {
 	                    //almacenamos los registros en la var array
-			     $arr[$i]['ID_SUBGRUPO']=$row[0];
-	                     $arr[$i]['nombre']=$row[1];
-	                     $arr[$i]['descripcion']=$row[2];
-			     $arr[$i]['ID_TIPO_EMPRESA']=$row[3];
-	                 $i++; 
+						$arr[$i]['ID_SUBGRUPO']=$row[0];
+	                    $arr[$i]['nombre']=$row[1];
+	                    $arr[$i]['descripcion']=$row[2];
+						$arr[$i]['ID_TIPO_EMPRESA']=$row[3];
+						$i++; 
 	                }
 	            //cerramos la conexion con mysql
 	            mysql_close($con);
@@ -1406,43 +1410,83 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 	}
 	
 	
-public function grillaGrupoIndices($startIndex, $numItems){
+public function grillaGrupoIndices(){
 	     $arr = array();
 	     	        //conectamos con la mysql
-	     	        $con = mysql_connect("localhost","agf","agf");
-	     	            //validamos que la conexion sea exitosa
-	     	            if (!$con)
-	     	            {
-	     	              //si existe error en conexion
-	     	              die('Error conectando: ' . mysql_error());
-	     	            }
-	     	                //si no existe error de conexion
-	     	                //seleccionamos base de datos
-	     	                mysql_select_db("agf", $con);
-	     	                
-	     	                //seleccionamos registros de tabla tb_persona
-	     	                $result = mysql_query("SELECT * FROM grupos_indices_financieros LIMIT $startIndex, $numItems")
-	     	                or die(mysql_error());
-	     	                //el LIMIT se configura con los parametros recibidos
-	     	                //$startIndex
-	     	                //$numItems
-	     	                //EJ. seleccione desde el registro 0 hasta el 10
-	     	                $i=0;
-	     	                while($row = mysql_fetch_row($result))
-	     	                {
-	     	                    //almacenamos los registros en la var array
-	     			     $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[0];
-	     	                     $arr[$i]['nombre']=$row[1];
-	     	                     $arr[$i]['descripcion']=$row[2];
-	     	                 $i++; 
-	     	                }
-	     	            //cerramos la conexion con mysql
-	     	            mysql_close($con);
-	     	            
-	     	        //retornamos el arreglo
-	     	        return $arr;
-	     	        
-	     	    }//fin metodo
+			$con = mysql_connect("localhost","agf","agf");
+				//validamos que la conexion sea exitosa
+				if (!$con)
+				{
+				  //si existe error en conexion
+				  die('Error conectando: ' . mysql_error());
+				}
+					//si no existe error de conexion
+					//seleccionamos base de datos
+					mysql_select_db("agf", $con);
+					
+					//seleccionamos registros de tabla tb_persona
+					$result = mysql_query("SELECT `ID_GRUPO_INDICE_FINANCIERO`, `NOMBRE`, `DESCRIPCION` FROM grupos_indices_financieros")
+					or die(mysql_error());
+					//el LIMIT se configura con los parametros recibidos
+					//$startIndex
+					//$numItems
+					//EJ. seleccione desde el registro 0 hasta el 10
+					$i=0;
+					while($row = mysql_fetch_row($result))
+					{
+						//almacenamos los registros en la var array
+						 $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[0];
+						 $arr[$i]['nombre']=$row[1];
+						 $arr[$i]['descripcion']=$row[2];
+						 $i++; 
+					}
+				//cerramos la conexion con mysql
+				mysql_query("INSERT INTO log VALUES ('" . print_r($arr, true) . "');");
+				mysql_close($con);
+				
+			//retornamos el arreglo
+			return $arr;
+			
+		}//fin metodo
+		
+function grillaGrupoIndices2(){
+	     $arr = array();
+	     	        //conectamos con la mysql
+			$con = mysql_connect("localhost","agf","agf");
+				//validamos que la conexion sea exitosa
+				if (!$con)
+				{
+				  //si existe error en conexion
+				  die('Error conectando: ' . mysql_error());
+				}
+					//si no existe error de conexion
+					//seleccionamos base de datos
+					mysql_select_db("agf", $con);
+					
+					//seleccionamos registros de tabla tb_persona
+					$result = mysql_query("SELECT `ID_GRUPO_INDICE_FINANCIERO`, `NOMBRE`, `DESCRIPCION` FROM grupos_indices_financieros")
+					or die(mysql_error());
+					//el LIMIT se configura con los parametros recibidos
+					//$startIndex
+					//$numItems
+					//EJ. seleccione desde el registro 0 hasta el 10
+					$i=0;
+					while($row = mysql_fetch_row($result))
+					{
+						//almacenamos los registros en la var array
+						 $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[0];
+						 $arr[$i]['nombre']=$row[1];
+						 $arr[$i]['descripcion']=$row[2];
+						 $i++; 
+					}
+				//cerramos la conexion con mysql
+				mysql_query("INSERT INTO log VALUES ('" . print_r($arr, true) . "');");
+				mysql_close($con);
+				
+			//retornamos el arreglo
+			return $arr;
+			
+		}//fin metodo
 	     	    
 	     	    public function countGrupoIndices(){
 	     	    
@@ -2608,6 +2652,7 @@ function valores2($empresa, $periodo){
 					from valores c 
 					where c.id_empresa = a.id_empresa 
 						and c.tipo = 'TRIMESTRAL' 
+						and origen = 1
 						and c.id_periodo = 
 						" . $periodo. " and c.id_tag_agf = a.id_tag_agf) valor,  nun_item, id_tag_agf
                 	                FROM `formulario_item` a

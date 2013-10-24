@@ -436,6 +436,34 @@
 				}
 			}
 			
+			
+			protected function dropDownListPeriodo_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				periodosResult.token = modelo.periodos();
+				periodosResult.addEventListener(ResultEvent.RESULT, cargaPeriodosFormulario);
+			}
+			
+			private function cargaPeriodosFormulario(event:ResultEvent):void{
+				for each(var i:Object in event.result){
+					if(i['oa'] == 1){
+						
+						arrTrimestre.addItem(i);
+					} else{
+						arrAnual.addItem(i);
+					}
+				}
+				dropDownListPeriodo.dataProvider = arrTrimestre;
+			}
+			
+			
+			
+			protected function dgGrupoIndices_creationCompleteHandler(event:FlexEvent):void
+			{
+				grillaGrupoIndices2Result.token = modelo.grillaGrupoIndices2();
+				grillaGrupoIndices2Result.addEventListener(ResultEvent.RESULT, completaIndices)
+			}
+			
 		]]>
 	</fx:Script>
 	<s:states>
@@ -528,6 +556,9 @@
 		<s:RadioButtonGroup id="rbPeriodo"/>
 		<s:RadioButtonGroup id="radiogroup1"/>
 		<s:CallResponder id="comboGrupoIndicesFinancierosResult3"/>
+		<s:CallResponder id="grillaGrupoIndicesResult2"/>
+		<s:CallResponder id="grillaGrupoIndicesResult3"/>
+		<s:CallResponder id="grillaGrupoIndices2Result"/>
 		
 		
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -722,7 +753,7 @@
 					<mx:HRule width="100%"/>
 					<mx:LinkButton height="30" label="Indices" width="100%"/>
 					<mx:HRule width="100%"/>
-					<mx:LinkButton height="30" label="Grupos de Indices" width="100%" enabled="false"/>
+					<mx:LinkButton height="30" label="Grupos de Indices" width="100%" enabled="true"/>
 					<mx:HRule width="100%"/>
 					<mx:HRule width="100%" height="0"/>
 					<!--mx:LinkButton width="100%" height="30" label="Asociar AGF-XBLR"
@@ -820,10 +851,18 @@
 										</s:NavigatorContent>
 									</mx:TabNavigator>
 								</s:Panel>
-								<mx:PopUpMenuButton id="btnAccion" y="91" right="10"
-													click="btnAccion_clickHandler(event)"
+								<s:BorderContainer right="10"  y="80" click="btnAccion_clickHandler(event)" width="300">
+									<s:HGroup horizontalCenter="0" verticalCenter="0">
+										<s:Button label="Crear Item"/>
+										<s:Button label="Guardar Formulario"/>
+										<s:Button label="Agregar Item"/>	
+									</s:HGroup>
+																		
+								</s:BorderContainer>
+								<!--mx:PopUpMenuButton id="btnAccion" y="91" right="10"
+													
 													dataProvider="{dp2}" labelField="@label"
-													showRoot="false"/>
+													showRoot="false"/-->
 								
 								<s:BorderContainer x="18" y="10" width="315" height="99">
 									<s:ComboBox id="dropDownListEmpresa" x="74" y="29" width="227" change="dropDownListEmpresa_changeHandler(event)"
@@ -832,7 +871,7 @@
 												keyUp="comboBox_keyDownHandler(event)"
 												labelField="NOMBRE_FANTASIA">
 									</s:ComboBox>
-									<s:DropDownList id="dropDownListPeriodo" x="74" y="58" labelField="RSO"  change="dropDownListEmpresa_changeHandler(event)">
+									<s:DropDownList id="dropDownListPeriodo" x="74" y="58" labelField="RSO" creationComplete="dropDownListPeriodo_creationCompleteHandler(event)"  change="dropDownListEmpresa_changeHandler(event)">
 										<s:AsyncListView list="{arrTrimestre}"/>
 									</s:DropDownList>
 									<s:Label x="10" y="29" text="Empresa"/>
@@ -1307,7 +1346,7 @@
 					<s:NavigatorContent width="100%" height="100%" label="Grupos de Indices">
 						<mx:TabNavigator id="tnGrupoIndices" left="0" right="0" top="0" bottom="20">
 							<s:NavigatorContent label="Listado" >
-								<s:DataGrid id="dgGrupoIndices" x="23" top="0" bottom="20"
+								<!--s:DataGrid id="dgGrupoIndices" x="23" top="0" bottom="20"
 											width="391" click="dgGrupo_clickHandler(event)"
 											creationComplete="dgGrupoIndices_creationCompleteHandler(event)"
 											doubleClick="dgGrupo_doubleClickHandler(event)"
@@ -1325,8 +1364,32 @@
 									
 									
 									
-								</s:DataGrid>	
-								<s:TextInput text="grillaGrupoIndicesResult" visible="false">
+								</s:DataGrid-->	
+								
+									
+								
+								<s:DataGrid id="dgGrupoIndices" x="5" y="14"
+											creationComplete="dgGrupoIndices_creationCompleteHandler(event)"
+											requestedRowCount="4" left="10" top="10" width="500" height="300"
+											doubleClick="dgGrupo_doubleClickHandler(event)"
+											doubleClickEnabled="true">
+									<s:columns>
+										<s:ArrayList>
+											<s:GridColumn dataField="nombre" headerText="nombre"></s:GridColumn>
+											<s:GridColumn dataField="descripcion"
+														  headerText="descripcion"></s:GridColumn>
+											<s:GridColumn visible="false" dataField="ID_GRUPO_INDICE_FINANCIERO"
+														  headerText="ID_GRUPO_INDICE_FINANCIERO"></s:GridColumn>
+										</s:ArrayList>
+									</s:columns>
+									<s:typicalItem>
+										<fx:Object descripcion="descripcion1"
+												   ID_GRUPO_INDICE_FINANCIERO="ID_GRUPO_INDICE_FINANCIERO1"
+												   nombre="nombre1"></fx:Object>
+									</s:typicalItem>
+									
+								</s:DataGrid>
+								<s:TextInput text="grillaGrupoIndicesResult" visible="true">
 									
 								</s:TextInput>
 							</s:NavigatorContent>
@@ -1487,7 +1550,7 @@
 		<s:Button x="159" width="86" label="Exportar" verticalCenter="0" click="export_clickHandler(event)"/><!--cornerRadius="5"-->
 	</s:BorderContainer>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
-	<s:Label y="39" right="5" text="version: 1.0.131"/>
+	<s:Label y="39" right="5" text="version: 1.0.134"/>
 	
 	
 	
