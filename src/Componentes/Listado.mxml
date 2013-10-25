@@ -10,6 +10,7 @@
 			import valueObjects.EmpresasDatatype;
 			
 			public var agregar:AgregarEmpresa;
+			public var grafico:LayoutGrafic =  new LayoutGrafic();
 			public function myRendererFunction(item:*):IFactory
 			{
 				return new ClassFactory(DetailItemRenderer);

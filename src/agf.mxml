@@ -40,16 +40,16 @@
 			import mx.rpc.events.FaultEvent;
 			include "agf.as";
 			
-			[Bindable]private var flatData:ArrayCollection = new ArrayCollection();
+		/*	[Bindable]private var flatData:ArrayCollection = new ArrayCollection();
 			[Bindable]private var olapData:OLAPResult;
 			
 			public var olapx:IList;
-			public var olapy:IList;
+			public var olapy:IList;*/
 			public var bloqueo:Bloqueo = new Bloqueo();
 			public var config:ConfigExport = new ConfigExport();
 			[Bindable] private var arrListIndicesGrafico:ArrayCollection;
 			
-			private function creationCompleteHandler():void {
+			/*private function creationCompleteHandler():void {
 				// You must initialize the cube before you 
 				// can execute a query on it.
 				myMXMLCube.refresh();
@@ -115,7 +115,7 @@
 					return;
 				}
 				olapData= result as OLAPResult;            
-			}        
+			}   */     
 			
 			private function items(datos:ResultEvent):void{
 				formulaIndice.cerrando = cerrando;
@@ -215,26 +215,31 @@
 					
 					request.data = new URLVariables();
 					var val:String = ';';
+					
+					
+					/*
 					olap.dataProvider.query.getAxis(0);
 					var n:int = (olap.dataProvider as OLAPResult).axes[1].positions.length;
 					var m:int = (olap.dataProvider as OLAPResult).axes[0].positions.length;
+					
+					
+					
+					
 					for(var i:int = 0; i < m - 1; i++){
 						val += ';';
 					}
 					val += '\n;';
 					for(i = 0; i < m; i++){
-						val += olapx[i]['name'] + ';';
 					}
 					val = val.substring(0, val.length - 1);				
 					val += '\n';
 					for(i = 0; i < n; i++){
-						val += olapy[i]['name'] + ';';
 						for(var j:int = 0; j < m; j++){
 							val += (olap.dataProvider as OLAPResult).getCell(i, j).value + ';';
 						}
 						val = val.substring(0, val.length - 1);
 						val += '\n';
-					}
+					}*/
 					
 			/*		flatData = this._arrReferente;
 					myMXMLCube.refresh();
@@ -472,13 +477,8 @@
 	
 	<fx:Declarations>
 			
-		<mx:OLAPCube name="FlatSchemaCube" dataProvider="{flatData}" id="myMXMLCube" complete="runQuery(event);">
-			<!--mx:OLAPDimension name="CustomerDim">
-				<mx:OLAPAttribute name="Customer" dataField="customer"/>
-				<mx:OLAPHierarchy name="CustomerHier" hasAll="true">
-					<mx:OLAPLevel attributeName="Customer"/>
-				</mx:OLAPHierarchy>
-			</mx:OLAPDimension-->
+		<!--mx:OLAPCube name="FlatSchemaCube" dataProvider="{flatData}" id="myMXMLCube" complete="runQuery(event);">
+			
 			
 			<mx:OLAPDimension name="RSODim">
 				<mx:OLAPAttribute name="RSO" dataField="rso"/>
@@ -498,8 +498,8 @@
 			
 			<mx:OLAPMeasure name="Valor" 
 							dataField="valor" 
-							aggregator="SUM"/><!--aggregator="SUM"-->
-		</mx:OLAPCube>
+							aggregator="SUM"/>
+		</mx:OLAPCube-->
 		<mx:SeriesInterpolate id="interpolateIn" duration="1000"/>
 		<s:SolidColor id="sc1" color="blue" alpha=".3"/>
 		<s:SolidColor id="sc2" color="red" alpha=".3"/>
@@ -666,7 +666,7 @@
 							<s:NavigatorContent label="Gráfico">
 								<mx:TabNavigator id="tnGrafico" width="700" height="100%"
 												 horizontalCenter="0">
-									<s:NavigatorContent id="nvGrafico" width="100%" height="100%"
+									<!--s:NavigatorContent id="nvGrafico" width="100%" height="100%"
 														label="Gráfico">
 										<Componentes:GraficoBarrasAGF name="columnasChart" id="columnasChart" left="0"
 																	  right="0" top="0" bottom="0"
@@ -711,7 +711,7 @@
 										</s:VGroup>
 										
 										
-									</s:NavigatorContent>
+									</s:NavigatorContent-->
 								</mx:TabNavigator>								
 							</s:NavigatorContent>
 						</mx:Accordion>

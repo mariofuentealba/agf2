@@ -59,8 +59,7 @@ private var arrAnual:ArrayCollection = new ArrayCollection();
 
 [Bindable] private var torta:ArrayCollection = new ArrayCollection();
 [Bindable] private var columnas:ArrayCollection = new ArrayCollection();
-[Bindable] private var seriesPie:Array = [];
-[Bindable] private var seriesColumn:Array = [];
+//[Bindable] private var seriesColumn:Array = [];
 
 [Bindable] private var torta2:ArrayCollection = new ArrayCollection();
 [Bindable] private var columnas2:ArrayCollection = new ArrayCollection();
@@ -69,22 +68,29 @@ private var arrAnual:ArrayCollection = new ArrayCollection();
 
 private var formula:Array = [];
 private var formulaAux:Array = [];
+
+
+
 private var arrAct:ArrayCollection = new ArrayCollection();
 private var arrAct2:ArrayCollection = new ArrayCollection();
 private var arrAct3:ArrayCollection = new ArrayCollection();
+
+
+
 private var arrActTotal:ArrayCollection = new ArrayCollection();
 import mx.managers.PopUpManager;
 import Componentes.Formula;
 import spark.components.ComboBox;
 import Componentes.SelectItem;
 import mx.olap.OLAPCube;
+import Componentes.LayoutGrafic;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
 public var _cant:int = 0;
-private var _arr:ArrayCollection;
+/*private var _arr:ArrayCollection;
 private var _arrReferente:ArrayCollection;
-private var _arrVariacion:ArrayCollection;
+private var _arrVariacion:ArrayCollection;*/
 
 
 private function vbarScroll():void {
@@ -1059,9 +1065,12 @@ protected function button4_clickHandler(event:MouseEvent):void
 		bloqueo.height = this.height;
 		PopUpManager.addPopUp(bloqueo, this);
 		valoresResult.token = modelo.valores(ComboBoxEmpresaPrincipal.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
-		valoresResult.addEventListener(ResultEvent.RESULT, grafica);	
+		valoresResult.addEventListener(ResultEvent.RESULT, grafica_);
+		/*
 		nvGrafico.removeAllElements();
-		tnGrafico.selectedIndex = 2;
+		tnGrafico.selectedIndex = 2;*/
+		tnGrafico.removeAllElements();
+		
 		
 	} catch(e:*){
 		Alert.show('Debe completar todos los campos para poder graficar', 'Atención');
@@ -1072,15 +1081,207 @@ protected function button4_clickHandler(event:MouseEvent):void
 
 
 
+private var arrGraf:ArrayCollection;
+private function grafica_(event:ResultEvent):void{	
+	var arr:ArrayCollection = event.result as ArrayCollection;
+	var i:int = 0;
+	for each(var o:Object in arr){
+		var arrParam:ArrayCollection = new ArrayCollection(o as Array);
+		grafica(arrParam, i++);
+	}
+}
 
-private function grafica(event:ResultEvent):void{
+
+private function grafica(arr:ArrayCollection, ind:int):void{
+	tnGrafico.addElement(listSeleccionEmpresas.dataGroup.getElementAt(ind)['grafico'] as LayoutGrafic);
+	
+	
+	listSeleccionEmpresas.dataProvider.getItemAt(ind).flatData = new ArrayCollection();
+	listSeleccionEmpresas.dataProvider.getItemAt(ind)._arrReferente = new ArrayCollection();
+	listSeleccionEmpresas.dataProvider.getItemAt(ind)._arrVariacion = new ArrayCollection();
+	
+	var str_inicial:String = '' + arr.getItemAt(0)['id_tag_agf'];
+	
+	listSeleccionEmpresas.dataProvider.getItemAt(ind)._arr = new ArrayCollection();
+	listSeleccionEmpresas.dataProvider.getItemAt(ind).arrAct = new ArrayCollection();
+	listSeleccionEmpresas.dataProvider.getItemAt(ind).arrAct2 = new ArrayCollection();
+	listSeleccionEmpresas.dataProvider.getItemAt(ind).arrAct3 = new ArrayCollection();
+	var idPeriodo:String = arr[0]['label'];
+	//var format:NumberFormatter = new NumberFormatter('de-DE');
+	
+	var obAdd:Object = {};
+	obAdd['label'] = idPeriodo;
+	var sw:Boolean = true;
+	var i:int = 0;
+	listSeleccionEmpresas.dataProvider.getItemAt(ind).seriesColumn = new Array();
+	
+	for(var x:int = 0; x < _cant ; x++){
+		listSeleccionEmpresas.dataProvider.getItemAt(ind).seriesColumn[x] = new ColumnSeries();
+		(listSeleccionEmpresas.dataProvider.getItemAt(ind).seriesColumn[x] as ColumnSeries).yField = 'a'+x;
+		(listSeleccionEmpresas.dataProvider.getItemAt(ind).seriesColumn[x] as ColumnSeries).visible = false;
+		
+	}
+	
+	
+	
+	
+	
+	
+	for each(var o:Object in arr){
+		if(o['graf'] == 2){
+			break;
+		}
+		obAdd['nombre'] = o['nombre_final'] + '(' + o['label'] + ')';
+		if(idPeriodo == o['label']){
+			obAdd['a'+i] = roundDecimals(o['valor'] as Number, 1);///1000;
+			if(obAdd['arr'] == null){
+				var a:Array = [];
+				obAdd['arr'] = a;
+			}
+			obAdd['arr'].push(roundDecimals(o['valor'] as Number, 1));///1000);
+			//if(sw){
+			
+			
+			var stro:SolidColorStroke = new SolidColorStroke();
+			var colorLine:SolidColor = new SolidColor();
+			stro.weight = 2;
+			colorLine.alpha = 1;
+			stro.color = o['color'];
+			colorLine.color = o['color'];
+			if(sw){
+				(listSeleccionEmpresas.dataProvider.getItemAt(ind).seriesColumn[i] as ColumnSeries).setStyle('fill', colorLine);
+				(listSeleccionEmpresas.dataProvider.getItemAt(ind).seriesColumn[i] as ColumnSeries).displayName = o['nombre_final'];
+				(listSeleccionEmpresas.dataProvider.getItemAt(ind).seriesColumn[i] as ColumnSeries).setStyle('showDataEffect', interpolateIn);				
+				(listSeleccionEmpresas.dataProvider.getItemAt(ind).seriesColumn[i] as ColumnSeries).visible = true;					
+			}
+			
+			//	}
+		} else{
+			sw = false;
+			
+			arrAct.addItem(obAdd);
+			obAdd = {};
+			idPeriodo = o['label'];
+			obAdd['label'] = idPeriodo;
+			i = 0;
+			obAdd['a' + i] = roundDecimals(o['valor'] as Number, 1);///1000;
+			if(obAdd['arr'] == null){
+				a = [];
+				obAdd['arr'] = a;
+			}
+			obAdd['arr'].push(roundDecimals(o['valor'] as Number, 1));///1000);
+		}
+		i++;
+	}
+	
+	arrAct.addItem(obAdd);
+	
+	
+	
+	for(i = 1; i < arrAct.length; i++){
+		o = new Object();	
+		for(var str:String in arrAct.getItemAt(i)){
+			o[str] = arrAct.getItemAt(i)[str];	
+		}
+		for(var j:int = 0; j < arrAct.getItemAt(i)['arr'].length; j++){
+			arrAct.getItemAt(i)['QAnt' + j] = arrAct.getItemAt(i - 1)['arr'][j];	
+			o['a' + j] = roundDecimals((((o['a' + j]/arrAct.getItemAt(i - 1)['arr'][j]) - 1) * 100) as Number, 1);
+		}
+		arrAct3.addItem(o);
+	}
+	
+	obAdd = {};
+	idPeriodo = arr[0]['label'];
+	i = 0;
+	for each(o in arr){
+		if(o['graf'] == 2){
+			
+			if(idPeriodo == o['label']){
+				obAdd['nombre'] = o['nombre_final'] + '(' + o['label'] + ')';
+				obAdd['a'+i] = roundDecimals(o['valor'] as Number, 1);
+				if(sw){
+					
+					
+					
+					
+				}
+			} else{
+				sw = false;
+				arrAct2.addItem(obAdd);
+				obAdd = {};
+				idPeriodo = o['label'];
+				obAdd['label'] = idPeriodo;
+				i = 0;
+				obAdd['a' + i] = roundDecimals(o['valor'] as Number, 1);
+			}
+			i++;
+		}
+	}
+	
+	arrAct2.addItem(obAdd);
+	columnas = arrAct;	
+	listSeleccionEmpresas.dataProvider.getItemAt(ind).nvGrafico.addElement(listSeleccionEmpresas.dataProvider.getItemAt(ind).columnasChart);
+	listSeleccionEmpresas.dataProvider.getItemAt(ind).columnasChart.rbInicial.selected = true;
+	listSeleccionEmpresas.dataProvider.getItemAt(ind).columnasChart.rbInicial.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+	PopUpManager.removePopUp(bloqueo);
+	
+	
+	for each(var o:Object in arr){
+		if(o['graf'] == 1){
+			listSeleccionEmpresas.dataProvider.getItemAt(ind)._arr.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(o['valor'] as Number, 1), year: o['year']});
+		}
+		
+	}
+	
+	for each(o in arr){
+		if(o['graf'] != 1){
+			listSeleccionEmpresas.dataProvider.getItemAt(ind)._arrReferente.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(o['valor'] as Number, 1), year: o['year']});
+		}
+		
+	}
+	var j:int = 0;
+	var count:int = 0;
+	x = 0;
+	
+	count = arrAct3.getItemAt(0)['arr']['length'];
+	
+	
+	for(i = count; i < arr.length; i++){
+		o = arr.getItemAt(i);
+		if(o['graf'] == 1){
+			if(j < count){
+			} else {
+				x++;
+				j = 0;
+			}
+			listSeleccionEmpresas.dataProvider.getItemAt(ind)._arrVariacion.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(arrAct3.getItemAt(x)['a' + (j++)] as Number, 1), year: o['year']});
+		}
+	}
+	
+	
+	
+	listSeleccionEmpresas.dataProvider.getItemAt(ind).flatData = listSeleccionEmpresas.dataProvider.getItemAt(ind)._arr;
+	listSeleccionEmpresas.dataProvider.getItemAt(ind)..myMXMLCube.refresh();
+	tnGrafico.selectedIndex = 0;
+}
+
+
+private function graficaResp(event:ResultEvent):void{
+	
+	/*
 	flatData = new ArrayCollection();
 	this._arrReferente = new ArrayCollection();
 	this._arrVariacion = new ArrayCollection();
+	
+	
 	if(ArrayCollection(event.result).length){
 		var arr:ArrayCollection = event.result as ArrayCollection;
 		
 		var str_inicial:String = '' + arr.getItemAt(0)['id_tag_agf'];
+		
+		
+		
+		
 		
 		
 		this._arr = new ArrayCollection();
@@ -1094,8 +1295,6 @@ private function grafica(event:ResultEvent):void{
 		obAdd['label'] = idPeriodo;
 		var sw:Boolean = true;
 		i = 0;
-		var series:Array = new Array();
-		var series2:Array = new Array();
 		seriesColumn = new Array();
 		
 		for(x = 0; x < _cant ; x++){
@@ -1104,6 +1303,10 @@ private function grafica(event:ResultEvent):void{
 			(seriesColumn[x] as ColumnSeries).visible = false;
 			
 		}
+		
+		
+		
+		
 		
 		
 		for each(o in arr){
@@ -1121,8 +1324,6 @@ private function grafica(event:ResultEvent):void{
 				//if(sw){
 				
 				
-				/*	seriesColumn[i] = new ColumnSeries();
-				(seriesColumn[i] as ColumnSeries).yField = 'a'+i;*/
 				var stro:SolidColorStroke = new SolidColorStroke();
 				var colorLine:SolidColor = new SolidColor();
 				stro.weight = 2;
@@ -1206,19 +1407,6 @@ private function grafica(event:ResultEvent):void{
 		PopUpManager.removePopUp(bloqueo);
 	}
 	
-	
-	/*	for each(o in arr){
-	if(o['graf'] == 1){
-	flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
-	}
-	
-	}
-	
-	*/
-	
-	
-	
-	
 	for each(var o:Object in arr){
 		if(o['graf'] == 1){
 			this._arr.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(o['valor'] as Number, 1), year: o['year']});
@@ -1251,7 +1439,7 @@ private function grafica(event:ResultEvent):void{
 		}
 	}
 	
-	
+	arrGraf.addItem({arrAct: arrAct, arrAct2: arrAct2, arrAct3: arrAct3});
 	
 	
 	
@@ -1260,7 +1448,7 @@ private function grafica(event:ResultEvent):void{
 	//	myMXMLCube = new OLAPCube();
 	myMXMLCube.refresh();
 	tnGrafico.selectedIndex = 0;
-	//nvGrafico.addElement(columnasChart);
+	//nvGrafico.addElement(columnasChart);*/
 }
 
 
@@ -1294,9 +1482,6 @@ protected function setRandToPie():void {
 		temp.push(colorItem);
 	}
 	str += "]";
-	/*	ti.text = str;
-	pie.colors = temp;
-	pie.dataProvider = toSet;*/
 }
 
 
@@ -1534,7 +1719,7 @@ protected function dgIndicesFinancieros_creationCompleteHandler(event:FlexEvent)
 	grillaIndicesFinancierosResult.addEventListener(ResultEvent.RESULT, indicesResult);
 }
 
-protected function columnasChart_clickHandler(event:MouseEvent):void
+/*protected function columnasChart_clickHandler(event:MouseEvent):void
 {
 	// TODO Auto-generated method stub
 	flatData = new ArrayCollection();
@@ -1543,22 +1728,12 @@ protected function columnasChart_clickHandler(event:MouseEvent):void
 			case 'Normal':
 				columnasChart.prov = arrAct;
 				flatData = this._arr;
-				/*for each(var o:Object in this._arr){
-				if(o['graf'] == 1){
-				flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
-				}
-				
-				}*/
+
 				break;
 			case 'Referente':
 				columnasChart.prov = arrAct2;
 				flatData = this._arrReferente;
-				/*for each(o in this._arr){
-				if(o['graf'] != 1){
-				flatData.addItem({periodo: o['label'], rso: o['rso'], valor: o['valor'], year: o['year']});
-				}
-				
-				}*/
+
 				break;
 			case 'Variación':
 				columnasChart.prov = arrAct3;
@@ -1569,24 +1744,14 @@ protected function columnasChart_clickHandler(event:MouseEvent):void
 				count = arrAct3.getItemAt(0)['arr']['length'];
 				flatData = this._arrVariacion;
 				
-				/*for(var i:int = count; i < this._arr.length; i++){
-				o = this._arr.getItemAt(i);
-				if(o['graf'] == 1){
-				if(j < count){
-				} else {
-				x++;
-				j = 0;
-				}
-				flatData.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(arrAct3.getItemAt(x)['a' + (j++)] as Number, 1), year: o['year']});
-				}
-				}*/
+
 				break;
 		}
 		
 	}
 	
 	myMXMLCube.refresh();
-}
+}*/
 
 public function roundDecimals(value:Number, decimals:int):Number
 {

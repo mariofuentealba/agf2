@@ -1897,17 +1897,17 @@ public function grillaTodosGrupoIndices(){
 		$comp5 = ' AND x.id_periodo = a.id_periodo ';
 		$f = explode("b.id_indice_financiero in (", $formulas);
 		$f = explode(")", $f[1]);
-		$f = explode(", ", $f[0]);
+		$f = explode(",", $f[0]);
 		$arrResult = array();
 		$ind = 0;
-		
-		for($j = 1; $j < count($f); $j++){
+		$mysqli->query("INSERT INTO log values ('" . print_r($f, true) . "');");		
+		$jj = 0;
+		for($j = 1; $j < count($f); $j++, $jj++){
 			$sql = "SELECT `cod1`, `cod2`, `cod3`, `cod4`, `cod5`, a.`ID_FORMULA`
 									FROM `formulas` a, `indices_financieros` b
 									WHERE a.`ID_FORMULA` = b.`ID_FORMULA` 
 										AND b.`id_indice_financiero` = " . $f[$j] . ";";
 			$result = $mysqli->query($sql);	
-										
 										
 			while($row = $result->fetch_array(MYSQLI_NUM)){
 				$formula1 = explode(".", $row[0]);
@@ -2189,22 +2189,22 @@ public function grillaTodosGrupoIndices(){
 									AND c.id_formula = " . $row[5] . "
 							AND a.tipo = 'TRIMESTRAL'
 							" . $idEmpresas . " " . $idPeriodos . "
-				  Order By 11, 12, 13, 2;";
+				  Order By 12, 13, 2;";
 			}
 			
 			$sql2 = str_replace("'", "''", $sql);
 	        $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
 		
-                $result = $mysqli->query($sql)
-                or die(mysql_error());
-                $i = 0;
+			$result = $mysqli->query($sql)
+			or die(mysql_error());
+			$i = 0;
 			$formula = '';
 			$operacion = array();
 			$arrInf = array();
 			
 			
 			while($row = $result->fetch_array(MYSQLI_NUM))
-	                {
+	        {
 	                    //almacenamos los registros en la var array
 			   //  $mysqli->query("INSERT INTO log values ('" . print_r($row, 1) . "');");
 			     $arr[$i]['id_tag_agf']=$row[0];
@@ -2239,10 +2239,14 @@ public function grillaTodosGrupoIndices(){
 				$arr[$i]['rso'] = $row[19];
 				$arr[$i]['indice'] = $row[20];
 				$arr[$i]['year'] = $row[11];
+				$arr[$i]['nro_grafico'] = $jj;	
+
+				
 				$mysqli->query("INSERT INTO log values ('" . print_r($arr[$i], true) . "');");	
 				$arr2[$i]['id_tag_agf']=$row[0];
 			    $arr2[$i]['id_empresa']=$row[1];
-	            $arr2[$i]['id_periodo']=$row[2];	     
+	            $arr2[$i]['id_periodo']=$row[2];	   
+				
 			    $operacion = $row[10];
 			    //    $mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
 			    if(!isset($row[13]))
@@ -2279,6 +2283,7 @@ public function grillaTodosGrupoIndices(){
 				$arr2[$i]['rso'] = $row[19];
 				$arr2[$i]['indice'] = $row[20];
 				$arr2[$i]['year'] = $row[11];
+				$arr2[$i]['nro_grafico'] = $jj;
 				$i++;
 	        }	
 			
@@ -2303,9 +2308,7 @@ public function grillaTodosGrupoIndices(){
 					
 				}
 			}
-			
-	            //cerramos la conexion con mysql
-		    $result = array_merge($arr, $arr2);    
+			$result = array_merge($arr, $arr2);    
 			$arrResult[$ind++] = $result; 	
 		    /*$mysqli->query("INSERT INTO log values ('" . print_r($arr, 1) . "');");
 		    $mysqli->query("INSERT INTO log values ('" . print_r($arr2, 1) . "');");
@@ -2329,9 +2332,10 @@ public function grillaTodosGrupoIndices(){
         $mysqli->close();
         
         //retornamos el arreglo
-        return $result2;
+        //return $result2;
+		return $arrResult;
 	        
-	    }//fin metodo
+	}//fin metodo
 
 function periodos(){
 	        //creando variable array
