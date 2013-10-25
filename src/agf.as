@@ -70,11 +70,11 @@ private var formula:Array = [];
 private var formulaAux:Array = [];
 
 
-
+/*
 private var arrAct:ArrayCollection = new ArrayCollection();
 private var arrAct2:ArrayCollection = new ArrayCollection();
 private var arrAct3:ArrayCollection = new ArrayCollection();
-
+*/
 
 
 private var arrActTotal:ArrayCollection = new ArrayCollection();
@@ -84,6 +84,7 @@ import spark.components.ComboBox;
 import Componentes.SelectItem;
 import mx.olap.OLAPCube;
 import Componentes.LayoutGrafic;
+import Componentes.Listado;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
@@ -1087,15 +1088,23 @@ private function grafica_(event:ResultEvent):void{
 	var i:int = 0;
 	for each(var o:Object in arr){
 		var arrParam:ArrayCollection = new ArrayCollection(o as Array);
+		var nc:NavigatorContent = new NavigatorContent();
+		var gr:LayoutGrafic = (listSeleccionEmpresas.dataGroup.getElementAt(i) as Listado).removeElement((listSeleccionEmpresas.dataGroup.getElementAt(i) as Listado)['grafico']) as LayoutGrafic;
+		nc.label = listSeleccionEmpresas.dataGroup.getElementAt(i)['data']['indice'];
+		tnGrafico.addElement(nc);
+		nc.addElement(gr);
+		gr.horizontalCenter = 0;
+		gr.verticalCenter = 0;
+		
 		grafica(arrParam, i++);
 	}
 }
 
 
 private function grafica(arr:ArrayCollection, ind:int):void{
-	tnGrafico.addElement(listSeleccionEmpresas.dataGroup.getElementAt(ind)['grafico'] as LayoutGrafic);
 	
 	
+	var gr:LayoutGrafic = (tnGrafico.getElementAt(ind) as NavigatorContent).getElementAt(0) as LayoutGrafic;
 	listSeleccionEmpresas.dataProvider.getItemAt(ind).flatData = new ArrayCollection();
 	listSeleccionEmpresas.dataProvider.getItemAt(ind)._arrReferente = new ArrayCollection();
 	listSeleccionEmpresas.dataProvider.getItemAt(ind)._arrVariacion = new ArrayCollection();
@@ -1159,7 +1168,7 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 		} else{
 			sw = false;
 			
-			arrAct.addItem(obAdd);
+			gr.arrAct.addItem(obAdd);
 			obAdd = {};
 			idPeriodo = o['label'];
 			obAdd['label'] = idPeriodo;
@@ -1174,20 +1183,20 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 		i++;
 	}
 	
-	arrAct.addItem(obAdd);
+	gr.arrAct.addItem(obAdd);
 	
 	
 	
-	for(i = 1; i < arrAct.length; i++){
+	for(i = 1; i < gr.arrAct.length; i++){
 		o = new Object();	
-		for(var str:String in arrAct.getItemAt(i)){
-			o[str] = arrAct.getItemAt(i)[str];	
+		for(var str:String in gr.arrAct.getItemAt(i)){
+			o[str] = gr.arrAct.getItemAt(i)[str];	
 		}
-		for(var j:int = 0; j < arrAct.getItemAt(i)['arr'].length; j++){
-			arrAct.getItemAt(i)['QAnt' + j] = arrAct.getItemAt(i - 1)['arr'][j];	
-			o['a' + j] = roundDecimals((((o['a' + j]/arrAct.getItemAt(i - 1)['arr'][j]) - 1) * 100) as Number, 1);
+		for(var j:int = 0; j < gr.arrAct.getItemAt(i)['arr'].length; j++){
+			gr.arrAct.getItemAt(i)['QAnt' + j] = gr.arrAct.getItemAt(i - 1)['arr'][j];	
+			o['a' + j] = roundDecimals((((o['a' + j]/gr.arrAct.getItemAt(i - 1)['arr'][j]) - 1) * 100) as Number, 1);
 		}
-		arrAct3.addItem(o);
+		gr.arrAct3.addItem(o);
 	}
 	
 	obAdd = {};
@@ -1207,7 +1216,7 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 				}
 			} else{
 				sw = false;
-				arrAct2.addItem(obAdd);
+				gr.arrAct2.addItem(obAdd);
 				obAdd = {};
 				idPeriodo = o['label'];
 				obAdd['label'] = idPeriodo;
@@ -1218,11 +1227,12 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 		}
 	}
 	
-	arrAct2.addItem(obAdd);
-	columnas = arrAct;	
-	listSeleccionEmpresas.dataProvider.getItemAt(ind).nvGrafico.addElement(listSeleccionEmpresas.dataProvider.getItemAt(ind).columnasChart);
-	listSeleccionEmpresas.dataProvider.getItemAt(ind).columnasChart.rbInicial.selected = true;
-	listSeleccionEmpresas.dataProvider.getItemAt(ind).columnasChart.rbInicial.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+	gr.arrAct2.addItem(obAdd);
+	columnas = gr.arrAct;
+	
+	listSeleccionEmpresas.dataGroup.getElementAt(ind)['grafico']['nvGrafico'].addElement(listSeleccionEmpresas.dataGroup.getElementAt(ind)['grafico']['columnasChart']);
+	listSeleccionEmpresas.dataGroup.getElementAt(ind)['grafico']['columnasChart']['rbInicial']['selected'] = true;
+	listSeleccionEmpresas.dataGroup.getElementAt(ind)['grafico']['columnasChart']['rbInicial'].dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 	PopUpManager.removePopUp(bloqueo);
 	
 	
@@ -1243,7 +1253,7 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 	var count:int = 0;
 	x = 0;
 	
-	count = arrAct3.getItemAt(0)['arr']['length'];
+	count = gr.arrAct3.getItemAt(0)['arr']['length'];
 	
 	
 	for(i = count; i < arr.length; i++){
@@ -1254,15 +1264,16 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 				x++;
 				j = 0;
 			}
-			listSeleccionEmpresas.dataProvider.getItemAt(ind)._arrVariacion.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(arrAct3.getItemAt(x)['a' + (j++)] as Number, 1), year: o['year']});
+			listSeleccionEmpresas.dataProvider.getItemAt(ind)._arrVariacion.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(gr.arrAct3.getItemAt(x)['a' + (j++)] as Number, 1), year: o['year']});
 		}
 	}
 	
 	
 	
 	listSeleccionEmpresas.dataProvider.getItemAt(ind).flatData = listSeleccionEmpresas.dataProvider.getItemAt(ind)._arr;
-	listSeleccionEmpresas.dataProvider.getItemAt(ind)..myMXMLCube.refresh();
+	listSeleccionEmpresas.dataGroup.getElementAt(ind)['grafico']['myMXMLCube'].refresh();
 	tnGrafico.selectedIndex = 0;
+	gr['visible'] = true;
 }
 
 

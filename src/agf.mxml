@@ -622,7 +622,7 @@
 										<s:RichText x="23" y="32" text="Arrastre los indices que desee hacia la grilla del centro"/>	
 										<s:List id="listIndicesGrafico" left="40" right="40" top="85" bottom="5" 
 												dragEnabled="true" dropEnabled="true" dragMoveEnabled="true"
-												labelField="indice" creationComplete="list1_creationCompleteHandler(event)" dataProvider="{arrListIndicesGrafico}"></s:List>
+												labelField="indice" creationComplete="list1_creationCompleteHandler(event)" dataProvider="{arrListIndicesGrafico}" allowMultipleSelection="true"></s:List>
 										<s:DropDownList id="gruposFinancieros" x="52" y="57"
 														creationComplete="gruposFinancieros_creationCompleteHandler(event)"
 														labelField="nombre" change="gruposFinancieros_changeHandler(event)">
@@ -636,7 +636,8 @@
 												dragEnabled="true" dragMoveEnabled="true"
 												dropEnabled="true"
 												itemRenderer="Componentes.Listado"
-												labelField="indice"></s:List>
+												labelField="indice"
+												allowMultipleSelection="true"></s:List>
 										<s:Label x="36" y="50" text="Empresa Principal:"/>
 										<s:ComboBox id="ComboBoxEmpresaPrincipal" x="32" y="58"
 													creationComplete="comboBox_creationCompleteHandler(event)"

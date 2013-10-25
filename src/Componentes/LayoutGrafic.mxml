@@ -188,7 +188,7 @@
 							aggregator="SUM"/><!--aggregator="SUM"-->
 		</mx:OLAPCube>
 	</fx:Declarations>
-	<s:NavigatorContent label="Gráfico">
+	<!--s:NavigatorContent label="Gráfico"-->
 		<mx:TabNavigator id="tnGrafico" width="700" height="100%"
 						 horizontalCenter="0">
 			<s:NavigatorContent id="nvGrafico" width="100%" height="100%"
@@ -238,5 +238,5 @@
 				
 			</s:NavigatorContent>
 		</mx:TabNavigator>								
-	</s:NavigatorContent>
+	<!--/s:NavigatorContent-->
 </s:Group>

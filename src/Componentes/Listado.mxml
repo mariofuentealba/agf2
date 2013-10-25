@@ -2,15 +2,19 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
-				autoDrawBackground="true" xmlns:local="*" width="100%" height="100%">
+				autoDrawBackground="true" xmlns:local="*" width="100%" height="100%" xmlns:Componentes="Componentes.*">
 	<fx:Script>
 		<![CDATA[
+			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			
 			import valueObjects.EmpresasDatatype;
 			
 			public var agregar:AgregarEmpresa;
-			public var grafico:LayoutGrafic =  new LayoutGrafic();
+			
+			public var graficoPoint:LayoutGrafic;
+			
+			
 			public function myRendererFunction(item:*):IFactory
 			{
 				return new ClassFactory(DetailItemRenderer);
@@ -41,6 +45,12 @@
 				agregar.btnAccion.addEventListener(MouseEvent.CLICK, info);
 			}
 			
+			protected function grafico_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				graficoPoint = grafico;
+			}
+			
 		]]>
 	</fx:Script>
 	<s:VGroup horizontalCenter="0" verticalCenter="0" horizontalAlign="left" width="100%">
@@ -59,6 +69,8 @@
 		</s:DataGrid-->
 	</s:VGroup>
 	
+	<Componentes:LayoutGrafic id="grafico" visible="false" creationComplete="grafico_creationCompleteHandler(event)">
 		
+	</Componentes:LayoutGrafic>	
 	
 </s:ItemRenderer>
