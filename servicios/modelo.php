@@ -1875,8 +1875,8 @@ public function grillaTodosGrupoIndices(){
 		
 	        //conectamos con la mysql
 		if($idPeriodos == 'AND a.id_periodo in (0)'){
-				$idPeriodos=' and d.mes <> 0 ';
-			}
+			$idPeriodos=' and d.mes <> 0 ';
+		}
 			
 	    $mysqli = new mysqli("localhost","agf","agf","agf");
 	            //validamos que la conexion sea exitosa
@@ -1900,9 +1900,12 @@ public function grillaTodosGrupoIndices(){
 		$f = explode(",", $f[0]);
 		$arrResult = array();
 		$ind = 0;
+		
+		$e = explode(":", $idEmpresas);
+		
 		$mysqli->query("INSERT INTO log values ('" . print_r($f, true) . "');");		
 		$jj = 0;
-		for($j = 1; $j < count($f); $j++, $jj++){
+		for($j = 1; $j < count($f) ; $j++, $jj++){
 			$sql = "SELECT `cod1`, `cod2`, `cod3`, `cod4`, `cod5`, a.`ID_FORMULA`
 									FROM `formulas` a, `indices_financieros` b
 									WHERE a.`ID_FORMULA` = b.`ID_FORMULA` 
@@ -2188,7 +2191,7 @@ public function grillaTodosGrupoIndices(){
 									AND a.id_periodo = e.id_periodo
 									AND c.id_formula = " . $row[5] . "
 							AND a.tipo = 'TRIMESTRAL'
-							" . $idEmpresas . " " . $idPeriodos . "
+							AND a.id_empresa in (" . $e[$jj] . " " . $idPeriodos . "
 				  Order By 12, 13, 2;";
 			}
 			
@@ -2318,14 +2321,14 @@ public function grillaTodosGrupoIndices(){
 				
 		$result2 = array();
 		$s = 0;
-		for($i = 0; $i < count($result); $i++){
+	/*	for($i = 0; $i < count($result); $i++){
 			for($j = 0; $j < count($f) - 1; $j++){
 				$result2[$s++] = $arrResult[$j][$i];
 			}
 		}
         $mysqli->query("INSERT INTO log values ('" . print_r($result, 1) . "');");						 
 		$mysqli->query("INSERT INTO log values ('" . print_r($result2, 1) . "');");						 
-		
+*/		
 	    
 	    
 	     

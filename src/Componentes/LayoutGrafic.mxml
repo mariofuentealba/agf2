@@ -197,7 +197,8 @@
 											  right="0" top="0" bottom="0"
 											  serie="{seriesColumn}"
 											  prov="{arrAct}"
-											  click="columnasChart_clickHandler(event)" width="100%">
+											  click="columnasChart_clickHandler(event)" width="100%"
+											  >
 				</Componentes:GraficoBarrasAGF>
 			</s:NavigatorContent>
 			<!--s:NavigatorContent width="100%" height="100%" label="Matriz">

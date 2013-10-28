@@ -46,9 +46,9 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     private var _monedasDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _grupoIndiceFinancieroDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _grupoIndicesDataTypeRPCDataManager : mx.data.RPCDataManager;
-    private var _subGruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _indicesFinancierosDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _agfDatatypeRPCDataManager : mx.data.RPCDataManager;
+    private var _subGruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _gruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _empresasDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var managersArray : Array = new Array();
@@ -58,9 +58,9 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     public const DATA_MANAGER_MONEDASDATATYPE : String = "MonedasDatatype";
     public const DATA_MANAGER_GRUPOINDICEFINANCIERODATATYPE : String = "GrupoIndiceFinancieroDatatype";
     public const DATA_MANAGER_GRUPOINDICESDATATYPE : String = "GrupoIndicesDataType";
-    public const DATA_MANAGER_SUBGRUPOSDATATYPE : String = "SubGruposDatatype";
     public const DATA_MANAGER_INDICESFINANCIEROSDATATYPE : String = "IndicesFinancierosDatatype";
     public const DATA_MANAGER_AGFDATATYPE : String = "AgfDatatype";
+    public const DATA_MANAGER_SUBGRUPOSDATATYPE : String = "SubGruposDatatype";
     public const DATA_MANAGER_GRUPOSDATATYPE : String = "GruposDatatype";
     public const DATA_MANAGER_EMPRESASDATATYPE : String = "EmpresasDatatype";
 
@@ -78,12 +78,12 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
                 return _grupoIndiceFinancieroDatatypeRPCDataManager;
              case (DATA_MANAGER_GRUPOINDICESDATATYPE):
                 return _grupoIndicesDataTypeRPCDataManager;
-             case (DATA_MANAGER_SUBGRUPOSDATATYPE):
-                return _subGruposDatatypeRPCDataManager;
              case (DATA_MANAGER_INDICESFINANCIEROSDATATYPE):
                 return _indicesFinancierosDatatypeRPCDataManager;
              case (DATA_MANAGER_AGFDATATYPE):
                 return _agfDatatypeRPCDataManager;
+             case (DATA_MANAGER_SUBGRUPOSDATATYPE):
+                return _subGruposDatatypeRPCDataManager;
              case (DATA_MANAGER_GRUPOSDATATYPE):
                 return _gruposDatatypeRPCDataManager;
              case (DATA_MANAGER_EMPRESASDATATYPE):
@@ -415,18 +415,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _grupoIndicesDataTypeRPCDataManager.itemClass = valueObjects.GrupoIndicesDataType; 
 
 
-        // initialize SubGruposDatatype data manager
-        _subGruposDatatypeRPCDataManager = new mx.data.RPCDataManager();
-        managersArray.push(_subGruposDatatypeRPCDataManager);
-
-        managedAssocsArray = new Array();
-
-        _subGruposDatatypeRPCDataManager.destination = "subGruposDatatypeRPCDataManager";
-        _subGruposDatatypeRPCDataManager.service = _serviceControl;        
-        _subGruposDatatypeRPCDataManager.identities =  "ID_SUBGRUPO,ID_TIPO_EMPRESA";      
-        _subGruposDatatypeRPCDataManager.itemClass = valueObjects.SubGruposDatatype; 
-
-
         // initialize IndicesFinancierosDatatype data manager
         _indicesFinancierosDatatypeRPCDataManager = new mx.data.RPCDataManager();
         managersArray.push(_indicesFinancierosDatatypeRPCDataManager);
@@ -449,6 +437,18 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _agfDatatypeRPCDataManager.service = _serviceControl;        
         _agfDatatypeRPCDataManager.identities =  "id_tag_agf";      
         _agfDatatypeRPCDataManager.itemClass = valueObjects.AgfDatatype; 
+
+
+        // initialize SubGruposDatatype data manager
+        _subGruposDatatypeRPCDataManager = new mx.data.RPCDataManager();
+        managersArray.push(_subGruposDatatypeRPCDataManager);
+
+        managedAssocsArray = new Array();
+
+        _subGruposDatatypeRPCDataManager.destination = "subGruposDatatypeRPCDataManager";
+        _subGruposDatatypeRPCDataManager.service = _serviceControl;        
+        _subGruposDatatypeRPCDataManager.identities =  "ID_SUBGRUPO,ID_TIPO_EMPRESA";      
+        _subGruposDatatypeRPCDataManager.itemClass = valueObjects.SubGruposDatatype; 
 
 
         // initialize GruposDatatype data manager

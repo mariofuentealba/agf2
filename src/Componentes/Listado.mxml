@@ -48,7 +48,7 @@
 			protected function grafico_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
-				graficoPoint = grafico;
+			//	graficoPoint = grafico;
 			}
 			
 		]]>
@@ -69,8 +69,8 @@
 		</s:DataGrid-->
 	</s:VGroup>
 	
-	<Componentes:LayoutGrafic id="grafico" visible="false" creationComplete="grafico_creationCompleteHandler(event)">
+	<!--Componentes:LayoutGrafic id="grafico" visible="false" creationComplete="grafico_creationCompleteHandler(event)">
 		
-	</Componentes:LayoutGrafic>	
+	</Componentes:LayoutGrafic-->	
 	
 </s:ItemRenderer>

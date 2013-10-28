@@ -11,6 +11,12 @@
 			[Bindable]public var prov:ArrayCollection;
 			
 			
+			protected function columnchart_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				rbInicial.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -23,7 +29,7 @@
 		<s:RadioButton label="Variación" groupName="rgOption"/>
 	</s:HGroup>
 	<s:HGroup width="100%" height="100%">
-		<mx:ColumnChart id="columnchart" showDataTips="true" width="100%" height="100%" series="{serie}" dataProvider="{prov}">
+		<mx:ColumnChart id="columnchart" showDataTips="true" width="100%" height="100%" series="{serie}" dataProvider="{prov}" creationComplete="columnchart_creationCompleteHandler(event)">
 			<mx:horizontalAxis>
 				<mx:CategoryAxis
 					id="barra"
