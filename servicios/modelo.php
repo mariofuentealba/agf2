@@ -750,7 +750,7 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 	                
 	                //seleccionamos registros de tabla tb_persona
 	                $result = mysql_query("SELECT ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, DESCRIPCION, formula, decimales, ID_GRUPO_INDICE_FINANCIERO, formula_desc, rango_superior, rango_inferior,rangos_desc,
-							campo1, campo2, campo3
+							`CAMPO1`, `CAMPO2`, `CAMPO3`, `CAMPO4`, `CAMPO5`, `tipoc1`, `tipoc2`, `tipoc3`, `tipoc4`, `tipoc5`, `cod1`, `cod2`, `cod3`, `cod4`, `cod5`
 	                	                    FROM indices_financieros a, formulas b
 	                	                    WHERE a.id_formula = b.id_formula LIMIT $startIndex, $numItems")
 	                or die(mysql_error());
@@ -762,21 +762,33 @@ public function grillaIndicesFinancieros($startIndex, $numItems){
 	                while($row = mysql_fetch_row($result))
 	                {
 	                    //almacenamos los registros en la var array
-			     $arr[$i]['ID_INDICE_FINANCIERO']=$row[0];
-			     $arr[$i]['id_formula']=$row[1];
-	                     $arr[$i]['NOMBRE']=$row[2];
-	                     $arr[$i]['DESCRIPCION']=$row[3];
-			     $arr[$i]['formula']=$row[4];
-			     $arr[$i]['decimales']=$row[5];
-			     $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[6];
-			     $arr[$i]['formula_desc']=$row[7];
-	                     $arr[$i]['rango_superior']=$row[8];
-	                     $arr[$i]['rango_inferior']=$row[9];
-			     $arr[$i]['rangos_desc']=$row[10];
-			     $arr[$i]['campo1']=$row[11];
-			     $arr[$i]['campo2']=$row[12];
-			     $arr[$i]['campo3']=$row[13];
-	                 $i++; 
+						$arr[$i]['ID_INDICE_FINANCIERO']=$row[0];
+						$arr[$i]['id_formula']=$row[1];
+	                    $arr[$i]['NOMBRE']=$row[2];
+	                    $arr[$i]['DESCRIPCION']=$row[3];
+						$arr[$i]['formula']=$row[4];
+						$arr[$i]['decimales']=$row[5];
+						$arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[6];
+						$arr[$i]['formula_desc']=$row[7];
+	                    $arr[$i]['rango_superior']=$row[8];
+	                    $arr[$i]['rango_inferior']=$row[9];
+					    $arr[$i]['rangos_desc']=$row[10];
+					    $arr[$i]['campo1']=$row[11];
+					    $arr[$i]['campo2']=$row[12];
+					    $arr[$i]['campo3']=$row[13];
+						$arr[$i]['campo4']=$row[14];
+					    $arr[$i]['campo5']=$row[15];
+						$arr[$i]['tipoc1']=$row[16];
+					    $arr[$i]['tipoc2']=$row[17];
+					    $arr[$i]['tipoc3']=$row[18];
+						$arr[$i]['tipoc4']=$row[19];
+					    $arr[$i]['tipoc5']=$row[20];
+						$arr[$i]['cod1']=$row[21];
+					    $arr[$i]['cod2']=$row[22];
+					    $arr[$i]['cod3']=$row[23];
+						$arr[$i]['cod4']=$row[24];
+					    $arr[$i]['cod5']=$row[25];
+						$i++; 
 	                }
 	            //cerramos la conexion con mysql
 	            mysql_close($con);

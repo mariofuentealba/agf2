@@ -617,10 +617,10 @@
 									  horizontalCenter="0" selectedIndex="1">
 							<s:NavigatorContent label="Parametrización"  width="100%" height="100%">
 								<s:HGroup width="100%" horizontalCenter="0" height="100%">
-									<s:BorderContainer width="100%" height="100%">
+									<s:BorderContainer width="40%" height="100%">
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 1"/>
 										<s:RichText x="23" y="32" text="Arrastre los indices que desee hacia la grilla del centro"/>	
-										<s:List id="listIndicesGrafico" left="40" right="40" top="85" bottom="5" 
+										<s:List id="listIndicesGrafico" left="40" right="40" top="108" bottom="5" 
 												dragEnabled="true" dropEnabled="true" dragMoveEnabled="true"
 												labelField="indice" creationComplete="list1_creationCompleteHandler(event)" dataProvider="{arrListIndicesGrafico}" allowMultipleSelection="true"></s:List>
 										<s:DropDownList id="gruposFinancieros" x="52" y="57"
@@ -629,35 +629,33 @@
 											<s:AsyncListView list="{comboGrupoIndicesFinancierosResult3.lastResult}"/>
 										</s:DropDownList>
 									</s:BorderContainer>
-									<s:BorderContainer width="100%" height="100%">
+									<s:BorderContainer width="40%" height="100%">
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 2"/>
 										<s:RichText x="23" y="32" text="Seleccione las Empresas del Indice"/>	
-										<s:List id="listSeleccionEmpresas" left="40" right="40" top="85" bottom="5"
+										<s:List id="listSeleccionEmpresas" left="40" right="40" top="106" bottom="5"
 												dragEnabled="true" dragMoveEnabled="true"
 												dropEnabled="true"
 												itemRenderer="Componentes.Listado"
 												labelField="indice"
 												allowMultipleSelection="true"></s:List>
-										<s:Label x="36" y="50" text="Empresa Principal:"/>
-										<s:ComboBox id="ComboBoxEmpresaPrincipal" x="32" y="58"
+										<s:Label x="43" y="66" fontSize="12" fontWeight="bold"
+												 text="Empresa Principal:"/>
+										<s:ComboBox id="ComboBoxEmpresaPrincipal" x="42" y="79"
 													creationComplete="comboBox_creationCompleteHandler(event)"
 													dataProvider="{arrEmpresas}"
 													keyUp="comboBox_keyDownHandler(event)"
-													selectedIndex="{ComboBoxEmpresaPrincipalSelectedIndex}"
+													
 													labelField="NOMBRE_FANTASIA"/>
 									</s:BorderContainer>
-									<s:BorderContainer width="100%" height="100%">
-										<s:layout>
-											<s:VerticalLayout/>
-										</s:layout>
+									<s:BorderContainer width="20%" height="100%">
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 3"/>
 										<s:RichText x="23" y="32" text="Seleccione periodo"/>	
-										<s:HGroup>
+										<s:HGroup y="58" left="5">
 											<s:RadioButton label="Standard" groupName="rbPeriodo" selected="true"/>
 											<s:RadioButton id="rbPeriodosActivos" label="Por Periodos" groupName="rbPeriodo"/>
 											
 										</s:HGroup>
-										<c:CheckList id="listPeriodo" x="10" y="317" width="160" height="200"
+										<c:CheckList id="listPeriodo" x="26" y="101" width="160" height="200"
 													 creationComplete="listPeriodo_creationCompleteHandler(event)"
 													 itemRendererFunction="myRendererFunction" enabled="{rbPeriodosActivos.selected}"></c:CheckList>
 									</s:BorderContainer>	
@@ -1266,89 +1264,102 @@
 								
 							</s:NavigatorContent>
 							<s:NavigatorContent width="100%" height="100%" label="Editar" enabled="false">
-								<s:BorderContainer x="84" top="30" width="700" height="900"
-												   cornerRadius="15">
-									<s:TextInput  visible="false" name="ID_INDICE_FINANCIERO"
-												  height="25" text="{dgIndicesFinancieros.selectedItem['ID_INDICE_FINANCIERO']}"/>
-									<s:Label y="20" left="20" height="13" fontWeight="bold"
-											 text="Nombre:"/>
-									<s:TextInput id="txtGruposNombre7" y="32" left="20" right="20" name="NOMBRE"
-												 height="25"  text="{dgIndicesFinancieros.selectedItem['NOMBRE']}"/>
-									<s:Label y="67" left="20" fontWeight="bold" text="Descripción:"/>
-									<s:TextArea id="txtGruposDetalle3" y="87" left="20" right="20" name="DESCRIPCION"
-												height="80" text="{dgIndicesFinancieros.selectedItem['DESCRIPCION']}"/>
-									
-									<s:Label y="292" left="20" fontWeight="bold" text="Explicación Resultado:"/>
-									<s:TextArea id="txtGruposDetalle4" y="202" left="20" right="20" name="rangos_desc"
-												height="80" text="{dgIndicesFinancieros.selectedItem['rangos_desc']}"/>
-									<s:Label y="182" left="20" fontWeight="bold" text="Descripcion Formula:"/>
-									<s:TextArea id="txtGruposDetalle5" y="312" left="20" right="20" name="formula_desc"
-												height="80" text="{dgIndicesFinancieros.selectedItem['formula_desc']}"/>
-									
-									
-									<s:Label y="402" left="20" height="13" fontWeight="bold"
-											 text="Rango Inferior:"/>
-									<s:TextInput id="txtGruposNombre8" y="419" left="20" right="20" name="rango_inferior"
-												 height="25" text="{dgIndicesFinancieros.selectedItem['rango_inferior']}"/>
-									<s:Label y="449" left="20" height="13" fontWeight="bold"
-											 text="Rango Superior:"/>
-									<s:TextInput id="txtGruposNombre9" y="466" left="20" right="20" name="rango_superior"
-												 height="25" text="{dgIndicesFinancieros.selectedItem['rango_superior']}"/>
-									<s:Label x="20" y="507" text="Formula"/>
-									<s:Label y="527" left="20" height="13" fontWeight="bold"
-											 text="Expresion Formula:"/>
-									<s:TextInput id="txtGruposNombre10" y="544" left="20" right="20" name="formula"
-												 height="25" text="{dgIndicesFinancieros.selectedItem['formula']}"/>
-									<s:Label y="575" left="20" height="13" fontWeight="bold"
-											 text="Decimales:"/>
-									<s:TextInput id="txtGruposNombre11" y="592" left="20" right="20" name="decimales"
-												 height="25" text="{dgIndicesFinancieros.selectedItem['decimales']}"/>
-									<s:Label x="20" y="622" fontWeight="bold"
-											 text="Campos:"/>
-									<s:DropDownList id="campo1" name="campo1"  left="20" 
-													creationComplete="dropDownList3_creationCompleteHandler(event)"
-													labelField="etiqueta"
-													prompt="Seleccione C1"
-													y="652" width="200">
-										<s:AsyncListView list="{comboItemsResult.lastResult}"/>
-									</s:DropDownList>									
-									<s:DropDownList id="campo2" y="681" left="20" width="200"
-													creationComplete="dropDownList3_creationCompleteHandler(event)"
-													labelField="etiqueta" name="campo2"
-													prompt="Seleccione C2">
-										<s:AsyncListView list="{comboItemsResult.lastResult}"/>
-									</s:DropDownList>
-									<s:DropDownList id="campo4" name="campo4" y="681"
-													left="248" width="200"
-													creationComplete="dropDownList3_creationCompleteHandler(event)"
-													labelField="etiqueta"
-													prompt="Seleccione C4">
-										<s:AsyncListView list="{comboItemsResult.lastResult}"/>
-									</s:DropDownList>
-									<s:DropDownList id="campo3" name="campo3" 
-													creationComplete="dropDownList3_creationCompleteHandler(event)"
-													horizontalCenter="0" labelField="etiqueta"
-													prompt="Seleccione C3"
-													y="652" width="200">
-										<s:AsyncListView list="{comboItemsResult.lastResult}"/>
-									</s:DropDownList>									
-									<s:DropDownList id="campo5" name="campo5" y="652" right="20" width="200"
-													creationComplete="dropDownList3_creationCompleteHandler(event)"
-													labelField="etiqueta" prompt="Seleccione">
-										<s:AsyncListView list="{comboItemsResult.lastResult}"/>
-									</s:DropDownList>
-									<s:Label x="21" y="721" fontWeight="bold" text="Grupo:"/>
-									<s:DropDownList id="ID_GRUPO_INDICE_FINANCIERO" x="21" y="741"
-													creationComplete="dropDownList10_creationCompleteHandler(event)"
-													labelField="nombre"
-													name="ID_GRUPO_INDICE_FINANCIERO">
-										<s:AsyncListView list="{comboGrupoIndicesFinancierosResult2.lastResult}"/>
-									</s:DropDownList>
-									<s:Button x="24" bottom="10" label="Guardar"
-											  click="editar_clickHandler(event)"/>
-									
-								</s:BorderContainer>
-								<s:Label x="98" y="20" fontSize="20" text="Indice"/>
+								<s:NavigatorContent width="100%" height="100%"
+													label="Paso 1">
+									<s:BorderContainer x="88" top="20" width="700" height="558"
+													   cornerRadius="15">
+										
+										
+										<mx:Accordion top="0" width="100%" height="90%"
+													  horizontalCenter="0">
+											<s:NavigatorContent width="100%" height="100%"
+																label="Paso 1">
+												<s:VGroup left="20" right="20" top="5" horizontalAlign="left">
+													<s:Label fontWeight="bold" text="Grupo:"/>
+													<s:DropDownList id="DD_ID_GRUPO_INDICE_FINANCIERO0"
+																	width="200"
+																	creationComplete="dropDownList9_creationCompleteHandler(event)"
+																	labelField="nombre"
+																	name="ID_GRUPO_INDICE_FINANCIERO"
+																	prompt="Seleccione">
+														<s:AsyncListView list="{comboGrupoIndicesFinancierosResult.lastResult}"/>
+													</s:DropDownList>
+													
+													<s:Label y="20" left="20" height="13" fontWeight="bold"
+															 text="Nombre:"/>
+													<s:TextInput id="Ind0" y="32" left="20" right="20"
+																 width="100%" height="25"/>
+													<s:Label y="67" left="20" fontWeight="bold" text="Descripción:"/>
+													<s:TextArea id="Ind7" y="87" left="20" right="20" width="100%" height="50"/>
+													
+													<s:Label y="250" left="20" fontWeight="bold"
+															 text="Explicación Resultado:"/>
+													<s:TextArea id="Ind9" y="174" left="20" right="20" width="100%" height="50"/>
+													
+													<s:TextArea id="Ind10" y="265" left="20" right="20" width="100%" height="0"/>
+													
+													
+													<s:Label y="340" left="20" height="13" fontWeight="bold"
+															 text="Rango Inferior:"/>
+													<s:TextInput id="Ind11" y="360" left="20" right="20" width="100%" height="25"/>
+													<s:Label y="390" left="20" height="13" fontWeight="bold"
+															 text="Rango Superior:"/>
+													<s:TextInput id="Ind12" y="410" left="20" right="20" width="100%" height="25"/>
+													
+													<s:HGroup width="100%">
+													</s:HGroup>
+													
+													<s:Label y="585" left="20" height="13" fontWeight="bold"
+															 text="Decimales:"/>
+													<s:TextInput id="Ind13" y="602" left="20" right="20" width="100%" height="25"/>
+												</s:VGroup>
+											</s:NavigatorContent>
+											
+											<s:NavigatorContent width="100%" height="100%" label="Paso 2">
+												
+												<Componentes:Formula2 id="formulaIndice0" top="0"
+																	  bottom="20" horizontalCenter="0" creationComplete="formulaIndice_creationCompleteHandler(event)">
+												</Componentes:Formula2>
+											</s:NavigatorContent>
+											<s:NavigatorContent width="100%" height="100%" label="Paso 3">
+												<s:Label x="32" y="7" fontSize="14" fontWeight="bold"
+														 text="Empresas"/>
+												<s:RichText x="36" y="29" fontSize="12" text="Arrastre las empresas que usarán el indice"/>
+												
+												
+												
+												<s:HGroup id="hgSelectEmpresas0" x="28" y="49" width="200"
+														  click="hgroup1_clickHandler(event)">
+													<s:RadioButton label="Empresas"
+																   groupName="radiogroup1" selected="true"/>
+													<s:RadioButton label="Grupos" groupName="radiogroup1"/>
+												</s:HGroup>
+												<mx:ViewStack id="vwEmpresasIndice0" top="80" horizontalCenter="0" height="100%" width="100%" selectedIndex="0">
+													<s:NavigatorContent>
+														<Componentes:SelectorList top="0" id="listEmpresas0" horizontalCenter="0" idn="0"
+																				  labelInsert="NOMBRE_FANTASIA"
+																				  modelo="{modelo}"
+																				  servicioInvocado="listEmpresa">	
+														</Componentes:SelectorList>
+													</s:NavigatorContent>
+													<s:NavigatorContent>
+														<Componentes:SelectorList id="listGrupo0" top="0"
+																				  horizontalCenter="0"
+																				  idn="0"
+																				  labelInsert="nombre"
+																				  modelo="{modelo}"
+																				  servicioInvocado="listSubgrupo">	
+														</Componentes:SelectorList>
+													</s:NavigatorContent>
+												</mx:ViewStack>
+											</s:NavigatorContent>
+										</mx:Accordion>
+										<s:Button bottom="20" label="Guardar"
+												  click="guardarIndice_clickHandler(event)"
+												  enabled="true" horizontalCenter="0"/>
+									</s:BorderContainer>
+									<s:Label x="54" y="10" fontSize="20" text="Indice"/>
+								</s:NavigatorContent>
 							</s:NavigatorContent>
 						</mx:TabNavigator>
 					</s:NavigatorContent>

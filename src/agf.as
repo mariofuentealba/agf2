@@ -213,58 +213,8 @@ protected function dgGrupo_doubleClickHandler(event:MouseEvent):void
 				
 				break;
 			case 'tnIndicesFinancieros':
-				sw = false;							
-				if(ID_GRUPO_INDICE_FINANCIERO != null){
-					for(i = 0; i < ID_GRUPO_INDICE_FINANCIERO.dataProvider.length; i++){
-						ID_GRUPO_INDICE_FINANCIERO.selectedIndex = i;
-						if(dgIndicesFinancieros.selectedItem['ID_GRUPO_INDICE_FINANCIERO'] == ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO']){
-							sw = true;
-							break;
-						}									
-					}	
-					if(sw == false){
-						ID_GRUPO_INDICE_FINANCIERO.selectedIndex = -1;
-					}
-				}
-				sw = false;							
-				if(campo1 != null){
-					for(i = 0; i < campo1.dataProvider.length; i++){
-						campo1.selectedIndex = i;
-						if(dgIndicesFinancieros.selectedItem['campo1'] == campo1.selectedItem['ID_tag_agf']){
-							sw = true;
-							break;
-						}									
-					}	
-					if(sw == false){
-						campo1.selectedIndex = -1;
-					}
-				}
-				sw = false;							
-				if(campo2 != null){
-					for(i = 0; i < campo2.dataProvider.length; i++){
-						campo2.selectedIndex = i;
-						if(dgIndicesFinancieros.selectedItem['campo2'] == campo2.selectedItem['ID_tag_agf']){
-							sw = true;
-							break;
-						}									
-					}	
-					if(sw == false){
-						campo2.selectedIndex = -1;
-					}
-				}
-				sw = false;							
-				if(campo3 != null){
-					for(i = 0; i < campo3.dataProvider.length; i++){
-						campo3.selectedIndex = i;
-						if(dgIndicesFinancieros.selectedItem['campo3'] == campo3.selectedItem['ID_tag_agf']){
-							sw = true;
-							break;
-						}									
-					}	
-					if(sw == false){
-						campo3.selectedIndex = -1;
-					}
-				}
+				
+					
 				break;
 		}
 	}
@@ -637,118 +587,16 @@ protected function dropDownList3_creationCompleteHandler(event:FlexEvent):void
 {
 	comboItemsResult.token = modelo.comboItems();
 }
-private function actCampo1(event:Event):void{
-	var i:int = 0;
-	var sw:Boolean = false;
-	if(campo1.dataProvider.length > 0){
-		for(i = 0; i < campo1.dataProvider.length; i++){
-			campo1.selectedIndex = i;
-			
-			if(dgIndicesFinancieros.selectedItem['campo1'] == campo1.selectedItem['ID_tag_agf']){
-				sw = true;
-				break;
-			}
-			
-		}	
-		(event.currentTarget as DropDownList).removeEventListener(Event.ENTER_FRAME, actCampo1);
-		if(sw == false){
-			campo1.selectedIndex = -1;
-		}
-	}
-}
-
-private function actCampo2(event:Event):void{
-	var i:int = 0;
-	var sw:Boolean = false;
-	if(campo2.dataProvider.length > 0){
-		for(i = 0; i < campo2.dataProvider.length; i++){
-			campo2.selectedIndex = i;
-			
-			if(dgIndicesFinancieros.selectedItem['campo2'] == campo2.selectedItem['ID_tag_agf']){
-				sw = true;
-				break;
-			}
-			
-		}	
-		(event.currentTarget as DropDownList).removeEventListener(Event.ENTER_FRAME, actCampo2);
-		if(sw == false){
-			campo2.selectedIndex = -1;
-		}
-	}
-}
-
-private function actCampo3(event:Event):void{
-	var i:int = 0;
-	var sw:Boolean = false;
-	if(campo3.dataProvider.length > 0){
-		for(i = 0; i < campo3.dataProvider.length; i++){
-			campo3.selectedIndex = i;
-			
-			if(dgIndicesFinancieros.selectedItem['campo3'] == campo3.selectedItem['ID_tag_agf']){
-				sw = true;
-				break;
-			}
-			
-		}	
-		(event.currentTarget as DropDownList).removeEventListener(Event.ENTER_FRAME, actCampo3);
-		if(sw == false){
-			campo3.selectedIndex = -1;
-		}
-	}		
-}
-
-private function actID_GRUPO_INDICE_FINANCIERO(event:Event):void{
-	var i:int = 0;
-	var sw:Boolean = false;
-	if(ID_GRUPO_INDICE_FINANCIERO.dataProvider.length > 0){
-		for(i = 0; i < ID_GRUPO_INDICE_FINANCIERO.dataProvider.length; i++){
-			ID_GRUPO_INDICE_FINANCIERO.selectedIndex = i;
-			
-			if(dgIndicesFinancieros.selectedItem['ID_GRUPO_INDICE_FINANCIERO'] == ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO']){
-				sw = true;
-				break;
-			}
-			
-		}	
-		(event.currentTarget as DropDownList).removeEventListener(Event.ENTER_FRAME, actID_GRUPO_INDICE_FINANCIERO);
-		if(sw == false){
-			ID_GRUPO_INDICE_FINANCIERO.selectedIndex = -1;
-		}
-	}		
-}
-
-protected function dropDownList6_creationCompleteHandler(event:FlexEvent):void
-{
-	comboItemsResult4.token = modelo.comboItems();
-	(event.currentTarget as DropDownList).addEventListener(Event.ENTER_FRAME, actCampo1);
-	periodosResult2.token = modelo.periodos();
-}
 
 
 
-
-protected function dropDownList7_creationCompleteHandler(event:FlexEvent):void
-{
-	comboItemsResult5.token = modelo.comboItems();
-	(event.currentTarget as DropDownList).addEventListener(Event.ENTER_FRAME, actCampo2);
-}
-
-protected function dropDownList8_creationCompleteHandler(event:FlexEvent):void
-{
-	comboItemsResult6.token = modelo.comboItems();
-	(event.currentTarget as DropDownList).addEventListener(Event.ENTER_FRAME, actCampo3);
-}
 
 protected function dropDownList9_creationCompleteHandler(event:FlexEvent):void
 {
 	comboGrupoIndicesFinancierosResult.token = modelo.comboGrupoIndicesFinancieros();
 }
 
-protected function dropDownList10_creationCompleteHandler(event:FlexEvent):void
-{
-	comboGrupoIndicesFinancierosResult2.token = modelo.comboGrupoIndicesFinancieros();
-	(event.currentTarget as DropDownList).addEventListener(Event.ENTER_FRAME, actID_GRUPO_INDICE_FINANCIERO);
-}
+
 
 private function llenaSubGrupos(event:ResultEvent):void{
 	dgSubGrupo.dataProvider = event.result as ArrayCollection;
