@@ -4,17 +4,30 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
 	<fx:Script>
 		<![CDATA[
+			import mx.charts.events.ChartItemEvent;
 			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			
 			[Bindable]public var serie:Array;
 			[Bindable]public var prov:ArrayCollection;
+			public var arrNormal:String;
+			public var arrReferente:String;
+			public var arrVariacion:String;
+			public var numExport:int = 0;
+			public var numPreExport:int = 0;
 			
 			
 			protected function columnchart_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
 				rbInicial.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+			}
+			
+			protected function columnchart_changeHandler(event:ChartItemEvent):void
+			{
+				// TODO Auto-generated method stub
+				 
 			}
 			
 		]]>
@@ -25,11 +38,11 @@
 	</fx:Declarations>
 	<s:HGroup width="100%">
 		<s:RadioButton id="rbInicial" label="Normal" groupName="rgOption" selected="true"/>
-		<s:RadioButton label="Referente" groupName="rgOption"/>
-		<s:RadioButton label="Variación" groupName="rgOption"/>
+		<s:RadioButton id="rbReferente" label="Referente" groupName="rgOption"/>
+		<s:RadioButton id="rbVariacion" label="Variación" groupName="rgOption"/>
 	</s:HGroup>
 	<s:HGroup width="100%" height="100%">
-		<mx:ColumnChart id="columnchart" showDataTips="true" width="100%" height="100%" series="{serie}" dataProvider="{prov}" creationComplete="columnchart_creationCompleteHandler(event)">
+		<mx:ColumnChart id="columnchart" change="columnchart_changeHandler(event)" showDataTips="true" width="100%" height="100%" series="{serie}" dataProvider="{prov}" creationComplete="columnchart_creationCompleteHandler(event)">
 			<mx:horizontalAxis>
 				<mx:CategoryAxis
 					id="barra"

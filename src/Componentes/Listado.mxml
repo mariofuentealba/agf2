@@ -2,9 +2,10 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
-				autoDrawBackground="true" xmlns:local="*" width="100%" height="100%" xmlns:Componentes="Componentes.*">
+				autoDrawBackground="true" xmlns:local="*" width="100%" height="100%" xmlns:Componentes="Componentes.*" initialize="init_initializeHandler(event)">
 	<fx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			
@@ -48,7 +49,15 @@
 			protected function grafico_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
-			//	graficoPoint = grafico;
+				//	graficoPoint = grafico;
+			}
+			
+			
+			
+			protected function init_initializeHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
 			}
 			
 		]]>
@@ -60,17 +69,19 @@
 		</s:HGroup>
 		
 		
-		<local:CheckList id="listEmpresas" labelField="rso" dataProvider="{data['asociados']}" 
-						 width="100%" height="100%" itemRendererFunction="myRendererFunction"/>
-		<!--s:List id="listEmpresas" labelField="rso" dataProvider="{data['asociados']}">
-			
-		</s:List>
-		<s:DataGrid id="dgEmpresas" dataProvider="{data['asociados']}">
-		</s:DataGrid-->
-	</s:VGroup>
-	
-	<!--Componentes:LayoutGrafic id="grafico" visible="false" creationComplete="grafico_creationCompleteHandler(event)">
+		<!--local:CheckList id="listEmpresas" labelField="rso" dataProvider="{data['asociados']}" 
+						 width="100%" height="100%" itemRendererFunction="myRendererFunction"/-->
+		<!--s:List id="listEmpresas" labelField="rso" dataProvider="{data['asociados']}" width="100%" height="100%" allowMultipleSelection="true">
 		
-	</Componentes:LayoutGrafic-->	
+		</s:List-->
+		<mx:DataGrid id="listEmpresas" width="100%" height="100%"  dataProvider="{data['asociados']}" selectedItems="{data['asociados'] as Array}" allowMultipleSelection="true" editable="true">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Empresa" dataField="rso" editable="false">
+		
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Sel." itemRenderer="Componentes.CheckItem" editable="true" rendererIsEditor="true" dataField="sel" editorDataField="sel"/> 
+			</mx:columns>
+		</mx:DataGrid>
+	</s:VGroup>
 	
 </s:ItemRenderer>

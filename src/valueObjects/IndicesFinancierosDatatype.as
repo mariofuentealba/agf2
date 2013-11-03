@@ -15,6 +15,7 @@ package valueObjects
 
 import com.adobe.fiber.core.model_internal;
 
+[Bindable]
 public class IndicesFinancierosDatatype extends _Super_IndicesFinancierosDatatype
 {
     /** 

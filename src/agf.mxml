@@ -48,6 +48,13 @@
 			public var bloqueo:Bloqueo = new Bloqueo();
 			public var config:ConfigExport = new ConfigExport();
 			[Bindable] private var arrListIndicesGrafico:ArrayCollection;
+			[Bindable] private var flatData:ArrayCollection;
+			[Bindable]public var olapData:OLAPResult;
+			public var export:int = 0;
+			
+			
+			public var olapx:IList;
+			public var olapy:IList;
 			
 			/*private function creationCompleteHandler():void {
 				// You must initialize the cube before you 
@@ -214,66 +221,28 @@
 					request.method = URLRequestMethod.POST;
 					
 					request.data = new URLVariables();
-					var val:String = ';';
+					var val:String = '';
+					var indices:String = '';
+					
+				//	export = listEmpresaSelect.dataProvider.length;
 					
 					
-					/*
-					olap.dataProvider.query.getAxis(0);
-					var n:int = (olap.dataProvider as OLAPResult).axes[1].positions.length;
-					var m:int = (olap.dataProvider as OLAPResult).axes[0].positions.length;
-					
-					
-					
-					
-					for(var i:int = 0; i < m - 1; i++){
-						val += ';';
-					}
-					val += '\n;';
-					for(i = 0; i < m; i++){
-					}
-					val = val.substring(0, val.length - 1);				
-					val += '\n';
-					for(i = 0; i < n; i++){
-						for(var j:int = 0; j < m; j++){
-							val += (olap.dataProvider as OLAPResult).getCell(i, j).value + ';';
-						}
-						val = val.substring(0, val.length - 1);
-						val += '\n';
-					}*/
-					
-			/*		flatData = this._arrReferente;
-					myMXMLCube.refresh();
-					
-					
-					olap.dataProvider.query.getAxis(0);
-					
-					for(i = m; i < (m - 1) * 2; i++){
-						val += ';';
-					}
-					val += '\n;';
-					for(i = 0; i < m; i++){
-						val += olapx[i]['name'] + ';';
-					}
-					val = val.substring(0, val.length - 1);				
-					val += '\n';
-					for(i = 0; i < n; i++){
-						val += olapy[i]['name'] + ';';
-						for(j = 0; j < m; j++){
-							val += (olap.dataProvider as OLAPResult).getCell(i, j).value + ';';
-						}
-						val = val.substring(0, val.length - 1);
-						val += '\n';
+					for(var x:int = 0; x < tnGrafico.numElements; x++){
+						val += '@@@*@+@*';
+						val += ((tnGrafico.getElementAt(x) as NavigatorContent).getElementAt(0) as LayoutGrafic).columnasChart.arrNormal;
+						val += '*@+@*' + ((tnGrafico.getElementAt(x) as NavigatorContent).getElementAt(0) as LayoutGrafic).columnasChart.arrReferente;
+						val += '*@+@*' + ((tnGrafico.getElementAt(x) as NavigatorContent).getElementAt(0) as LayoutGrafic).columnasChart.arrVariacion;
+						indices += ';';
+						indices += (tnGrafico.getElementAt(x) as NavigatorContent).label;
 					}
 					
-					flatData = this._arrReferente;
-					myMXMLCube.refresh();
-				*/	
 					
 					
 					
 					
-					request.data.nombre = val;
-					request.data.graf = 'Grafico';
+					
+					request.data.infGrafico = val;
+					request.data.indices = indices;
 					navigateToURL(request,"_blank");
 					
 					
@@ -353,7 +322,7 @@
 				itemAdd['id_empGrupo'] = arr.getItemAt(0)['id_empGrupo'];
 				itemAdd['rso'] = arr.getItemAt(0)['rso'];
 				itemAdd['tipo'] = arr.getItemAt(0)['tipo'];
-				
+				itemAdd['sel'] = true;
 				arrResult.addItem(item);
 				item = {};
 				itemAdd = {};
@@ -364,7 +333,8 @@
 					itemAdd['id_indice'] = o['id_indice'];
 					itemAdd['id_empGrupo'] = o['id_empGrupo'];
 					itemAdd['rso'] = o['rso'];
-					itemAdd['tipo'] = o['tipo'];					
+					itemAdd['tipo'] = o['tipo'];	
+					itemAdd['sel'] = true;
 					if(o['indice'] != str){
 						arrResult.getItemAt(arrResult.length - 1)['asociados'] = arrDetalleResult;
 						arrDetalleResult = new ArrayCollection();
@@ -469,6 +439,67 @@
 				grillaGrupoIndices2Result.addEventListener(ResultEvent.RESULT, completaIndices)
 			}
 			
+			private function getQuery(cube:IOLAPCube):IOLAPQuery {
+				// Create an instance of OLAPQuery to represent the query. 
+				var query:OLAPQuery = new OLAPQuery;
+				
+				// Get the row axis from the query instance.
+				var rowQueryAxis:IOLAPQueryAxis = 
+					query.getAxis(OLAPQuery.ROW_AXIS);
+				// Create an OLAPSet instance to configure the axis.
+				var productSet:OLAPSet = new OLAPSet;
+				// Add the Product to the row to aggregate data 
+				// by the Product dimension.
+				productSet.addElements(
+					cube.findDimension("RSODim").findAttribute("RSO").children);
+				// Add the OLAPSet instance to the axis.
+				rowQueryAxis.addSet(productSet);
+				
+				// Get the column axis from the query instance, and configure it
+				// to aggregate the columns by the Quarter dimension. 
+				var colQueryAxis:IOLAPQueryAxis = query.getAxis(OLAPQuery.COLUMN_AXIS);  
+				var yearSet:OLAPSet= new OLAPSet;
+				yearSet.addElements(
+					cube.findDimension("TimeDim").findAttribute("Year").children);
+				var quarterSet:OLAPSet= new OLAPSet;
+				quarterSet.addElements(
+					cube.findDimension("TimeDim").findAttribute("Periodo").children);
+				colQueryAxis.addSet(yearSet.crossJoin(quarterSet));
+				
+				olapx = cube.findDimension("TimeDim").findAttribute("Periodo").children
+				olapy = cube.findDimension("RSODim").findAttribute("RSO").children;
+				return query;       
+			}
+			
+			// Event handler to execute the OLAP query 
+			// after the cube completes initialization.
+			private function runQuery(event:CubeEvent):void {
+				// Get cube.
+				var cube:IOLAPCube = IOLAPCube(event.currentTarget);
+				// Create a query instance.
+				var query:IOLAPQuery = getQuery(cube);
+				// Execute the query.
+				var token:AsyncToken = cube.execute(query);
+				// Setup handlers for the query results.
+				token.addResponder(new AsyncResponder(showResult, showFault));
+			}
+			
+			// Handle a query fault.
+			private function showFault(result:Object, token:Object):void {
+				Alert.show("Error in query.");
+				//PopUpManager.removePopUp(bloqueo);
+			}
+			
+			// Handle a successful query by passing the query results to 
+			// the OLAPDataGrid control..
+			private function showResult(result:Object, token:Object):void {
+				if (!result) {
+					Alert.show("No results from query.");
+					return;
+				}
+				olapData= result as OLAPResult;            
+			}  
+			
 		]]>
 	</fx:Script>
 	<s:states>
@@ -477,7 +508,7 @@
 	
 	<fx:Declarations>
 			
-		<!--mx:OLAPCube name="FlatSchemaCube" dataProvider="{flatData}" id="myMXMLCube" complete="runQuery(event);">
+		<mx:OLAPCube name="FlatSchemaCube" dataProvider="{flatData}" id="myMXMLCube" complete="runQuery(event);">
 			
 			
 			<mx:OLAPDimension name="RSODim">
@@ -499,7 +530,12 @@
 			<mx:OLAPMeasure name="Valor" 
 							dataField="valor" 
 							aggregator="SUM"/>
-		</mx:OLAPCube-->
+		</mx:OLAPCube>
+		
+		
+		
+		
+		
 		<mx:SeriesInterpolate id="interpolateIn" duration="1000"/>
 		<s:SolidColor id="sc1" color="blue" alpha=".3"/>
 		<s:SolidColor id="sc2" color="red" alpha=".3"/>
@@ -563,6 +599,10 @@
 		
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	
+	
+	<mx:OLAPDataGrid id="olap" left="10" top="10" height="300" dataProvider="{olapData}" visible="false"/>
+	
 	<s:Image left="0" right="0" top="0" source="assets/dsicback1.jpg"/>
 	<s:Image left="0" top="150" source="assets/dsicback2.jpg"/>
 	<s:Image left="0" top="0" width="256" alpha=".7" source="assets/chico 12.jpg"/>
@@ -637,6 +677,7 @@
 												dropEnabled="true"
 												itemRenderer="Componentes.Listado"
 												labelField="indice"
+												
 												allowMultipleSelection="true"></s:List>
 										<s:Label x="43" y="66" fontSize="12" fontWeight="bold"
 												 text="Empresa Principal:"/>
@@ -663,8 +704,8 @@
 								
 							</s:NavigatorContent>
 							
-							<s:NavigatorContent label="Gráfico">
-								<mx:TabNavigator id="tnGrafico" width="700" height="100%"
+							<s:NavigatorContent label="Gráfico" width="100%">
+								<mx:TabNavigator id="tnGrafico" width="100%" height="100%"
 												 horizontalCenter="0">
 									<!--s:NavigatorContent id="nvGrafico" width="100%" height="100%"
 														label="Gráfico">
@@ -1288,30 +1329,30 @@
 													<s:Label y="20" left="20" height="13" fontWeight="bold"
 															 text="Nombre:"/>
 													<s:TextInput id="Ind0" y="32" left="20" right="20"
-																 width="100%" height="25"/>
+																 width="100%" height="25" text="{dgIndicesFinancieros.selectedItem['NOMBRE']}"/>
 													<s:Label y="67" left="20" fontWeight="bold" text="Descripción:"/>
-													<s:TextArea id="Ind7" y="87" left="20" right="20" width="100%" height="50"/>
+													<s:TextArea id="Ind7" y="87" left="20" right="20" width="100%" height="50"  text="{dgIndicesFinancieros.selectedItem['DESCRIPCION']}"/>
 													
 													<s:Label y="250" left="20" fontWeight="bold"
 															 text="Explicación Resultado:"/>
-													<s:TextArea id="Ind9" y="174" left="20" right="20" width="100%" height="50"/>
+													<s:TextArea id="Ind9" y="174" left="20" right="20" width="100%" height="50" text="{dgIndicesFinancieros.selectedItem['formula_desc']}"/>
 													
 													<s:TextArea id="Ind10" y="265" left="20" right="20" width="100%" height="0"/>
 													
 													
 													<s:Label y="340" left="20" height="13" fontWeight="bold"
 															 text="Rango Inferior:"/>
-													<s:TextInput id="Ind11" y="360" left="20" right="20" width="100%" height="25"/>
+													<s:TextInput id="Ind11" y="360" left="20" right="20" width="100%" height="25" text="{dgIndicesFinancieros.selectedItem['rango_inferior']}"/>
 													<s:Label y="390" left="20" height="13" fontWeight="bold"
 															 text="Rango Superior:"/>
-													<s:TextInput id="Ind12" y="410" left="20" right="20" width="100%" height="25"/>
+													<s:TextInput id="Ind12" y="410" left="20" right="20" width="100%" height="25" text="{dgIndicesFinancieros.selectedItem['rango_superior']}"/>
 													
 													<s:HGroup width="100%">
 													</s:HGroup>
 													
 													<s:Label y="585" left="20" height="13" fontWeight="bold"
 															 text="Decimales:"/>
-													<s:TextInput id="Ind13" y="602" left="20" right="20" width="100%" height="25"/>
+													<s:TextInput id="Ind13" y="602" left="20" right="20" width="100%" height="25" text="{dgIndicesFinancieros.selectedItem['decimales']}"/>
 												</s:VGroup>
 											</s:NavigatorContent>
 											

@@ -11,6 +11,7 @@
 			import mx.collections.IList;
 			import mx.controls.Alert;
 			import mx.events.CubeEvent;
+			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			import mx.olap.IOLAPCube;
 			import mx.olap.IOLAPQuery;
@@ -99,7 +100,50 @@
 					Alert.show("No results from query.");
 					return;
 				}
-				olapData= result as OLAPResult;            
+				olapData= result as OLAPResult;    
+				var val:String = ';';
+				olap.dataProvider.query.getAxis(0);
+				var n:int = (olap.dataProvider as OLAPResult).axes[1].positions.length;
+				var m:int = (olap.dataProvider as OLAPResult).axes[0].positions.length;
+				for(var i:int = 0; i < m - 1; i++){
+					val += ';';
+				}
+				val += '\n;';
+				for(i = 0; i < m; i++){
+					val += olapx[i]['name'] + ';';
+				}
+				val = val.substring(0, val.length - 1);                                
+				val += '\n';
+				for(i = 0; i < n; i++){
+					val += olapy[i]['name'] + ';';
+					for(var j:int = 0; j < m; j++){
+						val += (olap.dataProvider as OLAPResult).getCell(i, j).value + ';';
+					}
+					val = val.substring(0, val.length - 1);
+					if(i + 1 < n){
+						val += '\n';
+					}
+					
+				}
+			
+				switch(columnasChart.numExport){
+					case 0:
+						columnasChart.arrNormal = val;
+						columnasChart.rbReferente.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						break;
+					case 1:
+						columnasChart.arrReferente = val;
+						columnasChart.rbVariacion.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						break;
+					case 2:
+						columnasChart.arrVariacion = val;
+						columnasChart.rbInicial.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+						break;
+				}
+				
+				
+				
+				columnasChart.numExport++;
 			}   
 			protected function columnasChart_clickHandler(event:MouseEvent):void
 			{
@@ -134,26 +178,38 @@
 							var x:int = 0;
 							
 							count = arrAct3.getItemAt(0)['arr']['length'];
-							flatData = this._arrVariacion;
+							flatData = this._arrVariacion;							
 							
-							/*for(var i:int = count; i < this._arr.length; i++){
-							o = this._arr.getItemAt(i);
-							if(o['graf'] == 1){
-							if(j < count){
-							} else {
-							x++;
-							j = 0;
-							}
-							flatData.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(arrAct3.getItemAt(x)['a' + (j++)] as Number, 1), year: o['year']});
-							}
-							}*/
 							break;
 					}
+					myMXMLCube.refresh();
+					
 					
 				}
 				
-				myMXMLCube.refresh();
+				
 			}
+			
+			protected function columnasChart_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				  
+				
+				
+			}
+			
+			protected function tnGrafico_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				tnGrafico.selectedIndex = 1;
+			}
+			
+			protected function olap_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				tnGrafico.selectedIndex = 0;
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -189,8 +245,9 @@
 		</mx:OLAPCube>
 	</fx:Declarations>
 	<!--s:NavigatorContent label="Gráfico"-->
-		<mx:TabNavigator id="tnGrafico" width="700" height="100%"
-						 horizontalCenter="0">
+		<mx:TabNavigator id="tnGrafico" width="100%" height="100%"
+						 horizontalCenter="0"
+						 creationComplete="tnGrafico_creationCompleteHandler(event)">
 			<s:NavigatorContent id="nvGrafico" width="100%" height="100%"
 								label="Gráfico">
 				<Componentes:GraficoBarrasAGF name="columnasChart" id="columnasChart" left="0"
@@ -198,6 +255,7 @@
 											  serie="{seriesColumn}"
 											  prov="{arrAct}"
 											  click="columnasChart_clickHandler(event)" width="100%"
+											  creationComplete="columnasChart_creationCompleteHandler(event)"
 											  >
 				</Componentes:GraficoBarrasAGF>
 			</s:NavigatorContent>
@@ -227,8 +285,11 @@
 			</s:NavigatorContent-->
 			<s:NavigatorContent width="100%" height="100%" label="olap">
 				<s:VGroup horizontalCenter="0" verticalCenter="0" width="100%" height="100%">
-					<s:HGroup id="hgOLAP" horizontalCenter="0" verticalCenter="0" width="100%">
-						<mx:OLAPDataGrid id="olap" left="10" top="10" height="300" dataProvider="{olapData}"/>
+					<s:HGroup id="hgOLAP" width="100%" height="100%" horizontalCenter="0"
+							  verticalCenter="-49">
+						<mx:OLAPDataGrid id="olap" left="10" top="10" width="100%" height="100%"
+										 creationComplete="olap_creationCompleteHandler(event)"
+										 dataProvider="{olapData}"/>
 						
 					</s:HGroup>
 					<s:HScrollBar viewport="{hgOLAP}" 

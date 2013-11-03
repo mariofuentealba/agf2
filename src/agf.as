@@ -85,6 +85,7 @@ import Componentes.SelectItem;
 import mx.olap.OLAPCube;
 import Componentes.LayoutGrafic;
 import Componentes.Listado;
+//import mx.controls.DataGrid;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
@@ -894,15 +895,25 @@ protected function button4_clickHandler(event:MouseEvent):void
 		var item:Object;
 		var x:int = 0;
 		var y:int = 0;
-		for(var i:int = 0; i < listSeleccionEmpresas.dataGroup.numElements; i++){
-			item = listSeleccionEmpresas.dataGroup.getChildAt(i);
+		for(var i:int = 0; i < listSeleccionEmpresas.dataProvider.length; i++){
+			item = listSeleccionEmpresas.dataProvider.getItemAt(i);
 			empresas += '0';
-			for each(var o:Object in item.listEmpresas.selectedItems){
+			/*for each(o in item.listEmpresas.selectedItems){
 				empresas += ', ' + o['id_empGrupo'];
 				
-			}	
+			}*/	
+			var count:int = 0;
+			var arrData:ArrayCollection = (item.asociados as ArrayCollection);
+				
+			for(var j:int = 0; j < arrData.length; j++){
+				if(arrData.getItemAt(j)['sel'] == true){
+					empresas += ', ' + arrData.getItemAt(j)['id_empGrupo'];
+					count++;
+				}
+			}
+			
 			empresas += '):';
-			_cant[i] = item.listEmpresas.selectedItems.length;
+			_cant[i] = count;//item.listEmpresas.selectedItems.length;
 		}
 		//y = listSeleccionEmpresas.dataGroup.numElements
 		
@@ -911,7 +922,7 @@ protected function button4_clickHandler(event:MouseEvent):void
 		empresas += ')';
 		
 		if(rbPeriodosActivos.selected == true){
-			for each(o in listPeriodo.selectedItems){
+			for each(var o:Object in listPeriodo.selectedItems){
 				periodos += ', ' + o['id_periodo'];
 			}
 			periodos += ')';	
@@ -949,17 +960,24 @@ private function grafica_(event:ResultEvent):void{
 	var arr:ArrayCollection = event.result as ArrayCollection;
 	var i:int = 0;
 	for each(var o:Object in arr){
-		var arrParam:ArrayCollection = new ArrayCollection(o as Array);
-		var nc:NavigatorContent = new NavigatorContent();
-		//var gr:LayoutGrafic = (listSeleccionEmpresas.dataGroup.getElementAt(i) as Listado).removeElement((listSeleccionEmpresas.dataGroup.getElementAt(i) as Listado)['graficoPoint']) as LayoutGrafic;
-		var gr:LayoutGrafic = new LayoutGrafic();
-		nc.label = listSeleccionEmpresas.dataGroup.getElementAt(i)['data']['indice'];
-		tnGrafico.addElement(nc);
-		nc.addElement(gr);
-		gr.horizontalCenter = 0;
-		gr.verticalCenter = 0;
 		
-		grafica(arrParam, i++);
+		var arrParam:ArrayCollection = new ArrayCollection(o as Array);
+		if(arrParam.length > 0){
+			var nc:NavigatorContent = new NavigatorContent();
+			//var gr:LayoutGrafic = (listSeleccionEmpresas.dataGroup.getElementAt(i) as Listado).removeElement((listSeleccionEmpresas.dataGroup.getElementAt(i) as Listado)['graficoPoint']) as LayoutGrafic;
+			var gr:LayoutGrafic = new LayoutGrafic();
+			nc.label = listSeleccionEmpresas.dataProvider.getItemAt(i)['indice'];
+			tnGrafico.addElement(nc);
+			nc.addElement(gr);
+			gr.horizontalCenter = 0;
+			gr.verticalCenter = 0;
+			gr.width = 1000;
+			//gr.visible = false
+			grafica(arrParam, i++);	
+		} else {
+			PopUpManager.removePopUp(bloqueo);
+		}
+		
 	}
 }
 
@@ -1056,8 +1074,9 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 		for(var str:String in gr.arrAct.getItemAt(i)){
 			o[str] = gr.arrAct.getItemAt(i)[str];	
 		}
-		for(var j:int = 0; j < gr.arrAct.getItemAt(i)['arr'].length; j++){
+		for(j = 0; j < gr.arrAct.getItemAt(i)['arr'].length; j++){
 			gr.arrAct.getItemAt(i)['QAnt' + j] = gr.arrAct.getItemAt(i - 1)['arr'][j];	
+			//o['a' + j] = roundDecimals((((o['a' + j]/gr.arrAct.getItemAt(i - 1)['arr'][j]) - 1) * 100) as Number, 1);
 			o['a' + j] = roundDecimals((((o['a' + j]/gr.arrAct.getItemAt(i - 1)['arr'][j]) - 1) * 100) as Number, 1);
 			o['arrVal'].push(o['a' + j]);
 		}
@@ -1114,7 +1133,7 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 	}
 	
 	for each(o in arr){
-		if(o['graf'] != 1){
+		if(o['graf'] == 2){
 			gr._arrReferente.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(o['valor'] as Number, 1), year: o['year']});
 		}
 		
@@ -1123,27 +1142,15 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 	var count:int = 0;
 	x = 0;
 	
-	/*count = gr.arrAct3.getItemAt(0)['arr']['length'];
+		
 	
-	
-	for(i = count; i < arr.length; i++){
-		o = arr.getItemAt(i);
-		if(o['graf'] == 1){
-			if(j < count){
-			} else {
-				x++;
-				j = 0;
-			}
-			gr._arrVariacion.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(gr.arrAct3.getItemAt(x)['a' + (j++)] as Number, 1), year: o['year']});
+	for each(o in arr){
+		if(o['graf'] == 3){
+			gr._arrVariacion.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(o['valor'] as Number, 1), year: o['year']});
 		}
-	}*/
-	
-	for(i = 0; i < gr.arrAct3.length; i++){
-		o = gr.arrAct3.getItemAt(i);
-		for(j = 0; j < o['arr']['length']; j++){
-			gr._arrVariacion.addItem({periodo: o['label'], rso: (o['nombre'] as String).split(':')[0], valor: roundDecimals(o['arrVal'][j] as Number, 1), year: (o['label'] as String).split('/')[1]});
-		}
+		
 	}
+	
 	
 	
 	
