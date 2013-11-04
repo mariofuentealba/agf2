@@ -2528,19 +2528,26 @@ public function insertarItem($arrInf, $table, $empresa){
 			    }*/
 			    $mysqli->query("INSERT INTO log values ('" . print_r($r[0], 1) . "');");
 			   
-			    $mysqli->query("INSERT INTO log values ('1900-01-01');");
+			   
 			    $sql = "INSERT INTO formulario_item (`id_empresa`, `id_tag_agf`, `fecha_insert`, `nun_item`) VALUES (" . $empresa . ", " . $ultimo_id . ", '1900-01-01', " . $r[0] . ");";
 			    $sql2 = str_replace("'", "", $sql);
 			    $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			    $result = $mysqli->query($sql);
-	                    $mysqli->close();
-	                //mysql_close($con);
-	                
-	            //retornamos el largo del arreglo
-		  //  $ultimo_id = mysql_insert_id($con);
-	            //return $ultimo_id;
-		    $arr = array();
-		    $arr[0]['ID'] = $ultimo_id;
+	                    
+	               
+			    $arr = array();
+			    $arr[0]['ID'] = $ultimo_id;
+			
+				$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
+				select null, " . $ultimo_id .", id_empresa, id_periodo, 'TRIMESTRAL', 0.00, '1900-01-01', 1
+				from periodos a inner join empresas
+				";
+				$mysqli->query($sql);
+				$sql2 = str_replace("'", "''", $sql);
+				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+				$mysqli->close();
+				
+			
 		    //return $ultimo_id;
 	            
 	        }
@@ -2581,7 +2588,7 @@ public function insertarItemExistente($empresa, $idTag){
 			    $sql2 = str_replace("'", "", $sql);
 			    $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			    $result = $mysqli->query($sql);
-	                    $mysqli->close();
+	            $mysqli->close();
 	                //mysql_close($con);
 	                
 	            //retornamos el largo del arreglo
@@ -2595,30 +2602,18 @@ public function insertarItemExistente($empresa, $idTag){
 	    
 public function insertarValor($arrInf){
 			    
-	            //conectamos con la mysql
-		    
-		    
-	            //$con = mysql_connect("localhost","agf","agf");
+	         
 		    $mysqli = new mysqli("localhost","agf","agf","agf");
-	                //validamos que la conexion sea exitosa
-	                //if (!$con)
+	               
 			if (mysqli_connect_errno()) 
 	                {
-	                  //si existe error en conexion
+	                 
 	                  die('Error conectando: ' . mysql_error());
 	                }
-	                    //si no existe error de conexion
-	                    //seleccionamos base de datos
-	                    ///////////////////////mysql_select_db("agf", $con);
-	                    
-	                    //seleccionamos todos los registros de tabla tb_persona
-			    
-			    
-			    
-			    
+	              
 			    $sql = "select id_tag_agf from tag_agf WHERE (nombre like '" . $arrInf[0] . "') or (concat(nombre,'(', origen, ')') like '" . $arrInf[0] . "')";
-			   /* $sql2 = str_replace("'", "", $sql);
-			    $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");*/
+			    $sql2 = str_replace("'", "", $sql);
+			    $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			    $result = $mysqli->query($sql);			    		
 			    $r = $result->fetch_array(MYSQLI_NUM);			    
 			    $arrInf[0] = $r[0];

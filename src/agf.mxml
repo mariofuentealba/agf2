@@ -685,7 +685,7 @@
 													creationComplete="comboBox_creationCompleteHandler(event)"
 													dataProvider="{arrEmpresas}"
 													keyUp="comboBox_keyDownHandler(event)"
-													
+													selectedIndex="{ComboBoxEmpresaPrincipalSelectedIndex}"
 													labelField="NOMBRE_FANTASIA"/>
 									</s:BorderContainer>
 									<s:BorderContainer width="20%" height="100%">

@@ -938,6 +938,10 @@ protected function button4_clickHandler(event:MouseEvent):void
 		bloqueo.width = this.width;
 		bloqueo.height = this.height;
 		PopUpManager.addPopUp(bloqueo, this);
+		
+		if(ComboBoxEmpresaPrincipal.selectedIndex == -1){
+			ComboBoxEmpresaPrincipal.selectedIndex = ComboBoxEmpresaPrincipalSelectedIndex; 
+		}
 		valoresResult.token = modelo.valores(ComboBoxEmpresaPrincipal.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
 		valoresResult.addEventListener(ResultEvent.RESULT, grafica_);
 		/*
