@@ -293,7 +293,7 @@
 			protected function accordion1_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
-				Alert.show('' + (event.target as Accordion).selectedIndex);
+				//Alert.show('' + (event.target as Accordion).selectedIndex);
 			}
 			
 			protected function acAplicacion_changeHandler(event:IndexChangedEvent):void
@@ -420,6 +420,8 @@
 			}
 			
 			private function cargaPeriodosFormulario(event:ResultEvent):void{
+				arrTrimestre = new ArrayCollection();
+				arrAnual = new ArrayCollection();
 				for each(var i:Object in event.result){
 					if(i['oa'] == 1){
 						
@@ -499,6 +501,21 @@
 				}
 				olapData= result as OLAPResult;            
 			}  
+			
+			protected function acAplicacion_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+			//	Alert.show('' + event.target.className);
+				if(event.target is AccordionHeader){
+					acAplicacion.selectedIndex = acAplicacion.selectedIndex == 0 ? 1 : 0; 
+				}
+			}
+			
+			protected function tnGrafico_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				acAplicacion.selectedIndex = 0;
+			}
 			
 		]]>
 	</fx:Script>
@@ -654,7 +671,7 @@
 						</s:VGroup>
 						<mx:Accordion id="acAplicacion" top="40" width="90%" height="600"
 									  change="acAplicacion_changeHandler(event)"
-									  horizontalCenter="0" selectedIndex="1">
+									  horizontalCenter="0" selectedIndex="1" click="acAplicacion_clickHandler(event)">
 							<s:NavigatorContent label="Parametrización"  width="100%" height="100%">
 								<s:HGroup width="100%" horizontalCenter="0" height="100%">
 									<s:BorderContainer width="40%" height="100%">
@@ -706,7 +723,7 @@
 							
 							<s:NavigatorContent label="Gráfico" width="100%">
 								<mx:TabNavigator id="tnGrafico" width="100%" height="100%"
-												 horizontalCenter="0">
+												 horizontalCenter="0" fontSize="18" creationComplete="tnGrafico_creationCompleteHandler(event)">
 									<!--s:NavigatorContent id="nvGrafico" width="100%" height="100%"
 														label="Gráfico">
 										<Componentes:GraficoBarrasAGF name="columnasChart" id="columnasChart" left="0"

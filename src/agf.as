@@ -973,6 +973,8 @@ private function grafica_(event:ResultEvent):void{
 			nc.label = listSeleccionEmpresas.dataProvider.getItemAt(i)['indice'];
 			tnGrafico.addElement(nc);
 			nc.addElement(gr);
+			nc.setStyle('fontSize', 14);
+			gr.setStyle('fontSize', 11);
 			gr.horizontalCenter = 0;
 			gr.verticalCenter = 0;
 			gr.width = 1000;
@@ -1580,6 +1582,9 @@ private function creaForm(event:ResultEvent):void{
 		(tbFormulario.getElementAt(tbFormulario.selectedIndex) as NavigatorContent).addElement(item);
 	}
 	//modelo.comboItems();
+	if(tbFormulario.numElements > 0){
+		tbFormulario.selectedIndex = 0;
+	}
 	
 }
 

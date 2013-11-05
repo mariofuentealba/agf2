@@ -372,9 +372,9 @@
       </annotation>
       <parameter name="id" type="integer"/>
     </function>
-    <function name="grillaGrupoIndices" return-type="GrupoIndiceFinancieroDatatype[]">
+    <function name="grillaGrupoIndices" return-type="opaque">
       <annotation name="analyze group">
-        <item name="analyzed">true</item>
+        <item name="analyzed">false</item>
       </annotation>
       <annotation name="original signature">
         <item name="inputParams">opaque,opaque</item>
@@ -383,8 +383,6 @@
       <annotation name="ValidProperties">
         <item name="propertySpecifier">nombre,descripcion,ID_GRUPO_INDICE_FINANCIERO</item>
       </annotation>
-      <parameter name="startIndex" type="opaque"/>
-      <parameter name="numItems" type="opaque"/>
     </function>
     <function name="grillaGrupos" return-type="GruposDatatype[]">
       <annotation name="analyze group">
@@ -565,15 +563,15 @@
       <parameter name="grupo" type="opaque"/>
       <parameter name="empresas" type="opaque"/>
     </function>
-    <function name="insertarValor" return-type="opaque">
+    <function name="insertarValor" return-type="boolean">
       <annotation name="analyze group">
-        <item name="analyzed">false</item>
+        <item name="analyzed">true</item>
       </annotation>
       <annotation name="original signature">
         <item name="inputParams">opaque</item>
         <item name="returnType">opaque</item>
       </annotation>
-      <parameter name="arrInf" type="opaque"/>
+      <parameter name="arrInf" type="string[]"/>
     </function>
     <function name="periodos" return-type="opaque">
       <annotation name="analyze group">
@@ -662,6 +660,46 @@
         <item name="returnType">opaque</item>
       </annotation>
       <parameter name="id" type="integer"/>
+    </function>
+    <function name="grillaGrupoIndices2" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="actualizarCascada" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque,opaque,opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="nuevoValor" type="opaque"/>
+      <parameter name="indice" type="opaque"/>
+      <parameter name="empresa" type="opaque"/>
+      <parameter name="periodo" type="opaque"/>
+      <parameter name="mysqli" type="opaque"/>
+    </function>
+    <function name="parametrosGrafico" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="deleteIndiceFinanciero" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="opaque"/>
     </function>
   </service>
   <entity name="GrupoIndDatatype" persistent="true">
@@ -947,8 +985,6 @@
     <annotation name="grillaGrupoIndices">
       <item name="propertySpecifier">nombre,descripcion,ID_GRUPO_INDICE_FINANCIERO</item>
       <item name="positionalPagingParameters">true</item>
-      <item name="pagingEnabled">true</item>
-      <item name="countOperation">countGrupoIndices</item>
     </annotation>
     <annotation name="DataManagement">
       <item name="managingService">Modelo</item>

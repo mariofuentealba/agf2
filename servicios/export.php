@@ -63,7 +63,7 @@ $objWorksheet = array();
 
 for($x = 1; $x < count($fff); $x++){
 	
-	
+	$graf[$x] = str_replace('/', '', $graf[$x]);
 	$ff = explode("*@+@*", $fff[$x]);
 	$objWorksheet[$x - 1] = $objPHPExcel->getActiveSheet();
 	$objWorksheet[$x - 1]->setTitle('' . (str_replace(' ', '', $graf[$x])) . '');
@@ -137,6 +137,9 @@ for($x = 1; $x < count($fff); $x++){
 	//print_r($arr3);
 	$objWorksheet[$x - 1]->fromArray($arr3);
 	$desp = 2;//count($arr2);
+	$arrNomGraf = array('', 'Referente ', 'Variacion ');
+	/*echo count($ff);
+	exit(0);*/
 	for($z = 1; $z < count($ff); $z++){
 	
 		
@@ -176,8 +179,9 @@ for($x = 1; $x < count($fff); $x++){
 		//	Set the chart legend
 		$legend = new PHPExcel_Chart_Legend(PHPExcel_Chart_Legend::POSITION_BOTTOM, NULL, false);
 
-		$title = new PHPExcel_Chart_Title(str_replace(' ', '', $graf[$x]));
+		$title = new PHPExcel_Chart_Title(/*str_replace(' ', '', */$arrNomGraf[$z - 1] . $graf[$x]/*)*/);
 		$xAxisLabel = new PHPExcel_Chart_Title('Periodo Financiero');
+		
 		$yAxisLabel = new PHPExcel_Chart_Title($graf[$x]);
 
 
