@@ -723,7 +723,7 @@
 							
 							<s:NavigatorContent label="Gráfico" width="100%">
 								<mx:TabNavigator id="tnGrafico" width="100%" height="100%"
-												 horizontalCenter="0" fontSize="18" creationComplete="tnGrafico_creationCompleteHandler(event)">
+												 horizontalCenter="0" fontSize="12" creationComplete="tnGrafico_creationCompleteHandler(event)">
 									<!--s:NavigatorContent id="nvGrafico" width="100%" height="100%"
 														label="Gráfico">
 										<Componentes:GraficoBarrasAGF name="columnasChart" id="columnasChart" left="0"
@@ -1197,7 +1197,7 @@
 							<s:NavigatorContent label="Listado" >
 								
 								
-								<s:DataGrid id="dgIndicesFinancieros" x="23" top="20" bottom="20" width="100%"
+								<s:DataGrid id="dgIndicesFinancieros" x="23" top="30" bottom="20" width="100%"
 											creationComplete="dgIndicesFinancieros_creationCompleteHandler(event)"
 											doubleClick="dgGrupo_doubleClickHandler(event)"
 											doubleClickEnabled="true" requestedRowCount="4">
@@ -1223,7 +1223,9 @@
 								<s:TextInput text="grillaIndicesFinancierosResult" visible="false">
 									
 								</s:TextInput>
-								<s:Button x="43" y="0" label="Eliminar Indice Seleccionado" click="button7_clickHandler(event)" enabled="{dgIndicesFinancieros.selectedIndex > -1 ? true : false}"/>
+								<s:Button y="0" right="100" label="Eliminar Indice Seleccionado"
+										  click="button7_clickHandler(event)"
+										  enabled="{dgIndicesFinancieros.selectedIndex &gt; -1 ? true : false}"/>
 							</s:NavigatorContent>
 							<s:NavigatorContent label="Nuevo">
 								<s:BorderContainer x="88" top="20" width="700" height="558"
@@ -1467,7 +1469,7 @@
 									</s:typicalItem>
 									
 								</s:DataGrid>
-								<s:TextInput text="grillaGrupoIndicesResult" visible="true">
+								<s:TextInput text="grillaGrupoIndicesResult" visible="false">
 									
 								</s:TextInput>
 							</s:NavigatorContent>
