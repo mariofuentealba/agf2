@@ -86,6 +86,9 @@ import mx.olap.OLAPCube;
 import Componentes.LayoutGrafic;
 import Componentes.Listado;
 //import mx.controls.DataGrid;
+import Componentes.Columna;
+import mx.charts.ChartItem;
+import mx.charts.chartClasses.Series;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
@@ -978,7 +981,8 @@ private function grafica_(event:ResultEvent):void{
 			gr.setStyle('fontSize', 10);
 			gr.horizontalCenter = 0;
 			gr.verticalCenter = 0;
-			gr.width = 1000;
+			gr.percentHeight = 100;
+			gr.percentWidth = 100;
 			//gr.visible = false
 			grafica(arrParam, i++);	
 		} else {
@@ -986,6 +990,12 @@ private function grafica_(event:ResultEvent):void{
 		}
 		
 	}
+}
+
+
+private function columnSeries_labelFunc(chartItem:ChartItem, series:Series):String {
+	var col:String = ColumnSeries(chartItem.element).yField;
+	return chartItem.item[col];
 }
 
 
@@ -1013,10 +1023,11 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 	gr.seriesColumn = new Array();
 	
 	for(var x:int = 0; x < _cant[ind] ; x++){
-		gr.seriesColumn[x] = new ColumnSeries();
-		(gr.seriesColumn[x] as ColumnSeries).yField = 'a'+x;
-		(gr.seriesColumn[x] as ColumnSeries).visible = false;
+		gr.seriesColumn[x] = new Columna();
 		
+		(gr.seriesColumn[x] as Columna).yField = 'a'+x;
+		(gr.seriesColumn[x] as Columna).visible = false;
+	//	(gr.seriesColumn[x] as Columna).labelFunction = columnSeries_labelFunc;
 	}
 	
 	
@@ -1046,10 +1057,10 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 			stro.color = o['color'];
 			colorLine.color = o['color'];
 			if(sw){
-				(gr.seriesColumn[i] as ColumnSeries).setStyle('fill', colorLine);
-				(gr.seriesColumn[i] as ColumnSeries).displayName = o['nombre_final'];
-				(gr.seriesColumn[i] as ColumnSeries).setStyle('showDataEffect', interpolateIn);				
-				(gr.seriesColumn[i] as ColumnSeries).visible = true;					
+				(gr.seriesColumn[i] as Columna).setStyle('fill', colorLine);
+				(gr.seriesColumn[i] as Columna).displayName = o['nombre_final'];
+				(gr.seriesColumn[i] as Columna).setStyle('showDataEffect', interpolateIn);				
+				(gr.seriesColumn[i] as Columna).visible = true;					
 			}
 			
 			//	}

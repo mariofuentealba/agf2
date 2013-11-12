@@ -721,9 +721,9 @@
 								
 							</s:NavigatorContent>
 							
-							<s:NavigatorContent label="Gráfico" width="100%">
+							<s:NavigatorContent label="Gráfico" width="100%" height="100%">
 								<mx:TabNavigator id="tnGrafico" width="100%" height="100%"
-												 horizontalCenter="0" fontSize="12" creationComplete="tnGrafico_creationCompleteHandler(event)">
+												 horizontalCenter="0" verticalCenter="0" fontSize="12" creationComplete="tnGrafico_creationCompleteHandler(event)">
 									<!--s:NavigatorContent id="nvGrafico" width="100%" height="100%"
 														label="Gráfico">
 										<Componentes:GraficoBarrasAGF name="columnasChart" id="columnasChart" left="0"

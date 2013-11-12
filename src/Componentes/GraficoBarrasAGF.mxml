@@ -42,7 +42,14 @@
 		<s:RadioButton id="rbVariacion" label="Variación" groupName="rgOption"/>
 	</s:HGroup>
 	<s:HGroup width="100%" height="100%">
-		<mx:ColumnChart id="columnchart" change="columnchart_changeHandler(event)" showDataTips="true" width="100%" height="100%" series="{serie}" dataProvider="{prov}" creationComplete="columnchart_creationCompleteHandler(event)">
+		<mx:ColumnChart id="columnchart" change="columnchart_changeHandler(event)" 
+						showDataTips="true" 
+						width="100%" 
+						height="100%" 
+						series="{serie}" 
+						dataProvider="{prov}" 
+						creationComplete="columnchart_creationCompleteHandler(event)"
+						backgroundElements="{[]}">
 			<mx:horizontalAxis>
 				<mx:CategoryAxis
 					id="barra"
@@ -53,6 +60,7 @@
 		</mx:ColumnChart>
 			
 		
-		<mx:Legend dataProvider="{columnchart}"/>
+		
 	</s:HGroup>
+	<mx:Legend dataProvider="{columnchart}"/>
 </s:VGroup>

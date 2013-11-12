@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ColumnSeries xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				 xmlns:s="library://ns.adobe.com/flex/spark" 
+				 xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="columnseries1_creationCompleteHandler(event)" 
+				 labelFunction="columnSeries_labelFunc"
+				 labelPosition="outside">
+	<fx:Script>
+		<![CDATA[
+			import flash.globalization.NumberFormatter;
+			
+			import mx.charts.ChartItem;
+			import mx.charts.chartClasses.Series;
+			import mx.containers.Canvas;
+			import mx.controls.Alert;
+			import mx.controls.Label;
+			import mx.events.FlexEvent;
+			
+			import spark.components.BorderContainer;
+			
+			
+			private function columnSeries_labelFunc(chartItem:ChartItem, series:Series):String {
+				
+				var col:String = ColumnSeries(chartItem.element).yField;
+				if((this.parent.parent.parent.parent.parent as GraficoBarrasAGF).rbVariacion.selected == true){
+					return '' + chartItem.item[col] +  '%';	
+				}
+				return chartItem.item[col]
+				
+			}
+			
+			protected function columnseries1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				var txt:Label = new Label();
+				//Alert.show('' + this.x);
+				var cnv:BorderContainer = new BorderContainer();
+				txt.text = 'hola';
+				cnv.addElement(txt);
+				cnv.x = this.x;
+				cnv.y = this.y;
+				this.parentApplication.addElement(cnv);
+				this.addEventListener(Event.ADDED, datas);
+			}
+			
+			
+			private function datas(event:Event):void{
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	
+</mx:ColumnSeries>
