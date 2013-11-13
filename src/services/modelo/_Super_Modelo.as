@@ -46,9 +46,9 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     private var _monedasDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _grupoIndiceFinancieroDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _grupoIndicesDataTypeRPCDataManager : mx.data.RPCDataManager;
-    private var _subGruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _indicesFinancierosDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _agfDatatypeRPCDataManager : mx.data.RPCDataManager;
+    private var _subGruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _gruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _empresasDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var managersArray : Array = new Array();
@@ -58,9 +58,9 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     public const DATA_MANAGER_MONEDASDATATYPE : String = "MonedasDatatype";
     public const DATA_MANAGER_GRUPOINDICEFINANCIERODATATYPE : String = "GrupoIndiceFinancieroDatatype";
     public const DATA_MANAGER_GRUPOINDICESDATATYPE : String = "GrupoIndicesDataType";
-    public const DATA_MANAGER_SUBGRUPOSDATATYPE : String = "SubGruposDatatype";
     public const DATA_MANAGER_INDICESFINANCIEROSDATATYPE : String = "IndicesFinancierosDatatype";
     public const DATA_MANAGER_AGFDATATYPE : String = "AgfDatatype";
+    public const DATA_MANAGER_SUBGRUPOSDATATYPE : String = "SubGruposDatatype";
     public const DATA_MANAGER_GRUPOSDATATYPE : String = "GruposDatatype";
     public const DATA_MANAGER_EMPRESASDATATYPE : String = "EmpresasDatatype";
 
@@ -78,12 +78,12 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
                 return _grupoIndiceFinancieroDatatypeRPCDataManager;
              case (DATA_MANAGER_GRUPOINDICESDATATYPE):
                 return _grupoIndicesDataTypeRPCDataManager;
-             case (DATA_MANAGER_SUBGRUPOSDATATYPE):
-                return _subGruposDatatypeRPCDataManager;
              case (DATA_MANAGER_INDICESFINANCIEROSDATATYPE):
                 return _indicesFinancierosDatatypeRPCDataManager;
              case (DATA_MANAGER_AGFDATATYPE):
                 return _agfDatatypeRPCDataManager;
+             case (DATA_MANAGER_SUBGRUPOSDATATYPE):
+                return _subGruposDatatypeRPCDataManager;
              case (DATA_MANAGER_GRUPOSDATATYPE):
                 return _gruposDatatypeRPCDataManager;
              case (DATA_MANAGER_EMPRESASDATATYPE):
@@ -351,6 +351,9 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         operation = new mx.rpc.remoting.Operation(null, "deleteIndiceFinanciero");
          operation.resultType = Object;
         operations["deleteIndiceFinanciero"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "insertaCascada");
+         operation.resultType = Object;
+        operations["insertaCascada"] = operation;
 
         _serviceControl.operations = operations;
         _serviceControl.convertResultHandler = com.adobe.serializers.utility.TypeUtility.convertResultHandler;
@@ -418,18 +421,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _grupoIndicesDataTypeRPCDataManager.itemClass = valueObjects.GrupoIndicesDataType; 
 
 
-        // initialize SubGruposDatatype data manager
-        _subGruposDatatypeRPCDataManager = new mx.data.RPCDataManager();
-        managersArray.push(_subGruposDatatypeRPCDataManager);
-
-        managedAssocsArray = new Array();
-
-        _subGruposDatatypeRPCDataManager.destination = "subGruposDatatypeRPCDataManager";
-        _subGruposDatatypeRPCDataManager.service = _serviceControl;        
-        _subGruposDatatypeRPCDataManager.identities =  "ID_SUBGRUPO,ID_TIPO_EMPRESA";      
-        _subGruposDatatypeRPCDataManager.itemClass = valueObjects.SubGruposDatatype; 
-
-
         // initialize IndicesFinancierosDatatype data manager
         _indicesFinancierosDatatypeRPCDataManager = new mx.data.RPCDataManager();
         managersArray.push(_indicesFinancierosDatatypeRPCDataManager);
@@ -452,6 +443,18 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _agfDatatypeRPCDataManager.service = _serviceControl;        
         _agfDatatypeRPCDataManager.identities =  "id_tag_agf";      
         _agfDatatypeRPCDataManager.itemClass = valueObjects.AgfDatatype; 
+
+
+        // initialize SubGruposDatatype data manager
+        _subGruposDatatypeRPCDataManager = new mx.data.RPCDataManager();
+        managersArray.push(_subGruposDatatypeRPCDataManager);
+
+        managedAssocsArray = new Array();
+
+        _subGruposDatatypeRPCDataManager.destination = "subGruposDatatypeRPCDataManager";
+        _subGruposDatatypeRPCDataManager.service = _serviceControl;        
+        _subGruposDatatypeRPCDataManager.identities =  "ID_SUBGRUPO,ID_TIPO_EMPRESA";      
+        _subGruposDatatypeRPCDataManager.itemClass = valueObjects.SubGruposDatatype; 
 
 
         // initialize GruposDatatype data manager
@@ -1446,6 +1449,24 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("deleteIndiceFinanciero");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(id) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'insertaCascada' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function insertaCascada(nuevoValor:Object, indice:Object, empresa:Object, periodo:Object, mysqli:Object) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertaCascada");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(nuevoValor,indice,empresa,periodo,mysqli) ;
         return _internal_token;
     }
      

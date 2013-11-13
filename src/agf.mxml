@@ -515,6 +515,82 @@
 			{
 				// TODO Auto-generated method stub
 				acAplicacion.selectedIndex = 0;
+				
+			}
+			
+			protected function listIndiceAntiguo_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				parametrosGraficoResult.token = modelo.parametrosGrafico();
+				parametrosGraficoResult.addEventListener(ResultEvent.RESULT, armaParametrizacion);
+			}
+			
+			[Bindable]var arrIndicesFiltrados:ArrayCollection;
+			protected function listIndiceAntiguo_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				 arrIndicesFiltrados = new ArrayCollection();
+				 listSeleccionEmpresas.dataProvider = new ArrayCollection();
+				for each(var o:Object in listIndiceAntiguo.selectedItems){
+					arrIndicesFiltrados.addItem(o);	
+				}
+				if(listEmpresasPreseleccion.selectedItems.length > 0){
+					listEmpresasPreseleccion.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+				}
+			}
+			
+			protected function listEmpresasPreseleccion_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(listIndiceAntiguo.selectedItems.length > 0){
+					for each(var o:Object in listIndiceAntiguo.selectedItems){
+						var n:int = o['asociados'].length;
+						
+						for(var i:int = 0; i < n; i++){
+							o['asociados'][i]['sel'] = false;
+						}
+						for(i = 0; i < n; i++){
+							for(var j:int = 0; j < listEmpresasPreseleccion.selectedItems.length; j++){
+								if(o['asociados'][i]['id_empGrupo'] == listEmpresasPreseleccion.selectedItems[j]['ID_EMPRESA']){
+									o['asociados'][i]['sel'] = true;
+								}
+							}
+							
+						}
+						
+					}					
+				} else {
+					for each(var o:Object in listIndiceAntiguo.selectedItems){
+						var n:int = o['asociados'].length;
+						for(var i:int = 0; i < n; i++){
+							o['asociados'][i]['sel'] = true;
+						}
+					}	
+				}
+				
+			}
+			
+			protected function listEmpresasPreseleccion_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				empresasResult.token = modelo.comboEmpresa();
+				empresasResult.addEventListener(ResultEvent.RESULT, llenaEmpresasPre);
+			}
+			
+			private function llenaEmpresasPre(event:ResultEvent):void{
+				listEmpresasPreseleccion.dataProvider = event.result as ArrayCollection;
+			}
+			
+			protected function listSeleccionEmpresas_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				acAplicacion.selectedIndex = 1;
+			}
+			
+			protected function button8_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				acAplicacion.selectedIndex = 0;
 			}
 			
 		]]>
@@ -625,7 +701,7 @@
 	<s:Image left="0" top="0" width="256" alpha=".7" source="assets/chico 12.jpg"/>
 	
 	
-	<mx:TabNavigator left="50" top="120" width="1200">
+	<mx:TabNavigator left="10" top="120" right="10" bottom="50">
 		<s:NavigatorContent width="100%" height="100%" label="Analizador" >
 			<s:VGroup  width="100%" height="100%">
 				<s:Scroller width="100%" height="100%">
@@ -669,22 +745,18 @@
 							<s:TextInput visible="false" x="10" y="505"/>
 							<s:DropDownList visible="false" x="146" y="506"></s:DropDownList>
 						</s:VGroup>
-						<mx:Accordion id="acAplicacion" top="40" width="90%" height="600"
+						<mx:Accordion id="acAplicacion" right="10" top="40" bottom="0" width="90%"
 									  change="acAplicacion_changeHandler(event)"
-									  horizontalCenter="0" selectedIndex="1" click="acAplicacion_clickHandler(event)">
+									  click="acAplicacion_clickHandler(event)" selectedIndex="1">
 							<s:NavigatorContent label="Parametrización"  width="100%" height="100%">
 								<s:HGroup width="100%" horizontalCenter="0" height="100%">
 									<s:BorderContainer width="40%" height="100%">
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 1"/>
 										<s:RichText x="23" y="32" text="Arrastre los indices que desee hacia la grilla del centro"/>	
-										<s:List id="listIndicesGrafico" left="40" right="40" top="108" bottom="5" 
+										<s:List id="listIndicesGrafico" left="40" right="40" top="64" bottom="5" 
 												dragEnabled="true" dropEnabled="true" dragMoveEnabled="true"
-												labelField="indice" creationComplete="list1_creationCompleteHandler(event)" dataProvider="{arrListIndicesGrafico}" allowMultipleSelection="true"></s:List>
-										<s:DropDownList id="gruposFinancieros" x="52" y="57"
-														creationComplete="gruposFinancieros_creationCompleteHandler(event)"
-														labelField="nombre" change="gruposFinancieros_changeHandler(event)">
-											<s:AsyncListView list="{comboGrupoIndicesFinancierosResult3.lastResult}"/>
-										</s:DropDownList>
+												labelField="indice" allowMultipleSelection="true"
+												dataProvider="{arrIndicesFiltrados}"></s:List>
 									</s:BorderContainer>
 									<s:BorderContainer width="40%" height="100%">
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 2"/>
@@ -694,7 +766,7 @@
 												dropEnabled="true"
 												itemRenderer="Componentes.Listado"
 												labelField="indice"
-												
+												creationComplete="listSeleccionEmpresas_creationCompleteHandler(event)"
 												allowMultipleSelection="true"></s:List>
 										<s:Label x="43" y="66" fontSize="12" fontWeight="bold"
 												 text="Empresa Principal:"/>
@@ -702,7 +774,7 @@
 													creationComplete="comboBox_creationCompleteHandler(event)"
 													dataProvider="{arrEmpresas}"
 													keyUp="comboBox_keyDownHandler(event)"
-													selectedIndex="{ComboBoxEmpresaPrincipalSelectedIndex}"
+													selectedIndex="{principal.selectedIndex}"
 													labelField="NOMBRE_FANTASIA"/>
 									</s:BorderContainer>
 									<s:BorderContainer width="20%" height="100%">
@@ -722,8 +794,40 @@
 							</s:NavigatorContent>
 							
 							<s:NavigatorContent label="Gráfico" width="100%" height="100%">
-								<mx:TabNavigator id="tnGrafico" width="100%" height="100%"
-												 horizontalCenter="0" verticalCenter="0" fontSize="12" creationComplete="tnGrafico_creationCompleteHandler(event)">
+								<s:BorderContainer top="0" width="100%" height="200" borderWeight="1"
+												   horizontalCenter="0">
+									<s:Label x="22" y="30" text="Empresa Principal"/>
+									<s:ComboBox id="principal" x="10" y="47"
+												creationComplete="comboBox_creationCompleteHandler(event)"
+												dataProvider="{arrEmpresas}"
+												keyUp="comboBox_keyDownHandler(event)"
+												labelField="NOMBRE_FANTASIA"
+												selectedIndex="{ComboBoxEmpresaPrincipalSelectedIndex}"/>
+									<s:List id="listIndiceAntiguo" creationComplete="listIndiceAntiguo_creationCompleteHandler(event)" 
+												 x="153" y="47" width="200" height="141"
+												 dataProvider="{arrListIndicesGrafico}"
+												 labelField="indice" click="listIndiceAntiguo_clickHandler(event)" allowMultipleSelection="true"/>
+									<s:List id="listEmpresasPreseleccion" labelField="RSO" 
+											creationComplete="listEmpresasPreseleccion_creationCompleteHandler(event)" 
+											x="368" y="27" width="200" height="161" 
+											click="listEmpresasPreseleccion_clickHandler(event)"
+											allowMultipleSelection="true"/>
+									<s:Label x="168" y="29" text="Indices"/>
+									<s:Label x="368" y="10" text="Empresas"/>
+									<s:Label x="6" y="10" fontSize="14" fontWeight="bold"
+											 text="Selección Previa"/>
+									<s:DropDownList id="gruposFinancieros" x="241" y="18"
+													creationComplete="gruposFinancieros_creationCompleteHandler(event)"
+													labelField="nombre" change="gruposFinancieros_changeHandler(event)">
+										<s:AsyncListView list="{comboGrupoIndicesFinancierosResult3.lastResult}"/>
+									</s:DropDownList>
+									<s:Button x="649" y="29" label="Parametrización" click="button8_clickHandler(event)"/>
+									
+								</s:BorderContainer>
+								<mx:TabNavigator id="tnGrafico" top="200" width="100%" height="100%"
+												 borderStyle="none" cornerRadius="7"
+												 creationComplete="tnGrafico_creationCompleteHandler(event)"
+												 fontSize="12" horizontalCenter="0">
 									<!--s:NavigatorContent id="nvGrafico" width="100%" height="100%"
 														label="Gráfico">
 										<Componentes:GraficoBarrasAGF name="columnasChart" id="columnasChart" left="0"
