@@ -593,6 +593,28 @@
 				acAplicacion.selectedIndex = 0;
 			}
 			
+			protected function hgroup2_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(event.target.className == 'RadioButton'){
+					switch(event.target.label){
+						case 'Todas':
+							vSelectEmpresas.selectedIndex = 0;
+							break;
+						case 'Grupos':
+							vSelectEmpresas.selectedIndex = 1;
+							break;
+					}
+				}
+				
+			}
+			
+			protected function hgroup2_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				selectGrupo.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+			}
+			
 		]]>
 	</fx:Script>
 	<s:states>
@@ -688,6 +710,7 @@
 		<s:CallResponder id="grillaGrupoIndicesResult2"/>
 		<s:CallResponder id="grillaGrupoIndicesResult3"/>
 		<s:CallResponder id="grillaGrupoIndices2Result"/>
+		<s:RadioButtonGroup id="radiogroup2"/>
 		
 		
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -707,7 +730,7 @@
 				<s:Scroller width="100%" height="100%">
 					<s:Group id="myGroup"  width="100%" height="100%">
 						
-						<s:VGroup left="10" visible="false">
+						<s:VGroup left="10" visible="true">
 							<s:Label x="6" y="10" text="Datos de Gráfico"/>
 							<s:Label text="Empresas a Comparar:"/>
 							<s:ComboBox id="comboBoxEmpresa"
@@ -721,11 +744,27 @@
 							<c:CheckList id="listEmpresaSelect" x="10" y="72" width="170" height="70"></c:CheckList>
 							<s:Button id="btnBorrarEmpresa" x="10" y="134" label="Borrar"
 									  click="btnBorrarEmpresa_clickHandler(event)"/>
-							<s:Label x="10" y="188" text="Grupos"/>
-							<s:VGroup id="acGrupos" width="200"
-									  gap="0" paddingLeft="0">								
-							</s:VGroup>
-							<s:Label text="Periodo"/>
+							<s:Label x="10" y="188" fontSize="12" fontWeight="bold" text="Empresas"/>
+							<s:Label text="Seleccionar por"/>
+							<s:HGroup width="100%" click="hgroup2_clickHandler(event)" creationComplete="hgroup2_creationCompleteHandler(event)">
+								<s:RadioButton id="selectEmpresa" label="Todas" groupName="radiogroup2"/>
+								<s:RadioButton id="selectGrupo" label="Grupos" groupName="radiogroup2"/>
+								
+							</s:HGroup>
+							<mx:ViewStack id="vSelectEmpresas">
+								<s:NavigatorContent>									
+									<s:List id="listEmpresasPreseleccion" labelField="RSO" 
+											creationComplete="listEmpresasPreseleccion_creationCompleteHandler(event)" 
+											x="0" y="27" width="200" height="161" 
+											click="listEmpresasPreseleccion_clickHandler(event)"
+											allowMultipleSelection="true"/>
+								</s:NavigatorContent>
+								<s:NavigatorContent>
+									<s:VGroup id="acGrupos" width="200"
+											  gap="0" paddingLeft="0">								
+									</s:VGroup>
+								</s:NavigatorContent>
+							</mx:ViewStack>
 							<s:DropDownList id="ddlPeriodo" selectedIndex="0" visible="false" height="0">
 								<s:ArrayCollection>									
 									<fx:Object data="Trimestral" label="Trimestral"></fx:Object>
@@ -733,8 +772,6 @@
 									<fx:Object data="Acumulado" label="Acumulado"></fx:Object>
 								</s:ArrayCollection>
 							</s:DropDownList>
-							<s:HGroup>
-							</s:HGroup>
 							<s:Label x="10" y="396" text="Indices:"/>
 							<s:List id="listIndices" height="0" visible="false"></s:List>
 							<s:VGroup id="vgIndices" creationComplete="vgIndices_creationCompleteHandler(event)"
@@ -745,7 +782,7 @@
 							<s:TextInput visible="false" x="10" y="505"/>
 							<s:DropDownList visible="false" x="146" y="506"></s:DropDownList>
 						</s:VGroup>
-						<mx:Accordion id="acAplicacion" right="10" top="40" bottom="0" width="90%"
+						<mx:Accordion id="acAplicacion" right="10" top="40" bottom="0" width="80%"
 									  change="acAplicacion_changeHandler(event)"
 									  click="acAplicacion_clickHandler(event)" selectedIndex="1">
 							<s:NavigatorContent label="Parametrización"  width="100%" height="100%">
@@ -807,11 +844,6 @@
 												 x="153" y="47" width="200" height="141"
 												 dataProvider="{arrListIndicesGrafico}"
 												 labelField="indice" click="listIndiceAntiguo_clickHandler(event)" allowMultipleSelection="true"/>
-									<s:List id="listEmpresasPreseleccion" labelField="RSO" 
-											creationComplete="listEmpresasPreseleccion_creationCompleteHandler(event)" 
-											x="368" y="27" width="200" height="161" 
-											click="listEmpresasPreseleccion_clickHandler(event)"
-											allowMultipleSelection="true"/>
 									<s:Label x="168" y="29" text="Indices"/>
 									<s:Label x="368" y="10" text="Empresas"/>
 									<s:Label x="6" y="10" fontSize="14" fontWeight="bold"
@@ -1735,7 +1767,7 @@
 	<s:Label x="10" y="10" text="Sesion iniciada por:"/>
 	<s:Label id="txtUser" x="128" y="10" fontWeight="bold" text="CArriagada"/>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
-	<s:Label y="39" right="5" text="version: 1.0.137"/>
+	<s:Label y="39" right="5" text="version: 1.0.138"/>
 	
 	
 	

@@ -283,7 +283,7 @@
 					</s:AsyncListView>
 				</s:DataGrid>
 			</s:NavigatorContent-->
-			<s:NavigatorContent width="100%" height="100%" label="olap">
+			<s:NavigatorContent width="100%" height="100%" label="Datos">
 				<s:VGroup horizontalCenter="0" verticalCenter="0" width="100%" height="100%">
 					<s:HGroup id="hgOLAP" width="100%" height="100%" horizontalCenter="0"
 							  verticalCenter="-49">

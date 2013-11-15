@@ -485,7 +485,7 @@
       <parameter name="startIndex" type="integer"/>
       <parameter name="numItems" type="integer"/>
     </function>
-    <function name="grillaSubGrupos" return-type="SubGruposBetaDatatype[]">
+    <function name="grillaSubGrupos" return-type="SubGruposDatatype[]">
       <annotation name="analyze group">
         <item name="analyzed">true</item>
       </annotation>
