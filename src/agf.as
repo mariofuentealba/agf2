@@ -89,6 +89,7 @@ import Componentes.Listado;
 import Componentes.Columna;
 import mx.charts.ChartItem;
 import mx.charts.chartClasses.Series;
+import mx.controls.DataGrid;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
@@ -710,6 +711,16 @@ private function agregaEmpresa(event:MouseEvent):void{
 			listEmpresaSelect.dataProvider = new ArrayCollection();
 		}
 		listEmpresaSelect.dataProvider.addItem({label:(event.target as CheckBox).data['NOMBRE_FANTASIA'], cod:(event.target as CheckBox).data['ID_EMPRESA']});
+		for each(var o:Object in listEmpresasPreseleccion.dataProvider){
+			o['sel'] = false;
+			for each(var o2:Object in listEmpresaSelect.dataProvider){
+				if(o['ID_EMPRESA'] == o2['cod']){
+					o['sel'] = true;
+					break;
+				}
+					
+			}
+		}
 		
 	} else{
 		for(var i:int = 0; i < listEmpresaSelect.dataProvider.length; i++){
@@ -718,6 +729,8 @@ private function agregaEmpresa(event:MouseEvent):void{
 			}
 		}
 	}
+	listEmpresasPreseleccion_clickHandler(event);
+	
 }
 
 
@@ -1509,7 +1522,7 @@ protected function btnAccion_clickHandler(event:MouseEvent):void
 	}
 }
 
-protected function button5_clickHandler(dataGrid:DataGrid):void
+protected function button5_clickHandler(dataGrid:mx.controls.DataGrid):void
 {
 	// TODO Auto-generated method stub
 	if(dataGrid.selectedIndex > -1){

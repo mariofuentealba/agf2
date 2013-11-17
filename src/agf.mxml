@@ -542,23 +542,38 @@
 			protected function listEmpresasPreseleccion_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				if(listIndiceAntiguo.selectedItems.length > 0){
-					for each(var o:Object in listIndiceAntiguo.selectedItems){
+				//if(listIndiceAntiguo.selectedItems.length > 0){
+					for each(var o:Object in listIndiceAntiguo.dataProvider){
 						var n:int = o['asociados'].length;
 						
 						for(var i:int = 0; i < n; i++){
 							o['asociados'][i]['sel'] = false;
 						}
+					/*		var arr:ArrayCollection = new ArrayCollection();
+					for each(var o2:Object in listEmpresasPreseleccion.dataProvider as ArrayCollection){
+							if(o2['sel'] == true){
+								arr.addItem(o2);
+							}
+						}
 						for(i = 0; i < n; i++){
-							for(var j:int = 0; j < listEmpresasPreseleccion.selectedItems.length; j++){
-								if(o['asociados'][i]['id_empGrupo'] == listEmpresasPreseleccion.selectedItems[j]['ID_EMPRESA']){
+							for(var j:int = 0; j < arr.length; j++){
+								if(o['asociados'][i]['id_empGrupo'] == arr.getItemAt(j)['ID_EMPRESA']){
+									o['asociados'][i]['sel'] = true;
+								}
+							}
+							
+						}*/
+						for(i = 0; i < n; i++){
+							for each(var o2:Object in listEmpresaSelect.dataProvider as ArrayCollection){
+								if(o['asociados'][i]['id_empGrupo'] == o2['cod']){
 									o['asociados'][i]['sel'] = true;
 								}
 							}
 							
 						}
 						
-					}					
+						
+					}/*					
 				} else {
 					for each(var o:Object in listIndiceAntiguo.selectedItems){
 						var n:int = o['asociados'].length;
@@ -566,19 +581,24 @@
 							o['asociados'][i]['sel'] = true;
 						}
 					}	
-				}
+				}*/
 				
 			}
 			
 			protected function listEmpresasPreseleccion_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
-				empresasResult.token = modelo.comboEmpresa();
-				empresasResult.addEventListener(ResultEvent.RESULT, llenaEmpresasPre);
+				empresasPreResult.token = modelo.comboEmpresa();
+				empresasPreResult.addEventListener(ResultEvent.RESULT, llenaEmpresasPre);
 			}
 			
 			private function llenaEmpresasPre(event:ResultEvent):void{
-				listEmpresasPreseleccion.dataProvider = event.result as ArrayCollection;
+				var arr:ArrayCollection = event.result as ArrayCollection;
+				var arr2:ArrayCollection = new ArrayCollection();
+				for each(var o:Object in arr){
+					arr2.addItem({RSO : o['RSO'], ID_EMPRESA : o['ID_EMPRESA'], sel : false}); 
+				}
+				listEmpresasPreseleccion.dataProvider = arr2;
 			}
 			
 			protected function listSeleccionEmpresas_creationCompleteHandler(event:FlexEvent):void
@@ -691,6 +711,7 @@
 		<s:CallResponder id="gruposFinancierosResult"/>
 		<s:CallResponder id="subGruposFinancierosResult"/>
 		<s:CallResponder id="empresasResult"/>
+		<s:CallResponder id="empresasPreResult"/>
 		<s:CallResponder id="grillaTodasEmpresaResult"/>
 		<s:CallResponder id="periodosResult"/>
 		<s:CallResponder id="valoresResult"/>
@@ -731,7 +752,29 @@
 					<s:Group id="myGroup"  width="100%" height="100%">
 						
 						<s:VGroup left="10" visible="true">
+							<s:Label height="15" fontSize="14" fontWeight="bold"
+									 text="Selección Previa"/>
 							<s:Label x="6" y="10" text="Datos de Gráfico"/>
+							<s:Label text="Empresa Principal"/>
+							<s:ComboBox id="principal"
+										creationComplete="comboBox_creationCompleteHandler(event)"
+										dataProvider="{arrEmpresas}"
+										keyUp="comboBox_keyDownHandler(event)"
+										labelField="NOMBRE_FANTASIA"
+										selectedIndex="{ComboBoxEmpresaPrincipalSelectedIndex}"/>
+							<s:Label text="Indices:"/>
+							<s:DropDownList id="gruposFinancieros"
+											change="gruposFinancieros_changeHandler(event)"
+											creationComplete="gruposFinancieros_creationCompleteHandler(event)"
+											labelField="nombre">
+								<s:AsyncListView list="{comboGrupoIndicesFinancierosResult3.lastResult}"/>
+							</s:DropDownList>
+							<s:List id="listIndiceAntiguo" width="200" height="92"
+									allowMultipleSelection="true"
+									click="listIndiceAntiguo_clickHandler(event)"
+									creationComplete="listIndiceAntiguo_creationCompleteHandler(event)"
+									dataProvider="{arrListIndicesGrafico}"
+									labelField="indice"/>
 							<s:Label text="Empresas a Comparar:"/>
 							<s:ComboBox id="comboBoxEmpresa"
 										creationComplete="comboBox_creationCompleteHandler(event)"
@@ -748,16 +791,27 @@
 							<s:Label text="Seleccionar por"/>
 							<s:HGroup width="100%" click="hgroup2_clickHandler(event)" creationComplete="hgroup2_creationCompleteHandler(event)">
 								<s:RadioButton id="selectEmpresa" label="Todas" groupName="radiogroup2"/>
-								<s:RadioButton id="selectGrupo" label="Grupos" groupName="radiogroup2"/>
+								<s:RadioButton id="selectGrupo" label="Grupos" groupName="radiogroup2" selected="true"/>
 								
 							</s:HGroup>
 							<mx:ViewStack id="vSelectEmpresas">
 								<s:NavigatorContent>									
-									<s:List id="listEmpresasPreseleccion" labelField="RSO" 
+									<!--c:CheckList id="listEmpresasPreseleccion" labelField="RSO" 
 											creationComplete="listEmpresasPreseleccion_creationCompleteHandler(event)" 
 											x="0" y="27" width="200" height="161" 
 											click="listEmpresasPreseleccion_clickHandler(event)"
-											allowMultipleSelection="true"/>
+											allowMultipleSelection="true"/-->
+									<mx:DataGrid id="listEmpresasPreseleccion" x="0" y="27" width="200" height="161" 
+												 allowMultipleSelection="true" editable="true"
+												 click="listEmpresasPreseleccion_clickHandler(event)"
+												 creationComplete="listEmpresasPreseleccion_creationCompleteHandler(event)">
+										<mx:columns>
+											<mx:DataGridColumn headerText="Empresa" dataField="RSO" editable="false">
+												
+											</mx:DataGridColumn>
+											<mx:DataGridColumn headerText="Sel." itemRenderer="Componentes.CheckItem" editable="true" rendererIsEditor="true" dataField="sel" editorDataField="sel"/> 
+										</mx:columns>
+									</mx:DataGrid>
 								</s:NavigatorContent>
 								<s:NavigatorContent>
 									<s:VGroup id="acGrupos" width="200"
@@ -765,6 +819,7 @@
 									</s:VGroup>
 								</s:NavigatorContent>
 							</mx:ViewStack>
+							<s:Button label="Siguiente" click="acAplicacion.selectedIndex = 0"/>
 							<s:DropDownList id="ddlPeriodo" selectedIndex="0" visible="false" height="0">
 								<s:ArrayCollection>									
 									<fx:Object data="Trimestral" label="Trimestral"></fx:Object>
@@ -772,10 +827,9 @@
 									<fx:Object data="Acumulado" label="Acumulado"></fx:Object>
 								</s:ArrayCollection>
 							</s:DropDownList>
-							<s:Label x="10" y="396" text="Indices:"/>
 							<s:List id="listIndices" height="0" visible="false"></s:List>
 							<s:VGroup id="vgIndices" creationComplete="vgIndices_creationCompleteHandler(event)"
-									  gap="0">
+									  gap="0" visible="false">
 								
 							</s:VGroup>
 							<s:Label visible="false" x="10" y="485" text="Tipo Cambio:"/>
@@ -831,32 +885,7 @@
 							</s:NavigatorContent>
 							
 							<s:NavigatorContent label="Gráfico" width="100%" height="100%">
-								<s:BorderContainer top="0" width="100%" height="200" borderWeight="1"
-												   horizontalCenter="0">
-									<s:Label x="22" y="30" text="Empresa Principal"/>
-									<s:ComboBox id="principal" x="10" y="47"
-												creationComplete="comboBox_creationCompleteHandler(event)"
-												dataProvider="{arrEmpresas}"
-												keyUp="comboBox_keyDownHandler(event)"
-												labelField="NOMBRE_FANTASIA"
-												selectedIndex="{ComboBoxEmpresaPrincipalSelectedIndex}"/>
-									<s:List id="listIndiceAntiguo" creationComplete="listIndiceAntiguo_creationCompleteHandler(event)" 
-												 x="153" y="47" width="200" height="141"
-												 dataProvider="{arrListIndicesGrafico}"
-												 labelField="indice" click="listIndiceAntiguo_clickHandler(event)" allowMultipleSelection="true"/>
-									<s:Label x="168" y="29" text="Indices"/>
-									<s:Label x="368" y="10" text="Empresas"/>
-									<s:Label x="6" y="10" fontSize="14" fontWeight="bold"
-											 text="Selección Previa"/>
-									<s:DropDownList id="gruposFinancieros" x="241" y="18"
-													creationComplete="gruposFinancieros_creationCompleteHandler(event)"
-													labelField="nombre" change="gruposFinancieros_changeHandler(event)">
-										<s:AsyncListView list="{comboGrupoIndicesFinancierosResult3.lastResult}"/>
-									</s:DropDownList>
-									<s:Button x="649" y="29" label="Parametrización" click="button8_clickHandler(event)"/>
-									
-								</s:BorderContainer>
-								<mx:TabNavigator id="tnGrafico" top="200" width="100%" height="100%"
+								<mx:TabNavigator id="tnGrafico" top="0" width="100%" height="100%"
 												 borderStyle="none" cornerRadius="7"
 												 creationComplete="tnGrafico_creationCompleteHandler(event)"
 												 fontSize="12" horizontalCenter="0">
@@ -1767,7 +1796,7 @@
 	<s:Label x="10" y="10" text="Sesion iniciada por:"/>
 	<s:Label id="txtUser" x="128" y="10" fontWeight="bold" text="CArriagada"/>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
-	<s:Label y="39" right="5" text="version: 1.0.138"/>
+	<s:Label y="39" right="5" text="version: 1.0.139"/>
 	
 	
 	
