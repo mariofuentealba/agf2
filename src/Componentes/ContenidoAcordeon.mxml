@@ -64,8 +64,10 @@
 						heightClick += btnExpandir.height + 20;
 						//heightClick = btnExpandir.height + vgOpciones.height;
 		//				Alert.show('' + heightClick);
+						this.parentApplication.height += 100;
 						if(this.parent.parent.parent.parent['height'] == 'ContenidoAcordeon'){
 							this.parent.parent.parent.parent['height'] += heightClick; 
+							
 							event.stopPropagation();
 						}
 						break;
@@ -73,7 +75,8 @@
 						
 						event.stopPropagation();
 						if(this.parent.parent.parent.parent['className'] == 'ContenidoAcordeon'){
-							this.parent.parent.parent.parent['height'] -= this.height; 
+							this.parent.parent.parent.parent['height'] -= this.height;
+							this.parentApplication.height -= heightClick;
 							this.parent.parent.parent.parent['height'] += 20; 
 						}
 						currentState = 'normal';

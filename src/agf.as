@@ -52,6 +52,7 @@ import spark.layouts.VerticalLayout;
 import valueObjects.GruposDatatype;
 
 [Bindable] private var arrEmpresas:ArrayCollection = new ArrayCollection();
+[Bindable] private var arrEmpresas2:ArrayCollection = new ArrayCollection();
 private var arrEmpresasTotal:ArrayCollection = new ArrayCollection();
 
 private var arrTrimestre:ArrayCollection = new ArrayCollection();
@@ -90,6 +91,7 @@ import Componentes.Columna;
 import mx.charts.ChartItem;
 import mx.charts.chartClasses.Series;
 import mx.controls.DataGrid;
+import spark.formatters.NumberFormatter;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
@@ -497,9 +499,14 @@ protected function dropDownList_creationCompleteHandler(event:FlexEvent):void
 }
 
 
+private function llenaEmp(event:ResultEvent):void{
+	arrEmpresas2 = event.result as ArrayCollection;
+}
+
 protected function dropDownListxxx_creationCompleteHandler(event:FlexEvent):void
 {
 	grillaTodasEmpresaResult2.token = modelo.grillaTodasEmpresa();
+	grillaTodasEmpresaResult2.addEventListener(ResultEvent.RESULT, llenaEmp);
 }
 protected function dgGrupo0_creationCompleteHandler(event:FlexEvent):void
 {
@@ -878,7 +885,9 @@ protected function comboBoxEmpresa_changeHandler(event:IndexChangeEvent):void
 	if(listEmpresaSelect.dataProvider == null){
 		listEmpresaSelect.dataProvider = new ArrayCollection(); 
 	}
-	listEmpresaSelect.dataProvider.addItem(o);
+	listEmpresaSelect.dataProvider.addItem(o);	
+	var e:MouseEvent = new MouseEvent(MouseEvent.CLICK);
+	listEmpresasPreseleccion_clickHandler(e);
 }
 
 private function borrarEmpresa():Boolean{
@@ -898,6 +907,8 @@ protected function btnBorrarEmpresa_clickHandler(event:MouseEvent):void
 		
 		listEmpresaSelect.dataProvider.removeItemAt(i);
 	}
+	var e:MouseEvent = new MouseEvent(MouseEvent.CLICK);
+	listEmpresasPreseleccion_clickHandler(e);
 }
 protected function button4_clickHandler(event:MouseEvent):void
 {
@@ -1014,7 +1025,8 @@ private function columnSeries_labelFunc(chartItem:ChartItem, series:Series):Stri
 
 private function grafica(arr:ArrayCollection, ind:int):void{
 	
-	
+	var form:spark.formatters.NumberFormatter = new spark.formatters.NumberFormatter();
+	form.setStyle("locale", "en-US");
 	var gr:LayoutGrafic = (tnGrafico.getElementAt(ind) as NavigatorContent).getElementAt(0) as LayoutGrafic;
 	gr.flatData = new ArrayCollection();
 	gr._arrReferente = new ArrayCollection();
