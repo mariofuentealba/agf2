@@ -718,7 +718,7 @@ private function agregaEmpresa(event:MouseEvent):void{
 			listEmpresaSelect.dataProvider = new ArrayCollection();
 		}
 		listEmpresaSelect.dataProvider.addItem({label:(event.target as CheckBox).data['NOMBRE_FANTASIA'], cod:(event.target as CheckBox).data['ID_EMPRESA']});
-		for each(var o:Object in listEmpresasPreseleccion.dataProvider){
+		/*for each(var o:Object in listEmpresasPreseleccion.dataProvider){
 			o['sel'] = false;
 			for each(var o2:Object in listEmpresaSelect.dataProvider){
 				if(o['ID_EMPRESA'] == o2['cod']){
@@ -727,7 +727,7 @@ private function agregaEmpresa(event:MouseEvent):void{
 				}
 					
 			}
-		}
+		}*/
 		
 	} else{
 		for(var i:int = 0; i < listEmpresaSelect.dataProvider.length; i++){

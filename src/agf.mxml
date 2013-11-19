@@ -534,9 +534,9 @@
 				for each(var o:Object in listIndiceAntiguo.selectedItems){
 					arrIndicesFiltrados.addItem(o);	
 				}
-				if(listEmpresasPreseleccion.selectedItems.length > 0){
+			/*	if(listEmpresasPreseleccion.selectedItems.length > 0){
 					listEmpresasPreseleccion.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
-				}
+				}*/
 			}
 			
 			protected function listEmpresasPreseleccion_clickHandler(event:MouseEvent):void
@@ -588,18 +588,18 @@
 			protected function listEmpresasPreseleccion_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
-				empresasPreResult.token = modelo.comboEmpresa();
-				empresasPreResult.addEventListener(ResultEvent.RESULT, llenaEmpresasPre);
+			/*	empresasPreResult.token = modelo.comboEmpresa();
+				empresasPreResult.addEventListener(ResultEvent.RESULT, llenaEmpresasPre);*/
 			}
 			
-			private function llenaEmpresasPre(event:ResultEvent):void{
+		/*	private function llenaEmpresasPre(event:ResultEvent):void{
 				var arr:ArrayCollection = event.result as ArrayCollection;
 				var arr2:ArrayCollection = new ArrayCollection();
 				for each(var o:Object in arr){
 					arr2.addItem({RSO : o['RSO'], ID_EMPRESA : o['ID_EMPRESA'], sel : false}); 
 				}
 				listEmpresasPreseleccion.dataProvider = arr2;
-			}
+			}*/
 			
 			protected function listSeleccionEmpresas_creationCompleteHandler(event:FlexEvent):void
 			{
@@ -613,7 +613,7 @@
 				acAplicacion.selectedIndex = 0;
 			}
 			
-			protected function hgroup2_clickHandler(event:MouseEvent):void
+			/*protected function hgroup2_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
 				if(event.target.className == 'RadioButton'){
@@ -627,12 +627,12 @@
 					}
 				}
 				
-			}
+			}*/
 			
 			protected function hgroup2_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
-				selectGrupo.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+		//		selectGrupo.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 			}
 			
 		]]>
@@ -748,7 +748,7 @@
 				  height="{vv.height}"/-->	
 	<mx:TabNavigator left="10" top="120" right="10" bottom="50">
 		<s:NavigatorContent id="vv" width="100%" height="100%" label="Analizador" >
-			<s:VGroup  width="100%" height="100%">
+			<s:VGroup  width="100%" maxHeight="{this.height}" height="100%">
 				<s:Scroller width="100%" height="100%">
 					<s:Group id="myGroup"  width="100%" height="100%">
 						
@@ -789,37 +789,16 @@
 							<s:Button id="btnBorrarEmpresa" x="10" y="134" label="Borrar"
 									  click="btnBorrarEmpresa_clickHandler(event)"/>
 							<s:Label x="10" y="188" fontSize="12" fontWeight="bold" text="Empresas"/>
-							<s:HGroup width="100%" height="0" click="hgroup2_clickHandler(event)"
-									  creationComplete="hgroup2_creationCompleteHandler(event)" visible="false">
-								<s:RadioButton id="selectEmpresa" label="Todas" groupName="radiogroup2" height="0"/>
-								<s:RadioButton id="selectGrupo" label="Grupos" groupName="radiogroup2" selected="true" height="0"/>
+							
+					
+							<s:VGroup id="acGrupos" width="200"
+									  gap="0" paddingLeft="0">	
 								
-							</s:HGroup>
-							<mx:ViewStack id="vSelectEmpresas">
-								<s:NavigatorContent>									
-									<!--c:CheckList id="listEmpresasPreseleccion" labelField="RSO" 
-											creationComplete="listEmpresasPreseleccion_creationCompleteHandler(event)" 
-											x="0" y="27" width="200" height="161" 
-											click="listEmpresasPreseleccion_clickHandler(event)"
-											allowMultipleSelection="true"/-->
-									<mx:DataGrid id="listEmpresasPreseleccion" top="0" width="200" height="161" 
-												 allowMultipleSelection="true" editable="true"
-												 click="listEmpresasPreseleccion_clickHandler(event)"
-												 creationComplete="listEmpresasPreseleccion_creationCompleteHandler(event)">
-										<mx:columns>
-											<mx:DataGridColumn headerText="Empresa" dataField="RSO" editable="false">
-												
-											</mx:DataGridColumn>
-											<mx:DataGridColumn headerText="Sel." itemRenderer="Componentes.CheckItem" editable="true" rendererIsEditor="true" dataField="sel" editorDataField="sel"/> 
-										</mx:columns>
-									</mx:DataGrid>
-								</s:NavigatorContent>
-								<s:NavigatorContent>
-									<s:VGroup id="acGrupos" width="200"
-											  gap="0" paddingLeft="0">								
-									</s:VGroup>
-								</s:NavigatorContent>
-							</mx:ViewStack>
+							</s:VGroup>		
+							
+								
+							
+							
 							<s:DropDownList id="ddlPeriodo" selectedIndex="0" visible="false" height="0">
 								<s:ArrayCollection>									
 									<fx:Object data="Trimestral" label="Trimestral"></fx:Object>
@@ -1802,7 +1781,7 @@
 	<s:Label x="10" y="10" text="Sesion iniciada por:"/>
 	<s:Label id="txtUser" x="128" y="10" fontWeight="bold" text="CArriagada"/>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
-	<s:Label y="39" right="5" text="version: 1.0.142"/>
+	<s:Label y="39" right="5" text="version: 1.0.145"/>
 	
 	
 	
