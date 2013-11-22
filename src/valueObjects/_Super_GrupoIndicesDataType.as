@@ -52,9 +52,10 @@ public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher im
     /**
      * properties
      */
-    private var _internal_nombre : String;
-    private var _internal_descripcion : String;
     private var _internal_ID_GRUPO_INDICE_FINANCIERO : String;
+    private var _internal_nombre : String;
+    private var _internal_ID_TIPO_EMPRESA : String;
+    private var _internal_descripcion : String;
 
     private static var emptyArray:Array = new Array();
 
@@ -72,6 +73,7 @@ public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher im
 
         // Bind to own data or source properties for cache invalidation triggering
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "nombre", model_internal::setterListenerNombre));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "ID_TIPO_EMPRESA", model_internal::setterListenerID_TIPO_EMPRESA));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "descripcion", model_internal::setterListenerDescripcion));
 
     }
@@ -81,21 +83,27 @@ public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher im
      */
 
     [Bindable(event="propertyChange")]
+    public function get ID_GRUPO_INDICE_FINANCIERO() : String
+    {
+        return _internal_ID_GRUPO_INDICE_FINANCIERO;
+    }
+
+    [Bindable(event="propertyChange")]
     public function get nombre() : String
     {
         return _internal_nombre;
     }
 
     [Bindable(event="propertyChange")]
-    public function get descripcion() : String
+    public function get ID_TIPO_EMPRESA() : String
     {
-        return _internal_descripcion;
+        return _internal_ID_TIPO_EMPRESA;
     }
 
     [Bindable(event="propertyChange")]
-    public function get ID_GRUPO_INDICE_FINANCIERO() : String
+    public function get descripcion() : String
     {
-        return _internal_ID_GRUPO_INDICE_FINANCIERO;
+        return _internal_descripcion;
     }
 
     public function clearAssociations() : void
@@ -106,6 +114,15 @@ public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher im
      * data/source property setters
      */
 
+    public function set ID_GRUPO_INDICE_FINANCIERO(value:String) : void
+    {
+        var oldValue:String = _internal_ID_GRUPO_INDICE_FINANCIERO;
+        if (oldValue !== value)
+        {
+            _internal_ID_GRUPO_INDICE_FINANCIERO = value;
+        }
+    }
+
     public function set nombre(value:String) : void
     {
         var oldValue:String = _internal_nombre;
@@ -115,21 +132,21 @@ public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher im
         }
     }
 
+    public function set ID_TIPO_EMPRESA(value:String) : void
+    {
+        var oldValue:String = _internal_ID_TIPO_EMPRESA;
+        if (oldValue !== value)
+        {
+            _internal_ID_TIPO_EMPRESA = value;
+        }
+    }
+
     public function set descripcion(value:String) : void
     {
         var oldValue:String = _internal_descripcion;
         if (oldValue !== value)
         {
             _internal_descripcion = value;
-        }
-    }
-
-    public function set ID_GRUPO_INDICE_FINANCIERO(value:String) : void
-    {
-        var oldValue:String = _internal_ID_GRUPO_INDICE_FINANCIERO;
-        if (oldValue !== value)
-        {
-            _internal_ID_GRUPO_INDICE_FINANCIERO = value;
         }
     }
 
@@ -148,6 +165,11 @@ public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher im
     model_internal function setterListenerNombre(value:flash.events.Event):void
     {
         _model.invalidateDependentOnNombre();
+    }
+
+    model_internal function setterListenerID_TIPO_EMPRESA(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnID_TIPO_EMPRESA();
     }
 
     model_internal function setterListenerDescripcion(value:flash.events.Event):void
@@ -180,6 +202,11 @@ public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher im
         {
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_nombreValidationFailureMessages);
+        }
+        if (!_model.ID_TIPO_EMPRESAIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_ID_TIPO_EMPRESAValidationFailureMessages);
         }
         if (!_model.descripcionIsValid)
         {
@@ -288,6 +315,33 @@ public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher im
 
         model_internal::_doValidationCacheOfNombre = validationFailures;
         model_internal::_doValidationLastValOfNombre = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfID_TIPO_EMPRESA : Array = null;
+    model_internal var _doValidationLastValOfID_TIPO_EMPRESA : String;
+
+    model_internal function _doValidationForID_TIPO_EMPRESA(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfID_TIPO_EMPRESA != null && model_internal::_doValidationLastValOfID_TIPO_EMPRESA == value)
+           return model_internal::_doValidationCacheOfID_TIPO_EMPRESA ;
+
+        _model.model_internal::_ID_TIPO_EMPRESAIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isID_TIPO_EMPRESAAvailable && _internal_ID_TIPO_EMPRESA == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "ID_TIPO_EMPRESA is required"));
+        }
+
+        model_internal::_doValidationCacheOfID_TIPO_EMPRESA = validationFailures;
+        model_internal::_doValidationLastValOfID_TIPO_EMPRESA = value;
 
         return validationFailures;
     }

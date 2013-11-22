@@ -9,7 +9,8 @@
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			
-			import valueObjects.EmpresasDatatype;
+			import valueObjects.EmpresaDatatype;
+			
 			
 			public var agregar:AgregarEmpresa;
 			
@@ -24,7 +25,7 @@
 			
 			private function info(event:MouseEvent):void{
 				
-				for each(var o:EmpresasDatatype in agregar.listSeleccionEmpresas.selectedItems){
+				for each(var o:EmpresaDatatype in agregar.listSeleccionEmpresas.selectedItems){
 					var oAjustado:Object = {};
 					oAjustado['id_empGrupo'] = o.ID_EMPRESA;
 					oAjustado['rso'] = o.RSO;

@@ -22,14 +22,14 @@ internal class _GrupoIndicesDataTypeEntityMetadata extends com.adobe.fiber.value
 {
     private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("nombre", "descripcion", "ID_GRUPO_INDICE_FINANCIERO");
+    model_internal static var allProperties:Array = new Array("ID_GRUPO_INDICE_FINANCIERO", "nombre", "ID_TIPO_EMPRESA", "descripcion");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("nombre", "descripcion", "ID_GRUPO_INDICE_FINANCIERO");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("nombre", "descripcion", "ID_GRUPO_INDICE_FINANCIERO");
+    model_internal static var allRequiredProperties:Array = new Array("ID_GRUPO_INDICE_FINANCIERO", "nombre", "ID_TIPO_EMPRESA", "descripcion");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("ID_GRUPO_INDICE_FINANCIERO", "nombre", "ID_TIPO_EMPRESA", "descripcion");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("nombre", "descripcion", "ID_GRUPO_INDICE_FINANCIERO");
+    model_internal static var dataProperties:Array = new Array("ID_GRUPO_INDICE_FINANCIERO", "nombre", "ID_TIPO_EMPRESA", "descripcion");
     model_internal static var sourceProperties:Array = emptyArray
-    model_internal static var nonDerivedProperties:Array = new Array("nombre", "descripcion", "ID_GRUPO_INDICE_FINANCIERO");
+    model_internal static var nonDerivedProperties:Array = new Array("ID_GRUPO_INDICE_FINANCIERO", "nombre", "ID_TIPO_EMPRESA", "descripcion");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;
@@ -43,6 +43,11 @@ internal class _GrupoIndicesDataTypeEntityMetadata extends com.adobe.fiber.value
     model_internal var _nombreValidator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _nombreIsValidCacheInitialized:Boolean = false;
     model_internal var _nombreValidationFailureMessages:Array;
+    
+    model_internal var _ID_TIPO_EMPRESAIsValid:Boolean;
+    model_internal var _ID_TIPO_EMPRESAValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _ID_TIPO_EMPRESAIsValidCacheInitialized:Boolean = false;
+    model_internal var _ID_TIPO_EMPRESAValidationFailureMessages:Array;
     
     model_internal var _descripcionIsValid:Boolean;
     model_internal var _descripcionValidator:com.adobe.fiber.styles.StyleValidator;
@@ -59,9 +64,10 @@ internal class _GrupoIndicesDataTypeEntityMetadata extends com.adobe.fiber.value
         {
             // dependents map
             model_internal::dependentsOnMap = new Object();
-            model_internal::dependentsOnMap["nombre"] = new Array();
-            model_internal::dependentsOnMap["descripcion"] = new Array();
             model_internal::dependentsOnMap["ID_GRUPO_INDICE_FINANCIERO"] = new Array();
+            model_internal::dependentsOnMap["nombre"] = new Array();
+            model_internal::dependentsOnMap["ID_TIPO_EMPRESA"] = new Array();
+            model_internal::dependentsOnMap["descripcion"] = new Array();
 
             // collection base map
             model_internal::collectionBaseMap = new Object();
@@ -69,9 +75,10 @@ internal class _GrupoIndicesDataTypeEntityMetadata extends com.adobe.fiber.value
 
         // Property type Map
         model_internal::propertyTypeMap = new Object();
-        model_internal::propertyTypeMap["nombre"] = "String";
-        model_internal::propertyTypeMap["descripcion"] = "String";
         model_internal::propertyTypeMap["ID_GRUPO_INDICE_FINANCIERO"] = "String";
+        model_internal::propertyTypeMap["nombre"] = "String";
+        model_internal::propertyTypeMap["ID_TIPO_EMPRESA"] = "String";
+        model_internal::propertyTypeMap["descripcion"] = "String";
 
         model_internal::_instance = value;
         model_internal::_nombreValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForNombre);
@@ -79,6 +86,11 @@ internal class _GrupoIndicesDataTypeEntityMetadata extends com.adobe.fiber.value
         model_internal::_nombreValidator.requiredFieldError = "nombre is required";
         //model_internal::_nombreValidator.source = model_internal::_instance;
         //model_internal::_nombreValidator.property = "nombre";
+        model_internal::_ID_TIPO_EMPRESAValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForID_TIPO_EMPRESA);
+        model_internal::_ID_TIPO_EMPRESAValidator.required = true;
+        model_internal::_ID_TIPO_EMPRESAValidator.requiredFieldError = "ID_TIPO_EMPRESA is required";
+        //model_internal::_ID_TIPO_EMPRESAValidator.source = model_internal::_instance;
+        //model_internal::_ID_TIPO_EMPRESAValidator.property = "ID_TIPO_EMPRESA";
         model_internal::_descripcionValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForDescripcion);
         model_internal::_descripcionValidator.required = true;
         model_internal::_descripcionValidator.requiredFieldError = "descripcion is required";
@@ -312,19 +324,25 @@ internal class _GrupoIndicesDataTypeEntityMetadata extends com.adobe.fiber.value
     }
 
     [Bindable(event="propertyChange")]
+    public function get isID_GRUPO_INDICE_FINANCIEROAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
     public function get isNombreAvailable():Boolean
     {
         return true;
     }
 
     [Bindable(event="propertyChange")]
-    public function get isDescripcionAvailable():Boolean
+    public function get isID_TIPO_EMPRESAAvailable():Boolean
     {
         return true;
     }
 
     [Bindable(event="propertyChange")]
-    public function get isID_GRUPO_INDICE_FINANCIEROAvailable():Boolean
+    public function get isDescripcionAvailable():Boolean
     {
         return true;
     }
@@ -341,6 +359,14 @@ internal class _GrupoIndicesDataTypeEntityMetadata extends com.adobe.fiber.value
             model_internal::calculateNombreIsValid();
         }
     }
+    public function invalidateDependentOnID_TIPO_EMPRESA():void
+    {
+        if (model_internal::_ID_TIPO_EMPRESAIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfID_TIPO_EMPRESA = null;
+            model_internal::calculateID_TIPO_EMPRESAIsValid();
+        }
+    }
     public function invalidateDependentOnDescripcion():void
     {
         if (model_internal::_descripcionIsValidCacheInitialized )
@@ -353,6 +379,12 @@ internal class _GrupoIndicesDataTypeEntityMetadata extends com.adobe.fiber.value
     model_internal function fireChangeEvent(propertyName:String, oldValue:Object, newValue:Object):void
     {
         this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, propertyName, oldValue, newValue));
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get ID_GRUPO_INDICE_FINANCIEROStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
     }
 
     [Bindable(event="propertyChange")]   
@@ -446,6 +478,106 @@ internal class _GrupoIndicesDataTypeEntityMetadata extends com.adobe.fiber.value
         {
             model_internal::_nombreValidationFailureMessages = value;   
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "nombreValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get ID_TIPO_EMPRESAStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get ID_TIPO_EMPRESAValidator() : StyleValidator
+    {
+        return model_internal::_ID_TIPO_EMPRESAValidator;
+    }
+
+    model_internal function set _ID_TIPO_EMPRESAIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_ID_TIPO_EMPRESAIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_ID_TIPO_EMPRESAIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ID_TIPO_EMPRESAIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get ID_TIPO_EMPRESAIsValid():Boolean
+    {
+        if (!model_internal::_ID_TIPO_EMPRESAIsValidCacheInitialized)
+        {
+            model_internal::calculateID_TIPO_EMPRESAIsValid();
+        }
+
+        return model_internal::_ID_TIPO_EMPRESAIsValid;
+    }
+
+    model_internal function calculateID_TIPO_EMPRESAIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_ID_TIPO_EMPRESAValidator.validate(model_internal::_instance.ID_TIPO_EMPRESA)
+        model_internal::_ID_TIPO_EMPRESAIsValid_der = (valRes.results == null);
+        model_internal::_ID_TIPO_EMPRESAIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::ID_TIPO_EMPRESAValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::ID_TIPO_EMPRESAValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get ID_TIPO_EMPRESAValidationFailureMessages():Array
+    {
+        if (model_internal::_ID_TIPO_EMPRESAValidationFailureMessages == null)
+            model_internal::calculateID_TIPO_EMPRESAIsValid();
+
+        return _ID_TIPO_EMPRESAValidationFailureMessages;
+    }
+
+    model_internal function set ID_TIPO_EMPRESAValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_ID_TIPO_EMPRESAValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_ID_TIPO_EMPRESAValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ID_TIPO_EMPRESAValidationFailureMessages", oldValue, value));
             // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
             // the entire entity.
             if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
@@ -555,12 +687,6 @@ internal class _GrupoIndicesDataTypeEntityMetadata extends com.adobe.fiber.value
         }
     }
 
-    [Bindable(event="propertyChange")]   
-    public function get ID_GRUPO_INDICE_FINANCIEROStyle():com.adobe.fiber.styles.Style
-    {
-        return model_internal::_nullStyle;
-    }
-
 
      /**
      * 
@@ -589,6 +715,10 @@ internal class _GrupoIndicesDataTypeEntityMetadata extends com.adobe.fiber.value
             case("nombre"):
             {
                 return nombreValidationFailureMessages;
+            }
+            case("ID_TIPO_EMPRESA"):
+            {
+                return ID_TIPO_EMPRESAValidationFailureMessages;
             }
             case("descripcion"):
             {
