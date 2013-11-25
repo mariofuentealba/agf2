@@ -1534,7 +1534,7 @@ protected function btnAccion_clickHandler(event:MouseEvent):void
 	}
 }
 
-protected function button5_clickHandler(dataGrid:mx.controls.DataGrid):void
+protected function button5_clickHandler(dataGrid:spark.components.DataGrid):void
 {
 	// TODO Auto-generated method stub
 	if(dataGrid.selectedIndex > -1){
@@ -1575,7 +1575,10 @@ protected function titlewindow1_closeHandler():void
 
 private function reCreaForm(event:ResultEvent):void{
 	//tbFormulario.removeAllElements();
-	valores2Result.token = modelo.valores2(dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo']);	
+	if(dropDownListPeriodo.selectedIndex > -1){
+		valores2Result.token = modelo.valores2(dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo']);	
+	}
+		
 }
 
 private function EliminaItemFormulario(event:MouseEvent):void{

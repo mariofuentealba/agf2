@@ -2724,12 +2724,27 @@ public function insertarItemExistente($empresa, $idTag){
 			    } else {
 			    	$r = mysql_fetch_row($result);
 			    }*/
-			    $mysqli->query("INSERT INTO log values ('1900-01-01');");
-			    $sql = "INSERT INTO formulario_item (`id_empresa`, `id_tag_agf`, `fecha_insert`, `nun_item`) VALUES (" . $empresa . ", " . $idTag . ", '1900-01-01', " . $r[0] . ");";
-			    $sql2 = str_replace("'", "", $sql);
-			    $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
-			    $result = $mysqli->query($sql);
-	            $mysqli->close();
+			    
+				
+				$sql = "SELECT count(*)
+						FROM formulario_item
+						WHERE `id_empresa` = " . $empresa . "
+							AND estado = 'A'
+							AND `id_tag_agf` = " . $idTag;
+				$result = $mysqli->query($sql);			    		
+			    $r2 = $result->fetch_array(MYSQLI_NUM);
+				
+				$mysqli->query("INSERT INTO log values ('" . print_r($r2, true) . "');");
+				if($r2[0] == 0){
+					$sql = "INSERT INTO formulario_item (`id_empresa`, `id_tag_agf`, `fecha_insert`, `nun_item`) 
+						VALUES (" . $empresa . ", " . $idTag . ", '1900-01-01', " . $r[0] . ");";
+				    $sql2 = str_replace("'", "''", $sql);
+				    $mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+				    $result = $mysqli->query($sql);
+		            
+				}
+				$mysqli->close();
+			    
 	                //mysql_close($con);
 	                
 	            //retornamos el largo del arreglo
@@ -2751,22 +2766,26 @@ public function insertarValor($arrInf){
 	 
 	  die('Error conectando: ' . mysql_error());
 	}
-	//$mysqli->query("INSERT INTO log values ('" . print_r($arrInf, true) . "');");	  
+	$mysqli->query("INSERT INTO log values ('" . print_r($arrInf, true) . "');");	  
 	$sql = "select id_tag_agf from tag_agf WHERE (nombre like '" . $arrInf[0] . "') or (concat(nombre,'(', origen, ')') like '" . $arrInf[0] . "')";
-	/*$sql2 = str_replace("'", "''", $sql);
-	$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");*/
+	$sql2 = str_replace("'", "''", $sql);
+	$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 	$result = $mysqli->query($sql);
-	while($result && $r = $result->fetch_array(MYSQLI_NUM)){}			    		
-	//$r = $result->fetch_array(MYSQLI_NUM);	
+	//while($result && $r = $result->fetch_array(MYSQLI_NUM)){}			    		
+	$r = $result->fetch_array(MYSQLI_NUM);	
+	
+	$mysqli->query("INSERT INTO log values ('" . print_r($r, true) . "');");
 	if(!isset($r))
 		return true;
+		
 	$arrInf[0] = $r[0];	
 	$sql = "select count(*) from valores where id_empresa = " . $arrInf[1] . " and id_periodo = " . $arrInf[2] . " and id_tag_agf = " .  $arrInf[0];
-	/*$sql2 = str_replace("'", "''", $sql);
-	$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");*/
+	$sql2 = str_replace("'", "''", $sql);
+	$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 	$result = $mysqli->query($sql);
 	
-	while($r = $result->fetch_array(MYSQLI_NUM)){}
+	//while($r = $result->fetch_array(MYSQLI_NUM)){}
+	$r = $result->fetch_array(MYSQLI_NUM);	
 	if($r[0] != 0){
 		$sql = "update valores set valor = " . $arrInf[3] . " where id_empresa = " . $arrInf[1] . " and id_periodo = " . $arrInf[2] . " and
 		id_tag_agf = " .  $arrInf[0] . " AND
@@ -2779,8 +2798,8 @@ public function insertarValor($arrInf){
 		}
 		$sql .= ", 1);";						
 	}	
-	/*$sql2 = str_replace("'", "''", $sql);
-	$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");*/
+	$sql2 = str_replace("'", "''", $sql);
+	$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 	$mysqli->query($sql);			
 	$sql = "SELECT  
 				b.id_indice_financiero, 
@@ -2798,8 +2817,8 @@ public function insertarValor($arrInf){
 				OR (a.campo3 = " . $arrInf[0] . " AND a.tipoc3 = 1)
 				OR (a.campo4 = " . $arrInf[0] . " AND a.tipoc4 = 1) 
 				OR (a.campo5 = " . $arrInf[0] . " AND a.tipoc5 = 1)";
-	/*$sql2 = str_replace("'", "''", $sql);
-	$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");*/
+	$sql2 = str_replace("'", "''", $sql);
+	$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 	$result = $mysqli->query($sql);
 	
 	

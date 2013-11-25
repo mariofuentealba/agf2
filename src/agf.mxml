@@ -635,6 +635,17 @@
 		//		selectGrupo.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 			}
 			
+			protected function button9_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				//if(dropDownListPeriodo.selectedIndex == -1 || dropDownListEmpresa.selectedIndex == 0){
+				if(dropDownListEmpresa.selectedIndex == -1){
+					event.stopPropagation();
+					event.stopImmediatePropagation();
+					Alert.show('Debe seleccionar previamente una empresa', 'Atención');
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	<s:states>
@@ -1070,7 +1081,7 @@
 									<s:HGroup horizontalCenter="0" verticalCenter="0">
 										<s:Button label="Crear Item"/>
 										<s:Button label="Guardar Formulario"/>
-										<s:Button label="Agregar Item"/>	
+										<s:Button label="Agregar Item" enabled="true" click="button9_clickHandler(event)"/>	
 									</s:HGroup>
 									
 								</s:BorderContainer>
