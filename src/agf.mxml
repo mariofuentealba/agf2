@@ -314,54 +314,58 @@
 				var arrDetalleResult:ArrayCollection = new ArrayCollection();
 				var item:Object = {};
 				var itemAdd:Object = {};
-				var str:String = arr.getItemAt(0)['indice'];
-				item['id_indice'] = arr.getItemAt(0)['id_indice'];
-				item['indice'] = arr.getItemAt(0)['indice'];
-				item['grupo'] = arr.getItemAt(0)['grupo'];
-				//itemAdd['id_indice'] = arr.getItemAt(0)['id_indice'];
-				itemAdd['id_empGrupo'] = arr.getItemAt(0)['id_empGrupo'];
-				itemAdd['rso'] = arr.getItemAt(0)['rso'];
-				itemAdd['tipo'] = arr.getItemAt(0)['tipo'];
-				itemAdd['sel'] = true;
-				arrResult.addItem(item);
-				item = {};
-				itemAdd = {};
-				for each(var o:Object in arr){
-					item['id_indice'] = o['id_indice'];
-					item['indice'] = o['indice'];
-					item['grupo'] = o['grupo'];
-					itemAdd['id_indice'] = o['id_indice'];
-					itemAdd['id_empGrupo'] = o['id_empGrupo'];
-					itemAdd['rso'] = o['rso'];
-					itemAdd['tipo'] = o['tipo'];	
+				if(arr.length > 0){
+					var str:String = arr.getItemAt(0)['indice'];
+					
+					item['id_indice'] = arr.getItemAt(0)['id_indice'];
+					item['indice'] = arr.getItemAt(0)['indice'];
+					item['grupo'] = arr.getItemAt(0)['grupo'];
+					//itemAdd['id_indice'] = arr.getItemAt(0)['id_indice'];
+					itemAdd['id_empGrupo'] = arr.getItemAt(0)['id_empGrupo'];
+					itemAdd['rso'] = arr.getItemAt(0)['rso'];
+					itemAdd['tipo'] = arr.getItemAt(0)['tipo'];
 					itemAdd['sel'] = true;
-					if(o['indice'] != str){
-						arrResult.getItemAt(arrResult.length - 1)['asociados'] = arrDetalleResult;
-						arrDetalleResult = new ArrayCollection();
-						arrResult.addItem(item);
-						item = {};
-						str = o['indice'];
-					}		
-					arrDetalleResult.addItem(itemAdd);
+					arrResult.addItem(item);
+					item = {};
 					itemAdd = {};
+					for each(var o:Object in arr){
+						item['id_indice'] = o['id_indice'];
+						item['indice'] = o['indice'];
+						item['grupo'] = o['grupo'];
+						itemAdd['id_indice'] = o['id_indice'];
+						itemAdd['id_empGrupo'] = o['id_empGrupo'];
+						itemAdd['rso'] = o['rso'];
+						itemAdd['tipo'] = o['tipo'];	
+						itemAdd['sel'] = true;
+						if(o['indice'] != str){
+							arrResult.getItemAt(arrResult.length - 1)['asociados'] = arrDetalleResult;
+							arrDetalleResult = new ArrayCollection();
+							arrResult.addItem(item);
+							item = {};
+							str = o['indice'];
+						}		
+						arrDetalleResult.addItem(itemAdd);
+						itemAdd = {};
+					}
+					arrResult.getItemAt(arrResult.length - 1)['asociados'] = arrDetalleResult;
+					arrDetalleResult = new ArrayCollection();
+					
+					
+					
+					
+					arrListIndicesGrafico = arrResult;
+					arrListIndicesGraficoTotal = arrResult;	
 				}
-				arrResult.getItemAt(arrResult.length - 1)['asociados'] = arrDetalleResult;
-				arrDetalleResult = new ArrayCollection();
 				
-				
-				
-				
-				arrListIndicesGrafico = arrResult;
-				arrListIndicesGraficoTotal = arrResult;
 				
 			}
 			
-			protected function list1_creationCompleteHandler(event:FlexEvent):void
+		/*	protected function list1_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
 				parametrosGraficoResult.token = modelo.parametrosGrafico();
 				parametrosGraficoResult.addEventListener(ResultEvent.RESULT, armaParametrizacion);
-			}
+			}*/
 			
 			protected function modelo_faultHandler(event:FaultEvent):void
 			{
@@ -1002,11 +1006,7 @@
 							  >
 					<s:NavigatorContent width="100%" height="100%" label="Grupos">
 						<mx:TabNavigator id="tnGrupos" left="0" right="0" top="0" bottom="0">
-							<s:NavigatorContent label="Listado" >
-								
-								<s:TextInput text="grillaGruposResult" visible="false">
-									
-								</s:TextInput>
+							<s:NavigatorContent label="Listado" >								
 								<s:DataGrid id="dgGrupo" x="23" top="0" bottom="20" width="70%"
 											click="dgGrupo_clickHandler(event)"
 											creationComplete="dgGrupo_creationCompleteHandler(event)"
@@ -1028,6 +1028,9 @@
 									</s:typicalItem>
 									<s:AsyncListView list="{grillaGruposResult.lastResult}"/>
 								</s:DataGrid>
+								<s:TextInput text="grillaGruposResult" visible="false">
+									
+								</s:TextInput>
 							</s:NavigatorContent>
 							<s:NavigatorContent label="Nuevo">
 								<s:BorderContainer x="121" y="56" width="475" height="289">

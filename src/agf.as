@@ -301,6 +301,9 @@ protected function guardar_clickHandler(event:MouseEvent):void
 		modelo.insertarIndicesFinancieros(arr, tabla);
 		break;*/
 		default:
+			if(tabla == 'Empresas'){
+				arr.push(0);
+			}
 			modelo.insertar(arr, tabla);
 			break;
 	}
@@ -327,7 +330,16 @@ protected function guardar_clickHandler(event:MouseEvent):void
 	(event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedIndex = 0
 	//(this[((((event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedChild as NavigatorContent).getElementAt(1) as TextInput).text)] as CallResponder).token = modelo.grillaGrupos();
 	//var results:String = ((((event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).selectedChild as NavigatorContent).getElementAt(1) as mx.controls.TextInput).text);
-	var results:String = event.target.parent.parent.parent.parent.parent.parent.parent.selectedChild.getElementAt(1).text
+	var auxTabNav:TabNavigator;
+	var busq:* = event.target.parent;
+	while(busq.parent.className != 'TabNavigator'){
+		busq = busq.parent; 
+	}
+	auxTabNav = busq.parent;
+	var nav:NavigatorContent = auxTabNav.selectedChild as NavigatorContent;
+	
+	
+	var results:String = nav.getElementAt(1)['text'];
 	//Alert.show('' + (this['grillaGruposResult'] as CallResponder).token);
 	switch(results){
 		case 'grillaGruposResult':
@@ -344,6 +356,9 @@ protected function guardar_clickHandler(event:MouseEvent):void
 			break;
 		case 'grillaMonedasResult':
 			(this[results] as CallResponder).token = modelo.grillaMonedas();
+			break;
+		case 'grillaEmpresaResult':
+			(this[results] as CallResponder).token = modelo.grillaEmpresa();
 			break;
 		
 	}
@@ -505,7 +520,7 @@ private function llenaEmp(event:ResultEvent):void{
 
 protected function dropDownListxxx_creationCompleteHandler(event:FlexEvent):void
 {
-	grillaTodasEmpresaResult2.token = modelo.grillaTodasEmpresa();
+	grillaTodasEmpresaResult2.token = modelo.comboEmpresa();
 	grillaTodasEmpresaResult2.addEventListener(ResultEvent.RESULT, llenaEmp);
 }
 protected function dgGrupo0_creationCompleteHandler(event:FlexEvent):void

@@ -51,9 +51,9 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
     /**
      * properties
      */
-    private var _internal_color : String;
     private var _internal_ID_SUBGRUPO : String;
     private var _internal_RSO : String;
+    private var _internal_color : String;
     private var _internal_TIPO_IFRS : String;
     private var _internal_TIPO_BALANCE : String;
     private var _internal_RUT : String;
@@ -76,8 +76,8 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         _model = new _EmpresaDatatypeEntityMetadata(this);
 
         // Bind to own data or source properties for cache invalidation triggering
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "color", model_internal::setterListenerColor));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "RSO", model_internal::setterListenerRSO));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "color", model_internal::setterListenerColor));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "TIPO_IFRS", model_internal::setterListenerTIPO_IFRS));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "TIPO_BALANCE", model_internal::setterListenerTIPO_BALANCE));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "RUT", model_internal::setterListenerRUT));
@@ -91,12 +91,6 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
      */
 
     [Bindable(event="propertyChange")]
-    public function get color() : String
-    {
-        return _internal_color;
-    }
-
-    [Bindable(event="propertyChange")]
     public function get ID_SUBGRUPO() : String
     {
         return _internal_ID_SUBGRUPO;
@@ -106,6 +100,12 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
     public function get RSO() : String
     {
         return _internal_RSO;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get color() : String
+    {
+        return _internal_color;
     }
 
     [Bindable(event="propertyChange")]
@@ -152,16 +152,6 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
      * data/source property setters
      */
 
-    public function set color(value:String) : void
-    {
-        var oldValue:String = _internal_color;
-        if (oldValue !== value)
-        {
-            _internal_color = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "color", oldValue, _internal_color));
-        }
-    }
-
     public function set ID_SUBGRUPO(value:String) : void
     {
         var oldValue:String = _internal_ID_SUBGRUPO;
@@ -179,6 +169,16 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         {
             _internal_RSO = value;
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "RSO", oldValue, _internal_RSO));
+        }
+    }
+
+    public function set color(value:String) : void
+    {
+        var oldValue:String = _internal_color;
+        if (oldValue !== value)
+        {
+            _internal_color = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "color", oldValue, _internal_color));
         }
     }
 
@@ -254,14 +254,14 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
      *  - the validity of the property (and the containing entity) if the given data property is required.
      */
 
-    model_internal function setterListenerColor(value:flash.events.Event):void
-    {
-        _model.invalidateDependentOnColor();
-    }
-
     model_internal function setterListenerRSO(value:flash.events.Event):void
     {
         _model.invalidateDependentOnRSO();
+    }
+
+    model_internal function setterListenerColor(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnColor();
     }
 
     model_internal function setterListenerTIPO_IFRS(value:flash.events.Event):void
@@ -310,15 +310,15 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         var validationFailureMessages:Array = new Array();
 
         var propertyValidity:Boolean = true;
-        if (!_model.colorIsValid)
-        {
-            propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_colorValidationFailureMessages);
-        }
         if (!_model.RSOIsValid)
         {
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_RSOValidationFailureMessages);
+        }
+        if (!_model.colorIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_colorValidationFailureMessages);
         }
         if (!_model.TIPO_IFRSIsValid)
         {
@@ -424,33 +424,6 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         }
     }
 
-    model_internal var _doValidationCacheOfColor : Array = null;
-    model_internal var _doValidationLastValOfColor : String;
-
-    model_internal function _doValidationForColor(valueIn:Object):Array
-    {
-        var value : String = valueIn as String;
-
-        if (model_internal::_doValidationCacheOfColor != null && model_internal::_doValidationLastValOfColor == value)
-           return model_internal::_doValidationCacheOfColor ;
-
-        _model.model_internal::_colorIsValidCacheInitialized = true;
-        var validationFailures:Array = new Array();
-        var errorMessage:String;
-        var failure:Boolean;
-
-        var valRes:ValidationResult;
-        if (_model.isColorAvailable && _internal_color == null)
-        {
-            validationFailures.push(new ValidationResult(true, "", "", "color is required"));
-        }
-
-        model_internal::_doValidationCacheOfColor = validationFailures;
-        model_internal::_doValidationLastValOfColor = value;
-
-        return validationFailures;
-    }
-    
     model_internal var _doValidationCacheOfRSO : Array = null;
     model_internal var _doValidationLastValOfRSO : String;
 
@@ -474,6 +447,33 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
 
         model_internal::_doValidationCacheOfRSO = validationFailures;
         model_internal::_doValidationLastValOfRSO = value;
+
+        return validationFailures;
+    }
+    
+    model_internal var _doValidationCacheOfColor : Array = null;
+    model_internal var _doValidationLastValOfColor : String;
+
+    model_internal function _doValidationForColor(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfColor != null && model_internal::_doValidationLastValOfColor == value)
+           return model_internal::_doValidationCacheOfColor ;
+
+        _model.model_internal::_colorIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isColorAvailable && _internal_color == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "color is required"));
+        }
+
+        model_internal::_doValidationCacheOfColor = validationFailures;
+        model_internal::_doValidationLastValOfColor = value;
 
         return validationFailures;
     }

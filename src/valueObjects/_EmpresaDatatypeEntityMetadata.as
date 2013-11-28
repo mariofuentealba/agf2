@@ -22,14 +22,14 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
 {
     private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("color", "ID_SUBGRUPO", "RSO", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
+    model_internal static var allProperties:Array = new Array("ID_SUBGRUPO", "RSO", "color", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("color", "ID_SUBGRUPO", "RSO", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("color", "ID_SUBGRUPO", "RSO", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
+    model_internal static var allRequiredProperties:Array = new Array("ID_SUBGRUPO", "RSO", "color", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("ID_SUBGRUPO", "RSO", "color", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("color", "ID_SUBGRUPO", "RSO", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
+    model_internal static var dataProperties:Array = new Array("ID_SUBGRUPO", "RSO", "color", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
     model_internal static var sourceProperties:Array = emptyArray
-    model_internal static var nonDerivedProperties:Array = new Array("color", "ID_SUBGRUPO", "RSO", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
+    model_internal static var nonDerivedProperties:Array = new Array("ID_SUBGRUPO", "RSO", "color", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;
@@ -39,15 +39,15 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     model_internal static var propertyTypeMap:Object;
 
     
-    model_internal var _colorIsValid:Boolean;
-    model_internal var _colorValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _colorIsValidCacheInitialized:Boolean = false;
-    model_internal var _colorValidationFailureMessages:Array;
-    
     model_internal var _RSOIsValid:Boolean;
     model_internal var _RSOValidator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _RSOIsValidCacheInitialized:Boolean = false;
     model_internal var _RSOValidationFailureMessages:Array;
+    
+    model_internal var _colorIsValid:Boolean;
+    model_internal var _colorValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _colorIsValidCacheInitialized:Boolean = false;
+    model_internal var _colorValidationFailureMessages:Array;
     
     model_internal var _TIPO_IFRSIsValid:Boolean;
     model_internal var _TIPO_IFRSValidator:com.adobe.fiber.styles.StyleValidator;
@@ -84,9 +84,9 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
         {
             // dependents map
             model_internal::dependentsOnMap = new Object();
-            model_internal::dependentsOnMap["color"] = new Array();
             model_internal::dependentsOnMap["ID_SUBGRUPO"] = new Array();
             model_internal::dependentsOnMap["RSO"] = new Array();
+            model_internal::dependentsOnMap["color"] = new Array();
             model_internal::dependentsOnMap["TIPO_IFRS"] = new Array();
             model_internal::dependentsOnMap["TIPO_BALANCE"] = new Array();
             model_internal::dependentsOnMap["RUT"] = new Array();
@@ -100,9 +100,9 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
 
         // Property type Map
         model_internal::propertyTypeMap = new Object();
-        model_internal::propertyTypeMap["color"] = "String";
         model_internal::propertyTypeMap["ID_SUBGRUPO"] = "String";
         model_internal::propertyTypeMap["RSO"] = "String";
+        model_internal::propertyTypeMap["color"] = "String";
         model_internal::propertyTypeMap["TIPO_IFRS"] = "String";
         model_internal::propertyTypeMap["TIPO_BALANCE"] = "String";
         model_internal::propertyTypeMap["RUT"] = "String";
@@ -111,16 +111,16 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
         model_internal::propertyTypeMap["ID_EMPRESA"] = "String";
 
         model_internal::_instance = value;
-        model_internal::_colorValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForColor);
-        model_internal::_colorValidator.required = true;
-        model_internal::_colorValidator.requiredFieldError = "color is required";
-        //model_internal::_colorValidator.source = model_internal::_instance;
-        //model_internal::_colorValidator.property = "color";
         model_internal::_RSOValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForRSO);
         model_internal::_RSOValidator.required = true;
         model_internal::_RSOValidator.requiredFieldError = "RSO is required";
         //model_internal::_RSOValidator.source = model_internal::_instance;
         //model_internal::_RSOValidator.property = "RSO";
+        model_internal::_colorValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForColor);
+        model_internal::_colorValidator.required = true;
+        model_internal::_colorValidator.requiredFieldError = "color is required";
+        //model_internal::_colorValidator.source = model_internal::_instance;
+        //model_internal::_colorValidator.property = "color";
         model_internal::_TIPO_IFRSValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForTIPO_IFRS);
         model_internal::_TIPO_IFRSValidator.required = true;
         model_internal::_TIPO_IFRSValidator.requiredFieldError = "TIPO_IFRS is required";
@@ -375,12 +375,6 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     }
 
     [Bindable(event="propertyChange")]
-    public function get isColorAvailable():Boolean
-    {
-        return true;
-    }
-
-    [Bindable(event="propertyChange")]
     public function get isID_SUBGRUPOAvailable():Boolean
     {
         return true;
@@ -388,6 +382,12 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
 
     [Bindable(event="propertyChange")]
     public function get isRSOAvailable():Boolean
+    {
+        return true;
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get isColorAvailable():Boolean
     {
         return true;
     }
@@ -432,20 +432,20 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     /**
      * derived property recalculation
      */
-    public function invalidateDependentOnColor():void
-    {
-        if (model_internal::_colorIsValidCacheInitialized )
-        {
-            model_internal::_instance.model_internal::_doValidationCacheOfColor = null;
-            model_internal::calculateColorIsValid();
-        }
-    }
     public function invalidateDependentOnRSO():void
     {
         if (model_internal::_RSOIsValidCacheInitialized )
         {
             model_internal::_instance.model_internal::_doValidationCacheOfRSO = null;
             model_internal::calculateRSOIsValid();
+        }
+    }
+    public function invalidateDependentOnColor():void
+    {
+        if (model_internal::_colorIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfColor = null;
+            model_internal::calculateColorIsValid();
         }
     }
     public function invalidateDependentOnTIPO_IFRS():void
@@ -492,106 +492,6 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     model_internal function fireChangeEvent(propertyName:String, oldValue:Object, newValue:Object):void
     {
         this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, propertyName, oldValue, newValue));
-    }
-
-    [Bindable(event="propertyChange")]   
-    public function get colorStyle():com.adobe.fiber.styles.Style
-    {
-        return model_internal::_nullStyle;
-    }
-
-    public function get colorValidator() : StyleValidator
-    {
-        return model_internal::_colorValidator;
-    }
-
-    model_internal function set _colorIsValid_der(value:Boolean):void 
-    {
-        var oldValue:Boolean = model_internal::_colorIsValid;         
-        if (oldValue !== value)
-        {
-            model_internal::_colorIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "colorIsValid", oldValue, value));
-        }                             
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get colorIsValid():Boolean
-    {
-        if (!model_internal::_colorIsValidCacheInitialized)
-        {
-            model_internal::calculateColorIsValid();
-        }
-
-        return model_internal::_colorIsValid;
-    }
-
-    model_internal function calculateColorIsValid():void
-    {
-        var valRes:ValidationResultEvent = model_internal::_colorValidator.validate(model_internal::_instance.color)
-        model_internal::_colorIsValid_der = (valRes.results == null);
-        model_internal::_colorIsValidCacheInitialized = true;
-        if (valRes.results == null)
-             model_internal::colorValidationFailureMessages_der = emptyArray;
-        else
-        {
-            var _valFailures:Array = new Array();
-            for (var a:int = 0 ; a<valRes.results.length ; a++)
-            {
-                _valFailures.push(valRes.results[a].errorMessage);
-            }
-            model_internal::colorValidationFailureMessages_der = _valFailures;
-        }
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get colorValidationFailureMessages():Array
-    {
-        if (model_internal::_colorValidationFailureMessages == null)
-            model_internal::calculateColorIsValid();
-
-        return _colorValidationFailureMessages;
-    }
-
-    model_internal function set colorValidationFailureMessages_der(value:Array) : void
-    {
-        var oldValue:Array = model_internal::_colorValidationFailureMessages;
-
-        var needUpdate : Boolean = false;
-        if (oldValue == null)
-            needUpdate = true;
-    
-        // avoid firing the event when old and new value are different empty arrays
-        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
-        {
-            if (oldValue.length == value.length)
-            {
-                for (var a:int=0; a < oldValue.length; a++)
-                {
-                    if (oldValue[a] !== value[a])
-                    {
-                        needUpdate = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                needUpdate = true;
-            }
-        }
-
-        if (needUpdate)
-        {
-            model_internal::_colorValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "colorValidationFailureMessages", oldValue, value));
-            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
-            // the entire entity.
-            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
-            {
-                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
-            }
-        }
     }
 
     [Bindable(event="propertyChange")]   
@@ -691,6 +591,106 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
         {
             model_internal::_RSOValidationFailureMessages = value;   
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "RSOValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
+    }
+
+    [Bindable(event="propertyChange")]   
+    public function get colorStyle():com.adobe.fiber.styles.Style
+    {
+        return model_internal::_nullStyle;
+    }
+
+    public function get colorValidator() : StyleValidator
+    {
+        return model_internal::_colorValidator;
+    }
+
+    model_internal function set _colorIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_colorIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_colorIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "colorIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get colorIsValid():Boolean
+    {
+        if (!model_internal::_colorIsValidCacheInitialized)
+        {
+            model_internal::calculateColorIsValid();
+        }
+
+        return model_internal::_colorIsValid;
+    }
+
+    model_internal function calculateColorIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_colorValidator.validate(model_internal::_instance.color)
+        model_internal::_colorIsValid_der = (valRes.results == null);
+        model_internal::_colorIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::colorValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::colorValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get colorValidationFailureMessages():Array
+    {
+        if (model_internal::_colorValidationFailureMessages == null)
+            model_internal::calculateColorIsValid();
+
+        return _colorValidationFailureMessages;
+    }
+
+    model_internal function set colorValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_colorValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_colorValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "colorValidationFailureMessages", oldValue, value));
             // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
             // the entire entity.
             if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
@@ -1231,13 +1231,13 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
      {
          switch(propertyName)
          {
-            case("color"):
-            {
-                return colorValidationFailureMessages;
-            }
             case("RSO"):
             {
                 return RSOValidationFailureMessages;
+            }
+            case("color"):
+            {
+                return colorValidationFailureMessages;
             }
             case("TIPO_IFRS"):
             {
