@@ -33,7 +33,7 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<s:TitleWindow top="150" width="506" height="368" horizontalCenter="0" close="titlewindow1_closeHandler(event)">
-		<s:DataGrid id="dataGrid" left="12" right="8" top="14" height="282"
+		<s:DataGrid id="dataGrid" left="12" right="8" top="14" height="282" selectionMode="multipleRows"
 					creationComplete="dataGrid_creationCompleteHandler(event)"  requestedRowCount="4">
 			<s:columns>
 				<s:ArrayList>

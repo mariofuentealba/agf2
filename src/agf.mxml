@@ -5,6 +5,7 @@
 			   xmlns:Componentes="Componentes.*"
 			   xmlns:modelo="services.modelo.*"
 			   xmlns:c="*"
+			   xmlns:ui="sho.ui.*" 
 			   xmlns:charts="com.charts.*"
 			   xmlns:valueObjects="valueObjects.*"
 			   height="1000" 
@@ -38,6 +39,7 @@
 			import mx.rpc.AsyncResponder;
 			import mx.rpc.AsyncToken;
 			import mx.rpc.events.FaultEvent;
+			
 			include "agf.as";
 			
 		/*	[Bindable]private var flatData:ArrayCollection = new ArrayCollection();
@@ -767,30 +769,19 @@
 				<s:Scroller width="100%" height="100%">
 					<s:Group id="myGroup"  width="100%" height="100%">
 						
-						<s:VGroup left="10" visible="true">
+						<s:VGroup id="vgMenu" left="10" visible="true">
 							<s:Label height="15" fontSize="14" fontWeight="bold"
 									 text="Selección Previa"/>
 							<s:Label x="6" y="10" text="Datos de Gráfico"/>
 							<s:Label text="Empresa Principal"/>
 							<s:ComboBox id="principal"
+										
 										creationComplete="comboBox_creationCompleteHandler(event)"
 										dataProvider="{arrEmpresas}"
 										keyUp="comboBox_keyDownHandler(event)"
 										labelField="NOMBRE_FANTASIA"
 										selectedIndex="{ComboBoxEmpresaPrincipalSelectedIndex}"/>
-							<s:Label text="Indices:"/>
-							<s:DropDownList id="gruposFinancieros"
-											change="gruposFinancieros_changeHandler(event)"
-											creationComplete="gruposFinancieros_creationCompleteHandler(event)"
-											labelField="nombre">
-								<s:AsyncListView list="{comboGrupoIndicesFinancierosResult3.lastResult}"/>
-							</s:DropDownList>
-							<s:List id="listIndiceAntiguo" width="200" height="92"
-									allowMultipleSelection="true"
-									click="listIndiceAntiguo_clickHandler(event)"
-									creationComplete="listIndiceAntiguo_creationCompleteHandler(event)"
-									dataProvider="{arrListIndicesGrafico}"
-									labelField="indice"/>
+							<!--<ui:CompletionInput mustPick="true" ignoreThe="true" keepSorted="true">-->
 							<s:Label text="Empresas a Comparar:"/>
 							<s:ComboBox id="comboBoxEmpresa"
 										creationComplete="comboBox_creationCompleteHandler(event)"
@@ -800,16 +791,41 @@
 								
 								
 							</s:ComboBox>
-							<c:CheckList id="listEmpresaSelect" x="10" y="72" width="170" height="70"></c:CheckList>
-							<s:Button id="btnBorrarEmpresa" x="10" y="134" label="Borrar"
-									  click="btnBorrarEmpresa_clickHandler(event)"/>
-							<s:Label x="10" y="188" fontSize="12" fontWeight="bold" text="Empresas"/>
-							
-					
+							<c:CheckList id="listEmpresaSelect" width="170" height="70"></c:CheckList>
+							<s:Label fontSize="12" fontWeight="bold" text="Empresas"/>
 							<s:VGroup id="acGrupos" width="200"
 									  gap="0" paddingLeft="0">	
 								
-							</s:VGroup>		
+							</s:VGroup>
+							<s:Button id="btnBorrarEmpresa" label="Borrar"
+									  click="btnBorrarEmpresa_clickHandler(event)"/>
+							<s:Label text="Indices:"/>
+							<s:DropDownList id="gruposFinancieros"
+											change="gruposFinancieros_changeHandler(event)"
+											creationComplete="gruposFinancieros_creationCompleteHandler(event)"
+											labelField="nombre" visible="false" height="0">
+								<s:AsyncListView list="{comboGrupoIndicesFinancierosResult3.lastResult}"/>
+							</s:DropDownList>
+							<s:List id="listIndiceAntiguo" width="200" height="0"
+									allowMultipleSelection="true"
+									click="listIndiceAntiguo_clickHandler(event)"
+									creationComplete="listIndiceAntiguo_creationCompleteHandler(event)"
+									dataProvider="{arrListIndicesGrafico}"
+									labelField="indice" visible="false"/>
+							<s:VGroup id="vgIndices" creationComplete="vgIndices_creationCompleteHandler(event)"
+									  gap="0" visible="true">
+								
+							</s:VGroup>
+							<s:RichText text="Seleccione periodo"/>
+							<s:HGroup>
+								<s:RadioButton label="Standard" groupName="rbPeriodo" selected="true"/>
+								<s:RadioButton id="rbPeriodosActivos" label="Por Periodos" groupName="rbPeriodo"/>
+								
+							</s:HGroup>
+							<c:CheckList id="listPeriodo" width="160" height="200"
+										 creationComplete="listPeriodo_creationCompleteHandler(event)"
+										 enabled="{rbPeriodosActivos.selected}"
+										 itemRendererFunction="myRendererFunction"></c:CheckList>
 							
 								
 							
@@ -822,13 +838,9 @@
 								</s:ArrayCollection>
 							</s:DropDownList>
 							<s:List id="listIndices" height="0" visible="false"></s:List>
-							<s:VGroup id="vgIndices" creationComplete="vgIndices_creationCompleteHandler(event)"
-									  gap="0" visible="false">
-								
-							</s:VGroup>
 							<s:Label visible="false" x="10" y="485" text="Tipo Cambio:"/>
 							<s:TextInput visible="false" x="10" y="505"/>
-							<s:DropDownList visible="false" x="146" y="506"></s:DropDownList>
+							
 						</s:VGroup>
 						<mx:Accordion id="acAplicacion" right="10" top="40" bottom="0" width="80%"
 									  change="acAplicacion_changeHandler(event)"
@@ -864,15 +876,6 @@
 									</s:BorderContainer>
 									<s:BorderContainer width="20%" height="100%">
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 3"/>
-										<s:RichText x="23" y="32" text="Seleccione periodo"/>	
-										<s:HGroup y="58" left="5">
-											<s:RadioButton label="Standard" groupName="rbPeriodo" selected="true"/>
-											<s:RadioButton id="rbPeriodosActivos" label="Por Periodos" groupName="rbPeriodo"/>
-											
-										</s:HGroup>
-										<c:CheckList id="listPeriodo" x="26" y="101" width="160" height="200"
-													 creationComplete="listPeriodo_creationCompleteHandler(event)"
-													 itemRendererFunction="myRendererFunction" enabled="{rbPeriodosActivos.selected}"></c:CheckList>
 									</s:BorderContainer>	
 								</s:HGroup>
 								
@@ -1783,6 +1786,9 @@
 					</s:NavigatorContent-->
 				</mx:ViewStack>
 			</s:BorderContainer>
+			<mx:ToggleButtonBar x="10" y="265" width="200" dataProvider="{vwAdministracion}"
+								direction="vertical">
+			</mx:ToggleButtonBar>
 			
 		</s:NavigatorContent>
 	</mx:TabNavigator>

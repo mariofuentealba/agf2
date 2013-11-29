@@ -16,15 +16,15 @@
 // +-----------------------------------------------------------------------+
 //
 $mysqli = new mysqli("localhost","agf","agf","agf");
-$ind = 'Ingresos Financieros';
+$ind = 'Cartera Repactada';
 $mysqli->query("INSERT INTO tag_agf value (null, '" . $ind ."', '" . $ind ."', 'NO ESPECIFICA', 'XBRL', 1)");
 $tag_agf = $mysqli->insert_id;
-$str = "12336;13554;11483;15195;13685;15819;15380;19264;18068;19911;18973;22472;20683;22354;21637;23754;20935;21839;;;;;;
-0;0;0;0;0;0;0;0;0;0;0;18227;15328;14210;13625;15013;15664;17093;;;;;;
-57566;48247;42703;36233;38891;36399;43091;43826;44875;43722;42140;39854;40839;38434;38368;38601;40470;40125;;;;;;";
+$str = ";;;;;;;;;;;42487;30715;23494;18085;17255;16268;16204;;;;;;
+;;;;;;;19973;;;;21442;23154;26387;29497;28810;27858;27005;;;;;;
+;;;;;;;65812;;;;52016;46610;45659;43084;41504;39795;38420;;;;;;";
 $arr = explode("\n", $str);
 //$emp = array(725, 726, 727, 728, 729, 730);//Ingresos Totales
-$emp = array(1, 2, 3);//Ingresos Retail, SSS, Venta Retail / M2, % Margen Retail,Ingresos Financieros, Cartera Bruta (Colocaciones), Cartera Repactada MM$,
+$emp = array(2, 1, 3);//Ingresos Retail, SSS, Venta Retail / M2, % Margen Retail,Ingresos Financieros, Cartera Bruta (Colocaciones), Cartera Repactada MM$,
 //$emp = array(731, 732, 727, 729, 730);//% Ventas con Tarjeta Credito de cada  Tiendas,
 
 $s = 0;

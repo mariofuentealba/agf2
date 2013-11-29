@@ -92,6 +92,7 @@ import mx.charts.ChartItem;
 import mx.charts.chartClasses.Series;
 import mx.controls.DataGrid;
 import spark.formatters.NumberFormatter;
+import sho.ui.CompletionInput;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
@@ -853,6 +854,25 @@ protected function dropdownlist1_changeHandler(event:IndexChangeEvent):void
 protected function llenaComboEmpresas(event:ResultEvent):void{
 	arrEmpresas = event.result as ArrayCollection;
 	arrEmpresasTotal = event.result as ArrayCollection;
+	
+	var arrtxtEmpresaPrincipal:Array = new Array();
+	for each(o in arrEmpresas){
+		
+		arrtxtEmpresaPrincipal.push({RSO: o['RSO'], ID_EMPRESA: o['ID_EMPRESA']});
+	}
+	
+	
+	
+	var pp:CompletionInput = new CompletionInput();
+	pp.dataProvider = arrtxtEmpresaPrincipal;
+	pp.labelField = 'RSO';
+	pp.ignoreThe = true;
+	pp.keepSorted = true;
+	pp.mustPick = true;
+	pp.id = 'txtEmpresaPrincipal'; 
+	pp.name = 'txtEmpresaPrincipal'; 
+	vgMenu.addElementAt(pp, 3);
+	
 	var i:int = 0;
 	for each(var o:Object in arrEmpresasTotal){
 		if(o['ID_EMPRESA'] == 730){
@@ -1538,6 +1558,7 @@ protected function btnAccion_clickHandler(event:MouseEvent):void
 			}
 			break;
 		case 'Agregar Item':
+			agregaItem = new SelectItem();
 			agregaItem.dataGrid_completo = dataGrid_creationCompleteHandler;
 			agregaItem.button_clickHandler = button5_clickHandler;
 			agregaItem.titlewindow_closeHandler = titlewindow1_closeHandler;
@@ -1552,33 +1573,36 @@ protected function btnAccion_clickHandler(event:MouseEvent):void
 protected function button5_clickHandler(dataGrid:spark.components.DataGrid):void
 {
 	// TODO Auto-generated method stub
-	if(dataGrid.selectedIndex > -1){
-		var item:ItemFormulario = new ItemFormulario();
-		//item.currentState = 'creando';
-		item.clickGuardar = guardaItem;
-		item.deleteGuardar = EliminaItemFormulario;
-		tbFormulario.selectedIndex = tbFormulario.numElements - 1;
-		
-		if(tbFormulario.numElements == 0 || (tbFormulario.selectedChild as NavigatorContent).numElements > 7){
-			var nc:NavigatorContent = new NavigatorContent();
-			nc.layout = new VerticalLayout();
-			nc.label = 'Parte ' + tbFormulario.numElements;
-			tbFormulario.addElement(nc);
+	if(dataGrid.selectedItems.length > 0){
+		for each(var o:Object in dataGrid.selectedItems){
+			var item:ItemFormulario = new ItemFormulario();
+			//item.currentState = 'creando';
+			item.clickGuardar = guardaItem;
+			item.deleteGuardar = EliminaItemFormulario;
+			tbFormulario.selectedIndex = tbFormulario.numElements - 1;
+			
+			if(tbFormulario.numElements == 0 || (tbFormulario.selectedChild as NavigatorContent).numElements > 7){
+				var nc:NavigatorContent = new NavigatorContent();
+				nc.layout = new VerticalLayout();
+				nc.label = 'Parte ' + tbFormulario.numElements;
+				tbFormulario.addElement(nc);
+				
+			}
+			item.lblItem = new Label();
+			item.label = o['nombre'];
+			
+			item.lblItem.text = o['nombre'];
+			tbFormulario.selectedIndex = tbFormulario.numElements - 1;
+			(tbFormulario.getElementAt(tbFormulario.selectedIndex) as NavigatorContent).addElement(item);
+			PopUpManager.removePopUp(agregaItem);
+			insertarResult.token = modelo.insertarItemExistente(dropDownListEmpresa.selectedItem['ID_EMPRESA'], o['id_tag_agf']);
 			
 		}
-		item.lblItem = new Label();
-		item.label = dataGrid.selectedItem['nombre'];
-		
-		item.lblItem.text = dataGrid.selectedItem['nombre'];
-		tbFormulario.selectedIndex = tbFormulario.numElements - 1;
-		(tbFormulario.getElementAt(tbFormulario.selectedIndex) as NavigatorContent).addElement(item);
-		PopUpManager.removePopUp(agregaItem);
-		insertarResult.token = modelo.insertarItemExistente(dropDownListEmpresa.selectedItem['ID_EMPRESA'], dataGrid.selectedItem['id_tag_agf']);
 		tbFormulario.removeAll();
 		nc = new NavigatorContent();
 		nc.label = 'Parte ' + tbFormulario.numElements;
 		tbFormulario.addElement(nc);
-		insertarResult.addEventListener(ResultEvent.RESULT, reCreaForm);
+		insertarResult.addEventListener(ResultEvent.RESULT, reCreaForm);	
 	}
 }
 protected function titlewindow1_closeHandler():void
