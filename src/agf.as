@@ -762,7 +762,8 @@ private function agregaIndice(event:MouseEvent):void{
 		if(!listIndices.dataProvider){
 			listIndices.dataProvider = new ArrayCollection();
 		}
-		listIndices.dataProvider.addItem({label:(event.target as CheckBox).data['NOMBRE'], cod:(event.target as CheckBox).data['ID_INDICE_FINANCIERO']});
+		listIndices.dataProvider.addItem((event.target as CheckBox).data);
+		//listIndices.dataProvider.addItem({label:(event.target as CheckBox).data['NOMBRE'], cod:(event.target as CheckBox).data['ID_INDICE_FINANCIERO']});
 		
 	} else{
 		for(var i:int = 0; i < listIndices.dataProvider.length; i++){
@@ -777,8 +778,16 @@ private function agregaIndice(event:MouseEvent):void{
 private function generaPagina2(event:ResultEvent):void{
 	vgIndices.removeAllElements();
 	if(grillaGrupoIndicesResult.lastResult != null && grillaIndicesFinancierosResult.lastResult){
+		
+		
+		
+		var arrIndicesFinancieros:ArrayCollection = armaParametrizacion2(grillaIndicesFinancierosResult.lastResult);
+		
+		
+		
+		
 		var arrGrupoIndices:ArrayCollection = grillaGrupoIndicesResult.lastResult;
-		var arrIndicesFinancieros:ArrayCollection = grillaIndicesFinancierosResult.lastResult;
+		//var arrIndicesFinancieros:ArrayCollection = grillaIndicesFinancierosResult.lastResult;
 		try{
 			for(var i:int = 0; i < arrGrupoIndices.length; i++){
 				var comp:ContenidoAcordeon = new ContenidoAcordeon();
@@ -787,11 +796,11 @@ private function generaPagina2(event:ResultEvent):void{
 				comp.heightClick = 20;
 				try{
 					for(var x:int = 0; x < arrIndicesFinancieros.length; x++){
-						if(arrIndicesFinancieros.getItemAt(x)['ID_GRUPO_INDICE_FINANCIERO'] == arrGrupoIndices.getItemAt(i)['ID_GRUPO_INDICE_FINANCIERO']){
+						if(arrIndicesFinancieros.getItemAt(x)['grupo'] == arrGrupoIndices.getItemAt(i)['ID_GRUPO_INDICE_FINANCIERO']){
 							var chk:CheckBox = new CheckBox();
 							
 							chk.addEventListener(MouseEvent.CLICK, agregaIndice);
-							chk.label = arrIndicesFinancieros.getItemAt(x)['NOMBRE'];	
+							chk.label = arrIndicesFinancieros.getItemAt(x)['indice'];	
 							chk.data = arrIndicesFinancieros.getItemAt(x);
 							chk.height = 20;
 							chk.width = 180;
@@ -816,7 +825,11 @@ private function generaPagina2(event:ResultEvent):void{
 protected function vgIndices_creationCompleteHandler(event:FlexEvent):void
 {
 	// TODO Auto-generated method stub
-	grillaIndicesFinancierosResult.token = modelo.grillaTodoIndicesFinancieros();
+	//grillaIndicesFinancierosResult.token = modelo.grillaTodoIndicesFinancieros();
+	grillaIndicesFinancierosResult.token = modelo.parametrosGrafico();
+	
+	
+	
 	grillaGrupoIndicesResult.token = modelo.grillaTodosGrupoIndices();
 	
 	grillaIndicesFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina2);
@@ -873,6 +886,17 @@ protected function llenaComboEmpresas(event:ResultEvent):void{
 	pp.name = 'txtEmpresaPrincipal'; 
 	vgMenu.addElementAt(pp, 3);
 	
+	pp = new CompletionInput();
+	pp.dataProvider = arrtxtEmpresaPrincipal;
+	pp.labelField = 'RSO';
+	pp.ignoreThe = true;
+	pp.keepSorted = true;
+	//pp.mustPick = true;
+	pp.id = 'txtEmpresa'; 
+	pp.name = 'txtEmpresa'; 
+	pp.addEventListener(FlexEvent.UPDATE_COMPLETE, comboBoxEmpresa_changeHandler);
+	vgMenu.addElementAt(pp, 5);
+	
 	var i:int = 0;
 	for each(var o:Object in arrEmpresasTotal){
 		if(o['ID_EMPRESA'] == 730){
@@ -911,6 +935,36 @@ protected function comboBox_keyDownHandler(event:KeyboardEvent):void
 	
 }
 
+protected function comboBoxEmpresa_changeHandler(event:*):void
+{
+	// TODO Auto-generated method stub
+	var txtEmpresa:CompletionInput = vgMenu.getChildByName('txtEmpresa') as CompletionInput;
+	if(txtEmpresa.selectedIndex > -1){
+		var aux:Boolean = false;
+		for each(var o:Object in listEmpresaSelect.dataProvider){
+			if(txtEmpresa.selectedItem['ID_EMPRESA'] == o['cod']){
+				aux = true;
+				break;
+			}
+		}
+		if(!aux){
+			var o:Object = {label:txtEmpresa.selectedItem['RSO'], cod:txtEmpresa.selectedItem['ID_EMPRESA']};
+			//var o:Object = {label:comboBoxEmpresa.selectedItem['NOMBRE_FANTASIA'], cod:comboBoxEmpresa.selectedItem['ID_EMPRESA']};
+			
+			//Alert.show('' + o.className)
+			if(listEmpresaSelect.dataProvider == null){
+				listEmpresaSelect.dataProvider = new ArrayCollection(); 
+			}
+			listEmpresaSelect.dataProvider.addItem(o);	
+			var e:MouseEvent = new MouseEvent(MouseEvent.CLICK);
+			listEmpresasPreseleccion_clickHandler(e);	
+		}
+			
+	}
+	
+}
+
+/*
 protected function comboBoxEmpresa_changeHandler(event:IndexChangeEvent):void
 {
 	// TODO Auto-generated method stub
@@ -923,7 +977,7 @@ protected function comboBoxEmpresa_changeHandler(event:IndexChangeEvent):void
 	listEmpresaSelect.dataProvider.addItem(o);	
 	var e:MouseEvent = new MouseEvent(MouseEvent.CLICK);
 	listEmpresasPreseleccion_clickHandler(e);
-}
+}*/
 
 private function borrarEmpresa():Boolean{
 	if(listEmpresaSelect.dataProvider.length > 0){
@@ -953,17 +1007,12 @@ protected function button4_clickHandler(event:MouseEvent):void
 		var empresas:String = '';
 		var periodos:String = 'AND a.id_periodo in (0';
 		var tagAgf:String = 'AND b.id_indice_financiero in (0';
-		listSeleccionEmpresas.dataGroup.getChildAt(0)
 		var item:Object;
 		var x:int = 0;
 		var y:int = 0;
-		for(var i:int = 0; i < listSeleccionEmpresas.dataProvider.length; i++){
+	/*	for(var i:int = 0; i < listSeleccionEmpresas.dataProvider.length; i++){
 			item = listSeleccionEmpresas.dataProvider.getItemAt(i);
 			empresas += '0';
-			/*for each(o in item.listEmpresas.selectedItems){
-				empresas += ', ' + o['id_empGrupo'];
-				
-			}*/	
 			var count:int = 0;
 			var arrData:ArrayCollection = (item.asociados as ArrayCollection);
 				
@@ -975,16 +1024,29 @@ protected function button4_clickHandler(event:MouseEvent):void
 			}
 			
 			empresas += '):';
-			_cant[i] = count;//item.listEmpresas.selectedItems.length;
+			_cant[i] = count;
 		}
-		//y = listSeleccionEmpresas.dataGroup.numElements
 		
-		//_cant = x * y;
+		empresas += ')';
+		*/
+		var i:int = 0;
+		for each(o in listIndices.dataProvider){
+			empresas += '0';
+			var count:int = 0;
+			for each(var o:Object in listEmpresaSelect.dataProvider){
+				empresas += ', ' + o['cod'];
+				count++;
+			}
+			empresas += '):';	
+			_cant[i] = count;
+		}
+		
 		
 		empresas += ')';
 		
+		
 		if(rbPeriodosActivos.selected == true){
-			for each(var o:Object in listPeriodo.selectedItems){
+			for each(o in listPeriodo.selectedItems){
 				periodos += ', ' + o['id_periodo'];
 			}
 			periodos += ')';	
@@ -993,18 +1055,33 @@ protected function button4_clickHandler(event:MouseEvent):void
 		}
 		
 		
-		for each(o in listSeleccionEmpresas.dataProvider){
+		/*for each(o in listSeleccionEmpresas.dataProvider){
+			tagAgf += ', ' + o['id_indice'];
+		}
+		tagAgf += ')';*/
+		
+		for each(o in listIndices.dataProvider){
 			tagAgf += ', ' + o['id_indice'];
 		}
 		tagAgf += ')';
+		
 		bloqueo.width = this.width;
 		bloqueo.height = this.height;
 		PopUpManager.addPopUp(bloqueo, this);
 		
-		if(ComboBoxEmpresaPrincipal.selectedIndex == -1){
+		/*if(ComboBoxEmpresaPrincipal.selectedIndex == -1){
 			ComboBoxEmpresaPrincipal.selectedIndex = ComboBoxEmpresaPrincipalSelectedIndex; 
+		}*/
+		
+		var fn:CompletionInput = vgMenu.getChildByName('txtEmpresaPrincipal') as CompletionInput;
+		if(fn['selectedIndex'] == -1){
+			fn['selectedIndex'] = ComboBoxEmpresaPrincipalSelectedIndex; 
 		}
-		valoresResult.token = modelo.valores(ComboBoxEmpresaPrincipal.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
+		//valoresResult.token = modelo.valores(ComboBoxEmpresaPrincipal.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
+		
+		
+		
+		valoresResult.token = modelo.valores(fn.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
 		valoresResult.addEventListener(ResultEvent.RESULT, grafica_);
 		/*
 		nvGrafico.removeAllElements();
@@ -1032,7 +1109,9 @@ private function grafica_(event:ResultEvent):void{
 			var nc:NavigatorContent = new NavigatorContent();
 			//var gr:LayoutGrafic = (listSeleccionEmpresas.dataGroup.getElementAt(i) as Listado).removeElement((listSeleccionEmpresas.dataGroup.getElementAt(i) as Listado)['graficoPoint']) as LayoutGrafic;
 			var gr:LayoutGrafic = new LayoutGrafic();
-			nc.label = listSeleccionEmpresas.dataProvider.getItemAt(i)['indice'];
+			
+			nc.label = listIndices.dataProvider.getItemAt(i)['indice'];
+			//nc.label = listSeleccionEmpresas.dataProvider.getItemAt(i)['indice'];
 			tnGrafico.addElement(nc);
 			nc.addElement(gr);
 			nc.setStyle('fontSize', 10);
@@ -1203,7 +1282,7 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 	PopUpManager.removePopUp(bloqueo);
 	
 	
-	for each(var o:Object in arr){
+	for each(o in arr){
 		if(o['graf'] == 1){
 			gr._arr.addItem({periodo: o['label'], rso: o['rso'], valor: roundDecimals(o['valor'] as Number, 1), year: o['year']});
 		}
@@ -1232,7 +1311,8 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 	
 	
 	
-	listSeleccionEmpresas.dataProvider.getItemAt(ind).flatData = listSeleccionEmpresas.dataProvider.getItemAt(ind)._arr;
+	listIndices.dataProvider.getItemAt(ind).flatData = listSeleccionEmpresas.dataProvider.getItemAt(ind)._arr;
+	//listSeleccionEmpresas.dataProvider.getItemAt(ind).flatData = listSeleccionEmpresas.dataProvider.getItemAt(ind)._arr;
 	//listSeleccionEmpresas.dataGroup.getElementAt(ind)['grafico']['myMXMLCube'].refresh();
 	//tnGrafico.selectedIndex = 0;
 	gr['visible'] = true;

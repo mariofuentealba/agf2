@@ -8,7 +8,7 @@
 			   xmlns:ui="sho.ui.*" 
 			   xmlns:charts="com.charts.*"
 			   xmlns:valueObjects="valueObjects.*"
-			   height="1000" 
+			   height="1068" 
 			   creationComplete="crearEsquema_creationCompleteHandler(event)"
 			   
 			   width="100%" xmlns:metadata="org.osmf.metadata.*">
@@ -362,6 +362,57 @@
 				
 			}
 			
+			protected function armaParametrizacion2(data:*):ArrayCollection{
+				var arr:ArrayCollection = data as ArrayCollection;
+				var arrResult:ArrayCollection = new ArrayCollection();
+				var arrDetalleResult:ArrayCollection = new ArrayCollection();
+				var item:Object = {};
+				var itemAdd:Object = {};
+				if(arr.length > 0){
+					var str:String = arr.getItemAt(0)['indice'];
+					
+					item['id_indice'] = arr.getItemAt(0)['id_indice'];
+					item['indice'] = arr.getItemAt(0)['indice'];
+					item['grupo'] = arr.getItemAt(0)['grupo'];
+					//itemAdd['id_indice'] = arr.getItemAt(0)['id_indice'];
+					itemAdd['id_empGrupo'] = arr.getItemAt(0)['id_empGrupo'];
+					itemAdd['rso'] = arr.getItemAt(0)['rso'];
+					itemAdd['tipo'] = arr.getItemAt(0)['tipo'];
+					itemAdd['sel'] = true;
+					arrResult.addItem(item);
+					item = {};
+					itemAdd = {};
+					for each(var o:Object in arr){
+						item['id_indice'] = o['id_indice'];
+						item['indice'] = o['indice'];
+						item['grupo'] = o['grupo'];
+						itemAdd['id_indice'] = o['id_indice'];
+						itemAdd['id_empGrupo'] = o['id_empGrupo'];
+						itemAdd['rso'] = o['rso'];
+						itemAdd['tipo'] = o['tipo'];	
+						itemAdd['sel'] = true;
+						if(o['indice'] != str){
+							arrResult.getItemAt(arrResult.length - 1)['asociados'] = arrDetalleResult;
+							arrDetalleResult = new ArrayCollection();
+							arrResult.addItem(item);
+							item = {};
+							str = o['indice'];
+						}		
+						arrDetalleResult.addItem(itemAdd);
+						itemAdd = {};
+					}
+					arrResult.getItemAt(arrResult.length - 1)['asociados'] = arrDetalleResult;
+					arrDetalleResult = new ArrayCollection();
+					
+					
+					
+					
+					
+				}
+				
+				return arrResult;
+			}
+			
 		/*	protected function list1_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
@@ -652,6 +703,21 @@
 				}
 			}
 			
+			
+		
+			
+			protected function completioninput1_dataChangeHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function completioninput1_valueCommitHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
 		]]>
 	</fx:Script>
 	<s:states>
@@ -774,24 +840,23 @@
 									 text="Selección Previa"/>
 							<s:Label x="6" y="10" text="Datos de Gráfico"/>
 							<s:Label text="Empresa Principal"/>
-							<s:ComboBox id="principal"
+							<!--<s:ComboBox id="principal"
 										
 										creationComplete="comboBox_creationCompleteHandler(event)"
 										dataProvider="{arrEmpresas}"
 										keyUp="comboBox_keyDownHandler(event)"
 										labelField="NOMBRE_FANTASIA"
-										selectedIndex="{ComboBoxEmpresaPrincipalSelectedIndex}"/>
-							<!--<ui:CompletionInput mustPick="true" ignoreThe="true" keepSorted="true">-->
+										selectedIndex="{ComboBoxEmpresaPrincipalSelectedIndex}"/>-->
 							<s:Label text="Empresas a Comparar:"/>
-							<s:ComboBox id="comboBoxEmpresa"
+							<!--<s:ComboBox id="comboBoxEmpresa"
 										creationComplete="comboBox_creationCompleteHandler(event)"
 										labelField="NOMBRE_FANTASIA"  keyUp="comboBox_keyDownHandler(event)"
 										dataProvider="{arrEmpresas}"
 										change="comboBoxEmpresa_changeHandler(event)">
 								
 								
-							</s:ComboBox>
-							<c:CheckList id="listEmpresaSelect" width="170" height="70"></c:CheckList>
+							</s:ComboBox>-->
+							<c:CheckList id="listEmpresaSelect" width="170" height="70" creationComplete="comboBox_creationCompleteHandler(event)"></c:CheckList>
 							<s:Label fontSize="12" fontWeight="bold" text="Empresas"/>
 							<s:VGroup id="acGrupos" width="200"
 									  gap="0" paddingLeft="0">	
@@ -867,12 +932,12 @@
 												allowMultipleSelection="true"></s:List>
 										<s:Label x="43" y="66" fontSize="12" fontWeight="bold"
 												 text="Empresa Principal:"/>
-										<s:ComboBox id="ComboBoxEmpresaPrincipal" x="42" y="79"
+										<!--<s:ComboBox id="ComboBoxEmpresaPrincipal" x="42" y="79"
 													creationComplete="comboBox_creationCompleteHandler(event)"
 													dataProvider="{arrEmpresas}"
 													keyUp="comboBox_keyDownHandler(event)"
 													selectedIndex="{principal.selectedIndex}"
-													labelField="NOMBRE_FANTASIA"/>
+													labelField="NOMBRE_FANTASIA"/>-->
 									</s:BorderContainer>
 									<s:BorderContainer width="20%" height="100%">
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 3"/>
@@ -1802,6 +1867,27 @@
 	<s:Label id="txtUser" x="128" y="10" fontWeight="bold" text="CArriagada"/>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
 	<s:Label y="39" right="5" text="version: 1.0.145"/>
+	<ui:CompletionInput x="564" y="59" dataChange="completioninput1_dataChangeHandler(event)"
+						valueCommit="completioninput1_valueCommitHandler(event)">
+		<fx:String>Bahrain</fx:String>
+		<fx:String>Bangladesh</fx:String>
+		<fx:String>Barbados</fx:String>
+		<fx:String>Belarus</fx:String>
+		<fx:String>Belgium</fx:String>
+		<fx:String>Belize</fx:String>
+		<fx:String>Benin</fx:String>
+		<fx:String>Bhutan</fx:String>
+		<fx:String>Bolivia</fx:String>
+		<fx:String>Bosnia and Herzegovina</fx:String>
+		<fx:String>Botswana</fx:String>
+		<fx:String>Brazil</fx:String>
+		<fx:String>Brunei</fx:String>
+		<fx:String>Bulgaria</fx:String>
+		<fx:String>Burkina Faso</fx:String>
+		<fx:String>Burma (Myanmar)</fx:String>
+		<fx:String>Burundi</fx:String>
+	</ui:CompletionInput>	
+	
 	
 	
 	
