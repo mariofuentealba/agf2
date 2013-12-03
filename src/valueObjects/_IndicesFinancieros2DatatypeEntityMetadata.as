@@ -94,11 +94,6 @@ internal class _IndicesFinancieros2DatatypeEntityMetadata extends com.adobe.fibe
     model_internal var _campo4IsValidCacheInitialized:Boolean = false;
     model_internal var _campo4ValidationFailureMessages:Array;
     
-    model_internal var _ID_GRUPO_INDICE_FINANCIEROIsValid:Boolean;
-    model_internal var _ID_GRUPO_INDICE_FINANCIEROValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _ID_GRUPO_INDICE_FINANCIEROIsValidCacheInitialized:Boolean = false;
-    model_internal var _ID_GRUPO_INDICE_FINANCIEROValidationFailureMessages:Array;
-    
     model_internal var _rango_inferiorIsValid:Boolean;
     model_internal var _rango_inferiorValidator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _rango_inferiorIsValidCacheInitialized:Boolean = false;
@@ -108,11 +103,6 @@ internal class _IndicesFinancieros2DatatypeEntityMetadata extends com.adobe.fibe
     model_internal var _campo1Validator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _campo1IsValidCacheInitialized:Boolean = false;
     model_internal var _campo1ValidationFailureMessages:Array;
-    
-    model_internal var _formulaIsValid:Boolean;
-    model_internal var _formulaValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _formulaIsValidCacheInitialized:Boolean = false;
-    model_internal var _formulaValidationFailureMessages:Array;
 
     model_internal var _instance:_Super_IndicesFinancieros2Datatype;
     model_internal static var _nullStyle:com.adobe.fiber.styles.Style = new com.adobe.fiber.styles.Style();
@@ -220,11 +210,6 @@ internal class _IndicesFinancieros2DatatypeEntityMetadata extends com.adobe.fibe
         model_internal::_campo4Validator.requiredFieldError = "campo4 is required";
         //model_internal::_campo4Validator.source = model_internal::_instance;
         //model_internal::_campo4Validator.property = "campo4";
-        model_internal::_ID_GRUPO_INDICE_FINANCIEROValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForID_GRUPO_INDICE_FINANCIERO);
-        model_internal::_ID_GRUPO_INDICE_FINANCIEROValidator.required = true;
-        model_internal::_ID_GRUPO_INDICE_FINANCIEROValidator.requiredFieldError = "ID_GRUPO_INDICE_FINANCIERO is required";
-        //model_internal::_ID_GRUPO_INDICE_FINANCIEROValidator.source = model_internal::_instance;
-        //model_internal::_ID_GRUPO_INDICE_FINANCIEROValidator.property = "ID_GRUPO_INDICE_FINANCIERO";
         model_internal::_rango_inferiorValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForRango_inferior);
         model_internal::_rango_inferiorValidator.required = true;
         model_internal::_rango_inferiorValidator.requiredFieldError = "rango_inferior is required";
@@ -235,11 +220,6 @@ internal class _IndicesFinancieros2DatatypeEntityMetadata extends com.adobe.fibe
         model_internal::_campo1Validator.requiredFieldError = "campo1 is required";
         //model_internal::_campo1Validator.source = model_internal::_instance;
         //model_internal::_campo1Validator.property = "campo1";
-        model_internal::_formulaValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForFormula);
-        model_internal::_formulaValidator.required = true;
-        model_internal::_formulaValidator.requiredFieldError = "formula is required";
-        //model_internal::_formulaValidator.source = model_internal::_instance;
-        //model_internal::_formulaValidator.property = "formula";
     }
 
     override public function getEntityName():String
@@ -392,7 +372,9 @@ internal class _IndicesFinancieros2DatatypeEntityMetadata extends com.adobe.fibe
     override public function getIdentityMap():Object
     {
         var returnMap:Object = new Object();
+        returnMap["ID_GRUPO_INDICE_FINANCIERO"] = model_internal::_instance.ID_GRUPO_INDICE_FINANCIERO;
         returnMap["ID_INDICE_FINANCIERO"] = model_internal::_instance.ID_INDICE_FINANCIERO;
+        returnMap["formula"] = model_internal::_instance.formula;
 
         return returnMap;
     }
@@ -655,14 +637,6 @@ internal class _IndicesFinancieros2DatatypeEntityMetadata extends com.adobe.fibe
             model_internal::calculateCampo4IsValid();
         }
     }
-    public function invalidateDependentOnID_GRUPO_INDICE_FINANCIERO():void
-    {
-        if (model_internal::_ID_GRUPO_INDICE_FINANCIEROIsValidCacheInitialized )
-        {
-            model_internal::_instance.model_internal::_doValidationCacheOfID_GRUPO_INDICE_FINANCIERO = null;
-            model_internal::calculateID_GRUPO_INDICE_FINANCIEROIsValid();
-        }
-    }
     public function invalidateDependentOnRango_inferior():void
     {
         if (model_internal::_rango_inferiorIsValidCacheInitialized )
@@ -677,14 +651,6 @@ internal class _IndicesFinancieros2DatatypeEntityMetadata extends com.adobe.fibe
         {
             model_internal::_instance.model_internal::_doValidationCacheOfCampo1 = null;
             model_internal::calculateCampo1IsValid();
-        }
-    }
-    public function invalidateDependentOnFormula():void
-    {
-        if (model_internal::_formulaIsValidCacheInitialized )
-        {
-            model_internal::_instance.model_internal::_doValidationCacheOfFormula = null;
-            model_internal::calculateFormulaIsValid();
         }
     }
 
@@ -1799,100 +1765,6 @@ internal class _IndicesFinancieros2DatatypeEntityMetadata extends com.adobe.fibe
         return model_internal::_nullStyle;
     }
 
-    public function get ID_GRUPO_INDICE_FINANCIEROValidator() : StyleValidator
-    {
-        return model_internal::_ID_GRUPO_INDICE_FINANCIEROValidator;
-    }
-
-    model_internal function set _ID_GRUPO_INDICE_FINANCIEROIsValid_der(value:Boolean):void 
-    {
-        var oldValue:Boolean = model_internal::_ID_GRUPO_INDICE_FINANCIEROIsValid;         
-        if (oldValue !== value)
-        {
-            model_internal::_ID_GRUPO_INDICE_FINANCIEROIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ID_GRUPO_INDICE_FINANCIEROIsValid", oldValue, value));
-        }                             
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get ID_GRUPO_INDICE_FINANCIEROIsValid():Boolean
-    {
-        if (!model_internal::_ID_GRUPO_INDICE_FINANCIEROIsValidCacheInitialized)
-        {
-            model_internal::calculateID_GRUPO_INDICE_FINANCIEROIsValid();
-        }
-
-        return model_internal::_ID_GRUPO_INDICE_FINANCIEROIsValid;
-    }
-
-    model_internal function calculateID_GRUPO_INDICE_FINANCIEROIsValid():void
-    {
-        var valRes:ValidationResultEvent = model_internal::_ID_GRUPO_INDICE_FINANCIEROValidator.validate(model_internal::_instance.ID_GRUPO_INDICE_FINANCIERO)
-        model_internal::_ID_GRUPO_INDICE_FINANCIEROIsValid_der = (valRes.results == null);
-        model_internal::_ID_GRUPO_INDICE_FINANCIEROIsValidCacheInitialized = true;
-        if (valRes.results == null)
-             model_internal::ID_GRUPO_INDICE_FINANCIEROValidationFailureMessages_der = emptyArray;
-        else
-        {
-            var _valFailures:Array = new Array();
-            for (var a:int = 0 ; a<valRes.results.length ; a++)
-            {
-                _valFailures.push(valRes.results[a].errorMessage);
-            }
-            model_internal::ID_GRUPO_INDICE_FINANCIEROValidationFailureMessages_der = _valFailures;
-        }
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get ID_GRUPO_INDICE_FINANCIEROValidationFailureMessages():Array
-    {
-        if (model_internal::_ID_GRUPO_INDICE_FINANCIEROValidationFailureMessages == null)
-            model_internal::calculateID_GRUPO_INDICE_FINANCIEROIsValid();
-
-        return _ID_GRUPO_INDICE_FINANCIEROValidationFailureMessages;
-    }
-
-    model_internal function set ID_GRUPO_INDICE_FINANCIEROValidationFailureMessages_der(value:Array) : void
-    {
-        var oldValue:Array = model_internal::_ID_GRUPO_INDICE_FINANCIEROValidationFailureMessages;
-
-        var needUpdate : Boolean = false;
-        if (oldValue == null)
-            needUpdate = true;
-    
-        // avoid firing the event when old and new value are different empty arrays
-        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
-        {
-            if (oldValue.length == value.length)
-            {
-                for (var a:int=0; a < oldValue.length; a++)
-                {
-                    if (oldValue[a] !== value[a])
-                    {
-                        needUpdate = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                needUpdate = true;
-            }
-        }
-
-        if (needUpdate)
-        {
-            model_internal::_ID_GRUPO_INDICE_FINANCIEROValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ID_GRUPO_INDICE_FINANCIEROValidationFailureMessages", oldValue, value));
-            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
-            // the entire entity.
-            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
-            {
-                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
-            }
-        }
-    }
-
     [Bindable(event="propertyChange")]   
     public function get rango_inferiorStyle():com.adobe.fiber.styles.Style
     {
@@ -2105,100 +1977,6 @@ internal class _IndicesFinancieros2DatatypeEntityMetadata extends com.adobe.fibe
         return model_internal::_nullStyle;
     }
 
-    public function get formulaValidator() : StyleValidator
-    {
-        return model_internal::_formulaValidator;
-    }
-
-    model_internal function set _formulaIsValid_der(value:Boolean):void 
-    {
-        var oldValue:Boolean = model_internal::_formulaIsValid;         
-        if (oldValue !== value)
-        {
-            model_internal::_formulaIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "formulaIsValid", oldValue, value));
-        }                             
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get formulaIsValid():Boolean
-    {
-        if (!model_internal::_formulaIsValidCacheInitialized)
-        {
-            model_internal::calculateFormulaIsValid();
-        }
-
-        return model_internal::_formulaIsValid;
-    }
-
-    model_internal function calculateFormulaIsValid():void
-    {
-        var valRes:ValidationResultEvent = model_internal::_formulaValidator.validate(model_internal::_instance.formula)
-        model_internal::_formulaIsValid_der = (valRes.results == null);
-        model_internal::_formulaIsValidCacheInitialized = true;
-        if (valRes.results == null)
-             model_internal::formulaValidationFailureMessages_der = emptyArray;
-        else
-        {
-            var _valFailures:Array = new Array();
-            for (var a:int = 0 ; a<valRes.results.length ; a++)
-            {
-                _valFailures.push(valRes.results[a].errorMessage);
-            }
-            model_internal::formulaValidationFailureMessages_der = _valFailures;
-        }
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get formulaValidationFailureMessages():Array
-    {
-        if (model_internal::_formulaValidationFailureMessages == null)
-            model_internal::calculateFormulaIsValid();
-
-        return _formulaValidationFailureMessages;
-    }
-
-    model_internal function set formulaValidationFailureMessages_der(value:Array) : void
-    {
-        var oldValue:Array = model_internal::_formulaValidationFailureMessages;
-
-        var needUpdate : Boolean = false;
-        if (oldValue == null)
-            needUpdate = true;
-    
-        // avoid firing the event when old and new value are different empty arrays
-        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
-        {
-            if (oldValue.length == value.length)
-            {
-                for (var a:int=0; a < oldValue.length; a++)
-                {
-                    if (oldValue[a] !== value[a])
-                    {
-                        needUpdate = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                needUpdate = true;
-            }
-        }
-
-        if (needUpdate)
-        {
-            model_internal::_formulaValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "formulaValidationFailureMessages", oldValue, value));
-            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
-            // the entire entity.
-            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
-            {
-                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
-            }
-        }
-    }
-
 
      /**
      * 
@@ -2268,10 +2046,6 @@ internal class _IndicesFinancieros2DatatypeEntityMetadata extends com.adobe.fibe
             {
                 return campo4ValidationFailureMessages;
             }
-            case("ID_GRUPO_INDICE_FINANCIERO"):
-            {
-                return ID_GRUPO_INDICE_FINANCIEROValidationFailureMessages;
-            }
             case("rango_inferior"):
             {
                 return rango_inferiorValidationFailureMessages;
@@ -2279,10 +2053,6 @@ internal class _IndicesFinancieros2DatatypeEntityMetadata extends com.adobe.fibe
             case("campo1"):
             {
                 return campo1ValidationFailureMessages;
-            }
-            case("formula"):
-            {
-                return formulaValidationFailureMessages;
             }
             default:
             {

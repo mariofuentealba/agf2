@@ -95,10 +95,8 @@ public class _Super_IndicesFinancieros2Datatype extends flash.events.EventDispat
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "campo2", model_internal::setterListenerCampo2));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "campo5", model_internal::setterListenerCampo5));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "campo4", model_internal::setterListenerCampo4));
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "ID_GRUPO_INDICE_FINANCIERO", model_internal::setterListenerID_GRUPO_INDICE_FINANCIERO));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "rango_inferior", model_internal::setterListenerRango_inferior));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "campo1", model_internal::setterListenerCampo1));
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "formula", model_internal::setterListenerFormula));
 
     }
 
@@ -421,11 +419,6 @@ public class _Super_IndicesFinancieros2Datatype extends flash.events.EventDispat
         _model.invalidateDependentOnCampo4();
     }
 
-    model_internal function setterListenerID_GRUPO_INDICE_FINANCIERO(value:flash.events.Event):void
-    {
-        _model.invalidateDependentOnID_GRUPO_INDICE_FINANCIERO();
-    }
-
     model_internal function setterListenerRango_inferior(value:flash.events.Event):void
     {
         _model.invalidateDependentOnRango_inferior();
@@ -434,11 +427,6 @@ public class _Super_IndicesFinancieros2Datatype extends flash.events.EventDispat
     model_internal function setterListenerCampo1(value:flash.events.Event):void
     {
         _model.invalidateDependentOnCampo1();
-    }
-
-    model_internal function setterListenerFormula(value:flash.events.Event):void
-    {
-        _model.invalidateDependentOnFormula();
     }
 
 
@@ -517,11 +505,6 @@ public class _Super_IndicesFinancieros2Datatype extends flash.events.EventDispat
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_campo4ValidationFailureMessages);
         }
-        if (!_model.ID_GRUPO_INDICE_FINANCIEROIsValid)
-        {
-            propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_ID_GRUPO_INDICE_FINANCIEROValidationFailureMessages);
-        }
         if (!_model.rango_inferiorIsValid)
         {
             propertyValidity = false;
@@ -531,11 +514,6 @@ public class _Super_IndicesFinancieros2Datatype extends flash.events.EventDispat
         {
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_campo1ValidationFailureMessages);
-        }
-        if (!_model.formulaIsValid)
-        {
-            propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_formulaValidationFailureMessages);
         }
 
         model_internal::_cacheInitialized_isValid = true;
@@ -913,33 +891,6 @@ public class _Super_IndicesFinancieros2Datatype extends flash.events.EventDispat
         return validationFailures;
     }
     
-    model_internal var _doValidationCacheOfID_GRUPO_INDICE_FINANCIERO : Array = null;
-    model_internal var _doValidationLastValOfID_GRUPO_INDICE_FINANCIERO : String;
-
-    model_internal function _doValidationForID_GRUPO_INDICE_FINANCIERO(valueIn:Object):Array
-    {
-        var value : String = valueIn as String;
-
-        if (model_internal::_doValidationCacheOfID_GRUPO_INDICE_FINANCIERO != null && model_internal::_doValidationLastValOfID_GRUPO_INDICE_FINANCIERO == value)
-           return model_internal::_doValidationCacheOfID_GRUPO_INDICE_FINANCIERO ;
-
-        _model.model_internal::_ID_GRUPO_INDICE_FINANCIEROIsValidCacheInitialized = true;
-        var validationFailures:Array = new Array();
-        var errorMessage:String;
-        var failure:Boolean;
-
-        var valRes:ValidationResult;
-        if (_model.isID_GRUPO_INDICE_FINANCIEROAvailable && _internal_ID_GRUPO_INDICE_FINANCIERO == null)
-        {
-            validationFailures.push(new ValidationResult(true, "", "", "ID_GRUPO_INDICE_FINANCIERO is required"));
-        }
-
-        model_internal::_doValidationCacheOfID_GRUPO_INDICE_FINANCIERO = validationFailures;
-        model_internal::_doValidationLastValOfID_GRUPO_INDICE_FINANCIERO = value;
-
-        return validationFailures;
-    }
-    
     model_internal var _doValidationCacheOfRango_inferior : Array = null;
     model_internal var _doValidationLastValOfRango_inferior : String;
 
@@ -990,33 +941,6 @@ public class _Super_IndicesFinancieros2Datatype extends flash.events.EventDispat
 
         model_internal::_doValidationCacheOfCampo1 = validationFailures;
         model_internal::_doValidationLastValOfCampo1 = value;
-
-        return validationFailures;
-    }
-    
-    model_internal var _doValidationCacheOfFormula : Array = null;
-    model_internal var _doValidationLastValOfFormula : String;
-
-    model_internal function _doValidationForFormula(valueIn:Object):Array
-    {
-        var value : String = valueIn as String;
-
-        if (model_internal::_doValidationCacheOfFormula != null && model_internal::_doValidationLastValOfFormula == value)
-           return model_internal::_doValidationCacheOfFormula ;
-
-        _model.model_internal::_formulaIsValidCacheInitialized = true;
-        var validationFailures:Array = new Array();
-        var errorMessage:String;
-        var failure:Boolean;
-
-        var valRes:ValidationResult;
-        if (_model.isFormulaAvailable && _internal_formula == null)
-        {
-            validationFailures.push(new ValidationResult(true, "", "", "formula is required"));
-        }
-
-        model_internal::_doValidationCacheOfFormula = validationFailures;
-        model_internal::_doValidationLastValOfFormula = value;
 
         return validationFailures;
     }

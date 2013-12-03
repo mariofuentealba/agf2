@@ -948,7 +948,7 @@ protected function comboBoxEmpresa_changeHandler(event:*):void
 			}
 		}
 		if(!aux){
-			var o:Object = {label:txtEmpresa.selectedItem['RSO'], cod:txtEmpresa.selectedItem['ID_EMPRESA']};
+			o = {label:txtEmpresa.selectedItem['RSO'], cod:txtEmpresa.selectedItem['ID_EMPRESA']};
 			//var o:Object = {label:comboBoxEmpresa.selectedItem['NOMBRE_FANTASIA'], cod:comboBoxEmpresa.selectedItem['ID_EMPRESA']};
 			
 			//Alert.show('' + o.className)
@@ -1038,7 +1038,7 @@ protected function button4_clickHandler(event:MouseEvent):void
 				count++;
 			}
 			empresas += '):';	
-			_cant[i] = count;
+			_cant[i++] = count;
 		}
 		
 		
@@ -1311,7 +1311,7 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 	
 	
 	
-	listIndices.dataProvider.getItemAt(ind).flatData = listSeleccionEmpresas.dataProvider.getItemAt(ind)._arr;
+	//listIndices.dataProvider.getItemAt(ind).flatData = listIndices.dataProvider.getItemAt(ind)._arr;
 	//listSeleccionEmpresas.dataProvider.getItemAt(ind).flatData = listSeleccionEmpresas.dataProvider.getItemAt(ind)._arr;
 	//listSeleccionEmpresas.dataGroup.getElementAt(ind)['grafico']['myMXMLCube'].refresh();
 	//tnGrafico.selectedIndex = 0;
@@ -1775,11 +1775,11 @@ protected function indicesResult(event:ResultEvent):void
 
 protected function dgIndicesFinancieros_creationCompleteHandler(event:FlexEvent):void
 {
-	grillaEmpresaResult.token = modelo.grillaEmpresa();
+	//grillaEmpresaResult.token = modelo.grillaEmpresa();
 	
 	
-	grillaIndicesFinancierosResult.token = modelo.grillaIndicesFinancieros();
-	grillaIndicesFinancierosResult.addEventListener(ResultEvent.RESULT, indicesResult);
+	grillaIndicesFinancieros2Result.token = modelo.grillaIndicesFinancieros();
+	grillaIndicesFinancieros2Result.addEventListener(ResultEvent.RESULT, indicesResult);
 }
 
 /*protected function columnasChart_clickHandler(event:MouseEvent):void
@@ -1819,7 +1819,7 @@ protected function dgIndicesFinancieros_creationCompleteHandler(event:FlexEvent)
 public function roundDecimals(value:Number, decimals:int):Number
 {
 	var multiple:String = "1";
-	for( var i = 0; i<decimals; i++)
+	for( var i:int = 0; i < decimals; i++)
 	{
 		multiple += "0";
 	}

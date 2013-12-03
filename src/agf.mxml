@@ -127,13 +127,14 @@
 			}   */     
 			
 			private function items(datos:ResultEvent):void{
-				formulaIndice.cerrando = cerrando;
+				var vformulaIndice:Formula2 = (tnFormulas.getElementAt(tnFormulas.selectedIndex) as NavigatorContent).getElementAt(0) as Formula2;
+				vformulaIndice.cerrando = cerrando;
 				var arr:ArrayCollection = datos.result as ArrayCollection;
 				for each(var o:Object in arr){
 					if(o['origen'] == 1){
-						formulaIndice.arrXBRL.addItem(o);
+						vformulaIndice.arrXBRL.addItem(o);
 					} else {
-						formulaIndice.arrFormulas.addItem(o);
+						vformulaIndice.arrFormulas.addItem(o);
 					}
 				}
 			
@@ -173,13 +174,34 @@
 				
 				
 				
-				tabla = 'Indices_Financieros';
+				tabla = 'Indices_Financieros';/*
 				var c1:Object = formulaIndice.vgCombos.numElements > 0 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 				var c2:Object = formulaIndice.vgCombos.numElements > 1 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 				var c3:Object = formulaIndice.vgCombos.numElements > 2 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 				var c4:Object = formulaIndice.vgCombos.numElements > 3 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 				var c5:Object = formulaIndice.vgCombos.numElements > 4 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
-				arr.push(Ind1.text, Ind2.text, Ind3.text, Ind4.text, Ind5.text, Ind6.text, formulaIndice.txtFormula.text, Ind8.text, c1['ID_tag_agf'], c2['ID_tag_agf'], c3['ID_tag_agf'], c4['ID_tag_agf'], c5['ID_tag_agf'], c1['origen'], c2['origen'], c3['origen'], c4['origen'], c5['origen'], DD_ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO'], c1['campo'], c2['campo'], c3['campo'], c4['campo'], c5['campo']); 
+				*/
+				
+				
+				var formulas:Array = [];
+				var formulasCampos:Array = [];
+				
+				for(var i:int = 0; i < tnFormulas.length - 1; i++){
+					var arrForm:Array = [];
+					var vformulaIndice:Formula2 = (tnFormulas.getElementAt(i) as NavigatorContent).getElementAt(0) as Formula2;
+					var c1:Object = vformulaIndice.vgCombos.numElements > 0 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c2:Object = vformulaIndice.vgCombos.numElements > 1 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c3:Object = vformulaIndice.vgCombos.numElements > 2 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c4:Object = vformulaIndice.vgCombos.numElements > 3 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c5:Object = vformulaIndice.vgCombos.numElements > 4 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					arrForm.push(c1['ID_tag_agf'], c2['ID_tag_agf'], c3['ID_tag_agf'], c4['ID_tag_agf'], c5['ID_tag_agf'], c1['origen'], c2['origen'], c3['origen'], c4['origen'], c5['origen'], DD_ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO'], c1['campo'], c2['campo'], c3['campo'], c4['campo'], c5['campo']);
+					formulasCampos.push(arrForm);
+					formulas.push(vformulaIndice.txtFormula.text);
+				}
+				
+				
+				
+				arr.push(Ind1.text, Ind2.text, Ind3.text, Ind4.text, Ind5.text, Ind6.text, formulas, Ind8.text, formulasCampos); 
 				var arrEmp:Array = [];
 				if(vwEmpresasIndice.selectedIndex == 0){
 					for each(var o:Object in listEmpresas.lSelect.dataProvider){
@@ -718,6 +740,22 @@
 				
 			}
 			
+			
+			protected function tnFormulas_changeHandler(event:IndexChangedEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(tnFormulas.selectedIndex == tnFormulas.numElements - 1){
+					var nc:NavigatorContent = new NavigatorContent();
+					var formula:Formula2 = new Formula2();
+					formula.addEventListener(FlexEvent.CREATION_COMPLETE, formulaIndice_creationCompleteHandler);
+					tnFormulas.addElementAt(nc, tnFormulas.numElements - 1);
+					nc.label = 'Anexa';
+					nc.addElement(formula);	
+					
+					tnFormulas.selectedIndex--;
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	<s:states>
@@ -808,6 +846,7 @@
 		<s:CallResponder id="formGuardadosResult"/>
 		<s:CallResponder id="grillaGruposResult"/>
 		<s:CallResponder id="grillaIndicesFinancierosResult"/>
+		<s:CallResponder id="grillaIndicesFinancieros2Result"/>
 		<s:RadioButtonGroup id="rbPeriodo"/>
 		<s:RadioButtonGroup id="radiogroup1"/>
 		<s:CallResponder id="comboGrupoIndicesFinancierosResult3"/>
@@ -908,8 +947,8 @@
 							
 						</s:VGroup>
 						<mx:Accordion id="acAplicacion" right="10" top="40" bottom="0" width="80%"
-									  change="acAplicacion_changeHandler(event)"
-									  click="acAplicacion_clickHandler(event)" selectedIndex="1">
+									  change="acAplicacion_changeHandler(event)" height="0"
+									  click="acAplicacion_clickHandler(event)" selectedIndex="1" visible="false">
 							<s:NavigatorContent label="Parametrización"  width="100%" height="100%">
 								<s:HGroup width="100%" horizontalCenter="0" height="100%">
 									<s:BorderContainer width="40%" height="100%">
@@ -947,62 +986,18 @@
 							</s:NavigatorContent>
 							
 							<s:NavigatorContent label="Gráfico" width="100%" height="100%">
-								<mx:TabNavigator id="tnGrafico" top="0" width="100%" height="100%"
-												 borderStyle="none" cornerRadius="7"
-												 creationComplete="tnGrafico_creationCompleteHandler(event)"
-												 fontSize="12" horizontalCenter="0">
-									<!--s:NavigatorContent id="nvGrafico" width="100%" height="100%"
-														label="Gráfico">
-										<Componentes:GraficoBarrasAGF name="columnasChart" id="columnasChart" left="0"
-																	  right="0" top="0" bottom="0"
-																	  serie="{seriesColumn}"
-																	  prov="{arrAct}"
-																	  click="columnasChart_clickHandler(event)" width="100%">
-										</Componentes:GraficoBarrasAGF>
-									</s:NavigatorContent>
-									<s:NavigatorContent width="100%" height="100%" label="Matriz">
-										<s:DataGrid id="dataGrid2" left="10" right="50" top="40"
-													requestedRowCount="15">
-											<s:columns>		
-												<s:ArrayList>
-													<s:GridColumn dataField="nombre_final"
-																  headerText="nombre_final"></s:GridColumn>
-													<s:GridColumn dataField="label" headerText="periodo"></s:GridColumn>
-													<s:GridColumn visible="false" dataField="id_tag_agf"
-																  headerText="id_tag_agf"></s:GridColumn>
-													<s:GridColumn dataField="valor" headerText="valor"></s:GridColumn>
-													<s:GridColumn visible="false" dataField="id_periodo"
-																  headerText="id_periodo"></s:GridColumn>
-													
-													
-													<s:GridColumn visible="false" dataField="id_empresa"
-																  headerText="id_empresa"></s:GridColumn>
-												</s:ArrayList>
-											</s:columns>
-											<s:AsyncListView list="{valoresResult.lastResult}">
-												
-											</s:AsyncListView>
-										</s:DataGrid>
-									</s:NavigatorContent>
-									<s:NavigatorContent width="100%" height="100%" label="olap">
-										<s:VGroup horizontalCenter="0" verticalCenter="0" width="100%" height="100%">
-											<s:HGroup id="hgOLAP" horizontalCenter="0" verticalCenter="0" width="100%">
-												<mx:OLAPDataGrid id="olap" left="10" top="10" height="300" dataProvider="{olapData}"/>
-												
-											</s:HGroup>
-											<s:HScrollBar viewport="{hgOLAP}" 
-														  left="{hgOLAP.left}" 
-														  width ="{hgOLAP.width}"/>	
-										</s:VGroup>
-										
-										
-									</s:NavigatorContent-->
-								</mx:TabNavigator>								
+														
 							</s:NavigatorContent>
 						</mx:Accordion>
+						<mx:TabNavigator id="tnGrafico" top="40" bottom="0" width="80%"
+										 borderStyle="none" cornerRadius="7"
+										 creationComplete="tnGrafico_creationCompleteHandler(event)"
+										 fontSize="12" left="200">
+							
+						</mx:TabNavigator>		
 						<s:BorderContainer left="249" right="31" top="0" height="29"><!-- backgroundColor="#776D6D"-->
 							<mx:HBox left="10" verticalCenter="0">
-								<s:Button label="Selección" click="acAplicacion.selectedIndex = 0"/>
+								<s:Button label="Selección" click="acAplicacion.selectedIndex = 0" visible="false" width="0"/>
 								<s:Button left="40" label="Mostrar Gráfico" click="button4_clickHandler(event)"
 										  verticalCenter="0"/>
 								<s:Button x="159" width="86" label="Exportar" verticalCenter="0" click="export_clickHandler(event)"/>	
@@ -1510,10 +1505,15 @@
 										</s:NavigatorContent>
 										
 										<s:NavigatorContent width="100%" height="100%" label="Paso 2">
+											<mx:TabNavigator id="tnFormulas" change="tnFormulas_changeHandler(event)">
+												<s:NavigatorContent label="Fórmula Principal">
+													<Componentes:Formula2  id="formulaIndice" top="0"
+																		  bottom="20" horizontalCenter="0" creationComplete="formulaIndice_creationCompleteHandler(event)">
+													</Componentes:Formula2>	
+												</s:NavigatorContent>
+												<s:NavigatorContent id="AddFormula" label="+" fontWeight="bold"/>	
+											</mx:TabNavigator>
 											
-											<Componentes:Formula2 id="formulaIndice" top="0"
-																  bottom="20" horizontalCenter="0" creationComplete="formulaIndice_creationCompleteHandler(event)">
-											</Componentes:Formula2>
 										</s:NavigatorContent>
 										<s:NavigatorContent width="100%" height="100%" label="Paso 3">
 											<s:Label x="32" y="7" fontSize="14" fontWeight="bold"
@@ -1866,27 +1866,8 @@
 	<s:Label x="10" y="10" text="Sesion iniciada por:"/>
 	<s:Label id="txtUser" x="128" y="10" fontWeight="bold" text="CArriagada"/>
 	<s:Button right="10" top="10" label="Cerrar Sesión"/>
-	<s:Label y="39" right="5" text="version: 1.0.145"/>
-	<ui:CompletionInput x="564" y="59" dataChange="completioninput1_dataChangeHandler(event)"
-						valueCommit="completioninput1_valueCommitHandler(event)">
-		<fx:String>Bahrain</fx:String>
-		<fx:String>Bangladesh</fx:String>
-		<fx:String>Barbados</fx:String>
-		<fx:String>Belarus</fx:String>
-		<fx:String>Belgium</fx:String>
-		<fx:String>Belize</fx:String>
-		<fx:String>Benin</fx:String>
-		<fx:String>Bhutan</fx:String>
-		<fx:String>Bolivia</fx:String>
-		<fx:String>Bosnia and Herzegovina</fx:String>
-		<fx:String>Botswana</fx:String>
-		<fx:String>Brazil</fx:String>
-		<fx:String>Brunei</fx:String>
-		<fx:String>Bulgaria</fx:String>
-		<fx:String>Burkina Faso</fx:String>
-		<fx:String>Burma (Myanmar)</fx:String>
-		<fx:String>Burundi</fx:String>
-	</ui:CompletionInput>	
+	<s:Label y="39" right="5" text="version: 1.0.146"/>
+	
 	
 	
 	

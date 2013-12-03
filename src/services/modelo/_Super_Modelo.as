@@ -373,7 +373,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
 
         _indicesFinancieros2DatatypeRPCDataManager.destination = "indicesFinancieros2DatatypeRPCDataManager";
         _indicesFinancieros2DatatypeRPCDataManager.service = _serviceControl;        
-        _indicesFinancieros2DatatypeRPCDataManager.identities =  "ID_INDICE_FINANCIERO";      
+        _indicesFinancieros2DatatypeRPCDataManager.identities =  "ID_GRUPO_INDICE_FINANCIERO,ID_INDICE_FINANCIERO,formula";      
         _indicesFinancieros2DatatypeRPCDataManager.itemClass = valueObjects.IndicesFinancieros2Datatype; 
 
 

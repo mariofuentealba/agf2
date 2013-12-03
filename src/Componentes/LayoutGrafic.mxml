@@ -27,7 +27,7 @@
 			
 			public var olapx:IList;
 			public var olapy:IList;
-			public var arrAct:ArrayCollection = new ArrayCollection();
+			[Bindable] public var arrAct:ArrayCollection = new ArrayCollection();
 			public var arrAct2:ArrayCollection = new ArrayCollection();
 			public var arrAct3:ArrayCollection = new ArrayCollection();
 			public var _arr:ArrayCollection;
@@ -293,7 +293,7 @@
 						
 					</s:HGroup>
 					<s:HScrollBar viewport="{hgOLAP}" 
-								  left="{hgOLAP.left}" 
+								  left="{hgOLAP['left']}" 
 								  width ="{hgOLAP.width}"/>	
 				</s:VGroup>
 				

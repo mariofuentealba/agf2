@@ -1009,11 +1009,11 @@
     <property name="campo2" type="string" required="true"/>
     <property name="campo5" type="string" required="true"/>
     <property name="campo4" type="string" required="true"/>
-    <property name="ID_GRUPO_INDICE_FINANCIERO" type="string" required="true"/>
+    <id name="ID_GRUPO_INDICE_FINANCIERO" type="string"/>
     <property name="rango_inferior" type="string" required="true"/>
     <property name="campo1" type="string" required="true"/>
     <id name="ID_INDICE_FINANCIERO" type="string"/>
-    <property name="formula" type="string" required="true"/>
+    <id name="formula" type="string"/>
   </entity>
   <entity name="MonedasDatatype" persistent="true">
     <annotation name="EntityProperties">
