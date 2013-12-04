@@ -30,6 +30,7 @@ import valueObjects.IndicesFinancieros2Datatype;
 import valueObjects.IndicesFinancierosDatatype;
 import valueObjects.ItemDatatype;
 import valueObjects.MonedasDatatype;
+import valueObjects.RescataFormulaDatatype;
 import valueObjects.SubGrupoDatatype1;
 import valueObjects.SubGruposDatatype;
 
@@ -179,16 +180,17 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _serviceControl = new mx.rpc.remoting.RemoteObject();
 
         // initialize RemoteClass alias for all entities returned by functions of this service
+        valueObjects.EmpresaDatatype._initRemoteClassAlias();
         valueObjects.GrupoIndicesDataType._initRemoteClassAlias();
         valueObjects.ItemDatatype._initRemoteClassAlias();
         valueObjects.SubGruposDatatype._initRemoteClassAlias();
         valueObjects.AgfDatatype._initRemoteClassAlias();
-        valueObjects.EmpresaDatatype._initRemoteClassAlias();
         valueObjects.GruposDatatype._initRemoteClassAlias();
         valueObjects.IndicesFinancieros2Datatype._initRemoteClassAlias();
         valueObjects.MonedasDatatype._initRemoteClassAlias();
         valueObjects.IndicesFinancierosDatatype._initRemoteClassAlias();
         valueObjects.IndicesDatatype._initRemoteClassAlias();
+        valueObjects.RescataFormulaDatatype._initRemoteClassAlias();
 
         var operations:Object = new Object();
         var operation:mx.rpc.remoting.Operation;
@@ -197,7 +199,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultType = Object;
         operations["actualizarCascada"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "comboEmpresa");
-         operation.resultType = Object;
+         operation.resultElementType = valueObjects.EmpresaDatatype;
         operations["comboEmpresa"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "comboGrupoIndicesFinancieros");
          operation.resultElementType = valueObjects.GrupoIndicesDataType;
@@ -346,6 +348,9 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         operation = new mx.rpc.remoting.Operation(null, "valores2");
          operation.resultType = Object;
         operations["valores2"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "rescataFormulas");
+         operation.resultElementType = valueObjects.RescataFormulaDatatype;
+        operations["rescataFormulas"] = operation;
 
         _serviceControl.operations = operations;
         _serviceControl.convertResultHandler = com.adobe.serializers.utility.TypeUtility.convertResultHandler;
@@ -1216,10 +1221,10 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function insertarIndicesFinancieros(arrInf:Object, tabla:Object, arrEmp:Object, tipo:Object) : mx.rpc.AsyncToken
+    public function insertarIndicesFinancieros(arrInf:Object, tabla:Object, arrEmp:Object, tipo:Object, formulas:Object, formulasCampos:Object) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarIndicesFinancieros");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,tabla,arrEmp,tipo) ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,tabla,arrEmp,tipo,formulas,formulasCampos) ;
         return _internal_token;
     }
      
@@ -1436,6 +1441,24 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("valores2");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(empresa,periodo) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'rescataFormulas' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function rescataFormulas(indice:String, empresa:String) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("rescataFormulas");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(indice,empresa) ;
         return _internal_token;
     }
      

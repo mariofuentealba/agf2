@@ -395,9 +395,9 @@
       <parameter name="periodo" type="opaque"/>
       <parameter name="mysqli" type="opaque"/>
     </function>
-    <function name="comboEmpresa" return-type="opaque">
+    <function name="comboEmpresa" return-type="EmpresaDatatype[]">
       <annotation name="analyze group">
-        <item name="analyzed">false</item>
+        <item name="analyzed">true</item>
       </annotation>
       <annotation name="original signature">
         <item name="returnType">opaque</item>
@@ -799,13 +799,15 @@
         <item name="analyzed">false</item>
       </annotation>
       <annotation name="original signature">
-        <item name="inputParams">opaque,opaque,opaque,opaque</item>
+        <item name="inputParams">opaque,opaque,opaque,opaque,opaque,opaque</item>
         <item name="returnType">opaque</item>
       </annotation>
       <parameter name="arrInf" type="opaque"/>
       <parameter name="tabla" type="opaque"/>
       <parameter name="arrEmp" type="opaque"/>
       <parameter name="tipo" type="opaque"/>
+      <parameter name="formulas" type="opaque"/>
+      <parameter name="formulasCampos" type="opaque"/>
     </function>
     <function name="insertarItem" return-type="opaque">
       <annotation name="analyze group">
@@ -938,6 +940,20 @@
       <parameter name="empresa" type="opaque"/>
       <parameter name="periodo" type="opaque"/>
     </function>
+    <function name="rescataFormulas" return-type="RescataFormulaDatatype[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">num_formula,campo1n,selected,campo3n,tipoc2,id_indice_financiero,tipoc1,campo5n,tipoc5,tipoc4,tipoc3,id_formula,campo2n,campo4n,campo3,cod3,campo2,cod2,campo5,cod1,campo4,campo1,cod5,formula,cod4</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="indice" type="string"/>
+      <parameter name="empresa" type="string"/>
+    </function>
   </service>
   <entity name="EmpresaDatatype" persistent="true">
     <annotation name="EntityProperties">
@@ -966,7 +982,7 @@
       <item name="propertySpecifier">ID_SUBGRUPO,RSO,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
     </annotation>
     <annotation name="comboEmpresa">
-      <item name="propertySpecifier">RSO,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
+      <item name="propertySpecifier">RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
     </annotation>
     <id name="ID_SUBGRUPO" type="string"/>
     <property name="RSO" type="string" required="true"/>
@@ -977,6 +993,48 @@
     <property name="NOMBRE_BOLSA" type="string" required="true"/>
     <property name="NOMBRE_FANTASIA" type="string" required="true"/>
     <id name="ID_EMPRESA" type="string"/>
+  </entity>
+  <entity name="RescataFormulaDatatype">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">RescataFormulaDatatype</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Modelo</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="rescataFormulas">
+      <item name="propertySpecifier">num_formula,campo1n,selected,campo3n,tipoc2,id_indice_financiero,tipoc1,campo5n,tipoc5,tipoc4,tipoc3,id_formula,campo2n,campo4n,campo3,cod3,campo2,cod2,campo5,cod1,campo4,campo1,cod5,formula,cod4</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="num_formula" type="string" required="true"/>
+    <property name="campo1n" type="string" required="true"/>
+    <property name="selected" type="string" required="true"/>
+    <property name="campo3n" type="string" required="true"/>
+    <property name="tipoc2" type="string" required="true"/>
+    <property name="id_indice_financiero" type="string" required="true"/>
+    <property name="tipoc1" type="string" required="true"/>
+    <property name="campo5n" type="string" required="true"/>
+    <property name="tipoc5" type="string" required="true"/>
+    <property name="tipoc4" type="string" required="true"/>
+    <property name="tipoc3" type="string" required="true"/>
+    <property name="id_formula" type="string" required="true"/>
+    <property name="campo2n" type="string" required="true"/>
+    <property name="campo4n" type="string" required="true"/>
+    <property name="campo3" type="string" required="true"/>
+    <property name="cod3" type="string" required="true"/>
+    <property name="campo2" type="string" required="true"/>
+    <property name="cod2" type="string" required="true"/>
+    <property name="campo5" type="string" required="true"/>
+    <property name="cod1" type="string" required="true"/>
+    <property name="campo4" type="string" required="true"/>
+    <property name="campo1" type="string" required="true"/>
+    <property name="cod5" type="string" required="true"/>
+    <property name="formula" type="string" required="true"/>
+    <property name="cod4" type="string" required="true"/>
   </entity>
   <entity name="IndicesFinancieros2Datatype" persistent="true">
     <annotation name="EntityProperties">

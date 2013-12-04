@@ -1049,10 +1049,10 @@ public function grillaIndicesFinancieros(){
 	}//fin metodo
 					    			
 					    	
-	public function insertarIndicesFinancieros($arrInf, $tabla, $arrEmp, $tipo){
+	public function insertarIndicesFinancieros($arrInf, $tabla, $arrEmp, $tipo, $formulas, $formulasCampos){
 						
 	//conectamos con la mysql
-				
+		//return 1;		
 				
 			//$con = mysql_connect("localhost","agf","agf");
 		$mysqli = new mysqli("localhost","agf","agf","agf");
@@ -1069,14 +1069,22 @@ public function grillaIndicesFinancieros(){
 					
 					//seleccionamos todos los registros de tabla tb_persona
 		$mysqli->query("INSERT INTO log values ('" . print_r($arrInf, 1) . "');");
-		$mysqli->query("INSERT INTO log values ('" . print_r($arrEmp, 1) . "');");
 		$mysqli->query("INSERT INTO log values ('" . $tabla . "');");
+		$mysqli->query("INSERT INTO log values ('" . print_r($arrEmp, 1) . "');");		
 		$mysqli->query("INSERT INTO log values ('" . $tipo . "');");
+		$mysqli->query("INSERT INTO log values ('" . print_r($formulas, 1) . "');");		
+		$mysqli->query("INSERT INTO log values ('" . print_r($formulasCampos, 1) . "');");		
+		for($i = 0; $i < count($formulasCampos); $i++){
+			$formulasCampos[$i] = explode(';', $formulasCampos[$i]);
+		}
 		
 		//exit(0);
 		
 		
-		$sql = "INSERT INTO indices_financieros VALUES (null, '" . $arrInf[18] . "', 4, '" . $arrInf[0] . "', '" . $arrInf[1] . "', 
+		$sql = "INSERT INTO indices_financieros (`ID_INDICE_FINANCIERO`, `ID_GRUPO_INDICE_FINANCIERO`, 
+			`ID_COMPONENTE`, `NOMBRE`, `DESCRIPCION`, `ID_FORMULA`, `FORMULA_DESC`, `RANGO_SUPERIOR`, 
+				`RANGO_INFERIOR`, `RANGOS_DESC`, `OA`) 
+				VALUES (null, '" . $arrInf[9] . "', 4, '" . $arrInf[0] . "', '" . $arrInf[1] . "', 
 				'0', '" . $arrInf[2] . "', '" . $arrInf[5] . "', '" . $arrInf[4] . "', '" . $arrInf[3] . "', 1);";
 		$sql2 = str_replace("'", "''", $sql);
 		$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
@@ -1089,14 +1097,17 @@ public function grillaIndicesFinancieros(){
 		
 		
 		$mysqli->query("INSERT INTO log values ('arrInf[6] = " . count($arrInf[6]) . "');");
-		
-		for($ii = 0; $ii < count($arrInf[6]); $ii++){
-			$arr = $arrInf[8][$ii];
-			$formula1 = explode(".", $arr[11]);
-			$formula2 = explode(".", $arr[12]);
-			$formula3 = explode(".", $arr[13]);
-			$formula4 = explode(".", $arr[14]);
-			$formula5 = explode(".", $arr[15]);
+		$nn = count($formulas);//$arrInf[6]);
+		for($ii = 0; $ii < $nn; $ii++){
+			$arr = array();
+			$arr = $formulasCampos[$ii];//$arrInf[8][$ii];
+			$mysqli->query("INSERT INTO log values ('formulasCampos = " . print_r($formulasCampos, true) . "');");
+			$mysqli->query("INSERT INTO log values ('arr = " . print_r($arr, true) . "');");
+			$formula1 = explode(".", $arr[10]);
+			$formula2 = explode(".", $arr[11]);
+			$formula3 = explode(".", $arr[12]);
+			$formula4 = explode(".", $arr[13]);
+			$formula5 = explode(".", $arr[14]);
 			
 			$formula1[0] = $formula1[0] == 'C' ? 1 : 2;
 			$formula2[0] = $formula2[0] == 'C' ? 1 : 2;
@@ -1145,7 +1156,7 @@ public function grillaIndicesFinancieros(){
 			}
 			
 			$sum = 0;   
-			for($i = 0; $i < 5 ; $i++){
+			for($i = 0; $i < 5; $i++){
 				if($arr[$i] != -1){
 					$sum++;
 				}
@@ -1153,7 +1164,7 @@ public function grillaIndicesFinancieros(){
 			
 			
 			
-			$arrInf[6][$ii] = str_replace('_', '', $arrInf[6][$ii]);
+			$arrInf[6] = str_replace('_', '', $formulas[$ii]);
 			
 			$sql = "INSERT INTO formulas (`ID_FORMULA`, `CAMPO1`, `CAMPO2`, `CAMPO3`, `CAMPO4`, `CAMPO5`, `tipoc1`, `tipoc2`, 
 					`tipoc3`, `tipoc4`, `tipoc5`, `FORMULA`, `CANTIDAD_CAMPOS`, `DECIMALES`, `cod1`, `cod2`, `cod3`, `cod4`, 
@@ -1162,11 +1173,11 @@ public function grillaIndicesFinancieros(){
 					$arr[2] . "', '" . $arr[3] . "', '" . $arr[4] .
 					"', '" . $arr[5] . "', '" . $arr[6] . "', '" . 
 					$arr[7] . "', '" . $arr[8] . "', '" . $arr[9]. "', '" . 
-					$arrInf[6][$ii] . "', '" . $sum . "', '" . $arrInf[7]. "', '" . 
-					$arr[11]. "', '" . $arr[12]. "', '" . $arr[13]. "', '" . 
-					$arr[14]. "', '" . $arr[15] . "', " . $indiceNuevo . ", " . $ii . " );";
+					$arrInf[6] . "', '" . $sum . "', '" . $arrInf[7]. "', '" . 
+					$arr[10]. "', '" . $arr[11]. "', '" . $arr[12]. "', '" . 
+					$arr[13]. "', '" . $arr[14] . "', " . $indiceNuevo . ", " . $ii . " );";
 			$sql2 = str_replace("'", "''", $sql);
-			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+			//$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			$mysqli->query($sql);
 			$ultimo_id = $mysqli->insert_id;
 			if($ii == 0){
@@ -1180,7 +1191,7 @@ public function grillaIndicesFinancieros(){
 					SELECT id_empresa, " . $indiceNuevo . ", " . $ii . ", " . $ultimo_id . " 
 					FROM empresas;";
 			$sql2 = str_replace("'", "''", $sql);
-			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+			//$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			$mysqli->query($sql);
 			
 			
@@ -1193,7 +1204,7 @@ public function grillaIndicesFinancieros(){
 			$comp4 = ' AND x.id_periodo = a.id_periodo ';
 			$comp5 = ' AND x.id_periodo = a.id_periodo ';
 			
-			$mysqli->query("INSERT INTO log values ('formula1 = " . print_r($formula1, 1) . "');");
+			//$mysqli->query("INSERT INTO log values ('formula1 = " . print_r($formula1, 1) . "');");
 			
 			if(count($formula1) > 1){
 				switch($formula1[2]){
@@ -1416,7 +1427,7 @@ public function grillaIndicesFinancieros(){
 			$i = 0;
 			$formula = '';
 			$operacion = array();
-			$arrInf = array();	
+			//$arrInf = array();	
 			while($row = $result->fetch_array(MYSQLI_NUM))
 			{
 						//almacenamos los registros en la var array
@@ -1424,11 +1435,11 @@ public function grillaIndicesFinancieros(){
 				 $arr[$i]['id_tag_agf']=$row[0];
 				 $arr[$i]['id_empresa']=$row[1];
 						 $arr[$i]['id_periodo']=$row[2];	     */
-				 $operacion = $row[10];
-				 
+				$operacion = $row[10];
+				$mysqli->query("INSERT INTO log values ('operacion = " . $operacion . "');");	 
 				if(!isset($row[3]))
 				$row[3] = 0;
-				$mysqli->query("INSERT INTO log values ('r3(C1) = " . $row[3] . "');");	
+				//$mysqli->query("INSERT INTO log values ('r3(C1) = " . $row[3] . "');");	
 				$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
 				if(!isset($row[4]))
 					$row[4] = 0;
@@ -1456,7 +1467,7 @@ public function grillaIndicesFinancieros(){
 				} else {
 					eval( '$res = ' . $operacion . ';');		
 				}
-				$mysqli->query("INSERT INTO log values ('operacion = " . $operacion . "');");	
+				//$mysqli->query("INSERT INTO log values ('operacion = " . $operacion . "');");	
 				$mysqli->query("INSERT INTO log values ('res = " . $res . "');");	
 				
 					
@@ -1478,17 +1489,16 @@ public function grillaIndicesFinancieros(){
 				VALUES (null," . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'TRIMESTRAL'," . $res . ",'2013',2);";
 				$sql2 = str_replace("'", "''", $sql);
 				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
-				$mysqli->query($sql);	
-					
+				$mysqli->query($sql);						
 				$i++;
-				}
-			
+			}
+			//$mysqli->query("INSERT INTO log values ('ii = " . $ii . "');");
 		}
 			
 		for($i = 0; $i < count($arrEmp); $i++){
 			$sql = "INSERT INTO indice_empresa values ('" . $indiceNuevo . "', '" . $arrEmp[$i] . "', '" . $tipo ."');";
 			$sql2 = str_replace("'", "''", $sql);
-			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");				
+			//$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");				
 			$mysqli->query($sql);
 		}
 			
@@ -3281,6 +3291,65 @@ function valores2($empresa, $periodo){
 		
 		$mysqli->close();   
 		return true;     
+	}
+	
+	function rescataFormulas($indice, $empresa){
+		$mysqli = new mysqli("localhost","agf","agf","agf");
+		if (mysqli_connect_errno()) 
+		{
+		  die('Error conectando: ' . mysql_error());
+		}
+		$sql = "SELECT `ID_FORMULA`, 
+				(select nombre from tag_agf b where b.ID_TAG_AGF = a.campo1 and b.oa = a.tipoc1) as `CAMPO1N`, 
+				(select nombre from tag_agf b where b.ID_TAG_AGF = a.campo2 and b.oa = a.tipoc1) as `CAMPO2N`, 
+				(select nombre from tag_agf b where b.ID_TAG_AGF = a.campo3 and b.oa = a.tipoc1) as `CAMPO3N`, 
+				(select nombre from tag_agf b where b.ID_TAG_AGF = a.campo4 and b.oa = a.tipoc1) as `CAMPO4N`, 
+				(select nombre from tag_agf b where b.ID_TAG_AGF = a.campo5 and b.oa = a.tipoc1) as `CAMPO5N`,
+				`CAMPO1`,
+				`CAMPO2`,
+				`CAMPO3`,
+				`CAMPO4`,
+				`CAMPO5`,
+				`tipoc1`, `tipoc2`, `tipoc3`, `tipoc4`, `tipoc5`, `FORMULA`, 
+				`cod1`, `cod2`, `cod3`, `cod4`, `cod5`, `id_indice_financiero`, `num_formula` ,
+				(select distinct true from empresa_indice x where id_empresa = " . $empresa . " and x.num_formula = a.num_formula ) as selected
+				FROM `formulas` a 
+				WHERE a.id_indice_financiero = " . $indice . ";";
+		$sql2 = str_replace("'", "''", $sql);
+		$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+		$result = $mysqli->query($sql);		
+		$arr = array();
+		$i = 0;
+		while($row = $result->fetch_array(MYSQLI_NUM)){
+			$arr[$i]['id_formula'] = $row[0];
+			$arr[$i]['campo1n'] = $row[1];
+			$arr[$i]['campo2n'] = $row[2];
+			$arr[$i]['campo3n'] = $row[3];
+			$arr[$i]['campo4n'] = $row[4];
+			$arr[$i]['campo5n'] = $row[5];
+			$arr[$i]['campo1'] = $row[6];
+			$arr[$i]['campo2'] = $row[7];
+			$arr[$i]['campo3'] = $row[8];
+			$arr[$i]['campo4'] = $row[9];
+			$arr[$i]['campo5'] = $row[10];
+			$arr[$i]['tipoc1'] = $row[11];
+			$arr[$i]['tipoc2'] = $row[12];
+			$arr[$i]['tipoc3'] = $row[13];
+			$arr[$i]['tipoc4'] = $row[14];
+			$arr[$i]['tipoc5'] = $row[15];
+			$arr[$i]['formula'] = $row[16];
+			$arr[$i]['cod1'] = $row[17];
+			$arr[$i]['cod2'] = $row[18];
+			$arr[$i]['cod3'] = $row[19];
+			$arr[$i]['cod4'] = $row[20];
+			$arr[$i]['cod5'] = $row[21];
+			$arr[$i]['id_indice_financiero'] = $row[22];
+			$arr[$i]['num_formula'] = $row[23];
+			$arr[$i]['selected'] = $row[24];
+			$i++;
+		}
+		$mysqli->close();   
+		return $arr;     
 	}
 
 }

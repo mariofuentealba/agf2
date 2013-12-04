@@ -777,6 +777,7 @@ private function agregaIndice(event:MouseEvent):void{
 
 private function generaPagina2(event:ResultEvent):void{
 	vgIndices.removeAllElements();
+	listIndices.dataProvider = new ArrayCollection();
 	if(grillaGrupoIndicesResult.lastResult != null && grillaIndicesFinancierosResult.lastResult){
 		
 		
@@ -827,9 +828,6 @@ protected function vgIndices_creationCompleteHandler(event:FlexEvent):void
 	// TODO Auto-generated method stub
 	//grillaIndicesFinancierosResult.token = modelo.grillaTodoIndicesFinancieros();
 	grillaIndicesFinancierosResult.token = modelo.parametrosGrafico();
-	
-	
-	
 	grillaGrupoIndicesResult.token = modelo.grillaTodosGrupoIndices();
 	
 	grillaIndicesFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina2);
@@ -1771,6 +1769,7 @@ protected function dgGrupo_creationCompleteHandler(event:FlexEvent):void
 protected function indicesResult(event:ResultEvent):void
 {
 	dgIndicesFinancieros.dataProvider = (event.result as ArrayCollection);
+	tnIndicesFinancieros.selectedIndex = 0;
 }
 
 protected function dgIndicesFinancieros_creationCompleteHandler(event:FlexEvent):void
