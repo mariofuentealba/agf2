@@ -18,7 +18,7 @@ import mx.events.PropertyChangeEvent;
 use namespace model_internal;
 
 [ExcludeClass]
-internal class _RescataFormulaDatatypeEntityMetadata extends com.adobe.fiber.valueobjects.AbstractEntityMetadata
+internal class _FormulasDatatypeEntityMetadata extends com.adobe.fiber.valueobjects.AbstractEntityMetadata
 {
     private static var emptyArray:Array = new Array();
 
@@ -33,7 +33,7 @@ internal class _RescataFormulaDatatypeEntityMetadata extends com.adobe.fiber.val
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;
-    model_internal static var entityName:String = "RescataFormulaDatatype";
+    model_internal static var entityName:String = "FormulasDatatype";
     model_internal static var dependentsOnMap:Object;
     model_internal static var dependedOnServices:Array = new Array();
     model_internal static var propertyTypeMap:Object;
@@ -164,10 +164,10 @@ internal class _RescataFormulaDatatypeEntityMetadata extends com.adobe.fiber.val
     model_internal var _cod4IsValidCacheInitialized:Boolean = false;
     model_internal var _cod4ValidationFailureMessages:Array;
 
-    model_internal var _instance:_Super_RescataFormulaDatatype;
+    model_internal var _instance:_Super_FormulasDatatype;
     model_internal static var _nullStyle:com.adobe.fiber.styles.Style = new com.adobe.fiber.styles.Style();
 
-    public function _RescataFormulaDatatypeEntityMetadata(value : _Super_RescataFormulaDatatype)
+    public function _FormulasDatatypeEntityMetadata(value : _Super_FormulasDatatype)
     {
         // initialize property maps
         if (model_internal::dependentsOnMap == null)
@@ -408,7 +408,7 @@ internal class _RescataFormulaDatatypeEntityMetadata extends com.adobe.fiber.val
     override public function getDependants(propertyName:String):Array
     {
        if (model_internal::nonDerivedProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a data property of entity RescataFormulaDatatype");
+            throw new Error(propertyName + " is not a data property of entity FormulasDatatype");
             
        return model_internal::dependentsOnMap[propertyName] as Array;  
     }
@@ -426,7 +426,7 @@ internal class _RescataFormulaDatatypeEntityMetadata extends com.adobe.fiber.val
     override public function getCollectionBase(propertyName:String):String
     {
         if (model_internal::collectionProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a collection property of entity RescataFormulaDatatype");
+            throw new Error(propertyName + " is not a collection property of entity FormulasDatatype");
 
         return model_internal::collectionBaseMap[propertyName];
     }
@@ -434,7 +434,7 @@ internal class _RescataFormulaDatatypeEntityMetadata extends com.adobe.fiber.val
     override public function getPropertyType(propertyName:String):String
     {
         if (model_internal::allProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a property of RescataFormulaDatatype");
+            throw new Error(propertyName + " is not a property of FormulasDatatype");
 
         return model_internal::propertyTypeMap[propertyName];
     }
@@ -448,7 +448,7 @@ internal class _RescataFormulaDatatypeEntityMetadata extends com.adobe.fiber.val
     {
         if (model_internal::allProperties.indexOf(propertyName) == -1)
         {
-            throw new Error(propertyName + " does not exist for entity RescataFormulaDatatype");
+            throw new Error(propertyName + " does not exist for entity FormulasDatatype");
         }
 
         return model_internal::_instance[propertyName];
@@ -458,7 +458,7 @@ internal class _RescataFormulaDatatypeEntityMetadata extends com.adobe.fiber.val
     {
         if (model_internal::nonDerivedProperties.indexOf(propertyName) == -1)
         {
-            throw new Error(propertyName + " is not a modifiable property of entity RescataFormulaDatatype");
+            throw new Error(propertyName + " is not a modifiable property of entity FormulasDatatype");
         }
 
         model_internal::_instance[propertyName] = value;
@@ -490,7 +490,7 @@ internal class _RescataFormulaDatatypeEntityMetadata extends com.adobe.fiber.val
     {
         if (model_internal::allProperties.indexOf(propertyName) == -1)
         {
-            throw new Error(propertyName + " does not exist for entity RescataFormulaDatatype");
+            throw new Error(propertyName + " does not exist for entity FormulasDatatype");
         }
 
         if (model_internal::allAlwaysAvailableProperties.indexOf(propertyName) != -1)

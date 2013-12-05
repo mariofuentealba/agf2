@@ -945,7 +945,7 @@
         <item name="analyzed">true</item>
       </annotation>
       <annotation name="ValidProperties">
-        <item name="propertySpecifier">num_formula,campo1n,selected,campo3n,tipoc2,id_indice_financiero,tipoc1,campo5n,tipoc5,tipoc4,tipoc3,id_formula,campo2n,campo4n,campo3,cod3,campo2,cod2,campo5,cod1,campo4,campo1,cod5,formula,cod4</item>
+        <item name="propertySpecifier">num_formula,campo1n,campo3n,tipoc2,id_indice_financiero,tipoc1,campo5n,tipoc5,tipoc4,tipoc3,id_formula,campo2n,campo4n,campo3,cod3,campo2,cod2,campo5,cod1,campo4,sel,campo1,cod5,formula,cod4</item>
       </annotation>
       <annotation name="original signature">
         <item name="inputParams">opaque,opaque</item>
@@ -953,6 +953,19 @@
       </annotation>
       <parameter name="indice" type="string"/>
       <parameter name="empresa" type="string"/>
+    </function>
+    <function name="actualizaEmpresaIndice" return-type="boolean">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque,opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="indice" type="string"/>
+      <parameter name="empresa" type="string"/>
+      <parameter name="numFormula" type="string"/>
+      <parameter name="formula" type="string"/>
     </function>
   </service>
   <entity name="EmpresaDatatype" persistent="true">
@@ -999,31 +1012,30 @@
       <item name="EntityOriginalName">RescataFormulaDatatype</item>
     </annotation>
     <annotation name="service Group">
-      <item name="service">Modelo</item>
+      <item name="service">Modelo,ModeloDummy</item>
     </annotation>
     <annotation name="ServerProperties">
       <item name="IncludeRemoteClass">nonempty</item>
     </annotation>
     <annotation name="rescataFormulas">
-      <item name="propertySpecifier">num_formula,campo1n,selected,campo3n,tipoc2,id_indice_financiero,tipoc1,campo5n,tipoc5,tipoc4,tipoc3,id_formula,campo2n,campo4n,campo3,cod3,campo2,cod2,campo5,cod1,campo4,campo1,cod5,formula,cod4</item>
+      <item name="propertySpecifier">num_formula,campo1n,campo3n,tipoc2,id_indice_financiero,tipoc1,campo5n,tipoc5,tipoc4,tipoc3,id_formula,campo2n,campo4n,campo3,cod3,campo2,cod2,campo5,cod1,campo4,sel,campo1,cod5,formula,cod4</item>
     </annotation>
     <annotation name="ActionScriptGeneration">
       <item name="Package">valueObjects</item>
     </annotation>
     <property name="num_formula" type="string" required="true"/>
     <property name="campo1n" type="string" required="true"/>
-    <property name="selected" type="string" required="true"/>
-    <property name="campo3n" type="string" required="true"/>
+    <property name="campo3n" type="opaque" required="true"/>
     <property name="tipoc2" type="string" required="true"/>
     <property name="id_indice_financiero" type="string" required="true"/>
     <property name="tipoc1" type="string" required="true"/>
-    <property name="campo5n" type="string" required="true"/>
+    <property name="campo5n" type="opaque" required="true"/>
     <property name="tipoc5" type="string" required="true"/>
     <property name="tipoc4" type="string" required="true"/>
     <property name="tipoc3" type="string" required="true"/>
     <property name="id_formula" type="string" required="true"/>
     <property name="campo2n" type="string" required="true"/>
-    <property name="campo4n" type="string" required="true"/>
+    <property name="campo4n" type="opaque" required="true"/>
     <property name="campo3" type="string" required="true"/>
     <property name="cod3" type="string" required="true"/>
     <property name="campo2" type="string" required="true"/>
@@ -1031,6 +1043,7 @@
     <property name="campo5" type="string" required="true"/>
     <property name="cod1" type="string" required="true"/>
     <property name="campo4" type="string" required="true"/>
+    <property name="sel" type="string" required="true"/>
     <property name="campo1" type="string" required="true"/>
     <property name="cod5" type="string" required="true"/>
     <property name="formula" type="string" required="true"/>

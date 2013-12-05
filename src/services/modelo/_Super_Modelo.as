@@ -351,6 +351,9 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         operation = new mx.rpc.remoting.Operation(null, "rescataFormulas");
          operation.resultElementType = valueObjects.RescataFormulaDatatype;
         operations["rescataFormulas"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "actualizaEmpresaIndice");
+         operation.resultType = Boolean;
+        operations["actualizaEmpresaIndice"] = operation;
 
         _serviceControl.operations = operations;
         _serviceControl.convertResultHandler = com.adobe.serializers.utility.TypeUtility.convertResultHandler;
@@ -1459,6 +1462,24 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("rescataFormulas");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(indice,empresa) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'actualizaEmpresaIndice' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function actualizaEmpresaIndice(indice:String, empresa:String, numFormula:String, formula:String) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("actualizaEmpresaIndice");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(indice,empresa,numFormula,formula) ;
         return _internal_token;
     }
      

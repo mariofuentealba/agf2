@@ -483,13 +483,15 @@ public function insertarEmpresa($arrInf, $table, $param){
 			    for($i = 0; $i < count($arrInf); $i++){
 			    	$sql .= ", '" . $arrInf[$i] . "'";
 			    }
-			    $sql .= ");";
-			    
+			    $sql .= ", 0);";
+			    $sql2 = str_replace("'", "''", $sql);
+				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+				
 	                    /*$result = mysql_query($sql)
 	                    or die(mysql_error());*/
 			    
 			    $mysqli->query($sql);
-	                    $ultimo_id = $mysqli->insert_id;
+	            $ultimo_id = $mysqli->insert_id;
 			    
 			    $sql = "INSERT INTO GRUPOS_SUBGRUPOS VALUES (" . $param[0] . ", " . $ultimo_id . ");";
 			    $mysqli->query($sql);			    
@@ -505,6 +507,9 @@ public function insertarEmpresa($arrInf, $table, $param){
 					select null, a.id_tag_agf, " . $ultimo_id . ", b.id_periodo, 'TRIMESTRAL', 0, '1900-01-01', 1
 					from tag_agf a, periodos b
 					where a.oa = 1";
+					
+			$sql2 = str_replace("'", "''", $sql);
+			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			$mysqli->query($sql);
 			/*
 			$sql = "SELECT  
@@ -1185,19 +1190,7 @@ public function grillaIndicesFinancieros(){
 		}
 			/*$result = mysql_query($sql)
 					or die(mysql_error());*/
-			
-			
-			$sql = "INSERT INTO `empresa_indice`(`id_empresa`, `id_indice_financiero`, `num_formula`, `id_formula`) 
-					SELECT id_empresa, " . $indiceNuevo . ", " . $ii . ", " . $ultimo_id . " 
-					FROM empresas;";
-			$sql2 = str_replace("'", "''", $sql);
-			//$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
-			$mysqli->query($sql);
-			
-			
-			
-			
-			
+						
 			$comp1 = ' AND x.id_periodo = a.id_periodo ';
 			$comp2 = ' AND x.id_periodo = a.id_periodo ';
 			$comp3 = ' AND x.id_periodo = a.id_periodo ';
@@ -1501,7 +1494,16 @@ public function grillaIndicesFinancieros(){
 			//$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");				
 			$mysqli->query($sql);
 		}
-			
+		
+		$sql = "INSERT INTO `empresa_indice`(`id_empresa`, `id_indice_financiero`, `num_formula`, `id_formula`) 
+					SELECT id_empresa, " . $indiceNuevo . ", 0, " . $ultimo . " 
+					FROM empresas;";
+			$sql2 = str_replace("'", "''", $sql);
+			//$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+			$mysqli->query($sql);
+
+
+		
 		$sql = "UPDATE indices_financieros 
 				SET `id_formula` =  " . $ultimo . "
 				WHERE id_indice_financiero = " . $indiceNuevo . ";";
@@ -3299,22 +3301,27 @@ function valores2($empresa, $periodo){
 		{
 		  die('Error conectando: ' . mysql_error());
 		}
-		$sql = "SELECT `ID_FORMULA`, 
-				(select nombre from tag_agf b where b.ID_TAG_AGF = a.campo1 and b.oa = a.tipoc1) as `CAMPO1N`, 
-				(select nombre from tag_agf b where b.ID_TAG_AGF = a.campo2 and b.oa = a.tipoc1) as `CAMPO2N`, 
-				(select nombre from tag_agf b where b.ID_TAG_AGF = a.campo3 and b.oa = a.tipoc1) as `CAMPO3N`, 
-				(select nombre from tag_agf b where b.ID_TAG_AGF = a.campo4 and b.oa = a.tipoc1) as `CAMPO4N`, 
-				(select nombre from tag_agf b where b.ID_TAG_AGF = a.campo5 and b.oa = a.tipoc1) as `CAMPO5N`,
-				`CAMPO1`,
-				`CAMPO2`,
-				`CAMPO3`,
-				`CAMPO4`,
-				`CAMPO5`,
-				`tipoc1`, `tipoc2`, `tipoc3`, `tipoc4`, `tipoc5`, `FORMULA`, 
-				`cod1`, `cod2`, `cod3`, `cod4`, `cod5`, `id_indice_financiero`, `num_formula` ,
-				(select distinct true from empresa_indice x where id_empresa = " . $empresa . " and x.num_formula = a.num_formula ) as selected
-				FROM `formulas` a 
-				WHERE a.id_indice_financiero = " . $indice . ";";
+		$sql = "SELECT a.`ID_FORMULA`, 
+               (select nombre from tag_agf b where b.ID_TAG_AGF = a.campo1 and b.oa = a.tipoc1) as `CAMPO1N`, 
+               (select nombre from tag_agf b where b.ID_TAG_AGF = a.campo2 and b.oa = a.tipoc1) as `CAMPO2N`, 
+               (select nombre from tag_agf b where b.ID_TAG_AGF = a.campo3 and b.oa = a.tipoc1) as `CAMPO3N`, 
+               (select nombre from tag_agf b where b.ID_TAG_AGF = a.campo4 and b.oa = a.tipoc1) as `CAMPO4N`, 
+               (select nombre from tag_agf b where b.ID_TAG_AGF = a.campo5 and b.oa = a.tipoc1) as `CAMPO5N`,
+               `CAMPO1`,
+               `CAMPO2`,
+               `CAMPO3`,
+               `CAMPO4`,
+               `CAMPO5`,
+               `tipoc1`, `tipoc2`, `tipoc3`, `tipoc4`, `tipoc5`, `FORMULA`, 
+               `cod1`, `cod2`, `cod3`, `cod4`, `cod5`, a.`id_indice_financiero`, a.`num_formula` ,
+               CASE when x.id_formula IS NULL THEN '' ELSE 'Activa' END
+				  as selected
+               FROM `formulas` a LEFT JOIN empresa_indice x
+					ON x.id_indice_financiero = a.id_indice_financiero 
+						AND x.id_formula = a.id_formula
+						AND x.id_empresa = " . $empresa . "
+               WHERE a.id_indice_financiero = " . $indice . "
+					;";
 		$sql2 = str_replace("'", "''", $sql);
 		$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 		$result = $mysqli->query($sql);		
@@ -3345,11 +3352,30 @@ function valores2($empresa, $periodo){
 			$arr[$i]['cod5'] = $row[21];
 			$arr[$i]['id_indice_financiero'] = $row[22];
 			$arr[$i]['num_formula'] = $row[23];
-			$arr[$i]['selected'] = $row[24];
+			$arr[$i]['sel'] = $row[24];
 			$i++;
 		}
 		$mysqli->close();   
 		return $arr;     
+	}
+	
+	function actualizaEmpresaIndice($indice, $empresa, $numFormula, $formula){
+		$mysqli = new mysqli("localhost","agf","agf","agf");
+		if (mysqli_connect_errno()) 
+		{
+		  die('Error conectando: ' . mysql_error());
+		}
+		$sql = "UPDATE empresa_indice 
+				SET num_formula = " . $numFormula . ", 
+					id_formula = " . $formula . " 
+				Where id_indice_financiero = " . $indice . " 
+					AND id_empresa = " . $empresa . ";";
+		$sql2 = str_replace("'", "''", $sql);
+		$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+		$result = $mysqli->query($sql);		
+		
+		$mysqli->close();   
+		return true;     
 	}
 
 }

@@ -301,6 +301,9 @@ protected function guardar_clickHandler(event:MouseEvent):void
 		/*case 'tnIndicesFinancieros':
 		modelo.insertarIndicesFinancieros(arr, tabla);
 		break;*/
+		case 'tnEmpresas':
+			modelo.insertarEmpresa(arr, tabla, param);
+			break;
 		default:
 			if(tabla == 'Empresas'){
 				arr.push(0);

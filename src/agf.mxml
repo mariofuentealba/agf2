@@ -783,7 +783,23 @@
 			}
 			
 			private function llenaFormulas(event:ResultEvent):void{
-				clFormulas.dataProvider = event.result as ArrayCollection;
+				dgFormulas.dataProvider = event.result as ArrayCollection;
+			}
+			
+			protected function actualizaEmpresaIndice_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				for each(var o:Object in dgFormulas.dataProvider as ArrayCollection){
+					if(o['sel'] == 'Activa'){
+						break;
+					}
+				}
+				actualizaEmpresaIndiceResult.token = modelo.actualizaEmpresaIndice(ddlIndices.selectedItem['ID_INDICE_FINANCIERO'], ddlEmpresas.selectedItem['ID_EMPRESA'], o['num_formula'], o['id_formula']);
+				actualizaEmpresaIndiceResult.addEventListener(ResultEvent.RESULT, transExitosa);
+			}
+			
+			private function transExitosa(event:ResultEvent):void{
+				Alert.show('Transacción exitosa');
 			}
 			
 		]]>
@@ -841,6 +857,7 @@
 					   fault="modelo_faultHandler(event)"
 					   showBusyCursor="true"/>
 		<s:CallResponder id="comboGruposResult"/>
+		<s:CallResponder id="actualizaEmpresaIndiceResult"/>
 		<s:CallResponder id="rescataFormulasResult"/>
 		<s:CallResponder id="grillaEmpresaResult"/>
 		<s:CallResponder id="comboSubGruposResult"/>
@@ -888,7 +905,7 @@
 		<s:CallResponder id="comboGrupoIndicesFinancierosResult4"/>
 		<s:CallResponder id="comboEmpresaResult"/>
 		<s:CallResponder id="grillaIndicesFinancierosResult2"/>
-		
+		<s:RadioButtonGroup id="rgdFormula"/>
 		
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
@@ -930,13 +947,13 @@
 								
 							</s:ComboBox>-->
 							<c:CheckList id="listEmpresaSelect" width="170" height="70" creationComplete="comboBox_creationCompleteHandler(event)"></c:CheckList>
+							<s:Button id="btnBorrarEmpresa" label="Borrar"
+									  click="btnBorrarEmpresa_clickHandler(event)"/>
 							<s:Label fontSize="12" fontWeight="bold" text="Empresas"/>
 							<s:VGroup id="acGrupos" width="200"
 									  gap="0" paddingLeft="0">	
 								
 							</s:VGroup>
-							<s:Button id="btnBorrarEmpresa" label="Borrar"
-									  click="btnBorrarEmpresa_clickHandler(event)"/>
 							<s:Label text="Indices:"/>
 							<s:DropDownList id="gruposFinancieros"
 											change="gruposFinancieros_changeHandler(event)"
@@ -1026,7 +1043,7 @@
 						<mx:TabNavigator id="tnGrafico" top="40" bottom="0" width="80%"
 										 borderStyle="none" cornerRadius="7"
 										 creationComplete="tnGrafico_creationCompleteHandler(event)"
-										 fontSize="12" left="200">
+										 fontSize="12" left="220">
 							
 						</mx:TabNavigator>		
 						<s:BorderContainer left="249" right="31" top="0" height="29"><!-- backgroundColor="#776D6D"-->
@@ -1066,7 +1083,7 @@
 					</s:LinearGradient>
 				</s:fill>
 			</s:Rect>
-			<s:BorderContainer x="10" y="10" width="200" height="227"
+			<s:BorderContainer visible="false" x="10" y="10" width="200" height="227"
 							   click="bordercontainerOpcionesMenu_clickHandler(event)"
 							   cornerRadius="10">
 				<s:VGroup width="100%" gap="0">
@@ -1139,7 +1156,7 @@
 									<s:TextInput id="txtGrupos" visible="false" text="1"/>
 									<s:Button x="23" y="256" label="Guardar" click="guardar_clickHandler(event)"/>
 								</s:BorderContainer>
-								<s:Label x="121" y="43" fontSize="20" text="Grupo"/>
+								<s:Label x="121" y="29" fontSize="20" text="Grupo"/>
 								
 							</s:NavigatorContent>
 							<s:NavigatorContent width="100%" height="100%" label="Editar" enabled="false">
@@ -1162,7 +1179,7 @@
 						
 					</s:NavigatorContent>
 					<s:NavigatorContent width="100%" height="100%" label="Asociar Empresa-Formula">
-						<s:Panel x="3" y="55" width="358" height="287"
+						<s:Panel x="3" y="55" width="437" height="314"
 								 title="Asociar Empresa-Formula">
 							<s:DropDownList id="ddlIndices" x="122" y="10"
 											creationComplete="ddlIndices_creationCompleteHandler(event)"
@@ -1179,9 +1196,23 @@
 											close="seleccionFormula_closeHandler(event)">
 								<s:AsyncListView list="{comboEmpresaResult.lastResult}"/>
 							</s:DropDownList>
-							<c:CheckList id="clFormulas" bottom="35" width="305" horizontalCenter="0" labelField="formula"/>
-							<s:Label x="157" y="90" text="Fórmulas"/>
-							<s:Button bottom="10" label="Guardar" horizontalCenter="0"/>
+							<!--<c:CheckList id="clFormulas" bottom="35" width="305" horizontalCenter="0" labelField="formula"/>-->
+							
+							<!--<s:RadioButton label="Button 1" groupName="rgdFormula"/>-->
+							<mx:DataGrid id="dgFormulas" top="104" bottom="35" width="400"
+										 horizontalCenter="0">
+								<mx:columns>
+									<mx:DataGridColumn dataField="formula" headerText="Fórmula"/>
+									<mx:DataGridColumn dataField="campo1n" headerText="Campo 1 "/>
+									<mx:DataGridColumn dataField="campo2n" headerText="Campo 2 "/>
+									<mx:DataGridColumn dataField="campo3n" headerText="Campo 3 "/>
+									<mx:DataGridColumn dataField="campo4n" headerText="Campo 4 "/>
+									<mx:DataGridColumn dataField="campo5n" headerText="Campo 5 "/>
+									<mx:DataGridColumn headerText="Sel." itemRenderer="Componentes.Radio" editable="true" rendererIsEditor="true" dataField="sel" editorDataField="sele"/>
+								</mx:columns>
+							</mx:DataGrid>
+							<s:Label x="158" y="76" fontSize="13" fontWeight="bold" text="Fórmulas"/>
+							<s:Button bottom="10" label="Guardar" horizontalCenter="0" click="actualizaEmpresaIndice_clickHandler(event)"/>
 						</s:Panel>
 					</s:NavigatorContent>
 					<s:NavigatorContent width="100%" height="100%" label="Formulario Empresa">
@@ -1339,7 +1370,7 @@
 								</s:TextInput>
 							</s:NavigatorContent>
 							<s:NavigatorContent label="Nuevo">
-								<s:BorderContainer x="120" y="19" width="475" height="385" cornerRadius="15">
+								<s:BorderContainer x="120" y="22" width="475" height="382" cornerRadius="15">
 									<s:Label y="24" left="10" fontWeight="bold" text="Rut:"/>
 									<s:TextInput id="txtGruposNombre0" y="43" left="10" right="10"/>
 									<s:Label y="73" left="10" fontWeight="bold" text="Razón Social:"/>
@@ -1428,7 +1459,8 @@
 										   borderVisible="true" cornerRadius="15" direction="ltr"
 										   dropShadowVisible="true" horizontalCenter="0"
 										   textDecoration="underline">
-							<s:VGroup top="20" horizontalCenter="0" width="100%">
+							<s:VGroup top="20" width="100%" horizontalCenter="0"
+									  textDecoration="none">
 								<s:DropDownList id="dropDownList2" left="40" top="26" bottom="340"
 												creationComplete="dropDownList2_creationCompleteHandler(event)"
 												labelField="nombre" change="dropDownList2_changeHandler(event)">
@@ -1609,7 +1641,7 @@
 											  click="guardarIndice_clickHandler(event)"
 											  enabled="true" horizontalCenter="0"/>
 								</s:BorderContainer>
-								<s:Label x="54" y="10" fontSize="20" text="Indice"/>
+								<s:Label x="23" y="10" fontSize="20" text="Indice"/>
 								
 							</s:NavigatorContent>
 							<s:NavigatorContent width="100%" height="100%" label="Editar" enabled="false">
@@ -1791,7 +1823,7 @@
 							</s:NavigatorContent>
 						</mx:TabNavigator>
 					</s:NavigatorContent>
-					<s:NavigatorContent width="100%" height="100%" label="Monedas">
+					<!--<s:NavigatorContent width="100%" height="100%" label="Monedas">
 						<mx:TabNavigator id="tnMonedas" left="0" right="0" top="0" bottom="0">
 							<s:NavigatorContent label="Listado" >
 								<s:DataGrid id="dgMonedas" x="23" top="0" bottom="20" width="391"
@@ -1899,7 +1931,7 @@
 								<s:Label x="121" y="43" fontSize="20" text="Moneda"/>
 							</s:NavigatorContent>
 						</mx:TabNavigator>
-					</s:NavigatorContent>
+					</s:NavigatorContent>-->
 					<!--s:NavigatorContent width="100%" height="100%" label="Asociar AGF-XBRL">
 					</s:NavigatorContent>
 					<s:NavigatorContent width="100%" height="100%" label="Admin. AGF">
@@ -1908,7 +1940,7 @@
 					</s:NavigatorContent-->
 				</mx:ViewStack>
 			</s:BorderContainer>
-			<mx:ToggleButtonBar x="10" y="265" width="200" dataProvider="{vwAdministracion}"
+			<mx:ToggleButtonBar x="11" y="3" width="200" dataProvider="{vwAdministracion}"
 								direction="vertical">
 			</mx:ToggleButtonBar>
 			

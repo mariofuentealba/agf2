@@ -1,6 +1,6 @@
 /**
  * This is a generated class and is not intended for modification.  To customize behavior
- * of this value object you may modify the generated sub-class of this class - RescataFormulaDatatype.as.
+ * of this value object you may modify the generated sub-class of this class - FormulasDatatype.as.
  */
 
 package valueObjects
@@ -24,7 +24,7 @@ import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 use namespace model_internal;
 
 [ExcludeClass]
-public class _Super_RescataFormulaDatatype extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
+public class _Super_FormulasDatatype extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void
     {
@@ -34,7 +34,7 @@ public class _Super_RescataFormulaDatatype extends flash.events.EventDispatcher 
     {
     }
 
-    model_internal var _dminternal_model : _RescataFormulaDatatypeEntityMetadata;
+    model_internal var _dminternal_model : _FormulasDatatypeEntityMetadata;
     model_internal var _changedObjects:mx.collections.ArrayCollection = new ArrayCollection();
 
     public function getChangedObjects() : Array
@@ -87,9 +87,9 @@ public class _Super_RescataFormulaDatatype extends flash.events.EventDispatcher 
 
     model_internal var _changeWatcherArray:Array = new Array();
 
-    public function _Super_RescataFormulaDatatype()
+    public function _Super_FormulasDatatype()
     {
-        _model = new _RescataFormulaDatatypeEntityMetadata(this);
+        _model = new _FormulasDatatypeEntityMetadata(this);
 
         // Bind to own data or source properties for cache invalidation triggering
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "num_formula", model_internal::setterListenerNum_formula));
@@ -842,14 +842,14 @@ public class _Super_RescataFormulaDatatype extends flash.events.EventDispatcher 
 
     [Transient]
     [Bindable(event="propertyChange")]
-    public function get _model() : _RescataFormulaDatatypeEntityMetadata
+    public function get _model() : _FormulasDatatypeEntityMetadata
     {
         return model_internal::_dminternal_model;
     }
 
-    public function set _model(value : _RescataFormulaDatatypeEntityMetadata) : void
+    public function set _model(value : _FormulasDatatypeEntityMetadata) : void
     {
-        var oldValue : _RescataFormulaDatatypeEntityMetadata = model_internal::_dminternal_model;
+        var oldValue : _FormulasDatatypeEntityMetadata = model_internal::_dminternal_model;
         if (oldValue !== value)
         {
             model_internal::_dminternal_model = value;
