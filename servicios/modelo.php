@@ -479,6 +479,10 @@ public function insertarEmpresa($arrInf, $table, $param){
 	                    
 	                    //seleccionamos todos los registros de tabla tb_persona
 			    
+				$mysqli->query("INSERT INTO log VALUES ('" . print_r($arrInf, true) . "');");
+				
+				
+				
 			    $sql = "INSERT INTO " . $table . " VALUES (null";
 			    for($i = 0; $i < count($arrInf); $i++){
 			    	$sql .= ", '" . $arrInf[$i] . "'";
@@ -511,54 +515,158 @@ public function insertarEmpresa($arrInf, $table, $param){
 			$sql2 = str_replace("'", "''", $sql);
 			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			$mysqli->query($sql);
-			/*
-			$sql = "SELECT  
-				b.id_indice_financiero, 
-				a.formula,
-				'rr',
-				(SELECT valor FROM valores WHERE id_tag_agf = a.campo1 AND id_empresa = " . $arrInf[1] . " AND id_periodo = " . $arrInf[2] . " AND origen = 1) C1,
-				(SELECT valor FROM valores WHERE id_tag_agf = a.campo2 AND id_empresa = " . $arrInf[1] . " AND id_periodo = " . $arrInf[2] . " AND origen = 1) C2,
-				(SELECT valor FROM valores WHERE id_tag_agf = a.campo3 AND id_empresa = " . $arrInf[1] . " AND id_periodo = " . $arrInf[2] . " AND origen = 1) C3,
-				(SELECT valor FROM valores WHERE id_tag_agf = a.campo4 AND id_empresa = " . $arrInf[1] . " AND id_periodo = " . $arrInf[2] . " AND origen = 1) C4,
-				(SELECT valor FROM valores WHERE id_tag_agf = a.campo5 AND id_empresa = " . $arrInf[1] . " AND id_periodo = " . $arrInf[2] . " AND origen = 1) C5
-			FROM formulas a
-				INNER JOIN indices_financieros b ON a.id_formula = b.id_formula 
-			";
-	$sql2 = str_replace("'", "''", $sql);
-	$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
-	$result = $mysqli->query($sql);
-	
-	
-	$arrResult = array();	
-	while($row = $result->fetch_array(MYSQLI_NUM)){
-		$operacion = $row[1];
 
-		if(!isset($row[3]))
-			$row[3] = 0;
-		$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
-		if(!isset($row[4]))
-			$row[4] = 0;
-		$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
-		if(!isset($row[5]))			
-			$row[5] = 0;
-		$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
-		if(!isset($row[6]))
-			$row[6] = 0;
-		$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
-		if(!isset($row[7]))
-			$row[7] = 0;
-		$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
-		
-		//$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
-		eval( "\$res = " . $operacion . ";");		
-		$nuevoValor = (float)$res;
-		
-		$this->insertaCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
-	}	*/
+
 			
-	$mysqli->close();
-	$arr[0]['ID'] = $ultimo_id;
-	return $arr;
+			$sql = "SELECT b.id_indice_financiero, 
+						d.id_empresa, 
+						c.id_periodo,						
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo1 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C1,
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo2 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C2,
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo3 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C3,                        
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo4 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C4,         
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo5 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C5, 
+						concat(d.rso, ': ', b.nombre), 
+						label, 
+						formula, 
+						c.ano, 
+						c.mes
+						
+					FROM formulas a
+					   INNER JOIN indices_financieros b 
+						ON a.id_indice_financiero = b.id_indice_financiero 
+					   INNER JOIN periodos c
+					   INNER JOIN empresas d
+					WHERE d.id_empresa = " . $ultimo_id . "
+						AND a.tipoc1 < 2
+						AND a.tipoc2 < 2
+						AND a.tipoc3 < 2
+						AND a.tipoc4 < 2
+						AND a.tipoc5 < 2
+										";
+			$sql2 = str_replace("'", "''", $sql);
+			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+			$result = $mysqli->query($sql);
+			
+			
+			$arrResult = array();	
+			while($row = $result->fetch_array(MYSQLI_NUM)){
+				$operacion = $row[10];
+
+				if(!isset($row[3]))
+					$row[3] = 0;
+				$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
+				if(!isset($row[4]))
+					$row[4] = 0;
+				$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
+				if(!isset($row[5]))			
+					$row[5] = 0;
+				$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
+				if(!isset($row[6]))
+					$row[6] = 0;
+				$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
+				if(!isset($row[7]))
+					$row[7] = 0;
+				$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
+				
+				$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+				$evaluacionDiv = explode('/', $operacion);
+				if(count($evaluacionDiv) > 1){					
+					eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+					if($resultDiv != 0){
+						eval( '$res = ' . $operacion . ';');		
+					} else {
+						$res = 0;
+					}
+				} else {
+					eval( '$res = ' . $operacion . ';');		
+				}
+				$nuevoValor = (float)$res;
+				
+				$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
+										VALUES (null,  " . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01',2);";
+				$sql2 = str_replace("'", "''", $sql);
+				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+				$mysqli->query($sql);
+				//$this->insertaCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
+			}	
+			
+			$sql = "SELECT b.id_indice_financiero, 
+						d.id_empresa, 
+						c.id_periodo,						
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo1 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc1) C1,
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo2 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc2) C2,
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo3 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc3) C3,                        
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo4 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc4) C4,         
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo5 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc5) C5, 
+						concat(d.rso, ': ', b.nombre), 
+						label, 
+						formula, 
+						c.ano, 
+						c.mes
+						
+					FROM formulas a
+					   INNER JOIN indices_financieros b 
+						ON a.id_indice_financiero = b.id_indice_financiero 
+					   INNER JOIN periodos c
+					   INNER JOIN empresas d
+					WHERE d.id_empresa = " . $ultimo_id . "
+						AND (a.tipoc1 > 1
+							OR a.tipoc2 > 1
+							OR a.tipoc3 > 1
+							OR a.tipoc4 > 1
+							OR a.tipoc5 > 1)
+					ORDER BY b.id_indice_Financiero		
+										";
+			$sql2 = str_replace("'", "''", $sql);
+			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+			$result = $mysqli->query($sql);
+			
+			
+			$arrResult = array();	
+			while($row = $result->fetch_array(MYSQLI_NUM)){
+				$operacion = $row[1];
+
+				if(!isset($row[3]))
+					$row[3] = 0;
+				$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
+				if(!isset($row[4]))
+					$row[4] = 0;
+				$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
+				if(!isset($row[5]))			
+					$row[5] = 0;
+				$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
+				if(!isset($row[6]))
+					$row[6] = 0;
+				$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
+				if(!isset($row[7]))
+					$row[7] = 0;
+				$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
+				
+				//$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+				$evaluacionDiv = explode('/', $operacion);
+				if(count($evaluacionDiv) > 1){					
+					eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+					if($resultDiv != 0){
+						eval( '$res = ' . $operacion . ';');		
+					} else {
+						$res = 0;
+					}
+				} else {
+					eval( '$res = ' . $operacion . ';');		
+				}
+				$nuevoValor = (float)$res;
+				
+				$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
+										VALUES (null,  " . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01',2);";
+				
+				$mysqli->query($sql);
+				//$this->insertaCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
+			}	
+					
+			$mysqli->close();
+			//$arr[0]['ID'] = $ultimo_id;
+			return true;//$arr;
 }
 
 function insertaCascada($nuevoValor, $indice, $empresa, $periodo, $mysqli){
@@ -2286,7 +2394,7 @@ public function grillaTodosGrupoIndices(){
 					}
 				}
 			
-				$sql = "select distinct c.id_formula, a.id_empresa, a.id_periodo,
+				/*$sql = "select distinct c.id_formula, a.id_empresa, a.id_periodo,
 							(select SUM(valor)
 									   from valores x, indices_financieros z, formulas w
 							   where w.id_formula = z.id_formula
@@ -2389,7 +2497,30 @@ public function grillaTodosGrupoIndices(){
 									AND c.id_indice_financiero = " . $row[5] . "
 							AND a.tipo = 'TRIMESTRAL'
 							AND a.id_empresa in (" . $e[$jj] . " " . $idPeriodos . "
-				  Order By 12, 13, 2;";
+				  Order By 12, 13, 2;";*/
+				$sql = "SELECT b.id_indice_financiero, 
+						d.id_empresa, 
+						c.id_periodo,						
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo1 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc1) C1,
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo2 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc2) C2,
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo3 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc3) C3,                        
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo4 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc4) C4,         
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo5 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc5) C5, 
+						concat(d.rso, ': ', b.nombre), 
+						label, 
+						formula, 
+						c.ano, 
+						c.mes						
+					FROM formulas a
+					   INNER JOIN indices_financieros b 
+						ON a.id_indice_financiero = b.id_indice_financiero
+					   INNER JOIN empresa_indice z
+						ON a.id_formula = z.id_formula
+					   INNER JOIN periodos c
+					   INNER JOIN empresas d 
+						ON z.id_empresa = d.id_empresa
+					WHERE z.id_empresa in (" . $e[$jj] . " " . $idPeriodos . "
+					Order By 12, 13, 2;";  
 			}
 			
 			$sql2 = str_replace("'", "''", $sql);
@@ -2878,7 +3009,7 @@ public function insertarValor($arrInf){
 	$sql2 = str_replace("'", "''", $sql);
 	$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 	$mysqli->query($sql);			
-	$sql = "SELECT  
+	/*$sql = "SELECT  
 				b.id_indice_financiero, 
 				a.formula,
 				'rr',
@@ -2901,7 +3032,7 @@ public function insertarValor($arrInf){
 	
 	$arrResult = array();	
 	while($row = $result->fetch_array(MYSQLI_NUM)){
-		$operacion = $row[1];
+		$operacion = $row[10];
 
 		if(!isset($row[3]))
 			$row[3] = 0;
@@ -2924,7 +3055,152 @@ public function insertarValor($arrInf){
 		$nuevoValor = (float)$res;
 		
 		$this->actualizarCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
-	}	
+	}	*/
+	$sql = "SELECT b.id_indice_financiero, 
+						d.id_empresa, 
+						c.id_periodo,						
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo1 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C1,
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo2 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C2,
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo3 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C3,                        
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo4 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C4,         
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo5 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C5, 
+						concat(d.rso, ': ', b.nombre), 
+						label, 
+						formula, 
+						c.ano, 
+						c.mes
+						
+					FROM formulas a
+					   INNER JOIN indices_financieros b 
+						ON a.id_indice_financiero = b.id_indice_financiero 
+					   INNER JOIN periodos c
+					   INNER JOIN empresas d
+					WHERE d.id_empresa = " . $ultimo_id . "
+						AND a.tipoc1 < 2
+						AND a.tipoc2 < 2
+						AND a.tipoc3 < 2
+						AND a.tipoc4 < 2
+						AND a.tipoc5 < 2
+										";
+			$sql2 = str_replace("'", "''", $sql);
+			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+			$result = $mysqli->query($sql);
+			
+			
+			$arrResult = array();	
+			while($row = $result->fetch_array(MYSQLI_NUM)){
+				$operacion = $row[10];
+
+				if(!isset($row[3]))
+					$row[3] = 0;
+				$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
+				if(!isset($row[4]))
+					$row[4] = 0;
+				$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
+				if(!isset($row[5]))			
+					$row[5] = 0;
+				$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
+				if(!isset($row[6]))
+					$row[6] = 0;
+				$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
+				if(!isset($row[7]))
+					$row[7] = 0;
+				$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
+				
+				$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+				$evaluacionDiv = explode('/', $operacion);
+				if(count($evaluacionDiv) > 1){					
+					eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+					if($resultDiv != 0){
+						eval( '$res = ' . $operacion . ';');		
+					} else {
+						$res = 0;
+					}
+				} else {
+					eval( '$res = ' . $operacion . ';');		
+				}
+				$nuevoValor = (float)$res;
+				
+				$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
+										VALUES (null,  " . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01',2);";
+				$sql2 = str_replace("'", "''", $sql);
+				$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+				$mysqli->query($sql);
+				//$this->insertaCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
+			}	
+			
+			$sql = "SELECT b.id_indice_financiero, 
+						d.id_empresa, 
+						c.id_periodo,						
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo1 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc1) C1,
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo2 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc2) C2,
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo3 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc3) C3,                        
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo4 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc4) C4,         
+						(SELECT valor FROM valores WHERE id_tag_agf = a.campo5 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = a.tipoc5) C5, 
+						concat(d.rso, ': ', b.nombre), 
+						label, 
+						formula, 
+						c.ano, 
+						c.mes
+						
+					FROM formulas a
+					   INNER JOIN indices_financieros b 
+						ON a.id_indice_financiero = b.id_indice_financiero 
+					   INNER JOIN periodos c
+					   INNER JOIN empresas d
+					WHERE d.id_empresa = " . $ultimo_id . "
+						AND (a.tipoc1 > 1
+							OR a.tipoc2 > 1
+							OR a.tipoc3 > 1
+							OR a.tipoc4 > 1
+							OR a.tipoc5 > 1)
+					ORDER BY b.id_indice_Financiero		
+										";
+			$sql2 = str_replace("'", "''", $sql);
+			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+			$result = $mysqli->query($sql);
+			
+			
+			$arrResult = array();	
+			while($row = $result->fetch_array(MYSQLI_NUM)){
+				$operacion = $row[1];
+
+				if(!isset($row[3]))
+					$row[3] = 0;
+				$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
+				if(!isset($row[4]))
+					$row[4] = 0;
+				$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
+				if(!isset($row[5]))			
+					$row[5] = 0;
+				$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
+				if(!isset($row[6]))
+					$row[6] = 0;
+				$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
+				if(!isset($row[7]))
+					$row[7] = 0;
+				$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
+				
+				//$mysqli->query("INSERT INTO log values ('" . $operacion . "');");	
+				$evaluacionDiv = explode('/', $operacion);
+				if(count($evaluacionDiv) > 1){					
+					eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+					if($resultDiv != 0){
+						eval( '$res = ' . $operacion . ';');		
+					} else {
+						$res = 0;
+					}
+				} else {
+					eval( '$res = ' . $operacion . ';');		
+				}
+				$nuevoValor = (float)$res;
+				
+				$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
+										VALUES (null,  " . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01',2);";
+				
+				$mysqli->query($sql);
+				//$this->insertaCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
+			}	
 	$mysqli->close();			
 	return true;
 	            
