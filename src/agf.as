@@ -1219,7 +1219,7 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 			}
 			obAdd['arr'].push(roundDecimals(o['valor'] as Number, 1));///1000);
 		}
-		i++;
+		//i++;
 	}
 	
 	gr.arrAct.addItem(obAdd);
