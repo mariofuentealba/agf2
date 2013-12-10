@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-12-2013 a las 05:59:51
+-- Tiempo de generación: 10-12-2013 a las 06:39:16
 -- Versión del servidor: 5.5.32
 -- Versión de PHP: 5.4.19
 
@@ -111,7 +111,11 @@ CREATE TABLE IF NOT EXISTS `empresa_indice` (
 
 INSERT INTO `empresa_indice` (`id_empresa`, `id_indice_financiero`, `num_formula`, `id_formula`) VALUES
 (1, 1, 0, 1),
-(1, 2, 0, 3);
+(1, 2, 0, 2),
+(1, 3, 0, 4),
+(1, 4, 0, 5),
+(1, 5, 0, 7),
+(1, 6, 1, 10);
 
 -- --------------------------------------------------------
 
@@ -132,8 +136,11 @@ CREATE TABLE IF NOT EXISTS `formulario_item` (
 --
 
 INSERT INTO `formulario_item` (`id_empresa`, `id_tag_agf`, `fecha_insert`, `nun_item`, `estado`) VALUES
-(1, 1, '1900-01-01', 0, 'A'),
-(1, 2, '1900-01-01', 1, 'A');
+(1, 1, '1900-01-01', 0, 'E'),
+(1, 2, '1900-01-01', 1, 'E'),
+(1, 1, '1900-01-01', 2, 'A'),
+(1, 2, '1900-01-01', 3, 'A'),
+(1, 3, '1900-01-01', 4, 'A');
 
 -- --------------------------------------------------------
 
@@ -164,16 +171,23 @@ CREATE TABLE IF NOT EXISTS `formulas` (
   `id_indice_financiero` int(11) NOT NULL,
   `num_formula` int(11) NOT NULL,
   PRIMARY KEY (`ID_FORMULA`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=11 ;
 
 --
 -- Volcado de datos para la tabla `formulas`
 --
 
 INSERT INTO `formulas` (`ID_FORMULA`, `CAMPO1`, `CAMPO2`, `CAMPO3`, `CAMPO4`, `CAMPO5`, `tipoc1`, `tipoc2`, `tipoc3`, `tipoc4`, `tipoc5`, `FORMULA`, `CANTIDAD_CAMPOS`, `DECIMALES`, `cod1`, `cod2`, `cod3`, `cod4`, `cod5`, `id_indice_financiero`, `num_formula`) VALUES
-(1, 1, -1, -1, -1, -1, 1, 0, 0, 0, 0, 'C1', 1, 0, 'C.1.NN', 'no', 'no', 'no', 'no', 1, 0),
-(2, 1, 2, -1, -1, -1, 1, 1, 0, 0, 0, 'C1+C2', 2, 0, 'C.1.NN', 'C.2.NN', 'no', 'no', 'no', 1, 1),
-(3, 1, -1, -1, -1, -1, 2, 0, 0, 0, 0, 'C1', 1, 0, 'F.1.NN', 'no', 'no', 'no', 'no', 2, 0);
+(1, 1, 2, -1, -1, -1, 1, 1, 0, 0, 0, 'C1+C2', 2, 0, 'C.1.NN', 'C.2.NN', 'no', 'no', 'no', 1, 0),
+(2, 1, 2, -1, -1, -1, 1, 1, 0, 0, 0, 'C1-C2', 2, 0, 'C.1.NN', 'C.2.NN', 'no', 'no', 'no', 2, 0),
+(3, 1, 3, -1, -1, -1, 1, 1, 0, 0, 0, 'C1-C2', 2, 0, 'C.1.NN', 'C.2.NN', 'no', 'no', 'no', 2, 1),
+(4, 1, -1, -1, -1, -1, 2, 0, 0, 0, 0, 'C1', 1, 0, 'F.1.NN', 'no', 'no', 'no', 'no', 3, 0),
+(5, 1, -1, -1, -1, -1, 2, 0, 0, 0, 0, 'C1', 1, 0, 'F.1.NN', 'no', 'no', 'no', 'no', 4, 0),
+(6, 2, -1, -1, -1, -1, 2, 0, 0, 0, 0, 'C1', 1, 0, 'F.1.NN', 'no', 'no', 'no', 'no', 4, 1),
+(7, 3, -1, -1, -1, -1, 2, 0, 0, 0, 0, 'C1', 1, 0, 'F.1.NN', 'no', 'no', 'no', 'no', 5, 0),
+(8, 4, -1, -1, -1, -1, 2, 0, 0, 0, 0, 'C1', 1, 0, 'F.1.NN', 'no', 'no', 'no', 'no', 5, 1),
+(9, 3, -1, -1, -1, -1, 2, 0, 0, 0, 0, 'C1', 1, 0, 'F.1.NN', 'no', 'no', 'no', 'no', 6, 0),
+(10, 4, -1, -1, -1, -1, 2, 0, 0, 0, 0, 'C1', 1, 0, 'F.1.NN', 'no', 'no', 'no', 'no', 6, 1);
 
 -- --------------------------------------------------------
 
@@ -268,15 +282,19 @@ CREATE TABLE IF NOT EXISTS `indices_financieros` (
   `RANGOS_DESC` text COLLATE utf8_spanish2_ci,
   `OA` bit(1) DEFAULT NULL,
   PRIMARY KEY (`ID_INDICE_FINANCIERO`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=7 ;
 
 --
 -- Volcado de datos para la tabla `indices_financieros`
 --
 
 INSERT INTO `indices_financieros` (`ID_INDICE_FINANCIERO`, `ID_GRUPO_INDICE_FINANCIERO`, `ID_COMPONENTE`, `NOMBRE`, `DESCRIPCION`, `ID_FORMULA`, `FORMULA_DESC`, `RANGO_SUPERIOR`, `RANGO_INFERIOR`, `RANGOS_DESC`, `OA`) VALUES
-(1, 1, 4, 'prueba 1', '0', 1, '0', '0.00', 0.00, '0', b'1'),
-(2, 1, 4, 'prueba 2', '0', 3, '0', '0.00', 0.00, '0', b'1');
+(1, 1, 4, 'IA +IB', '0', 1, '0', '0.00', 0.00, '0', b'1'),
+(2, 1, 4, 'IA -IB: IA -IC', '0', 2, '0', '0.00', 0.00, '0', b'1'),
+(3, 1, 4, 'F1', '0', 4, '0', '0.00', 0.00, '0', b'1'),
+(4, 1, 4, 'F1 y 2', '0', 5, '0', '0.00', 0.00, '0', b'1'),
+(5, 1, 4, 'F 1 y 2 Directa', '0', 7, '0', '0.00', 0.00, '0', b'1'),
+(6, 1, 4, 'F 1 y 2 Directa 2', '0', 9, '0', '0.00', 0.00, '0', b'1');
 
 -- --------------------------------------------------------
 
@@ -297,29 +315,16 @@ CREATE TABLE IF NOT EXISTS `indice_empresa` (
 INSERT INTO `indice_empresa` (`id_indice`, `id_empresa`, `tipo`) VALUES
 (1, 1, 0),
 (2, 1, 0),
+(3, 1, 0),
+(4, 1, 0),
+(5, 1, 0),
+(6, 1, 0),
 (1, 1, 0),
 (2, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(2, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(2, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(2, 1, 0),
-(1, 1, 0),
-(1, 1, 0),
-(2, 1, 0);
+(3, 1, 0),
+(4, 1, 0),
+(5, 1, 0),
+(6, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -348,114 +353,16 @@ CREATE TABLE IF NOT EXISTS `log` (
 --
 
 INSERT INTO `log` (`datos`) VALUES
+('SELECT a.id_indice_financiero, a.nombre, c.id_empresa, c.RSO, 0, ID_GRUPO_INDICE_FINANCIERO\n				FROM indices_financieros a inner join \n					 indice_empresa b on id_indice_financiero = id_indice inner join \n					 empresas c on b.id_empresa = c.id_empresa\n				WHERE b.tipo = 0					\n				UNION\n				SELECT a.id_indice_financiero, a.nombre, c.id_subgrupo, c.nombre, 1,ID_GRUPO_INDICE_FINANCIERO\n				FROM indices_financieros a inner join \n					 indice_empresa b on a.id_indice_financiero = b.id_indice inner join \n					 subgrupos c on b.id_empresa = c.id_subgrupo\n				WHERE b.tipo <> 0\n				ORDER BY 1;'),
+('6'),
+('SELECT a.id_indice_financiero, a.nombre, c.id_empresa, c.RSO, 0, ID_GRUPO_INDICE_FINANCIERO\n				FROM indices_financieros a inner join \n					 indice_empresa b on id_indice_financiero = id_indice inner join \n					 empresas c on b.id_empresa = c.id_empresa\n				WHERE b.tipo = 0					\n				UNION\n				SELECT a.id_indice_financiero, a.nombre, c.id_subgrupo, c.nombre, 1,ID_GRUPO_INDICE_FINANCIERO\n				FROM indices_financieros a inner join \n					 indice_empresa b on a.id_indice_financiero = b.id_indice inner join \n					 subgrupos c on b.id_empresa = c.id_subgrupo\n				WHERE b.tipo <> 0\n				ORDER BY 1;'),
+('6'),
 ('1, 0, 1):),  , AND b.id_indice_financiero in (0, 1), Trimestral'),
 ('SELECT `cod1`, `cod2`, `cod3`, `cod4`, `cod5`, a.`id_indice_financiero`\n									FROM `formulas` a, `indices_financieros` b\n									WHERE a.`ID_FORMULA` = b.`ID_FORMULA` \n										AND b.`id_indice_financiero` =  1;'),
-('SELECT a.`ID_TAG_AGF`, rso, color, a.`VALOR`, \n							c.nombre indice, a.`ID_PERIODO`, 0 nro_grafico, \n							ano year, label, concat(b.rso, '': '', c.nombre) nombre_final, \n							1 graf,a.`ID_EMPRESA`, a.hist_formula, mes\n						FROM `valores` a 								\n							INNER JOIN empresas b\n								ON a.id_empresa = b.id_empresa									\n							INNER JOIN indices_financieros c\n								ON a.id_tag_agf = c.id_indice_financiero									\n							INNER JOIN periodos d\n								ON a.id_periodo = d.id_periodo									\n						WHERE a.`ID_TAG_AGF` = 1\n							AND a.origen = 2							\n						order by 8, 14, 2;'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 100.00\n    [4] => prueba 1\n    [5] => 1\n    [6] => 0\n    [7] => 2010\n    [8] => 3/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1||||\n    [13] => 3\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => \n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1\n											AND id_formula = 0'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 100.00\n    [4] => prueba 1\n    [5] => 1\n    [6] => 0\n    [7] => 2010\n    [8] => 3/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1|C2:0:1:2|||\n    [13] => 3\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => C2:0:1:2\n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1\n											AND id_formula = 0'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 2\n    [6] => 0\n    [7] => 2010\n    [8] => 6/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1||||\n    [13] => 6\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => \n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1\n											AND id_formula = 0'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 2\n    [6] => 0\n    [7] => 2010\n    [8] => 6/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1|C2:0:1:2|||\n    [13] => 6\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => C2:0:1:2\n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1\n											AND id_formula = 0'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 3\n    [6] => 0\n    [7] => 2010\n    [8] => 9/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1||||\n    [13] => 9\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => \n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1\n											AND id_formula = 0'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 3\n    [6] => 0\n    [7] => 2010\n    [8] => 9/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1|C2:0:1:2|||\n    [13] => 9\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => C2:0:1:2\n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1\n											AND id_formula = 0'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 4\n    [6] => 0\n    [7] => 2010\n    [8] => 12/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1||||\n    [13] => 12\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => \n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1\n											AND id_formula = 0'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 4\n    [6] => 0\n    [7] => 2010\n    [8] => 12/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1|C2:0:1:2|||\n    [13] => 12\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => C2:0:1:2\n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1\n											AND id_formula = 0'),
-('Array\n(\n    [0] => Array\n        (\n        )\n\n)\n'),
-('1, 0, 1):),  , AND b.id_indice_financiero in (0, 1), Trimestral'),
-('SELECT `cod1`, `cod2`, `cod3`, `cod4`, `cod5`, a.`id_indice_financiero`\n									FROM `formulas` a, `indices_financieros` b\n									WHERE a.`ID_FORMULA` = b.`ID_FORMULA` \n										AND b.`id_indice_financiero` =  1;'),
-('SELECT a.`ID_TAG_AGF`, rso, color, a.`VALOR`, \n							c.nombre indice, a.`ID_PERIODO`, 0 nro_grafico, \n							ano year, label, concat(b.rso, '': '', c.nombre) nombre_final, \n							1 graf,a.`ID_EMPRESA`, a.hist_formula, mes\n						FROM `valores` a 								\n							INNER JOIN empresas b\n								ON a.id_empresa = b.id_empresa									\n							INNER JOIN indices_financieros c\n								ON a.id_tag_agf = c.id_indice_financiero									\n							INNER JOIN periodos d\n								ON a.id_periodo = d.id_periodo									\n						WHERE a.`ID_TAG_AGF` = 1\n							AND a.origen = 2							\n						order by 8, 14, 2;'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 100.00\n    [4] => prueba 1\n    [5] => 1\n    [6] => 0\n    [7] => 2010\n    [8] => 3/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1||||\n    [13] => 3\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => \n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 100.00\n    [4] => prueba 1\n    [5] => 1\n    [6] => 0\n    [7] => 2010\n    [8] => 3/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1|C2:0:1:2|||\n    [13] => 3\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => C2:0:1:2\n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 2\n    [6] => 0\n    [7] => 2010\n    [8] => 6/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1||||\n    [13] => 6\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => \n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 2\n    [6] => 0\n    [7] => 2010\n    [8] => 6/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1|C2:0:1:2|||\n    [13] => 6\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => C2:0:1:2\n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 3\n    [6] => 0\n    [7] => 2010\n    [8] => 9/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1||||\n    [13] => 9\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => \n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 3\n    [6] => 0\n    [7] => 2010\n    [8] => 9/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1|C2:0:1:2|||\n    [13] => 9\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => C2:0:1:2\n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 4\n    [6] => 0\n    [7] => 2010\n    [8] => 12/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1||||\n    [13] => 12\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => \n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 4\n    [6] => 0\n    [7] => 2010\n    [8] => 12/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1|C2:0:1:2|||\n    [13] => 12\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => C2:0:1:2\n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => Array\n        (\n            [0] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 1\n                    [valor] => 100.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 3/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [1] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 1\n                    [valor] => 100.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 3/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [2] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 2\n                    [valor] => 0.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 6/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [3] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 2\n                    [valor] => 0.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 6/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [4] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 3\n                    [valor] => 0.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 9/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [5] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 3\n                    [valor] => 0.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 9/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [6] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 4\n                    [valor] => 0.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 12/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [7] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 4\n                    [valor] => 0.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 12/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [8] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 1\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 3/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [9] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 1\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 3/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [10] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 2\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 6/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [11] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 2\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 6/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [12] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 3\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 9/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [13] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 3\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 9/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [14] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 4\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 12/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [15] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 4\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 12/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [16] => Array\n                (\n                    [id_tag_agf] => \n                    [id_empresa] => \n                    [id_periodo] => \n                    [nombre_final] => \n                    [label] => \n                    [color] => \n                    [graf] => 3\n                    [rso] => \n                    [indice] => \n                    [year] => \n                    [nro_grafico] => 0\n                    [valor] => 0\n                )\n\n            [17] => Array\n                (\n                    [id_tag_agf] => \n                    [id_empresa] => \n                    [id_periodo] => \n                    [nombre_final] => \n                    [label] => \n                    [color] => \n                    [graf] => 3\n                    [rso] => \n                    [indice] => \n                    [year] => \n                    [nro_grafico] => 0\n                    [valor] => -100\n                )\n\n            [18] => Array\n                (\n                    [id_tag_agf] => \n                    [id_empresa] => \n                    [id_periodo] => \n                    [nombre_final] => \n                    [label] => \n                    [color] => \n                    [graf] => 3\n                    [rso] => \n                    [indice] => \n                    [year] => \n                    [nro_grafico] => 0\n                    [valor] => 0\n                )\n\n            [19] => Array\n                (\n                    [id_tag_agf] => \n                    [id_empresa] ='),
-('1, 0, 1):),  , AND b.id_indice_financiero in (0, 1), Trimestral'),
-('SELECT `cod1`, `cod2`, `cod3`, `cod4`, `cod5`, a.`id_indice_financiero`\n									FROM `formulas` a, `indices_financieros` b\n									WHERE a.`ID_FORMULA` = b.`ID_FORMULA` \n										AND b.`id_indice_financiero` =  1;'),
-('SELECT a.`ID_TAG_AGF`, rso, color, a.`VALOR`, \n							c.nombre indice, a.`ID_PERIODO`, 0 nro_grafico, \n							ano year, label, concat(b.rso, '': '', c.nombre) nombre_final, \n							1 graf,a.`ID_EMPRESA`, a.hist_formula, mes\n						FROM `valores` a 								\n							INNER JOIN empresas b\n								ON a.id_empresa = b.id_empresa									\n							INNER JOIN indices_financieros c\n								ON a.id_tag_agf = c.id_indice_financiero									\n							INNER JOIN periodos d\n								ON a.id_periodo = d.id_periodo									\n						WHERE a.`ID_TAG_AGF` = 1\n							AND a.origen = 2							\n						order by 8, 14, 2;'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 100.00\n    [4] => prueba 1\n    [5] => 1\n    [6] => 0\n    [7] => 2010\n    [8] => 3/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1||||\n    [13] => 3\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => \n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 100.00\n    [4] => prueba 1\n    [5] => 1\n    [6] => 0\n    [7] => 2010\n    [8] => 3/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1|C2:0:1:2|||\n    [13] => 3\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => C2:0:1:2\n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 2\n    [6] => 0\n    [7] => 2010\n    [8] => 6/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1||||\n    [13] => 6\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => \n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 2\n    [6] => 0\n    [7] => 2010\n    [8] => 6/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1|C2:0:1:2|||\n    [13] => 6\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => C2:0:1:2\n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 3\n    [6] => 0\n    [7] => 2010\n    [8] => 9/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1||||\n    [13] => 9\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => \n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 3\n    [6] => 0\n    [7] => 2010\n    [8] => 9/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1|C2:0:1:2|||\n    [13] => 9\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => C2:0:1:2\n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 4\n    [6] => 0\n    [7] => 2010\n    [8] => 12/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1||||\n    [13] => 12\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => \n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 0.00\n    [4] => prueba 1\n    [5] => 4\n    [6] => 0\n    [7] => 2010\n    [8] => 12/2010\n    [9] => EMPRESA A: prueba 1\n    [10] => 1\n    [11] => 1\n    [12] => C1:0:1:1|C2:0:1:2|||\n    [13] => 12\n)\n'),
-('Array\n(\n    [0] => C1:0:1:1\n    [1] => C2:0:1:2\n    [2] => \n    [3] => \n    [4] => \n)\n'),
-('Array\n(\n    [0] => C1\n    [1] => 0\n    [2] => 1\n    [3] => 1\n)\n'),
-('SELECT *\n										FROM empresa_indice\n										WHERE id_empresa = 1\n											AND id_indice_financiero = 1'),
-('Array\n(\n    [0] => Array\n        (\n            [0] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 1\n                    [valor] => 100.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 3/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [1] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 1\n                    [valor] => 100.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 3/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [2] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 2\n                    [valor] => 0.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 6/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [3] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 2\n                    [valor] => 0.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 6/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [4] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 3\n                    [valor] => 0.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 9/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [5] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 3\n                    [valor] => 0.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 9/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [6] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 4\n                    [valor] => 0.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 12/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [7] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 4\n                    [valor] => 0.00\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 12/2010\n                    [color] => 0\n                    [graf] => 1\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [8] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 1\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 3/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [9] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 1\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 3/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [10] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 2\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 6/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [11] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 2\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 6/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [12] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 3\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 9/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [13] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 3\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 9/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [14] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 4\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 12/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [15] => Array\n                (\n                    [id_tag_agf] => 1\n                    [id_empresa] => 1\n                    [id_periodo] => 4\n                    [valor] => 0\n                    [nombre_final] => EMPRESA A: prueba 1\n                    [label] => 12/2010\n                    [color] => 0\n                    [graf] => 2\n                    [rso] => EMPRESA A\n                    [indice] => prueba 1\n                    [year] => 2010\n                    [nro_grafico] => 0\n                )\n\n            [16] => Array\n                (\n                    [id_tag_agf] => \n                    [id_empresa] => \n                    [id_periodo] => \n                    [nombre_final] => \n                    [label] => \n                    [color] => \n                    [graf] => 3\n                    [rso] => \n                    [indice] => \n                    [year] => \n                    [nro_grafico] => 0\n                    [valor] => 0\n                )\n\n            [17] => Array\n                (\n                    [id_tag_agf] => \n                    [id_empresa] => \n                    [id_periodo] => \n                    [nombre_final] => \n                    [label] => \n                    [color] => \n                    [graf] => 3\n                    [rso] => \n                    [indice] => \n                    [year] => \n                    [nro_grafico] => 0\n                    [valor] => -100\n                )\n\n            [18] => Array\n                (\n                    [id_tag_agf] => \n                    [id_empresa] => \n                    [id_periodo] => \n                    [nombre_final] => \n                    [label] => \n                    [color] => \n                    [graf] => 3\n                    [rso] => \n                    [indice] => \n                    [year] => \n                    [nro_grafico] => 0\n                    [valor] => 0\n                )\n\n            [19] => Array\n                (\n                    [id_tag_agf] => \n                    [id_empresa] =');
+('SELECT a.`ID_TAG_AGF`, rso, color, a.`VALOR`, \n							c.nombre indice, a.`ID_PERIODO`, 0 nro_grafico, \n							ano year, label, concat(b.rso, '': '', c.nombre) nombre_final, \n							1 graf,a.`ID_EMPRESA`, a.hist_formula, mes, a.id_formula\n						FROM `valores` a 								\n							INNER JOIN empresas b\n								ON a.id_empresa = b.id_empresa									\n							INNER JOIN indices_financieros c\n								ON a.id_tag_agf = c.id_indice_financiero									\n							INNER JOIN periodos d\n								ON a.id_periodo = d.id_periodo	\n							INNER JOIN empresa_indice e\n							   ON e.id_empresa = b.id_empresa\n								AND e.id_indice_financiero = c.id_indice_financiero\n								AND e.id_formula = a.id_formula\n						WHERE a.`ID_TAG_AGF` = 1\n							AND a.origen = 2							\n						order by 8, 14, 2;'),
+('Array\n(\n    [0] => 1\n    [1] => EMPRESA A\n    [2] => 0\n    [3] => 180.00\n    [4] => IA +IB\n    [5] => 1\n    [6] => 0\n    [7] => 2010\n    [8] => 3/2010\n    [9] => EMPRESA A: IA +IB\n    [10] => 1\n    [11] => 1\n    [12] => 1|8|||\n    [13] => 3\n    [14] => 1\n)\n'),
+('Array\n(\n    [0] => 1\n    [1] => 8\n    [2] => \n    [3] => \n    [4] => \n)\n'),
+('1');
 
 -- --------------------------------------------------------
 
@@ -567,7 +474,7 @@ CREATE TABLE IF NOT EXISTS `periodos` (
   `orden` int(11) NOT NULL,
   `mask` varchar(4) COLLATE utf8_spanish2_ci NOT NULL,
   PRIMARY KEY (`ID_PERIODO`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=5 ;
 
 --
 -- Volcado de datos para la tabla `periodos`
@@ -636,15 +543,16 @@ CREATE TABLE IF NOT EXISTS `tag_agf` (
   `ORIGEN` varchar(50) COLLATE utf8_spanish2_ci DEFAULT NULL,
   `OA` bit(1) DEFAULT NULL,
   PRIMARY KEY (`ID_TAG_AGF`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=4 ;
 
 --
 -- Volcado de datos para la tabla `tag_agf`
 --
 
 INSERT INTO `tag_agf` (`ID_TAG_AGF`, `NOMBRE`, `ETIQUETA`, `COMPONENTE`, `ORIGEN`, `OA`) VALUES
-(1, 'ITEM 1', 'ITEM 1', 'NO ESPECIFICA', 'MANUAL', b'1'),
-(2, 'ITEM 2', 'ITEM 2', 'NO ESPECIFICA', 'MANUAL', b'1');
+(1, 'ITEM A', 'ITEM A', 'NO ESPECIFICA', 'MANUAL', b'1'),
+(2, 'ITEM B', 'ITEM B', 'NO ESPECIFICA', 'MANUAL', b'1'),
+(3, 'ITEM C', 'ITEM C', 'NO ESPECIFICA', 'MANUAL', b'1');
 
 -- --------------------------------------------------------
 
@@ -743,37 +651,85 @@ CREATE TABLE IF NOT EXISTS `valores` (
   KEY `ID_PERIODO` (`ID_PERIODO`),
   KEY `ID_TAG_AGF` (`ID_TAG_AGF`,`ID_EMPRESA`,`ID_PERIODO`),
   KEY `ID_TAG_AGF_2` (`ID_TAG_AGF`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=168 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=130 ;
 
 --
 -- Volcado de datos para la tabla `valores`
 --
 
 INSERT INTO `valores` (`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`, `id_formula`, `hist_formula`) VALUES
-(1, 1, 1, 1, 'TRIMESTRAL', 100.00, '1900-01-01 00:00:00', 1, 0, NULL),
-(2, 2, 1, 1, 'TRIMESTRAL', 0.00, '1900-01-01 00:00:00', 1, 0, NULL),
-(3, 1, 1, 2, 'TRIMESTRAL', 0.00, '1900-01-01 00:00:00', 1, 0, NULL),
-(4, 2, 1, 2, 'TRIMESTRAL', 0.00, '1900-01-01 00:00:00', 1, 0, NULL),
-(5, 1, 1, 3, 'TRIMESTRAL', 0.00, '1900-01-01 00:00:00', 1, 0, NULL),
-(6, 2, 1, 3, 'TRIMESTRAL', 0.00, '1900-01-01 00:00:00', 1, 0, NULL),
-(7, 1, 1, 4, 'TRIMESTRAL', 0.00, '1900-01-01 00:00:00', 1, 0, NULL),
-(8, 2, 1, 4, 'TRIMESTRAL', 0.00, '1900-01-01 00:00:00', 1, 0, NULL),
-(152, 1, 1, 1, 'TRIMESTRAL', 100.00, '0000-00-00 00:00:00', 2, 1, 'C1:0:1:1||||'),
-(153, 1, 1, 1, 'TRIMESTRAL', 100.00, '0000-00-00 00:00:00', 2, 2, 'C1:0:1:1|C2:0:1:2|||'),
-(154, 1, 1, 2, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 1, 'C1:0:1:1||||'),
-(155, 1, 1, 2, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 2, 'C1:0:1:1|C2:0:1:2|||'),
-(156, 1, 1, 3, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 1, 'C1:0:1:1||||'),
-(157, 1, 1, 3, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 2, 'C1:0:1:1|C2:0:1:2|||'),
-(158, 1, 1, 4, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 1, 'C1:0:1:1||||'),
-(159, 1, 1, 4, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 2, 'C1:0:1:1|C2:0:1:2|||'),
-(160, 2, 1, 1, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 3, 'C1:1:2:1||||'),
-(161, 2, 1, 1, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 3, 'C1:2:2:1||||'),
-(162, 2, 1, 2, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 3, 'C1:1:2:1||||'),
-(163, 2, 1, 2, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 3, 'C1:2:2:1||||'),
-(164, 2, 1, 3, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 3, 'C1:1:2:1||||'),
-(165, 2, 1, 3, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 3, 'C1:2:2:1||||'),
-(166, 2, 1, 4, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 3, 'C1:1:2:1||||'),
-(167, 2, 1, 4, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 3, 'C1:2:2:1||||');
+(1, 1, 1, 1, 'TRIMESTRAL', 130.00, '1900-01-01 00:00:00', 1, 0, NULL),
+(2, 1, 1, 2, 'TRIMESTRAL', 100.00, '1900-01-01 00:00:00', 1, 0, NULL),
+(3, 1, 1, 3, 'TRIMESTRAL', 100.00, '1900-01-01 00:00:00', 1, 0, NULL),
+(4, 1, 1, 4, 'TRIMESTRAL', 100.00, '1900-01-01 00:00:00', 1, 0, NULL),
+(8, 2, 1, 1, 'TRIMESTRAL', 50.00, '1900-01-01 00:00:00', 1, 0, NULL),
+(9, 2, 1, 2, 'TRIMESTRAL', 100.00, '1900-01-01 00:00:00', 1, 0, NULL),
+(10, 2, 1, 3, 'TRIMESTRAL', 150.00, '1900-01-01 00:00:00', 1, 0, NULL),
+(11, 2, 1, 4, 'TRIMESTRAL', 200.00, '1900-01-01 00:00:00', 1, 0, NULL),
+(15, 3, 1, 1, 'TRIMESTRAL', 10.00, '1900-01-01 00:00:00', 1, 0, NULL),
+(16, 3, 1, 2, 'TRIMESTRAL', 20.00, '1900-01-01 00:00:00', 1, 0, NULL),
+(17, 3, 1, 3, 'TRIMESTRAL', 30.00, '1900-01-01 00:00:00', 1, 0, NULL),
+(18, 3, 1, 4, 'TRIMESTRAL', 40.00, '1900-01-01 00:00:00', 1, 0, NULL),
+(70, 1, 1, 1, 'TRIMESTRAL', 180.00, '0000-00-00 00:00:00', 2, 1, '1|8|||'),
+(71, 1, 1, 2, 'TRIMESTRAL', 200.00, '0000-00-00 00:00:00', 2, 1, '2|9|||'),
+(72, 1, 1, 3, 'TRIMESTRAL', 250.00, '0000-00-00 00:00:00', 2, 1, '3|10|||'),
+(73, 1, 1, 4, 'TRIMESTRAL', 300.00, '0000-00-00 00:00:00', 2, 1, '4|11|||'),
+(74, 2, 1, 1, 'TRIMESTRAL', 80.00, '0000-00-00 00:00:00', 2, 2, '1|8|||'),
+(75, 2, 1, 1, 'TRIMESTRAL', 120.00, '0000-00-00 00:00:00', 2, 3, '1|15|||'),
+(76, 2, 1, 2, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 2, '2|9|||'),
+(77, 2, 1, 2, 'TRIMESTRAL', 80.00, '0000-00-00 00:00:00', 2, 3, '2|16|||'),
+(78, 2, 1, 3, 'TRIMESTRAL', -50.00, '0000-00-00 00:00:00', 2, 2, '3|10|||'),
+(79, 2, 1, 3, 'TRIMESTRAL', 70.00, '0000-00-00 00:00:00', 2, 3, '3|17|||'),
+(80, 2, 1, 4, 'TRIMESTRAL', -100.00, '0000-00-00 00:00:00', 2, 2, '4|11|||'),
+(81, 2, 1, 4, 'TRIMESTRAL', 60.00, '0000-00-00 00:00:00', 2, 3, '4|18|||'),
+(82, 3, 1, 1, 'TRIMESTRAL', 180.00, '0000-00-00 00:00:00', 2, 4, '70||||'),
+(83, 3, 1, 2, 'TRIMESTRAL', 200.00, '0000-00-00 00:00:00', 2, 4, '71||||'),
+(84, 3, 1, 3, 'TRIMESTRAL', 250.00, '0000-00-00 00:00:00', 2, 4, '72||||'),
+(85, 3, 1, 4, 'TRIMESTRAL', 300.00, '0000-00-00 00:00:00', 2, 4, '73||||'),
+(86, 4, 1, 1, 'TRIMESTRAL', 180.00, '0000-00-00 00:00:00', 2, 5, '70||||'),
+(87, 4, 1, 2, 'TRIMESTRAL', 200.00, '0000-00-00 00:00:00', 2, 5, '71||||'),
+(88, 4, 1, 3, 'TRIMESTRAL', 250.00, '0000-00-00 00:00:00', 2, 5, '72||||'),
+(89, 4, 1, 4, 'TRIMESTRAL', 300.00, '0000-00-00 00:00:00', 2, 5, '73||||'),
+(90, 4, 1, 1, 'TRIMESTRAL', 80.00, '0000-00-00 00:00:00', 2, 6, '74||||'),
+(91, 4, 1, 1, 'TRIMESTRAL', 120.00, '0000-00-00 00:00:00', 2, 6, '75||||'),
+(92, 4, 1, 2, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 6, '76||||'),
+(93, 4, 1, 2, 'TRIMESTRAL', 80.00, '0000-00-00 00:00:00', 2, 6, '77||||'),
+(94, 4, 1, 3, 'TRIMESTRAL', -50.00, '0000-00-00 00:00:00', 2, 6, '78||||'),
+(95, 4, 1, 3, 'TRIMESTRAL', 70.00, '0000-00-00 00:00:00', 2, 6, '79||||'),
+(96, 4, 1, 4, 'TRIMESTRAL', -100.00, '0000-00-00 00:00:00', 2, 6, '80||||'),
+(97, 4, 1, 4, 'TRIMESTRAL', 60.00, '0000-00-00 00:00:00', 2, 6, '81||||'),
+(98, 5, 1, 1, 'TRIMESTRAL', 180.00, '0000-00-00 00:00:00', 2, 7, '82||||'),
+(99, 5, 1, 2, 'TRIMESTRAL', 200.00, '0000-00-00 00:00:00', 2, 7, '83||||'),
+(100, 5, 1, 3, 'TRIMESTRAL', 250.00, '0000-00-00 00:00:00', 2, 7, '84||||'),
+(101, 5, 1, 4, 'TRIMESTRAL', 300.00, '0000-00-00 00:00:00', 2, 7, '85||||'),
+(102, 5, 1, 1, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 8, '86||||'),
+(103, 5, 1, 1, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 8, '90||||'),
+(104, 5, 1, 1, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 8, '91||||'),
+(105, 5, 1, 2, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 8, '87||||'),
+(106, 5, 1, 2, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 8, '92||||'),
+(107, 5, 1, 2, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 8, '93||||'),
+(108, 5, 1, 3, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 8, '88||||'),
+(109, 5, 1, 3, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 8, '94||||'),
+(110, 5, 1, 3, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 8, '95||||'),
+(111, 5, 1, 4, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 8, '89||||'),
+(112, 5, 1, 4, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 8, '96||||'),
+(113, 5, 1, 4, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 8, '97||||'),
+(114, 6, 1, 1, 'TRIMESTRAL', 180.00, '0000-00-00 00:00:00', 2, 9, '82||||'),
+(115, 6, 1, 2, 'TRIMESTRAL', 200.00, '0000-00-00 00:00:00', 2, 9, '83||||'),
+(116, 6, 1, 3, 'TRIMESTRAL', 250.00, '0000-00-00 00:00:00', 2, 9, '84||||'),
+(117, 6, 1, 4, 'TRIMESTRAL', 300.00, '0000-00-00 00:00:00', 2, 9, '85||||'),
+(118, 6, 1, 1, 'TRIMESTRAL', 180.00, '0000-00-00 00:00:00', 2, 10, '86||||'),
+(119, 6, 1, 1, 'TRIMESTRAL', 80.00, '0000-00-00 00:00:00', 2, 10, '90||||'),
+(120, 6, 1, 1, 'TRIMESTRAL', 120.00, '0000-00-00 00:00:00', 2, 10, '91||||'),
+(121, 6, 1, 2, 'TRIMESTRAL', 200.00, '0000-00-00 00:00:00', 2, 10, '87||||'),
+(122, 6, 1, 2, 'TRIMESTRAL', 0.00, '0000-00-00 00:00:00', 2, 10, '92||||'),
+(123, 6, 1, 2, 'TRIMESTRAL', 80.00, '0000-00-00 00:00:00', 2, 10, '93||||'),
+(124, 6, 1, 3, 'TRIMESTRAL', 250.00, '0000-00-00 00:00:00', 2, 10, '88||||'),
+(125, 6, 1, 3, 'TRIMESTRAL', -50.00, '0000-00-00 00:00:00', 2, 10, '94||||'),
+(126, 6, 1, 3, 'TRIMESTRAL', 70.00, '0000-00-00 00:00:00', 2, 10, '95||||'),
+(127, 6, 1, 4, 'TRIMESTRAL', 300.00, '0000-00-00 00:00:00', 2, 10, '89||||'),
+(128, 6, 1, 4, 'TRIMESTRAL', -100.00, '0000-00-00 00:00:00', 2, 10, '96||||'),
+(129, 6, 1, 4, 'TRIMESTRAL', 60.00, '0000-00-00 00:00:00', 2, 10, '97||||');
 
 -- --------------------------------------------------------
 

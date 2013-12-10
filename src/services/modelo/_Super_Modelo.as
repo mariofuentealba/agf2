@@ -325,7 +325,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultType = Object;
         operations["insertarSubgrupoEmpresa"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "insertarValor");
-         operation.resultType = Object;
+         operation.resultType = Boolean;
         operations["insertarValor"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "listEmpresa");
          operation.resultType = Object;

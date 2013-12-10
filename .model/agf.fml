@@ -855,9 +855,9 @@
       <parameter name="grupo" type="opaque"/>
       <parameter name="empresas" type="opaque"/>
     </function>
-    <function name="insertarValor" return-type="opaque">
+    <function name="insertarValor" return-type="boolean">
       <annotation name="analyze group">
-        <item name="analyzed">false</item>
+        <item name="analyzed">true</item>
       </annotation>
       <annotation name="original signature">
         <item name="inputParams">opaque</item>

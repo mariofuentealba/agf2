@@ -1219,7 +1219,7 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 			}
 			obAdd['arr'].push(roundDecimals(o['valor'] as Number, 1));///1000);
 		}
-		//i++;
+		i++;
 	}
 	
 	gr.arrAct.addItem(obAdd);
@@ -1629,9 +1629,10 @@ protected function btnAccion_clickHandler(event:MouseEvent):void
 			for(var i:int = 0; i < arr.length; i++){
 				var n:int = (arr[i] as NavigatorContent).numElements;
 				for(var j:int = 0; j < n; j++){
-					if(((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).txtValorItem.text != ''){
+					var itemd:ItemFormulario = ((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario);
+					if(itemd.txtValorItem.text != ''){
 						//arrRes.push(({label : ((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).lblItem.text, valor : ((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).txtValorItem.text});
-						valoresGuardadosResult.token = modelo.insertarValor([((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).lblItem.text,  dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo'], ((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).txtValorItem.text]);
+						valoresGuardadosResult.token = modelo.insertarValor([itemd.lblItem.text,  dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo'], itemd.txtValorItem.text]);
 						valoresGuardadosResult.addEventListener(ResultEvent.RESULT, valorGuardado);
 					}
 					

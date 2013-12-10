@@ -1524,11 +1524,11 @@ public function grillaIndicesFinancieros(){
 					a.id_formula, 
 					c.mes,						
 					d.color, d.rso, b.nombre, 				   
-					concat('C1:', v.id_formula, ':', v.origen, ':', v.id_tag_agf) C1H, 
-					concat('C2:', w.id_formula, ':', w.origen, ':', w.id_tag_agf) C2H,
-					concat('C3:', x.id_formula, ':', x.origen, ':', x.id_tag_agf) C3H,
-					concat('C4:', y.id_formula, ':', y.origen, ':', y.id_tag_agf) C4H,
-					concat('C5:', z.id_formula, ':', z.origen, ':', z.id_tag_agf) C5H
+					v.id_valor C1H, 
+					w.id_valor C2H,
+					x.id_valor C3H,
+					y.id_valor C4H,
+					z.id_valor C5H
 				FROM formulas a
 					INNER JOIN indices_financieros b 
 					 ON a.id_indice_financiero = b.id_indice_financiero					   
@@ -2535,14 +2535,18 @@ public function grillaTodosGrupoIndices(){
 				$sql = "SELECT a.`ID_TAG_AGF`, rso, color, a.`VALOR`, 
 							c.nombre indice, a.`ID_PERIODO`, 0 nro_grafico, 
 							ano year, label, concat(b.rso, ': ', c.nombre) nombre_final, 
-							1 graf,a.`ID_EMPRESA`, a.hist_formula, mes
+							1 graf,a.`ID_EMPRESA`, a.hist_formula, mes, a.id_formula
 						FROM `valores` a 								
 							INNER JOIN empresas b
 								ON a.id_empresa = b.id_empresa									
 							INNER JOIN indices_financieros c
 								ON a.id_tag_agf = c.id_indice_financiero									
 							INNER JOIN periodos d
-								ON a.id_periodo = d.id_periodo									
+								ON a.id_periodo = d.id_periodo	
+							INNER JOIN empresa_indice e
+							   ON e.id_empresa = b.id_empresa
+								AND e.id_indice_financiero = c.id_indice_financiero
+								AND e.id_formula = a.id_formula
 						WHERE a.`ID_TAG_AGF` = " . $row[5] . "
 							AND a.origen = 2							
 						order by 8, 14, 2;";
@@ -2550,14 +2554,18 @@ public function grillaTodosGrupoIndices(){
 				$sqlCmp = "SELECT a.`ID_TAG_AGF`, rso, color, a.`VALOR`, 
 							c.nombre indice, a.`ID_PERIODO`, 0 nro_grafico, 
 							ano year, label,  concat(b.rso, ': ', c.nombre) nombre_final, 
-							1 graf,a.`ID_EMPRESA`, a.hist_formula,mes
+							1 graf,a.`ID_EMPRESA`, a.hist_formula, mes, a.id_formula
 						FROM `valores` a 								
 							INNER JOIN empresas b
 								ON a.id_empresa = b.id_empresa									
 							INNER JOIN indices_financieros c
 								ON a.id_tag_agf = c.id_indice_financiero									
 							INNER JOIN periodos d
-								ON a.id_periodo = d.id_periodo									
+								ON a.id_periodo = d.id_periodo	
+							INNER JOIN empresa_indice e
+							   ON e.id_empresa = b.id_empresa
+								AND e.id_indice_financiero = c.id_indice_financiero
+								AND e.id_formula = a.id_formula
 						WHERE a.`ID_TAG_AGF` = " . $row[5] . "
 							AND a.origen = 2							
 						order by 8, 14, 2;";
@@ -2591,7 +2599,7 @@ public function grillaTodosGrupoIndices(){
 			    $arr[$i]['id_empresa'] = $row2[11];
 	            $arr[$i]['id_periodo']=$row2[5];	     
 			     
-				$arr[$i]['valor'] = $row2[3];
+				$arr[$i]['valor'] = (float)$row2[3];
 				//$mysqli->query("INSERT INTO log values ('" . $res . "');");	
 				$arr[$i]['nombre_final']=$row2[9];
 				$arr[$i]['label'] = $row2[8];			
@@ -2609,37 +2617,77 @@ public function grillaTodosGrupoIndices(){
 					$mysqli->query("INSERT INTO log values ('" . print_r($row2, 1) . "');");
 					$mysqli->query("INSERT INTO log values ('" . print_r($campos, 1) . "');");	
 					if($campos[$w] != ""){
-						$campo = explode(":", $campos[$w]);
+						$campo = $campos[$w];
 						$mysqli->query("INSERT INTO log values ('" . print_r($campo, 1) . "');");	
-						if($campo[2] == 2){
-							$sqlReq = "SELECT *
-										FROM empresa_indice
-										WHERE id_empresa = " . $arr[$i]['id_empresa'] . "
-											AND id_indice_financiero = " . $campo[3] . "
-											AND id_formula = " . $campo[1] . "";
-							$sql2 = str_replace("'", "''", $sqlReq);
-							$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
-							$resultReq = $mysqli->query($sqlReq);
-							switch($resultReq->num_rows){
-								case 1:
+						
+						
+						
+						
+						
+						//if($campo[2] == 2){
+						
+							$arrFormulas = array();
+							$index = 0;
+							do{
+							
+								$sqlReq = "SELECT origen
+									FROM valores										
+									WHERE id_valor = " . $campo . "										
+										;";
+								$resultReq = $mysqli->query($sqlReq);		
+								$rowFormula = $resultReq->fetch_array(MYSQLI_NUM);
+								if($rowFormula[0] == 1){
 									$arrF[count($arrF)] = $arr[$i];
 									$w = count($campos);
 									$swArr = true;
-								break;
-								case 0:
-									$swArr = false;
-									$w = count($campos);
-								break;
-								default:
-									$swArr = true;								
-							}		
+								} else {
+									$sqlReq = "SELECT hist_formula, origen
+										FROM valores a INNER JOIN empresa_indice b
+											ON a.id_empresa = b.id_empresa
+												AND a.id_tag_agf = b.id_indice_financiero
+												AND a.id_formula = b.id_formula
+										WHERE a.id_valor = " . $campo . "										
+											;";
+									$sql2 = str_replace("'", "''", $sqlReq);
+									$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
+									
+									$resultReq = $mysqli->query($sqlReq);
+									$mysqli->query("INSERT INTO log values ('NRO DE REGISTROS: " . $resultReq->num_rows . "');");			
+									switch($resultReq->num_rows){
+										case 1:
+											$arrF[count($arrF)] = $arr[$i];
+											$w = count($campos);
+											$swArr = true;
+										break;
+										case 0:
+											$swArr = false;
+											$w = count($campos);
+										break;
+										default:
+											$campo = explode(":", $arrFormulas[$index++]);
+											$swArr = true;								
+									}
+									
+								}
+								
+								
+								
+								
+								/*while($rowFormula = $resultReq->fetch_array(MYSQLI_NUM)){
+									$mysqli->query("INSERT INTO log values ('NRO DE REGISTROS: " . print_r($rowFormula, true) . "');");			
+									$arrFormulas = array_merge($arrFormulas, explode("|", $rowFormula[0]));
+								}*/
+										
+							}while($resultReq->num_rows > 0);
 							
 							
-						} else {
+							
+						/*} else {
 							$sqlReq = "SELECT *
 										FROM empresa_indice
 										WHERE id_empresa = " . $arr[$i]['id_empresa'] . "
-											AND id_indice_financiero = " . $campo[3];
+											AND id_indice_financiero = " . $arr[$i]['id_tag_agf'] . "
+											AND id_formula = " . $row2[14] . "";
 							$sql2 = str_replace("'", "''", $sqlReq);
 							$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");			
 							$resultReq = $mysqli->query($sqlReq);
@@ -2656,7 +2704,7 @@ public function grillaTodosGrupoIndices(){
 								default:
 									$swArr = true;								
 							}
-						}
+						}*/
 					}				
 				}
 				
@@ -2666,7 +2714,7 @@ public function grillaTodosGrupoIndices(){
 				    $arr2[$i]['id_empresa']=$rowCmp[11];
 		            $arr2[$i]['id_periodo']=$rowCmp[5];	     
 				    if($rowCmp[3] != 0){
-						$arr2[$i]['valor'] = $row[3]/$rowCmp[3];
+						$arr2[$i]['valor'] = $row2[3]/$rowCmp[3];
 					} else {
 						$arr2[$i]['valor'] = 0;
 					}
@@ -2692,16 +2740,16 @@ public function grillaTodosGrupoIndices(){
 					//$mysqli->query("INSERT INTO log values ('" .print_r($e, 1) . " num = $num');");	
 					if($i - $num + 1 > 0){
 					//$mysqli->query("INSERT INTO log values (' empresa : " .$row[8] . " ');");	
-						$arr3[$i]['id_tag_agf']=$row[0];
-					    $arr3[$i]['id_empresa']=$row[11];
-			            $arr3[$i]['id_periodo']=$row[5];	   			    
-						$arr3[$i]['nombre_final']=$row[9];
-						$arr3[$i]['label'] = $row[8];			
-						$arr3[$i]['color'] = $row[2];
+						$arr3[$i]['id_tag_agf']=$row2[0];
+					    $arr3[$i]['id_empresa']=$row2[11];
+			            $arr3[$i]['id_periodo']=$row2[5];	   			    
+						$arr3[$i]['nombre_final']=$row2[9];
+						$arr3[$i]['label'] = $row2[8];			
+						$arr3[$i]['color'] = $row2[2];
 						$arr3[$i]['graf'] = 3;		
-						$arr3[$i]['rso'] = $row[1];
-						$arr3[$i]['indice'] = $row[4];
-						$arr3[$i]['year'] = $row[7];
+						$arr3[$i]['rso'] = $row2[1];
+						$arr3[$i]['indice'] = $row2[4];
+						$arr3[$i]['year'] = $row2[7];
 						$arr3[$i]['nro_grafico'] = $jj;
 						if($arr[$i - $num]['valor'] == 0){
 							$arr3[$i]['valor'] = 0;
@@ -3025,19 +3073,23 @@ public function insertarValor($arrInf){
 	$result = $mysqli->query($sql);
 	//while($result && $r = $result->fetch_array(MYSQLI_NUM)){}			    		
 	$r = $result->fetch_array(MYSQLI_NUM);	
-	
+	$nn = $result->num_rows;
 	$mysqli->query("INSERT INTO log values ('" . print_r($r, true) . "');");
-	if(!isset($r))
+	$mysqli->query("INSERT INTO log values ('" . $nn . "');");
+	if($nn == 0)
 		return true;
 		
 	$arrInf[0] = $r[0];	
-	$sql = "select count(*) from valores where id_empresa = " . $arrInf[1] . " and id_periodo = " . $arrInf[2] . " and id_tag_agf = " .  $arrInf[0];
+	$sql = "select valor from valores where id_empresa = " . $arrInf[1] . " and id_periodo = " . $arrInf[2] . " and id_tag_agf = " .  $arrInf[0];
 	$sql2 = str_replace("'", "''", $sql);
 	$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 	$result = $mysqli->query($sql);
 	
 	//while($r = $result->fetch_array(MYSQLI_NUM)){}
 	$r = $result->fetch_array(MYSQLI_NUM);	
+	if($r[0] == $arrInf[3]){
+		return true;
+	}
 	if($r[0] != 0){
 		$sql = "update valores set valor = " . $arrInf[3] . " where id_empresa = " . $arrInf[1] . " and id_periodo = " . $arrInf[2] . " and
 		id_tag_agf = " .  $arrInf[0] . " AND
@@ -3122,8 +3174,10 @@ public function insertarValor($arrInf){
 		//$this->actualizarCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
 	}	
 	
+	$mysqli->query("INSERT INTO log values ('FORMULAS: " . print_r($arrFormulas, true) . "');");
+	
 	for($i = 0; $i < count($arrFormulas); $i++){
-		$object = explode(":", $arrFormulas[$i]);
+		$objeto = explode(":", $arrFormulas[$i]);
 		$sql = "SELECT  
 				b.id_indice_financiero, 
 				a.formula,
