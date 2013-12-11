@@ -2501,8 +2501,8 @@ public function grillaTodosGrupoIndices(){
 				
 				$sql = "SELECT a.`ID_TAG_AGF`, rso, color, a.`VALOR`, 
 							c.nombre indice, a.`ID_PERIODO`, 0 nro_grafico, 
-							ano year, label, concat(b.rso, ': ', c.nombre) nombre_final, 
-							1 graf,a.`ID_EMPRESA`, a.hist_formula, mes
+							ano year, mask, concat(b.rso, ': ', c.nombre) nombre_final, 
+							1 graf,a.`ID_EMPRESA`, a.hist_formula, mes, b.id_empresa
 						FROM `valores` a 								
 							INNER JOIN empresas b
 								ON a.id_empresa = b.id_empresa									
@@ -2516,12 +2516,12 @@ public function grillaTodosGrupoIndices(){
 						WHERE a.`ID_TAG_AGF` = " . $row[5] . "
 							AND a.origen = 2
 							AND b.id_empresa in (" . $e[$jj] . " " . $idPeriodos . "
-						order by 8, 14, 2;";
+						order by 8, 14, 15;";
 
 				$sqlCmp = "SELECT a.`ID_TAG_AGF`, rso, color, a.`VALOR`, 
 							c.nombre indice, a.`ID_PERIODO`, 0 nro_grafico, 
-							ano year, label,  concat(b.rso, ': ', c.nombre) nombre_final, 
-							1 graf,a.`ID_EMPRESA`, a.hist_formula,mes
+							ano year, mask,  concat(b.rso, ': ', c.nombre) nombre_final, 
+							1 graf,a.`ID_EMPRESA`, a.hist_formula,mes, b.id_empresa
 						FROM `valores` a 								
 							INNER JOIN empresas b
 								ON a.id_empresa = b.id_empresa									
@@ -2535,7 +2535,7 @@ public function grillaTodosGrupoIndices(){
 						WHERE a.`ID_TAG_AGF` = " . $row[5] . "							
 							AND a.origen = 2					
 							AND b.id_empresa = " . $principal . " " . $idPeriodos . "
-						order by 8, 14, 2;";
+						order by 8, 14, 15;";
 					 
 			}
 			
