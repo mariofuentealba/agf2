@@ -1,6 +1,6 @@
 /**
  * This is a generated class and is not intended for modification.  To customize behavior
- * of this value object you may modify the generated sub-class of this class - EmpresaDatatype.as.
+ * of this value object you may modify the generated sub-class of this class - EmpresasDelGrupoDatatype.as.
  */
 
 package valueObjects
@@ -25,7 +25,7 @@ use namespace model_internal;
 
 [Managed]
 [ExcludeClass]
-public class _Super_EmpresaDatatype extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
+public class _Super_EmpresasDelGrupoDatatype extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void
     {
@@ -35,7 +35,7 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
     {
     }
 
-    model_internal var _dminternal_model : _EmpresaDatatypeEntityMetadata;
+    model_internal var _dminternal_model : _EmpresasDelGrupoDatatypeEntityMetadata;
     model_internal var _changedObjects:mx.collections.ArrayCollection = new ArrayCollection();
 
     public function getChangedObjects() : Array
@@ -52,7 +52,6 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
     /**
      * properties
      */
-    private var _internal_ID_SUBGRUPO : String;
     private var _internal_RSO : String;
     private var _internal_color : String;
     private var _internal_TIPO_IFRS : String;
@@ -72,9 +71,9 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
 
     model_internal var _changeWatcherArray:Array = new Array();
 
-    public function _Super_EmpresaDatatype()
+    public function _Super_EmpresasDelGrupoDatatype()
     {
-        _model = new _EmpresaDatatypeEntityMetadata(this);
+        _model = new _EmpresasDelGrupoDatatypeEntityMetadata(this);
 
         // Bind to own data or source properties for cache invalidation triggering
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "RSO", model_internal::setterListenerRSO));
@@ -90,12 +89,6 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
     /**
      * data/source property getters
      */
-
-    [Bindable(event="propertyChange")]
-    public function get ID_SUBGRUPO() : String
-    {
-        return _internal_ID_SUBGRUPO;
-    }
 
     [Bindable(event="propertyChange")]
     public function get RSO() : String
@@ -152,15 +145,6 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
     /**
      * data/source property setters
      */
-
-    public function set ID_SUBGRUPO(value:String) : void
-    {
-        var oldValue:String = _internal_ID_SUBGRUPO;
-        if (oldValue !== value)
-        {
-            _internal_ID_SUBGRUPO = value;
-        }
-    }
 
     public function set RSO(value:String) : void
     {
@@ -364,14 +348,14 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
 
     [Transient]
     [Bindable(event="propertyChange")]
-    public function get _model() : _EmpresaDatatypeEntityMetadata
+    public function get _model() : _EmpresasDelGrupoDatatypeEntityMetadata
     {
         return model_internal::_dminternal_model;
     }
 
-    public function set _model(value : _EmpresaDatatypeEntityMetadata) : void
+    public function set _model(value : _EmpresasDelGrupoDatatypeEntityMetadata) : void
     {
-        var oldValue : _EmpresaDatatypeEntityMetadata = model_internal::_dminternal_model;
+        var oldValue : _EmpresasDelGrupoDatatypeEntityMetadata = model_internal::_dminternal_model;
         if (oldValue !== value)
         {
             model_internal::_dminternal_model = value;

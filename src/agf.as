@@ -302,7 +302,8 @@ protected function guardar_clickHandler(event:MouseEvent):void
 		modelo.insertarIndicesFinancieros(arr, tabla);
 		break;*/
 		case 'tnEmpresas':
-			modelo.insertarEmpresa(arr, tabla, param);
+			insertarEmpresaResult.token = modelo.insertarEmpresa(arr, tabla, param);
+			insertarEmpresaResult.addEventListener(ResultEvent.RESULT, ingresoEmpresaFin);
 			break;
 		default:
 			if(tabla == 'Empresas'){
@@ -372,6 +373,10 @@ protected function guardar_clickHandler(event:MouseEvent):void
 }
 
 
+
+private function ingresoEmpresaFin(event:ResultEvent):void{
+	Alert.show('Transaccion exitosa');
+}
 
 
 protected function editar_clickHandler(event:MouseEvent):void
@@ -558,6 +563,15 @@ protected function dropDownList2_changeHandler(event:IndexChangeEvent):void
 	// TODO Auto-generated method stub
 	grillaEmpresaDelSubGrupoResult.token = modelo.grillaEmpresaDelSubGrupo((event.target as DropDownList).selectedItem['ID_SUBGRUPO']);
 	grillaEmpresaSinSubGrupoResult.token = modelo.grillaEmpresaSinSubGrupo((event.target as DropDownList).selectedItem['ID_SUBGRUPO']);
+	grillaEmpresaDelSubGrupoResult.addEventListener(ResultEvent.RESULT, delGrupo);
+	grillaEmpresaSinSubGrupoResult.addEventListener(ResultEvent.RESULT, sinGrupo);
+}
+
+private function delGrupo(event:ResultEvent){
+	//delg.dataProvider = event.result as ArrayCollection;
+}
+private function sinGrupo(event:ResultEvent){
+	delg.dataProvider = event.result as ArrayCollection;
 }
 
 protected function button1_clickHandler(event:MouseEvent):void
@@ -1629,10 +1643,9 @@ protected function btnAccion_clickHandler(event:MouseEvent):void
 			for(var i:int = 0; i < arr.length; i++){
 				var n:int = (arr[i] as NavigatorContent).numElements;
 				for(var j:int = 0; j < n; j++){
-					var itemd:ItemFormulario = ((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario);
-					if(itemd.txtValorItem.text != ''){
+					if(((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).txtValorItem.text != ''){
 						//arrRes.push(({label : ((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).lblItem.text, valor : ((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).txtValorItem.text});
-						valoresGuardadosResult.token = modelo.insertarValor([itemd.lblItem.text,  dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo'], itemd.txtValorItem.text]);
+						valoresGuardadosResult.token = modelo.insertarValor([((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).lblItem.text,  dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo'], ((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).txtValorItem.text]);
 						valoresGuardadosResult.addEventListener(ResultEvent.RESULT, valorGuardado);
 					}
 					

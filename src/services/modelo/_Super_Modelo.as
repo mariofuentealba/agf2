@@ -22,6 +22,9 @@ import mx.rpc.remoting.Operation;
 import mx.rpc.remoting.RemoteObject;
 import valueObjects.AgfDatatype;
 import valueObjects.EmpresaDatatype;
+import valueObjects.EmpresaGrillaDatatype;
+import valueObjects.EmpresaSinDatatype;
+import valueObjects.EmpresasDelGrupoDatatype;
 import valueObjects.GrupoIndiceFinancieroDatatype;
 import valueObjects.GrupoIndicesDataType;
 import valueObjects.GruposDatatype;
@@ -40,49 +43,65 @@ import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 [ExcludeClass]
 internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObjectServiceWrapper
 {
+    private var _empresaDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _subGrupoDatatype1RPCDataManager : mx.data.RPCDataManager;
-    private var _indicesFinancieros2DatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _monedasDatatypeRPCDataManager : mx.data.RPCDataManager;
-    private var _grupoIndiceFinancieroDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _grupoIndicesDataTypeRPCDataManager : mx.data.RPCDataManager;
-    private var _indicesFinancierosDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _agfDatatypeRPCDataManager : mx.data.RPCDataManager;
+    private var _indicesFinancierosDatatypeRPCDataManager : mx.data.RPCDataManager;
+    private var _indicesFinancieros2DatatypeRPCDataManager : mx.data.RPCDataManager;
+    private var _grupoIndiceFinancieroDatatypeRPCDataManager : mx.data.RPCDataManager;
+    private var _empresaSinDatatypeRPCDataManager : mx.data.RPCDataManager;
+    private var _empresaGrillaDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _subGruposDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var _gruposDatatypeRPCDataManager : mx.data.RPCDataManager;
+    private var _empresasDelGrupoDatatypeRPCDataManager : mx.data.RPCDataManager;
     private var managersArray : Array = new Array();
 
+    public const DATA_MANAGER_EMPRESADATATYPE : String = "EmpresaDatatype";
     public const DATA_MANAGER_SUBGRUPODATATYPE1 : String = "SubGrupoDatatype1";
-    public const DATA_MANAGER_INDICESFINANCIEROS2DATATYPE : String = "IndicesFinancieros2Datatype";
     public const DATA_MANAGER_MONEDASDATATYPE : String = "MonedasDatatype";
-    public const DATA_MANAGER_GRUPOINDICEFINANCIERODATATYPE : String = "GrupoIndiceFinancieroDatatype";
     public const DATA_MANAGER_GRUPOINDICESDATATYPE : String = "GrupoIndicesDataType";
-    public const DATA_MANAGER_INDICESFINANCIEROSDATATYPE : String = "IndicesFinancierosDatatype";
     public const DATA_MANAGER_AGFDATATYPE : String = "AgfDatatype";
+    public const DATA_MANAGER_INDICESFINANCIEROSDATATYPE : String = "IndicesFinancierosDatatype";
+    public const DATA_MANAGER_INDICESFINANCIEROS2DATATYPE : String = "IndicesFinancieros2Datatype";
+    public const DATA_MANAGER_GRUPOINDICEFINANCIERODATATYPE : String = "GrupoIndiceFinancieroDatatype";
+    public const DATA_MANAGER_EMPRESASINDATATYPE : String = "EmpresaSinDatatype";
+    public const DATA_MANAGER_EMPRESAGRILLADATATYPE : String = "EmpresaGrillaDatatype";
     public const DATA_MANAGER_SUBGRUPOSDATATYPE : String = "SubGruposDatatype";
     public const DATA_MANAGER_GRUPOSDATATYPE : String = "GruposDatatype";
+    public const DATA_MANAGER_EMPRESASDELGRUPODATATYPE : String = "EmpresasDelGrupoDatatype";
 
     public function getDataManager(dataManagerName:String) : mx.data.RPCDataManager
     {
         switch (dataManagerName)
         {
+             case (DATA_MANAGER_EMPRESADATATYPE):
+                return _empresaDatatypeRPCDataManager;
              case (DATA_MANAGER_SUBGRUPODATATYPE1):
                 return _subGrupoDatatype1RPCDataManager;
-             case (DATA_MANAGER_INDICESFINANCIEROS2DATATYPE):
-                return _indicesFinancieros2DatatypeRPCDataManager;
              case (DATA_MANAGER_MONEDASDATATYPE):
                 return _monedasDatatypeRPCDataManager;
-             case (DATA_MANAGER_GRUPOINDICEFINANCIERODATATYPE):
-                return _grupoIndiceFinancieroDatatypeRPCDataManager;
              case (DATA_MANAGER_GRUPOINDICESDATATYPE):
                 return _grupoIndicesDataTypeRPCDataManager;
-             case (DATA_MANAGER_INDICESFINANCIEROSDATATYPE):
-                return _indicesFinancierosDatatypeRPCDataManager;
              case (DATA_MANAGER_AGFDATATYPE):
                 return _agfDatatypeRPCDataManager;
+             case (DATA_MANAGER_INDICESFINANCIEROSDATATYPE):
+                return _indicesFinancierosDatatypeRPCDataManager;
+             case (DATA_MANAGER_INDICESFINANCIEROS2DATATYPE):
+                return _indicesFinancieros2DatatypeRPCDataManager;
+             case (DATA_MANAGER_GRUPOINDICEFINANCIERODATATYPE):
+                return _grupoIndiceFinancieroDatatypeRPCDataManager;
+             case (DATA_MANAGER_EMPRESASINDATATYPE):
+                return _empresaSinDatatypeRPCDataManager;
+             case (DATA_MANAGER_EMPRESAGRILLADATATYPE):
+                return _empresaGrillaDatatypeRPCDataManager;
              case (DATA_MANAGER_SUBGRUPOSDATATYPE):
                 return _subGruposDatatypeRPCDataManager;
              case (DATA_MANAGER_GRUPOSDATATYPE):
                 return _gruposDatatypeRPCDataManager;
+             case (DATA_MANAGER_EMPRESASDELGRUPODATATYPE):
+                return _empresasDelGrupoDatatypeRPCDataManager;
             default:
                 return null;
         }
@@ -117,7 +136,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
      */
     public function commit(itemsOrCollections:Array=null, cascadeCommit:Boolean=false):mx.rpc.AsyncToken
     {
-        return _subGrupoDatatype1RPCDataManager.dataStore.commit(itemsOrCollections, cascadeCommit);
+        return _empresaDatatypeRPCDataManager.dataStore.commit(itemsOrCollections, cascadeCommit);
     }
 
     /**
@@ -145,7 +164,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         if (itemsOrCollections == null)
         {
             // Revert all changes
-            return _subGrupoDatatype1RPCDataManager.dataStore.revertChanges();
+            return _empresaDatatypeRPCDataManager.dataStore.revertChanges();
         }
         else
         {
@@ -162,7 +181,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
                 }
                 else if (changeItem is mx.collections.ListCollectionView)
                 {
-                    anyChangeItemReverted ||= _subGrupoDatatype1RPCDataManager.dataStore.revertChangesForCollection(mx.collections.ListCollectionView(changeItem));
+                    anyChangeItemReverted ||= _empresaDatatypeRPCDataManager.dataStore.revertChangesForCollection(mx.collections.ListCollectionView(changeItem));
                 }
                 else
                 {
@@ -185,6 +204,8 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         valueObjects.ItemDatatype._initRemoteClassAlias();
         valueObjects.SubGruposDatatype._initRemoteClassAlias();
         valueObjects.AgfDatatype._initRemoteClassAlias();
+        valueObjects.EmpresaGrillaDatatype._initRemoteClassAlias();
+        valueObjects.EmpresaSinDatatype._initRemoteClassAlias();
         valueObjects.GruposDatatype._initRemoteClassAlias();
         valueObjects.IndicesFinancieros2Datatype._initRemoteClassAlias();
         valueObjects.MonedasDatatype._initRemoteClassAlias();
@@ -195,6 +216,9 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         var operations:Object = new Object();
         var operation:mx.rpc.remoting.Operation;
 
+        operation = new mx.rpc.remoting.Operation(null, "actualizaEmpresaIndice");
+         operation.resultType = Boolean;
+        operations["actualizaEmpresaIndice"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "actualizarCascada");
          operation.resultType = Object;
         operations["actualizarCascada"] = operation;
@@ -253,13 +277,13 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultElementType = valueObjects.AgfDatatype;
         operations["grillaAgf"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaEmpresa");
-         operation.resultElementType = valueObjects.EmpresaDatatype;
+         operation.resultElementType = valueObjects.EmpresaGrillaDatatype;
         operations["grillaEmpresa"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaEmpresaDelSubGrupo");
-         operation.resultType = Object;
+         operation.resultElementType = valueObjects.EmpresaDatatype;
         operations["grillaEmpresaDelSubGrupo"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaEmpresaSinSubGrupo");
-         operation.resultElementType = valueObjects.EmpresaDatatype;
+         operation.resultElementType = valueObjects.EmpresaSinDatatype;
         operations["grillaEmpresaSinSubGrupo"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaGrupoIndices");
          operation.resultType = Object;
@@ -307,7 +331,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultType = Boolean;
         operations["insertarConfig"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "insertarEmpresa");
-         operation.resultType = Object;
+         operation.resultType = Boolean;
         operations["insertarEmpresa"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "insertarIndicesFinancieros");
          operation.resultType = Object;
@@ -339,6 +363,9 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         operation = new mx.rpc.remoting.Operation(null, "periodos");
          operation.resultType = Object;
         operations["periodos"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "rescataFormulas");
+         operation.resultElementType = valueObjects.RescataFormulaDatatype;
+        operations["rescataFormulas"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "subGrillaSubGrupos");
          operation.resultType = Object;
         operations["subGrillaSubGrupos"] = operation;
@@ -348,12 +375,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         operation = new mx.rpc.remoting.Operation(null, "valores2");
          operation.resultType = Object;
         operations["valores2"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "rescataFormulas");
-         operation.resultElementType = valueObjects.RescataFormulaDatatype;
-        operations["rescataFormulas"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "actualizaEmpresaIndice");
-         operation.resultType = Boolean;
-        operations["actualizaEmpresaIndice"] = operation;
 
         _serviceControl.operations = operations;
         _serviceControl.convertResultHandler = com.adobe.serializers.utility.TypeUtility.convertResultHandler;
@@ -361,6 +382,18 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _serviceControl.endpoint = "gateway.php";
         var managedAssociation : mx.data.ManagedAssociation;
         var managedAssocsArray : Array;
+        // initialize EmpresaDatatype data manager
+        _empresaDatatypeRPCDataManager = new mx.data.RPCDataManager();
+        managersArray.push(_empresaDatatypeRPCDataManager);
+
+        managedAssocsArray = new Array();
+
+        _empresaDatatypeRPCDataManager.destination = "empresaDatatypeRPCDataManager";
+        _empresaDatatypeRPCDataManager.service = _serviceControl;        
+        _empresaDatatypeRPCDataManager.identities =  "ID_SUBGRUPO,ID_EMPRESA";      
+        _empresaDatatypeRPCDataManager.itemClass = valueObjects.EmpresaDatatype; 
+
+
         // initialize SubGrupoDatatype1 data manager
         _subGrupoDatatype1RPCDataManager = new mx.data.RPCDataManager();
         managersArray.push(_subGrupoDatatype1RPCDataManager);
@@ -371,18 +404,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _subGrupoDatatype1RPCDataManager.service = _serviceControl;        
         _subGrupoDatatype1RPCDataManager.identities =  "ID_SUBGRUPO";      
         _subGrupoDatatype1RPCDataManager.itemClass = valueObjects.SubGrupoDatatype1; 
-
-
-        // initialize IndicesFinancieros2Datatype data manager
-        _indicesFinancieros2DatatypeRPCDataManager = new mx.data.RPCDataManager();
-        managersArray.push(_indicesFinancieros2DatatypeRPCDataManager);
-
-        managedAssocsArray = new Array();
-
-        _indicesFinancieros2DatatypeRPCDataManager.destination = "indicesFinancieros2DatatypeRPCDataManager";
-        _indicesFinancieros2DatatypeRPCDataManager.service = _serviceControl;        
-        _indicesFinancieros2DatatypeRPCDataManager.identities =  "ID_GRUPO_INDICE_FINANCIERO,ID_INDICE_FINANCIERO,formula";      
-        _indicesFinancieros2DatatypeRPCDataManager.itemClass = valueObjects.IndicesFinancieros2Datatype; 
 
 
         // initialize MonedasDatatype data manager
@@ -397,18 +418,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _monedasDatatypeRPCDataManager.itemClass = valueObjects.MonedasDatatype; 
 
 
-        // initialize GrupoIndiceFinancieroDatatype data manager
-        _grupoIndiceFinancieroDatatypeRPCDataManager = new mx.data.RPCDataManager();
-        managersArray.push(_grupoIndiceFinancieroDatatypeRPCDataManager);
-
-        managedAssocsArray = new Array();
-
-        _grupoIndiceFinancieroDatatypeRPCDataManager.destination = "grupoIndiceFinancieroDatatypeRPCDataManager";
-        _grupoIndiceFinancieroDatatypeRPCDataManager.service = _serviceControl;        
-        _grupoIndiceFinancieroDatatypeRPCDataManager.identities =  "ID_GRUPO_INDICE_FINANCIERO";      
-        _grupoIndiceFinancieroDatatypeRPCDataManager.itemClass = valueObjects.GrupoIndiceFinancieroDatatype; 
-
-
         // initialize GrupoIndicesDataType data manager
         _grupoIndicesDataTypeRPCDataManager = new mx.data.RPCDataManager();
         managersArray.push(_grupoIndicesDataTypeRPCDataManager);
@@ -419,6 +428,18 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _grupoIndicesDataTypeRPCDataManager.service = _serviceControl;        
         _grupoIndicesDataTypeRPCDataManager.identities =  "ID_GRUPO_INDICE_FINANCIERO";      
         _grupoIndicesDataTypeRPCDataManager.itemClass = valueObjects.GrupoIndicesDataType; 
+
+
+        // initialize AgfDatatype data manager
+        _agfDatatypeRPCDataManager = new mx.data.RPCDataManager();
+        managersArray.push(_agfDatatypeRPCDataManager);
+
+        managedAssocsArray = new Array();
+
+        _agfDatatypeRPCDataManager.destination = "agfDatatypeRPCDataManager";
+        _agfDatatypeRPCDataManager.service = _serviceControl;        
+        _agfDatatypeRPCDataManager.identities =  "id_tag_agf";      
+        _agfDatatypeRPCDataManager.itemClass = valueObjects.AgfDatatype; 
 
 
         // initialize IndicesFinancierosDatatype data manager
@@ -433,16 +454,52 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _indicesFinancierosDatatypeRPCDataManager.itemClass = valueObjects.IndicesFinancierosDatatype; 
 
 
-        // initialize AgfDatatype data manager
-        _agfDatatypeRPCDataManager = new mx.data.RPCDataManager();
-        managersArray.push(_agfDatatypeRPCDataManager);
+        // initialize IndicesFinancieros2Datatype data manager
+        _indicesFinancieros2DatatypeRPCDataManager = new mx.data.RPCDataManager();
+        managersArray.push(_indicesFinancieros2DatatypeRPCDataManager);
 
         managedAssocsArray = new Array();
 
-        _agfDatatypeRPCDataManager.destination = "agfDatatypeRPCDataManager";
-        _agfDatatypeRPCDataManager.service = _serviceControl;        
-        _agfDatatypeRPCDataManager.identities =  "id_tag_agf";      
-        _agfDatatypeRPCDataManager.itemClass = valueObjects.AgfDatatype; 
+        _indicesFinancieros2DatatypeRPCDataManager.destination = "indicesFinancieros2DatatypeRPCDataManager";
+        _indicesFinancieros2DatatypeRPCDataManager.service = _serviceControl;        
+        _indicesFinancieros2DatatypeRPCDataManager.identities =  "ID_GRUPO_INDICE_FINANCIERO,ID_INDICE_FINANCIERO,formula";      
+        _indicesFinancieros2DatatypeRPCDataManager.itemClass = valueObjects.IndicesFinancieros2Datatype; 
+
+
+        // initialize GrupoIndiceFinancieroDatatype data manager
+        _grupoIndiceFinancieroDatatypeRPCDataManager = new mx.data.RPCDataManager();
+        managersArray.push(_grupoIndiceFinancieroDatatypeRPCDataManager);
+
+        managedAssocsArray = new Array();
+
+        _grupoIndiceFinancieroDatatypeRPCDataManager.destination = "grupoIndiceFinancieroDatatypeRPCDataManager";
+        _grupoIndiceFinancieroDatatypeRPCDataManager.service = _serviceControl;        
+        _grupoIndiceFinancieroDatatypeRPCDataManager.identities =  "ID_GRUPO_INDICE_FINANCIERO";      
+        _grupoIndiceFinancieroDatatypeRPCDataManager.itemClass = valueObjects.GrupoIndiceFinancieroDatatype; 
+
+
+        // initialize EmpresaSinDatatype data manager
+        _empresaSinDatatypeRPCDataManager = new mx.data.RPCDataManager();
+        managersArray.push(_empresaSinDatatypeRPCDataManager);
+
+        managedAssocsArray = new Array();
+
+        _empresaSinDatatypeRPCDataManager.destination = "empresaSinDatatypeRPCDataManager";
+        _empresaSinDatatypeRPCDataManager.service = _serviceControl;        
+        _empresaSinDatatypeRPCDataManager.identities =  "ID_EMPRESA";      
+        _empresaSinDatatypeRPCDataManager.itemClass = valueObjects.EmpresaSinDatatype; 
+
+
+        // initialize EmpresaGrillaDatatype data manager
+        _empresaGrillaDatatypeRPCDataManager = new mx.data.RPCDataManager();
+        managersArray.push(_empresaGrillaDatatypeRPCDataManager);
+
+        managedAssocsArray = new Array();
+
+        _empresaGrillaDatatypeRPCDataManager.destination = "empresaGrillaDatatypeRPCDataManager";
+        _empresaGrillaDatatypeRPCDataManager.service = _serviceControl;        
+        _empresaGrillaDatatypeRPCDataManager.identities =  "ID_EMPRESA";      
+        _empresaGrillaDatatypeRPCDataManager.itemClass = valueObjects.EmpresaGrillaDatatype; 
 
 
         // initialize SubGruposDatatype data manager
@@ -469,15 +526,36 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _gruposDatatypeRPCDataManager.itemClass = valueObjects.GruposDatatype; 
 
 
+        // initialize EmpresasDelGrupoDatatype data manager
+        _empresasDelGrupoDatatypeRPCDataManager = new mx.data.RPCDataManager();
+        managersArray.push(_empresasDelGrupoDatatypeRPCDataManager);
+
+        managedAssocsArray = new Array();
+
+        _empresasDelGrupoDatatypeRPCDataManager.destination = "empresasDelGrupoDatatypeRPCDataManager";
+        _empresasDelGrupoDatatypeRPCDataManager.service = _serviceControl;        
+        _empresasDelGrupoDatatypeRPCDataManager.identities =  "ID_EMPRESA";      
+        _empresasDelGrupoDatatypeRPCDataManager.itemClass = valueObjects.EmpresasDelGrupoDatatype; 
+
+
 
         var dmOperation : mx.data.ManagedOperation;
         var dmQuery : mx.data.ManagedQuery;
 
         dmQuery = new mx.data.ManagedQuery("grillaIndicesFinancieros");
-        dmQuery.propertySpecifier = "id_formula,NOMBRE,rangos_desc,rango_superior,DESCRIPCION,formula_desc,decimales,campo3,campo2,ID_GRUPO_INDICE_FINANCIERO,rango_inferior,campo1,ID_INDICE_FINANCIERO,formula";
-        dmQuery.positionalPagingParameters = true;
+        dmQuery.propertySpecifier = "id_formula,NOMBRE,rangos_desc,rango_superior,DESCRIPCION,formula_desc,decimales,campo3,campo2,campo5,campo4,ID_GRUPO_INDICE_FINANCIERO,rango_inferior,campo1,ID_INDICE_FINANCIERO,formula";
         dmQuery.parameters = "";
-        _indicesFinancierosDatatypeRPCDataManager.addManagedOperation(dmQuery);
+        _indicesFinancieros2DatatypeRPCDataManager.addManagedOperation(dmQuery);
+
+        dmQuery = new mx.data.ManagedQuery("grillaEmpresaSinSubGrupo");
+        dmQuery.propertySpecifier = "RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA";
+        dmQuery.parameters = "id";
+        _empresaSinDatatypeRPCDataManager.addManagedOperation(dmQuery);
+
+        dmQuery = new mx.data.ManagedQuery("comboEmpresa");
+        dmQuery.propertySpecifier = "RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA";
+        dmQuery.parameters = "";
+        _empresaDatatypeRPCDataManager.addManagedOperation(dmQuery);
 
         dmQuery = new mx.data.ManagedQuery("grillaGrupos");
         dmQuery.propertySpecifier = "nombre,ID_TIPO_EMPRESA,descripcion";
@@ -488,6 +566,11 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         dmQuery.parameters = "startIndex,numItems";
         _gruposDatatypeRPCDataManager.addManagedOperation(dmQuery);
 
+        dmQuery = new mx.data.ManagedQuery("grillaEmpresa");
+        dmQuery.propertySpecifier = "RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA";
+        dmQuery.parameters = "";
+        _empresaGrillaDatatypeRPCDataManager.addManagedOperation(dmQuery);
+
         dmQuery = new mx.data.ManagedQuery("grillaMonedas");
         dmQuery.propertySpecifier = "codigo,nombre,id,operacion,signo,valor_defecto,cantidad_decimal";
         dmQuery.countOperation = "countMonedas";
@@ -497,11 +580,21 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         dmQuery.parameters = "startIndex,numItems";
         _monedasDatatypeRPCDataManager.addManagedOperation(dmQuery);
 
+        dmQuery = new mx.data.ManagedQuery("grillaEmpresaDelSubGrupo");
+        dmQuery.propertySpecifier = "RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA";
+        dmQuery.parameters = "cod";
+        _empresasDelGrupoDatatypeRPCDataManager.addManagedOperation(dmQuery);
+
         dmQuery = new mx.data.ManagedQuery("grillaAgf");
         dmQuery.propertySpecifier = "nombre,id_tag_agf,etiqueta,origen";
         dmQuery.positionalPagingParameters = true;
         dmQuery.parameters = "";
         _agfDatatypeRPCDataManager.addManagedOperation(dmQuery);
+
+        dmQuery = new mx.data.ManagedQuery("grillaTodasEmpresa");
+        dmQuery.propertySpecifier = "ID_SUBGRUPO,RSO,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA";
+        dmQuery.parameters = "";
+        _empresaDatatypeRPCDataManager.addManagedOperation(dmQuery);
 
         dmQuery = new mx.data.ManagedQuery("grillaGrupoIndices");
         dmQuery.propertySpecifier = "nombre,descripcion,ID_GRUPO_INDICE_FINANCIERO";
@@ -529,6 +622,24 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     }
     
 
+    /**
+      * This method is a generated wrapper used to call the 'actualizaEmpresaIndice' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function actualizaEmpresaIndice(indice:String, empresa:String, numFormula:String, formula:String) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("actualizaEmpresaIndice");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(indice,empresa,numFormula,formula) ;
+        return _internal_token;
+    }
+     
     /**
       * This method is a generated wrapper used to call the 'actualizarCascada' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
@@ -1394,6 +1505,24 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     }
      
     /**
+      * This method is a generated wrapper used to call the 'rescataFormulas' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function rescataFormulas(indice:String, empresa:String) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("rescataFormulas");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(indice,empresa) ;
+        return _internal_token;
+    }
+     
+    /**
       * This method is a generated wrapper used to call the 'subGrillaSubGrupos' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
@@ -1444,42 +1573,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("valores2");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(empresa,periodo) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'rescataFormulas' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function rescataFormulas(indice:String, empresa:String) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("rescataFormulas");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(indice,empresa) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'actualizaEmpresaIndice' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function actualizaEmpresaIndice(indice:String, empresa:String, numFormula:String, formula:String) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("actualizaEmpresaIndice");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(indice,empresa,numFormula,formula) ;
         return _internal_token;
     }
      

@@ -16,7 +16,7 @@
 // +-----------------------------------------------------------------------+
 //
 $mysqli = new mysqli("localhost","agf","agf","agf");
-$ind = 'Cartera Repactada MM$';
+$ind = 'Costos Financieros';
 $mysqli->query("INSERT INTO tag_agf value (null, '" . $ind ."', '" . $ind ."', 'NO ESPECIFICA', 'XBRL', 1)");
 
 
@@ -64,19 +64,17 @@ $sql = "INSERT INTO formulas values (null, '" . $tag_agf . "', '-1', '-1', '-1',
 
 
 
-$str = ";;;;;;;990935;;;;1174274;1180109;1047343;998000;1014272;953839;935829
-;;;;;;;387151;;;;446795;361963;414216;408115;447401;429526;412007
-;;;;;;;392000;;;;385558;361356;353940;355968;391829;372069;375521
-;;;;;;;155577;;;;175602;166641;160313;154703;172878;166563;164653
-;;;;;;;;;;;118015;98889;94381;87281;102229;100669;110318
-;;;;;;;111358;;;;131351;123438;124058;121007;131726;120447;118918";
+$str = ";;;;6143;5209;5473;6156;7287;7472;7686;7545;8413;8653;9896;9502;9305;7732;;;;;;
+
+
+";
 $arr = explode("\n", $str);
 //$emp = array(725, 726, 727, 728, 729, 730);//Ingresos Totales
-$emp = array(731, 732, 727, 728, 729, 730);//Ingresos Retail, SSS, Venta Retail / M2, % Margen Retail,Ingresos Financieros, Cartera Bruta (Colocaciones), Cartera Repactada MM$,
+$emp = array(1);//, 2, 3, 4, 5, 6);//Ingresos Retail, SSS, Venta Retail / M2, % Margen Retail,Ingresos Financieros, Cartera Bruta (Colocaciones), Cartera Repactada MM$,
 //$emp = array(731, 732, 727, 729, 730);//% Ventas con Tarjeta Credito de cada  Tiendas,
 
 $s = 0;
-$per = array(13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 28, 29);//  Ingresos Totales, Ingresos Retail, Venta Retail / M2, % Margen Retail, % Ventas con Tarjeta Credito de cada  Tiendas, Cartera Bruta (Colocaciones), Cartera Repactada MM$,
+$per = array(13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 28, 29, 30, 31, 32, 33, 34);//  Ingresos Totales, Ingresos Retail, Venta Retail / M2, % Margen Retail, % Ventas con Tarjeta Credito de cada  Tiendas, Cartera Bruta (Colocaciones), Cartera Repactada MM$,
 
 //$per = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 28, 29); // SSS,
 
@@ -84,8 +82,8 @@ for($i = 0; $i < count($arr); $i++){
 	$arr[$i] = trim($arr[$i]);
 	$arr[$i] = explode(";", $arr[$i]);
 	for($j = 0; $j < count($arr[$i]); $j++){
-		$arr[$i][$j] = "INSERT INTO valores (`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `VALOR`, `DT_MODIFICACION`, `origen`) 
-						VALUES (null, '" . $tag_agf . "', " . $emp[$i] . ", " . $per[$s++] . ", " . ($arr[$i][$j] == '' ? 0 : $arr[$i][$j]) . ", null, 1);";
+		$arr[$i][$j] = "INSERT INTO valores (`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `VALOR`, `DT_MODIFICACION`, `origen`, id_formula, hist_formula) 
+						VALUES (null, '" . $tag_agf . "', " . $emp[$i] . ", " . $per[$s++] . ", " . ($arr[$i][$j] == '' ? 0 : $arr[$i][$j]) . ", null, 1, 0, null);";
 		$mysqli->query($arr[$i][$j]);
 	}
 	$s = 0;

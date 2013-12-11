@@ -888,6 +888,7 @@
 		<s:CallResponder id="periodosResult2"/>
 		<s:CallResponder id="grillaAgfResult"/>
 		<s:CallResponder id="insertarResult"/>
+		<s:CallResponder id="insertarEmpresaResult"/>
 		<s:CallResponder id="valores2Result"/>
 		<s:CallResponder id="insertarIndiceResult"/>
 		<s:CallResponder id="valoresGuardadosResult"/>
@@ -1467,13 +1468,12 @@
 									<s:AsyncListView list="{comboSubGruposResult.lastResult}"/>
 								</s:DropDownList>
 								<s:HGroup width="100%">
-									<c:CheckList itemRendererFunction="myRendererFunction" height="300" y="30"
+									<c:CheckList id="delg" itemRendererFunction="myRendererFunction" height="300" y="30"
 												 width="45%">
 										<c:layout>
 											<s:VerticalLayout gap="1" horizontalAlign="contentJustify" />
 										</c:layout>
 										
-										<s:AsyncListView list="{grillaEmpresaSinSubGrupoResult.lastResult}"/>
 										
 									</c:CheckList>	
 									<s:VGroup>
