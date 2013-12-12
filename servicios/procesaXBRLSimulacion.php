@@ -16,15 +16,13 @@
 // +-----------------------------------------------------------------------+
 //
 $mysqli = new mysqli("localhost","agf","agf","agf");
-$ind = 'Cartera Repactada';
+$ind = 'Costos Retail';
 $mysqli->query("INSERT INTO tag_agf value (null, '" . $ind ."', '" . $ind ."', 'NO ESPECIFICA', 'XBRL', 1)");
 $tag_agf = $mysqli->insert_id;
-$str = ";;;;;;;;;;;42487;30715;23494;18085;17255;16268;16204;;;;;;
-;;;;;;;19973;;;;21442;23154;26387;29497;28810;27858;27005;;;;;;
-;;;;;;;65812;;;;52016;46610;45659;43084;41504;39795;38420;;;;;;";
+$str = ";;;;15000;22768;19948;32691;19606;25906;26844;40158;25077;30047;28029;40302;24929;32399;;;;;;";
 $arr = explode("\n", $str);
 //$emp = array(725, 726, 727, 728, 729, 730);//Ingresos Totales
-$emp = array(2, 1, 3);//Ingresos Retail, SSS, Venta Retail / M2, % Margen Retail,Ingresos Financieros, Cartera Bruta (Colocaciones), Cartera Repactada MM$,
+$emp = array(6);//Ingresos Retail, SSS, Venta Retail / M2, % Margen Retail,Ingresos Financieros, Cartera Bruta (Colocaciones), Cartera Repactada MM$,
 //$emp = array(731, 732, 727, 729, 730);//% Ventas con Tarjeta Credito de cada  Tiendas,
 
 $s = 0;

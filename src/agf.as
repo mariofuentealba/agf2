@@ -1080,28 +1080,36 @@ protected function button4_clickHandler(event:MouseEvent):void
 		}
 		tagAgf += ')';
 		
-		bloqueo.width = this.width;
-		bloqueo.height = this.height;
-		PopUpManager.addPopUp(bloqueo, this);
 		
-		/*if(ComboBoxEmpresaPrincipal.selectedIndex == -1){
+		if(listIndices.dataProvider.length == 0 || empresas == ""){
+			Alert.show('Debe completar Indices y Empresas antes de ejecutar gráfico', 'Atención');
+		} else {
+			bloqueo.width = this.width;
+			bloqueo.height = this.height;
+			PopUpManager.addPopUp(bloqueo, this);
+			
+			/*if(ComboBoxEmpresaPrincipal.selectedIndex == -1){
 			ComboBoxEmpresaPrincipal.selectedIndex = ComboBoxEmpresaPrincipalSelectedIndex; 
-		}*/
-		
-		var fn:CompletionInput = vgMenu.getChildByName('txtEmpresaPrincipal') as CompletionInput;
-		if(fn['selectedIndex'] == -1){
-			fn['selectedIndex'] = ComboBoxEmpresaPrincipalSelectedIndex; 
+			}*/
+			
+			var fn:CompletionInput = vgMenu.getChildByName('txtEmpresaPrincipal') as CompletionInput;
+			if(fn['selectedIndex'] == -1){
+				fn['selectedIndex'] = ComboBoxEmpresaPrincipalSelectedIndex; 
+			}
+			//valoresResult.token = modelo.valores(ComboBoxEmpresaPrincipal.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
+			
+			
+			
+			valoresResult.token = modelo.valores(fn.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
+			valoresResult.addEventListener(ResultEvent.RESULT, grafica_);
+			/*
+			nvGrafico.removeAllElements();
+			tnGrafico.selectedIndex = 2;*/
+			tnGrafico.removeAllElements();	
 		}
-		//valoresResult.token = modelo.valores(ComboBoxEmpresaPrincipal.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
 		
 		
 		
-		valoresResult.token = modelo.valores(fn.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
-		valoresResult.addEventListener(ResultEvent.RESULT, grafica_);
-		/*
-		nvGrafico.removeAllElements();
-		tnGrafico.selectedIndex = 2;*/
-		tnGrafico.removeAllElements();
 		
 		
 	} catch(e:*){
