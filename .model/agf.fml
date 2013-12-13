@@ -359,6 +359,38 @@
       </annotation>
     </function>
   </service>
+  <entity name="EmpresasDelGrupoDatatype" persistent="true">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">EmpresasDelGrupoDatatype</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Modelo</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="grillaEmpresaDelSubGrupo">
+      <item name="propertySpecifier">RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="DataManagement">
+      <item name="managingService">Modelo</item>
+      <item name="fillFunc">grillaEmpresaDelSubGrupo</item>
+    </annotation>
+    <annotation name="grillaEmpresaSinSubGrupo">
+      <item name="propertySpecifier">RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
+    </annotation>
+    <property name="RSO" type="string" required="true"/>
+    <property name="color" type="string" required="true"/>
+    <property name="TIPO_IFRS" type="string" required="true"/>
+    <property name="TIPO_BALANCE" type="string" required="true"/>
+    <property name="RUT" type="string" required="true"/>
+    <property name="NOMBRE_BOLSA" type="string" required="true"/>
+    <property name="NOMBRE_FANTASIA" type="string" required="true"/>
+    <id name="ID_EMPRESA" type="string"/>
+  </entity>
   <service name="Modelo">
     <annotation name="ActionScriptGeneration">
       <item name="Source">modelo</item>
@@ -625,9 +657,9 @@
       </annotation>
       <parameter name="id" type="integer"/>
     </function>
-    <function name="grillaGrupoIndices" return-type="opaque">
+    <function name="grillaGrupoIndices" return-type="GrupoIndicesDataType[]">
       <annotation name="analyze group">
-        <item name="analyzed">false</item>
+        <item name="analyzed">true</item>
       </annotation>
       <annotation name="original signature">
         <item name="inputParams">opaque,opaque</item>
@@ -970,6 +1002,14 @@
       <parameter name="empresa" type="opaque"/>
       <parameter name="periodo" type="opaque"/>
     </function>
+    <function name="carga" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
   </service>
   <entity name="RescataFormulaDatatype">
     <annotation name="EntityProperties">
@@ -1115,10 +1155,10 @@
     <annotation name="grillaTodosGrupos">
       <item name="propertySpecifier">nombre,ID_TIPO_EMPRESA,descripcion</item>
     </annotation>
-    <id name="ID_GRUPO_INDICE_FINANCIERO" type="string"/>
-    <property name="nombre" type="string" required="true"/>
     <property name="ID_TIPO_EMPRESA" type="string" required="true"/>
+    <property name="nombre" type="string" required="true"/>
     <property name="descripcion" type="string" required="true"/>
+    <id name="ID_GRUPO_INDICE_FINANCIERO" type="string"/>
   </entity>
   <entity name="AgfDatatype" persistent="true">
     <annotation name="EntityProperties">
@@ -1388,37 +1428,5 @@
     <property name="nombre" type="string" required="true"/>
     <id name="ID_TIPO_EMPRESA" type="string"/>
     <property name="descripcion" type="string" required="true"/>
-  </entity>
-  <entity name="EmpresasDelGrupoDatatype" persistent="true">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">EmpresasDelGrupoDatatype</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">Modelo</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="grillaEmpresaDelSubGrupo">
-      <item name="propertySpecifier">RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <annotation name="DataManagement">
-      <item name="managingService">Modelo</item>
-      <item name="fillFunc">grillaEmpresaDelSubGrupo</item>
-    </annotation>
-    <annotation name="grillaEmpresaSinSubGrupo">
-      <item name="propertySpecifier">RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
-    </annotation>
-    <property name="RSO" type="string" required="true"/>
-    <property name="color" type="string" required="true"/>
-    <property name="TIPO_IFRS" type="string" required="true"/>
-    <property name="TIPO_BALANCE" type="string" required="true"/>
-    <property name="RUT" type="string" required="true"/>
-    <property name="NOMBRE_BOLSA" type="string" required="true"/>
-    <property name="NOMBRE_FANTASIA" type="string" required="true"/>
-    <id name="ID_EMPRESA" type="string"/>
   </entity>
 </model>

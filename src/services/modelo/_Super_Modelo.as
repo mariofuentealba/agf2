@@ -286,7 +286,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultElementType = valueObjects.EmpresaSinDatatype;
         operations["grillaEmpresaSinSubGrupo"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaGrupoIndices");
-         operation.resultType = Object;
+         operation.resultElementType = valueObjects.GrupoIndicesDataType;
         operations["grillaGrupoIndices"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaGrupoIndices2");
          operation.resultType = Object;
@@ -375,6 +375,9 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         operation = new mx.rpc.remoting.Operation(null, "valores2");
          operation.resultType = Object;
         operations["valores2"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "carga");
+         operation.resultType = Object;
+        operations["carga"] = operation;
 
         _serviceControl.operations = operations;
         _serviceControl.convertResultHandler = com.adobe.serializers.utility.TypeUtility.convertResultHandler;
@@ -583,7 +586,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         dmQuery = new mx.data.ManagedQuery("grillaEmpresaDelSubGrupo");
         dmQuery.propertySpecifier = "RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA";
         dmQuery.parameters = "cod";
-        _empresasDelGrupoDatatypeRPCDataManager.addManagedOperation(dmQuery);
+        _empresaDatatypeRPCDataManager.addManagedOperation(dmQuery);
 
         dmQuery = new mx.data.ManagedQuery("grillaAgf");
         dmQuery.propertySpecifier = "nombre,id_tag_agf,etiqueta,origen";
@@ -1573,6 +1576,24 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("valores2");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(empresa,periodo) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'carga' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function carga() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("carga");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
         return _internal_token;
     }
      

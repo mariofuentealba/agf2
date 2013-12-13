@@ -801,6 +801,25 @@
 			private function transExitosa(event:ResultEvent):void{
 				Alert.show('Transacción exitosa');
 			}
+			private var mula:Boolean=true;
+			protected function button10_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				if(mula == true){
+					var request:URLRequest = new URLRequest("http://localhost:8888/servicios/carga.php");
+					
+					request.method = URLRequestMethod.POST;
+					navigateToURL(request, '_blank');
+					mula = false;
+				} else{
+					request = new URLRequest("http://localhost:8888/servicios/reset.php");
+					
+					request.method = URLRequestMethod.POST;
+					navigateToURL(request, '_blank');	
+				}
+				
+			}
 			
 		]]>
 	</fx:Script>
@@ -1783,11 +1802,7 @@
 														  headerText="ID_GRUPO_INDICE_FINANCIERO"></s:GridColumn>
 										</s:ArrayList>
 									</s:columns>
-									<s:typicalItem>
-										<fx:Object descripcion="descripcion1"
-												   ID_GRUPO_INDICE_FINANCIERO="ID_GRUPO_INDICE_FINANCIERO1"
-												   nombre="nombre1"></fx:Object>
-									</s:typicalItem>
+									
 									
 								</s:DataGrid>
 								<s:TextInput text="grillaGrupoIndicesResult" visible="false">
@@ -1954,7 +1969,7 @@
 	</mx:ViewStack-->
 	<s:Label x="10" y="10" text="Sesion iniciada por:"/>
 	<s:Label id="txtUser" x="128" y="10" fontWeight="bold" text="CArriagada"/>
-	<s:Button right="10" top="10" label="Cerrar Sesión"/>
+	<s:Button right="10" top="10" label="Cerrar Sesión" click="button10_clickHandler(event)"/>
 	<s:Label y="39" right="5" text="version: 1.0.146"/>
 	
 	
