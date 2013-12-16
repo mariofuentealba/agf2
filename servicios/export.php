@@ -8,7 +8,7 @@ date_default_timezone_set('Europe/London');
 define('EOL',(PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
 
 date_default_timezone_set('Europe/London');
-/*//print_r($_REQUEST);
+/*////print_r($_REQUEST);
 header("Content-Type: application/vnd.ms-excel");
 
 header("Expires: 0");
@@ -36,9 +36,13 @@ Ripley Chile;5.2;4.6;4.6;4.2;4.6;4;4.1;3.6;4;3.6;3.3;3.1;3.5;3.1;3.2;3.3;3.4;3
 ABCDIN;0;0;0;0;1.4;1.3;1.6;1.1;1.4;1.3;1.1;1.1;1.3;1.2;1.2;1.2;1.4;1.4
 La Polar Chile;0;0;0;0;0;0;0;0;0;0;0;1.3;1.4;1.4;1.4;1.4;1.5;1.5
 Hites;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1*@+@*;;;;;;;;;;;;;;;;;
-;6/2009;9/2009;12/2009;3/2010;6/2010;9/2010;12/2010;3/2011;6/2011;9/2011;12/2011;3/2012;6/2012;9/2012;12/2012;3/2013;6/2013
-Falabella (Chile+CMR) ;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;Infinity;-131.4;60.699999999999996;-25.199999999999996;207.29999999999998;-151.1;NaN
-Hites;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;NaN;87.9";
+;3/2009;6/2009;9/2009;12/2009;3/2010;6/2010;9/2010;12/2010;3/2011;6/2011;9/2011;12/2011;3/2012;6/2012;9/2012;12/2012;3/2013;6/2013
+Falabella (Chile+CMR) ;7.9;7.2;7.5;6.4;7.4;6.5;6.7;5.8;6.6;6;5.7;5.1;6.3;5.5;5.5;5.2;6.3;5.5
+Cencosud (Paris+Mas) ;5.7;5;5.2;4.8;5.1;4.5;4.6;4;4.6;4.2;4;3.6;4.6;4.3;4.4;4.2;4.8;4.3
+Ripley Chile;5.2;4.6;4.6;4.2;4.6;4;4.1;3.6;4;3.6;3.3;3.1;3.5;3.1;3.2;3.3;3.4;3
+ABCDIN;0;0;0;0;1.4;1.3;1.6;1.1;1.4;1.3;1.1;1.1;1.3;1.2;1.2;1.2;1.4;1.4
+La Polar Chile;0;0;0;0;0;0;0;0;0;0;0;1.3;1.4;1.4;1.4;1.4;1.5;1.5
+Hites;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1";
 
 $letras = array('C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 $tipoGrafico = array('', 'Referente', 'Variación');
@@ -93,31 +97,21 @@ for($x = 1; $x < count($fff); $x++){
 		}
 		$str .= '</table>';
 
-		$year = '';
+	$year = '';
 
 		for($i = 1; $i < count($arr2); $i ++){
-			if(explode("/", $arr2[$i][1])[1] != $year){
-				$arr2[$i][0] = explode("/", $arr2[$i][1])[1];
-				$year = explode("/", $arr2[$i][1])[1];
-			}
-			switch(explode("/", $arr2[$i][1])[0]){
-				case 3:
-					$arr2[$i][1] = 'Q1';
-				break;
-				case 6:
-					$arr2[$i][1] = 'Q2';
-				break;
-				case 9:
-					$arr2[$i][1] = 'Q3';
-				break;
-				case 12:
-					$arr2[$i][1] = 'Q4';
-				break;
+			if("20" . explode("Q", $arr2[$i][1])[1] != $year){
+				$arr2[$i][0] = "20" .explode("Q", $arr2[$i][1])[1];
+				$year = "20" . explode("Q", $arr2[$i][1])[1];
 			}
 			
 			
-		}
-	//	print_r($arr2);
+			
+		}	
+		
+
+		
+		//print_r($arr);
 		$str .= '<br/><br/><br/><table>';
 		for($i = 0; $i < count($arr2); $i++){
 			$str .= "<tr>";
@@ -127,11 +121,12 @@ for($x = 1; $x < count($fff); $x++){
 			$str .= "</tr>";	
 		}
 		$str .= '</table>';
-	//	print_r($arr2);
+		//print_r($arr2);
 		$arrEmpresas[$z - 1] = count($arr2[0]) - 2;
 		$arrPeriodos[$z] = $arrPeriodos[$z - 1] + count($arr2) + 2;
-	//	print_r($arrEmpresas);
-	// 	print_r($arrPeriodos);
+		//print_r($arrEmpresas);
+		//exit();
+		//print_r($arrPeriodos);
 		
 		$arr3 = array_merge($arr3, array(array()), array(array()), $arr2);
 		/*for($c = count($arr2); $c < 20; $c++){
@@ -139,13 +134,13 @@ for($x = 1; $x < count($fff); $x++){
 		}*/
 		//$arr3 = array_merge($arr3, $arr2);
 	}
-	/*print_r($arr3);
-	exit(0);*/
+	//print_r($arr3);
+	//exit(0);
 	$objWorksheet[$x - 1]->fromArray($arr3);
 	$desp = 2;//count($arr2);
 	$arrNomGraf = array('', 'Referente ', 'Variacion ');
-	/*echo count($ff);
-	exit(0);*/
+
+	//exit(0);
 	//$arrPeriodos = array(2, 2, 24, 46);
 	for($z = 1; $z < count($ff); $z++){
 	
@@ -161,7 +156,7 @@ for($x = 1; $x < count($fff); $x++){
 			new PHPExcel_Chart_DataSeriesValues('String', '' .str_replace(' ', '', $graf[$x]) . '!$A$' . (2 + $arrPeriodos[$z - 1]) .':$B$' . ($arrPeriodos[$z] - 2), NULL, 12),	//	Q1 to Q4 for 2010 to 2012
 		);
 		
-		/*print_r($arrPeriodos);
+		/*//print_r($arrPeriodos);
 		exit(0);*/
 		
 		$dataSeriesValues = array();
@@ -225,24 +220,34 @@ for($x = 1; $x < count($fff); $x++){
 }
 
 $mysqli = new mysqli("localhost","agf","agf","agf");
+$parametro = "";
+for($i = 2; $i < count($arr2[0]); $i++){
+	$parametro .= "'" . $arr2[0][$i] . "',"; 
 
-for($i = 0; $i < count($arrEmpresas); $i++){}
-
-$sql = "SELECT `RSO`, color
+}
+$parametro = substr($parametro, 0, -1);
+$sql = "SELECT `RSO`, color, id_empresa
 			FROM empresas
-			WHERE RSO in ()"
+			WHERE RSO in (" . $parametro . ")
+order by 3";
+$sql2 = str_replace("'", "''", $sql);
+$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");	
+$result = $mysqli->query($sql);
+$colores = array();
+while($row = $result->fetch_array(MYSQLI_NUM)){
+	$colores[count($colores)] = $row[1];
 
-/*
-print_r($logs, true);
-exit(0);
-*/
+}
+//print_r($row);
+
+
 // Save Excel 2007 file
 //echo date('H:i:s') , " Write to Excel2007 format" , EOL;
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 $objWriter->setIncludeCharts(TRUE);
-$objWriter->save(str_replace('.php', '.xlsx', __FILE__), );
+$objWriter->save(str_replace('.php', '.xlsx', __FILE__), $colores);
 //echo date('H:i:s') , " File written to " , str_replace('.php', '.xlsx', pathinfo(__FILE__, PATHINFO_BASENAME)) , EOL;
-
+//exit(0);
 
 // Echo memory peak usage
 //echo date('H:i:s') , " Peak memory usage: " , (memory_get_peak_usage(true) / 1024 / 1024) , " MB" , EOL;

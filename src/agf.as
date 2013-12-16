@@ -784,7 +784,7 @@ private function agregaIndice(event:MouseEvent):void{
 		
 	} else{
 		for(var i:int = 0; i < listIndices.dataProvider.length; i++){
-			if(listIndices.dataProvider[i]['cod'] == (event.target as CheckBox).data['ID_INDICE_FINANCIERO']){
+			if(listIndices.dataProvider[i]['id_indice'] == (event.target as CheckBox).data['id_indice']){
 				listIndices.dataProvider.removeItemAt(i);
 			}
 		}
@@ -1247,7 +1247,7 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 	gr.arrAct.addItem(obAdd);
 	
 	
-	
+	/*
 	for(i = 1; i < gr.arrAct.length; i++){
 		o = new Object();
 		o['arrVal'] = [];
@@ -1261,7 +1261,7 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 			o['arrVal'].push(o['a' + j]);
 		}
 		gr.arrAct3.addItem(o);
-	}
+	}*/
 	
 	obAdd = {};
 	idPeriodo = arr[0]['label'];
@@ -1295,9 +1295,39 @@ private function grafica(arr:ArrayCollection, ind:int):void{
 	columnas = gr.arrAct;
 	
 	var h:int = 0;
-	/*while(gr['columnasChart'] == null){
-		h++;
-	}*/
+	obAdd = {};
+	idPeriodo = arr[0]['label'];
+	i = 0;
+	for each(o in arr){
+		if(o['graf'] == 3){
+			
+			if(idPeriodo == o['label']){
+				obAdd['nombre'] = o['nombre_final'] + '(' + o['label'] + ')';
+				obAdd['a'+i] = roundDecimals(o['valor'] as Number, 1);
+				if(sw){
+					
+					
+					
+					
+				}
+			} else{
+				sw = false;
+				gr.arrAct3.addItem(obAdd);
+				obAdd = {};
+				idPeriodo = o['label'];
+				obAdd['label'] = idPeriodo;
+				i = 0;
+				obAdd['a' + i] = roundDecimals(o['valor'] as Number, 1);
+			}
+			i++;
+		}
+	}
+	
+	gr.arrAct3.addItem(obAdd);
+	
+	
+	
+	
 	
 //	gr['nvGrafico'].addElement(gr['columnasChart']);
 //	gr['columnasChart']['rbInicial']['selected'] = true;
@@ -1701,7 +1731,7 @@ protected function button5_clickHandler(dataGrid:spark.components.DataGrid):void
 			insertarResult.token = modelo.insertarItemExistente(dropDownListEmpresa.selectedItem['ID_EMPRESA'], o['id_tag_agf']);
 			
 		}
-		tbFormulario.removeAll();
+	//	tbFormulario.removeAll();
 		nc = new NavigatorContent();
 		nc.label = 'Parte ' + tbFormulario.numElements;
 		tbFormulario.addElement(nc);

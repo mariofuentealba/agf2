@@ -1423,7 +1423,8 @@
 									<s:TextInput visible="false" y="193" left="10" right="10" text="ESFC|ERF"/>
 									<s:TextInput visible="false" y="193" left="10" right="10" text="CARGA_MANUAL"/>
 									<s:TextInput visible="false" y="193" left="10" right="10" text="1"/>
-									<mx:ColorPicker id="color" y="242" right="30"/>
+									<mx:ColorPicker id="color" y="242" right="30"
+													selectedColor="#B53030"/>
 									<s:Label y="223" right="30" text="Color:"/>
 									<s:TextInput id="txtColor" y="272" right="30" editable="false"  text="{color.selectedColor}"/>
 								</s:BorderContainer>

@@ -177,7 +177,7 @@
 							var count:int = 0;
 							var x:int = 0;
 							
-							count = arrAct3.getItemAt(0)['arr']['length'];
+						//	count = arrAct3.getItemAt(0)['arr']['length'];
 							flatData = this._arrVariacion;							
 							
 							break;

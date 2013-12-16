@@ -6,7 +6,7 @@ $mysqli = new mysqli("localhost","agf","agf","agf");
 /*$mysqli->autocommit(false);
 if (!$mysqli->query('SET AUTOCOMMIT = 0')) {
     echo "Falló la consulta: (" . $mysqli->errno . ") " . $mysqli->error;
-	//exit(0);
+	exit(0);
 }*/
 $emp = array(1, 2, 3, 4, 5, 6);
 $s = 0;
@@ -18,45 +18,26 @@ $n = count($arr);
 echo "N = " . $n . "<br />";
 for($i = 0; $i < $n; $i++){
 	
-	if($i == 0){
-		$ind = trim($arr[$i++]);
-	} else {
-		$ind = trim($arr[++$i]);
-	}
-	//$ind = trim($arr[$i]);
+	$ind = trim($arr[$i++]);
 	$mysqli->query("INSERT INTO tag_agf value (null, '" . $ind ."', '" . $ind ."', 'NO ESPECIFICA', 'XBRL', 1)");
-	//$mysqli->query("INSERT INTO tag_agf value (null, '" . $ind ."', '" . $ind ."', 'NO ESPECIFICA', 'XBRL', 1)");
 	$tag_agf = $mysqli->insert_id;	
 	$stop = 0;
 	$s = 0;
 	$e = 0;
 	$line = "";
-	$arr[$i] = trim($arr[$i]);
-	$line = $arr[$i];
 	while($line != "END"){
 		echo $arr[$i]."<br />";
-		
+		$arr[$i] = trim($arr[$i]);
+		$line = $arr[$i];
 		$arr[$i] = explode(";", $arr[$i]);
 		
 		for($j = 0; $j < count($arr[$i]); $j++){
-			/*echo "e = " . $e . "<br />";
-			echo "j = " . $j . "<br />";
-			echo "i = " . $i . "<br />";
-			echo "s = " . $s . "<br />";*/
-			$arr[$i][$j] = "INSERT INTO valores (`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `VALOR`, `DT_MODIFICACION`, `origen`, tipo) 
-							VALUES (null, '" . $tag_agf . "', " . $emp[$e] . ", " . $per[$s] . ", " . ($arr[$i][$j] == '' ? 0 : $arr[$i][$j]) . ", null, 1, 'TRIMESTRAL');";
-			//echo "query 1<br />";				
+	
+			$arr[$i][$j] = "INSERT INTO valores (`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `VALOR`, `DT_MODIFICACION`, `origen`) 
+							VALUES (null, '" . $tag_agf . "', " . $emp[$e] . ", " . $per[$s] . ", " . ($arr[$i][$j] == '' ? 0 : $arr[$i][$j]) . ", null, 1);";
 			$sql2 = str_replace("'", "''", $arr[$i][$j]);
-			//$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
+			$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			$mysqli->query($arr[$i][$j]);
-			
-			
-			
-			
-			
-			
-			
-			
 			
 			
 			
@@ -109,15 +90,6 @@ for($i = 0; $i < $n; $i++){
 			//echo "query 2<br />";
 			//$mysqli->query("INSERT INTO log values ('" . $sql2 . "');");
 			$mysqli->query($sql);
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			
 			
 			
@@ -175,36 +147,32 @@ for($i = 0; $i < $n; $i++){
 			
 			
 			
+			
 		}
 		
-		//exit();
+		
 		
 		
 		$e++;
 		$i++;
-		$arr[$i] = trim($arr[$i]);
-		$line = $arr[$i];
 		if($e == 6){
 			$e = 0;
 		}
 		
 		$s = 0;
-		if($line != "END"){
-			break;
-		}
 		
 	}
 	
-	$m->insertarIndicesFinancieros(array($ind, 0, 0, 0, 0, 0, 0, 0, 0, 2), 'indices_financieros', array(1, 2, 3, 4, 5, 6), 0, array('C1_'), array("" . $tag_agf . ";-1;-1;-1;-1;C;0;0;0;0;C.1.NN;no;no;no;no"));
+//	$m->insertarIndicesFinancieros(array($ind, 0, 0, 0, 0, 0, 0, 0, 0, 2), 'indices_financieros', array(1, 2, 3, 4, 5, 6), 0, array('C1_'), array("" . $tag_agf . ";-1;-1;-1;-1;C;0;0;0;0;C.1.NN;no;no;no;no"));
 	
 	
 	//exit();
 	echo "I = " . $i-- . "<br />";
 }
-//exit();
+exit();
 if (!$mysqli->commit()) {
     print("Falló la consignación de la transacción\n");
-    //exit();
+    exit();
 }
 
 $mysqli->close();

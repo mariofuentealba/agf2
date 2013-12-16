@@ -764,20 +764,28 @@ $objWriter->startElement('c:spPr');
 				}
 			}
 		}
-
 		
+	//	$colorNDX = array();
 		$ci=-1;
 		/*$colorNDX=array();
-		$colorNDX[0] = "111111";
-		$colorNDX[1] = "222222";
-		$colorNDX[2] = "333333";
-		$colorNDX[3] = "444444";
-		$colorNDX[4] = "555555";
-		$colorNDX[5] = "666666";
-		$colorNDX[6] = "777777";*/
-		
+		$colorNDX[0] = "009900";
+		$colorNDX[1] = "777777";
+		$colorNDX[2] = "777777";
+		$colorNDX[3] = "777777";
+		$colorNDX[4] = "777777";
+		$colorNDX[5] = "777777";
+		$colorNDX[6] = "777777";
+		/*print_r($colorNDX);
+		echo "hola";
+		exit();*/
 		foreach($plotSeriesOrder as $plotSeriesIdx => $plotSeriesRef) {
 			$ci++;
+			$colorNDX[$ci] = dechex($colorNDX[$ci]);
+			$zeros = "";
+			for($i = 0; $i < 6 - strlen($colorNDX[$ci]); $i++){
+				$zeros .= "0";
+			}
+			$colorNDX[$ci] = $zeros . $colorNDX[$ci];
 			$objWriter->startElement('c:ser');
 
 				$objWriter->startElement('c:idx');
