@@ -205,6 +205,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         valueObjects.SubGruposDatatype._initRemoteClassAlias();
         valueObjects.AgfDatatype._initRemoteClassAlias();
         valueObjects.EmpresaGrillaDatatype._initRemoteClassAlias();
+        valueObjects.EmpresasDelGrupoDatatype._initRemoteClassAlias();
         valueObjects.EmpresaSinDatatype._initRemoteClassAlias();
         valueObjects.GruposDatatype._initRemoteClassAlias();
         valueObjects.IndicesFinancieros2Datatype._initRemoteClassAlias();
@@ -280,7 +281,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultElementType = valueObjects.EmpresaGrillaDatatype;
         operations["grillaEmpresa"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaEmpresaDelSubGrupo");
-         operation.resultElementType = valueObjects.EmpresaDatatype;
+         operation.resultElementType = valueObjects.EmpresasDelGrupoDatatype;
         operations["grillaEmpresaDelSubGrupo"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaEmpresaSinSubGrupo");
          operation.resultElementType = valueObjects.EmpresaSinDatatype;
@@ -586,7 +587,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         dmQuery = new mx.data.ManagedQuery("grillaEmpresaDelSubGrupo");
         dmQuery.propertySpecifier = "RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA";
         dmQuery.parameters = "cod";
-        _empresaDatatypeRPCDataManager.addManagedOperation(dmQuery);
+        _empresasDelGrupoDatatypeRPCDataManager.addManagedOperation(dmQuery);
 
         dmQuery = new mx.data.ManagedQuery("grillaAgf");
         dmQuery.propertySpecifier = "nombre,id_tag_agf,etiqueta,origen";

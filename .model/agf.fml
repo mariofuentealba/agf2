@@ -224,173 +224,6 @@
     <property name="ID_TIPO_EMPRESA" type="string" required="true"/>
     <property name="descripcion" type="string" required="true"/>
   </entity>
-  <service name="Modelo2">
-    <annotation name="ActionScriptGeneration">
-      <item name="Source">modelo2</item>
-      <item name="ServiceType">RemoteObject</item>
-      <item name="Package">services.modelo2</item>
-      <item name="Endpoint">gateway.php</item>
-      <item name="Destination">modelo2</item>
-    </annotation>
-    <annotation name="ServiceTypeGroup">
-      <item name="ServiceBackendType">PHP</item>
-    </annotation>
-    <annotation name="ServiceConfig">
-      <item name="PHP_RELATIVE_LOCATION">servicios/modelo2.php</item>
-      <item name="PHP_SERVER_ROOT">C:\xampp\htdocs</item>
-      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
-      <item name="PHP_SERVICES_FOLDER">C:\xampp\htdocs\agf\services</item>
-      <item name="PHP_LOCATION">C:/xampp/htdocs/servicios/modelo2.php</item>
-      <item name="LINKED_FILE">Modelo2_modelo2.php</item>
-      <item name="PHP_SERVER_ROOT_URL">http://localhost:8888/</item>
-      <item name="ABSOLUTE_ENDPOINT">http://localhost:8888/agf/gateway.php</item>
-      <item name="PHP_CLASS_NAME">modelo2</item>
-    </annotation>
-    <function name="grillaGrupos" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="startIndex" type="opaque"/>
-      <parameter name="numItems" type="opaque"/>
-    </function>
-    <function name="countGrupos" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="insertar" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="arrInf" type="opaque"/>
-      <parameter name="table" type="opaque"/>
-    </function>
-    <function name="editar" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="arrInf" type="opaque"/>
-      <parameter name="table" type="opaque"/>
-      <parameter name="where" type="opaque"/>
-    </function>
-    <function name="comboGrupos" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="insertarSubgrupo" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="arrInf" type="opaque"/>
-      <parameter name="table" type="opaque"/>
-      <parameter name="param" type="opaque"/>
-    </function>
-    <function name="grillaSubGrupos" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="startIndex" type="opaque"/>
-      <parameter name="numItems" type="opaque"/>
-    </function>
-    <function name="countSubGrupos" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="insertarEmpresa" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="arrInf" type="opaque"/>
-      <parameter name="table" type="opaque"/>
-      <parameter name="param" type="opaque"/>
-    </function>
-    <function name="grillaEmpresa" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="startIndex" type="opaque"/>
-      <parameter name="numItems" type="opaque"/>
-    </function>
-    <function name="countEmpresa" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-  </service>
-  <entity name="EmpresasDelGrupoDatatype" persistent="true">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">EmpresasDelGrupoDatatype</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">Modelo</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="grillaEmpresaDelSubGrupo">
-      <item name="propertySpecifier">RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <annotation name="DataManagement">
-      <item name="managingService">Modelo</item>
-      <item name="fillFunc">grillaEmpresaDelSubGrupo</item>
-    </annotation>
-    <annotation name="grillaEmpresaSinSubGrupo">
-      <item name="propertySpecifier">RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
-    </annotation>
-    <property name="RSO" type="string" required="true"/>
-    <property name="color" type="string" required="true"/>
-    <property name="TIPO_IFRS" type="string" required="true"/>
-    <property name="TIPO_BALANCE" type="string" required="true"/>
-    <property name="RUT" type="string" required="true"/>
-    <property name="NOMBRE_BOLSA" type="string" required="true"/>
-    <property name="NOMBRE_FANTASIA" type="string" required="true"/>
-    <id name="ID_EMPRESA" type="string"/>
-  </entity>
   <service name="Modelo">
     <annotation name="ActionScriptGeneration">
       <item name="Source">modelo</item>
@@ -630,7 +463,7 @@
         <item name="propertySpecifier">RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
       </annotation>
     </function>
-    <function name="grillaEmpresaDelSubGrupo" return-type="EmpresaDatatype[]">
+    <function name="grillaEmpresaDelSubGrupo" return-type="EmpresasDelGrupoDatatype[]">
       <annotation name="analyze group">
         <item name="analyzed">true</item>
       </annotation>
@@ -1058,7 +891,7 @@
       <item name="EntityOriginalName">EmpresaDatatype</item>
     </annotation>
     <annotation name="service Group">
-      <item name="service">Modelo,ModeloDummy</item>
+      <item name="service">Modelo</item>
     </annotation>
     <annotation name="ServerProperties">
       <item name="IncludeRemoteClass">nonempty</item>
@@ -1428,5 +1261,37 @@
     <property name="nombre" type="string" required="true"/>
     <id name="ID_TIPO_EMPRESA" type="string"/>
     <property name="descripcion" type="string" required="true"/>
+  </entity>
+  <entity name="EmpresasDelGrupoDatatype" persistent="true">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">EmpresasDelGrupoDatatype</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Modelo</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="grillaEmpresaDelSubGrupo">
+      <item name="propertySpecifier">RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="DataManagement">
+      <item name="managingService">Modelo</item>
+      <item name="fillFunc">grillaEmpresaDelSubGrupo</item>
+    </annotation>
+    <annotation name="grillaEmpresaSinSubGrupo">
+      <item name="propertySpecifier">RSO,color,TIPO_IFRS,TIPO_BALANCE,RUT,NOMBRE_BOLSA,NOMBRE_FANTASIA,ID_EMPRESA</item>
+    </annotation>
+    <property name="RSO" type="string" required="true"/>
+    <property name="color" type="string" required="true"/>
+    <property name="TIPO_IFRS" type="string" required="true"/>
+    <property name="TIPO_BALANCE" type="string" required="true"/>
+    <property name="RUT" type="string" required="true"/>
+    <property name="NOMBRE_BOLSA" type="string" required="true"/>
+    <property name="NOMBRE_FANTASIA" type="string" required="true"/>
+    <id name="ID_EMPRESA" type="string"/>
   </entity>
 </model>

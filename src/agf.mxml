@@ -1145,7 +1145,7 @@
 											click="dgGrupo_clickHandler(event)"
 											creationComplete="dgGrupo_creationCompleteHandler(event)"
 											doubleClick="dgGrupo_doubleClickHandler(event)"
-											doubleClickEnabled="true" requestedRowCount="4">
+											doubleClickEnabled="true" requestedRowCount="4" skinClass="spark.skins.spark.DataGridSkin">
 									<s:columns>
 										<s:ArrayList>
 											<s:GridColumn dataField="nombre" headerText="nombre"></s:GridColumn>

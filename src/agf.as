@@ -93,6 +93,7 @@ import mx.charts.chartClasses.Series;
 import mx.controls.DataGrid;
 import spark.formatters.NumberFormatter;
 import sho.ui.CompletionInput;
+import mx.events.IndexChangedEvent;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
@@ -561,17 +562,22 @@ protected function dropDownList2_creationCompleteHandler(event:FlexEvent):void
 protected function dropDownList2_changeHandler(event:IndexChangeEvent):void
 {
 	// TODO Auto-generated method stub
-	grillaEmpresaDelSubGrupoResult.token = modelo.grillaEmpresaDelSubGrupo((event.target as DropDownList).selectedItem['ID_SUBGRUPO']);
-	grillaEmpresaSinSubGrupoResult.token = modelo.grillaEmpresaSinSubGrupo((event.target as DropDownList).selectedItem['ID_SUBGRUPO']);
-	grillaEmpresaDelSubGrupoResult.addEventListener(ResultEvent.RESULT, delGrupo);
+	//grillaEmpresaDelSubGrupoResult.token = modelo.grillaEmpresaDelSubGrupo((event.target as DropDownList).selectedItem['ID_SUBGRUPO']);
+	evento = event;
+	grillaEmpresaSinSubGrupoResult.token = modelo.grillaEmpresaSinSubGrupo((evento.target as DropDownList).selectedItem['ID_SUBGRUPO']);
+	//grillaEmpresaDelSubGrupoResult.addEventListener(ResultEvent.RESULT, delGrupo);
 	grillaEmpresaSinSubGrupoResult.addEventListener(ResultEvent.RESULT, sinGrupo);
 }
 
-private function delGrupo(event:ResultEvent){
-	//delg.dataProvider = event.result as ArrayCollection;
-}
-private function sinGrupo(event:ResultEvent){
+private function delGrupo(event:ResultEvent):void{
 	delg.dataProvider = event.result as ArrayCollection;
+}
+
+private var evento:IndexChangeEvent;
+private function sinGrupo(event:ResultEvent):void{
+	delg.dataProvider = event.result as ArrayCollection;
+	grillaEmpresaDelSubGrupoResult.token = modelo.grillaEmpresaDelSubGrupo((evento.target as DropDownList).selectedItem['ID_SUBGRUPO']);
+	grillaEmpresaSinSubGrupoResult.addEventListener(ResultEvent.RESULT, sinGrupo);
 }
 
 protected function button1_clickHandler(event:MouseEvent):void
