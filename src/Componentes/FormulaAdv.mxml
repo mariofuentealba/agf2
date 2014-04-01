@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:s="library://ns.adobe.com/flex/spark" 
+				   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" cornerRadius="0">
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="campos"/>
+	</s:states>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import model.ModelApp;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			private var modelApp:ModelApp = model.ModelApp.getInstance();
+			private var c:int = 1;
+			public var _s:String; 
+			public var hgBotones:ArrayCollection = new ArrayCollection();
+			public var dataProvider:Array;
+			
+			protected function linkbutton1_clickHandler(datos:ArrayCollection, s:String):void
+			{
+				if(c < 6){
+					this._s = s;
+					var cb:ComponenteFormula = new ComponenteFormula();
+					cb.cb.dataProvider = datos;
+					cb.cb.labelField = 'etiqueta';
+					cb.bt = new Button();
+					cb.bt.label = 'C' + c;
+					/******bt.name = this._s + cb.ddl.selectedItem['label'] + '.' + c;*/
+					cb.campo = this._s + '.' + c;
+					cb.ddl.name = this._s + '.' + c + '.NN';
+					cb.name = cb.bt.name; 
+					vgCombos.addElement(cb);
+					hgBotones.addItem(cb.bt);
+					cb.bt.percentWidth = 100;
+					cb.percentWidth = 100;
+					c++;
+					cb.name = cb.bt.name; 
+					vgCombos.addElement(cb);
+					cb.bt.percentWidth = 100;
+					cb.percentWidth = 100;	
+				} else {
+					var a:Alert = new Alert();
+					a.move(200,200);
+					
+					Alert.show('Maximo cinco Campos', 'Atención');
+				}
+				
+				
+				
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				this.currentState = 'campos';
+			}
+			
+			
+			protected function set generaHijos(val:*):void{
+				dataProvider.forEach(addElementos);
+			}
+			
+			protected function addElementos(item:*):void{
+				gFormulas.addElement(item);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Binding source="dataProvider" destination="generaHijos"/>
+	<s:BorderContainer x="0" y="10" width="100%" 
+					   borderStyle="inset" borderWeight="2" cornerRadius="4">
+		<s:layout>
+			<s:HorizontalLayout gap="10" paddingLeft="15" paddingRight="15" paddingTop="15" paddingBottom="15" verticalAlign="middle"/>
+		</s:layout>
+		<s:backgroundFill>
+			<s:LinearGradient rotation="270">
+				<s:entries>
+					<s:GradientEntry color="0x000000" ratio="0.00" alpha="0.5"/>
+					<s:GradientEntry color="0x333333" ratio="0.33" alpha="0.5"/>
+					<s:GradientEntry color="0x666666" ratio="0.66" alpha="0.5"/>
+				</s:entries>
+			</s:LinearGradient>
+		</s:backgroundFill>
+		<s:Label color="#F2F9FA" fontSize="18" text="Registro de formulas asociadas"
+				 text.campos="Campos Fórmula"/>
+		<s:Button includeIn="State1" label="+" click="button1_clickHandler(event)"/>
+		
+	</s:BorderContainer> 
+	<s:Scroller includeIn="State1" x="10" y="89" width="377" height="171">
+		<s:Group id="gFormulas" width="100%">
+			<s:layout>
+				<s:VerticalLayout/>
+			</s:layout>
+		</s:Group>
+	</s:Scroller>
+	<s:BorderContainer includeIn="campos" x="170" y="260" width="58" height="26" borderStyle="inset"
+					   borderWeight="2" cornerRadius="4">
+		<s:layout>
+			<s:HorizontalLayout gap="10" paddingLeft="5" paddingRight="5" paddingTop="5" paddingBottom="5" verticalAlign="middle"/>
+		</s:layout>
+		<s:backgroundFill>
+			<s:LinearGradient rotation="270">
+				<s:entries>
+					<s:GradientEntry color="0x000000" ratio="0.00" alpha="0.5"/>
+					<s:GradientEntry color="0x333333" ratio="0.33" alpha="0.5"/>
+					<s:GradientEntry color="0x666666" ratio="0.66" alpha="0.5"/>
+				</s:entries>
+			</s:LinearGradient>
+		</s:backgroundFill>
+		<s:Label color="#F2F9FA" fontSize="14" text="Paso 1"/>
+		
+	</s:BorderContainer>
+	<s:RichText includeIn="campos" y="62" horizontalCenter="0"
+				text="Seleccione los campos que que conforman la fórmula"/>
+	<s:HGroup includeIn="campos" x="0" y="76" width="100%" horizontalAlign="center">
+		
+		<s:BorderContainer>
+			<s:layout>
+				<s:VerticalLayout paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
+			</s:layout>
+			<s:backgroundFill> 
+				<s:SolidColor 
+					color="0x666666" 
+					alpha="0.5"/> 
+			</s:backgroundFill> 
+			
+			<mx:LinkButton width="100%" label="Agregar Campo"
+						   click="linkbutton1_clickHandler(modelApp.arrXBRL, 'C')"
+						   rollOverColor="#F6C877" selectionColor="#9B9999"
+						   themeColor="#149E24" fontWeight="bold"/>	
+		</s:BorderContainer>
+		<s:BorderContainer>
+			<s:layout>
+				<s:VerticalLayout paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
+			</s:layout>
+			<s:backgroundFill> 
+				<s:SolidColor 
+					color="0x666666" 
+					alpha="0.5"/> 
+			</s:backgroundFill> 
+
+			<mx:LinkButton width="100%" label="Agregar Fórmula" click="linkbutton1_clickHandler(modelApp.arrFormulas, 'F')" fontWeight="bold"/>	
+		</s:BorderContainer>
+		
+	</s:HGroup>
+	<s:VGroup id="vgCombos" includeIn="campos" top="119" width="100%" horizontalCenter="0" paddingBottom="5" paddingLeft="20" paddingRight="20" paddingTop="0">
+		
+	</s:VGroup>
+</s:BorderContainer>

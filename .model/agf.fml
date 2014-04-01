@@ -843,6 +843,16 @@
         <item name="returnType">opaque</item>
       </annotation>
     </function>
+    <function name="formulasIndice" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="opaque"/>
+    </function>
   </service>
   <entity name="RescataFormulaDatatype">
     <annotation name="EntityProperties">
@@ -1293,5 +1303,150 @@
     <property name="NOMBRE_BOLSA" type="string" required="true"/>
     <property name="NOMBRE_FANTASIA" type="string" required="true"/>
     <id name="ID_EMPRESA" type="string"/>
+  </entity>
+  <service name="FormulasService">
+    <annotation name="ActionScriptGeneration">
+      <item name="Source">FormulasService</item>
+      <item name="ServiceType">RemoteObject</item>
+      <item name="Package">services.formulasservice</item>
+      <item name="Endpoint">gateway.php</item>
+      <item name="Destination">FormulasService</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">PHP</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="PHP_RELATIVE_LOCATION">agf/services/FormulasService.php</item>
+      <item name="PHP_SERVER_ROOT">C:/xampp/htdocs</item>
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="PHP_SERVICES_FOLDER">C:/xampp/htdocs/agf/services</item>
+      <item name="PHP_LOCATION">C:/xampp/htdocs/agf/services/FormulasService.php</item>
+      <item name="LINKED_FILE">FormulasService.php</item>
+      <item name="PHP_SERVER_ROOT_URL">http://localhost:8888/</item>
+      <item name="ABSOLUTE_ENDPOINT">http://localhost:8888/agf/gateway.php</item>
+      <item name="PHP_CLASS_NAME">FormulasService</item>
+    </annotation>
+    <function name="getAllFormulas" return-type="Formulas[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getFormulasByID" return-type="Formulas">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="itemID" type="integer"/>
+    </function>
+    <function name="createFormulas" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="item" type="Formulas"/>
+    </function>
+    <function name="updateFormulas" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="item" type="Formulas"/>
+    </function>
+    <function name="deleteFormulas" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="itemID" type="integer"/>
+    </function>
+    <function name="count" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getFormulas_paged" return-type="Formulas[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="startIndex" type="integer"/>
+      <parameter name="numItems" type="integer"/>
+    </function>
+  </service>
+  <entity name="Formulas" persistent="true">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">Formulas</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">FormulasService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="DataManagement">
+      <item name="create">createFormulas</item>
+      <item name="update">updateFormulas</item>
+      <item name="get">getFormulasByID</item>
+      <item name="delete">deleteFormulas</item>
+      <item name="fillFunc">getAllFormulas,getFormulas_paged</item>
+      <item name="managingService">FormulasService</item>
+    </annotation>
+    <annotation name="getFormulasByID">
+      <item name="propertySpecifier">ID_FORMULA,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5,tipoc1,tipoc2,tipoc3,tipoc4,tipoc5,FORMULA,CANTIDAD_CAMPOS,DECIMALES,cod1,cod2,cod3,cod4,cod5,id_indice_financiero,num_formula</item>
+    </annotation>
+    <annotation name="getAllFormulas">
+      <item name="propertySpecifier">ID_FORMULA,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5,tipoc1,tipoc2,tipoc3,tipoc4,tipoc5,FORMULA,CANTIDAD_CAMPOS,DECIMALES,cod1,cod2,cod3,cod4,cod5,id_indice_financiero,num_formula</item>
+    </annotation>
+    <annotation name="getFormulas_paged">
+      <item name="propertySpecifier">ID_FORMULA,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5,tipoc1,tipoc2,tipoc3,tipoc4,tipoc5,FORMULA,CANTIDAD_CAMPOS,DECIMALES,cod1,cod2,cod3,cod4,cod5,id_indice_financiero,num_formula</item>
+      <item name="pagingEnabled">true</item>
+      <item name="positionalPagingParameters">true</item>
+      <item name="countOperation">count</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <id name="ID_FORMULA" type="integer"/>
+    <property name="CAMPO1" type="integer"/>
+    <property name="CAMPO2" type="integer"/>
+    <property name="CAMPO3" type="integer"/>
+    <property name="CAMPO4" type="integer"/>
+    <property name="CAMPO5" type="integer"/>
+    <property name="tipoc1" type="integer"/>
+    <property name="tipoc2" type="integer"/>
+    <property name="tipoc3" type="integer"/>
+    <property name="tipoc4" type="integer"/>
+    <property name="tipoc5" type="integer"/>
+    <property name="FORMULA" type="string"/>
+    <property name="CANTIDAD_CAMPOS" type="integer"/>
+    <property name="DECIMALES" type="integer"/>
+    <property name="cod1" type="string"/>
+    <property name="cod2" type="string"/>
+    <property name="cod3" type="string"/>
+    <property name="cod4" type="string"/>
+    <property name="cod5" type="string"/>
+    <property name="id_indice_financiero" type="integer"/>
+    <property name="num_formula" type="integer"/>
   </entity>
 </model>

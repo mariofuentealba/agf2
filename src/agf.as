@@ -94,10 +94,17 @@ import mx.controls.DataGrid;
 import spark.formatters.NumberFormatter;
 import sho.ui.CompletionInput;
 import mx.events.IndexChangedEvent;
+import model.ModelApp;
+import valueObjects.IndicesFinancierosDatatype;
+import valueObjects.IndicesFinancieros2Datatype;
+import services.formulasservice.FormulasService;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
 public var _cant:Array = [];
+private var modelApp:ModelApp = model.ModelApp.getInstance();
+
+
 /*private var _arr:ArrayCollection;
 private var _arrReferente:ArrayCollection;
 private var _arrVariacion:ArrayCollection;*/
@@ -222,11 +229,19 @@ protected function dgGrupo_doubleClickHandler(event:MouseEvent):void
 				
 				break;
 			case 'tnIndicesFinancieros':
-				
+				if(event.target.data is IndicesFinancieros2Datatype){
+					formulasIndiceResult.token = formulasServices.getFormulasByID(event.target.data['ID_INDICE_FINANCIERO']);
+					formulasIndiceResult.addEventListener(ResultEvent.RESULT, obtenFormulas);	
+				}
 					
 				break;
 		}
 	}
+}
+
+
+protected function obtenFormulas(event:ResultEvent):void{
+	modelApp.arrFormulasIndice = event.result as ArrayCollection;
 }
 
 
@@ -749,6 +764,20 @@ protected function crearEsquema_creationCompleteHandler(event:FlexEvent):void
 	gruposFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina);
 	subGruposFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina);
 	empresasResult.addEventListener(ResultEvent.RESULT, generaPagina);
+	
+	comboItemsResult.token = modelo.comboItems();
+	comboItemsResult.addEventListener(ResultEvent.RESULT, itemsXBRL);
+}
+
+private function itemsXBRL(event:ResultEvent):void{
+	var arr:ArrayCollection = event.result as ArrayCollection;
+	for each(var o:Object in arr){
+		if(o['origen'] == 1){
+			modelApp.arrXBRL.addItem(o);
+		} else {
+			modelApp.arrFormulas.addItem(o);
+		}
+	}
 }
 
 private function agregaEmpresa(event:MouseEvent):void{

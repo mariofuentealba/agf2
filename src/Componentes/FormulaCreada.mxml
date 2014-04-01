@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				   xmlns:s="library://ns.adobe.com/flex/spark" 
+				   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="60" cornerRadius="0">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import valueObjects.FormulasDatatype;
+			public var formula:FormulasDatatype
+		]]>
+	</fx:Script>
+	<s:Label id="titulo" left="10" top="10" fontSize="14" fontWeight="bold" text="Label"/>
+	<s:Label id="detalle" fontSize="25" horizontalCenter="0" text="Label" verticalCenter="0"/>
+	<s:Button  right="20" label="Editar" verticalCenter="0"/>
+	
+</s:BorderContainer>

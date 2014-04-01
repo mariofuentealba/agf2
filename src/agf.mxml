@@ -11,7 +11,7 @@
 			   height="1068" 
 			   creationComplete="crearEsquema_creationCompleteHandler(event)"
 			   
-			   width="100%" xmlns:metadata="org.osmf.metadata.*">
+			   width="100%" xmlns:metadata="org.osmf.metadata.*" xmlns:formulasservice="services.formulasservice.*">
 	<s:layout>
 		<s:BasicLayout/>
 	</s:layout>
@@ -871,10 +871,11 @@
 				<editItem label="Guardar Formulario"/>
 			</root>
 		</fx:XML>
-		
+		<formulasservice:FormulasService id="formulasServices" showBusyCursor="true"/>
 		<modelo:Modelo id="modelo"
 					   fault="modelo_faultHandler(event)"
 					   showBusyCursor="true"/>
+		<s:CallResponder id="formulasIndiceResult"/>
 		<s:CallResponder id="comboGruposResult"/>
 		<s:CallResponder id="actualizaEmpresaIndiceResult"/>
 		<s:CallResponder id="rescataFormulasResult"/>
@@ -1614,13 +1615,19 @@
 										</s:NavigatorContent>
 										
 										<s:NavigatorContent width="100%" height="100%" label="Paso 2">
-											<mx:TabNavigator id="tnFormulas" change="tnFormulas_changeHandler(event)">
+											<mx:TabNavigator id="tnFormulas" change="tnFormulas_changeHandler(event)" width="100%" height="100%">
 												<s:NavigatorContent label="Fórmula Principal">
-													<Componentes:Formula2  id="formulaIndice" top="0"
-																		  bottom="20" horizontalCenter="0" creationComplete="formulaIndice_creationCompleteHandler(event)">
-													</Componentes:Formula2>	
+													<s:layout>
+														<s:VerticalLayout/>
+													</s:layout>
+													<Componentes:Formula2  id="formulaIndice" top="0" visible="true"
+																		  creationComplete="formulaIndice_creationCompleteHandler(event)">
+													</Componentes:Formula2>
+													<!--<Componentes:FormulaAdv width="100%">
+														
+													</Componentes:FormulaAdv>-->
 												</s:NavigatorContent>
-												<s:NavigatorContent id="AddFormula" label="+" fontWeight="bold"/>	
+												<s:NavigatorContent id="AddFormula" label="+" fontWeight="bold" width="100%" height="100%"/>	
 											</mx:TabNavigator>
 											
 										</s:NavigatorContent>
@@ -1718,9 +1725,13 @@
 											
 											<s:NavigatorContent width="100%" height="100%" label="Paso 2">
 												
-												<Componentes:Formula2 id="formulaIndice0" top="0"
+												<!--<Componentes:Formula2 id="formulaIndice0" top="0"
 																	  bottom="20" horizontalCenter="0" creationComplete="formulaIndice_creationCompleteHandler(event)">
-												</Componentes:Formula2>
+												</Componentes:Formula2>-->
+												<Componentes:FormulaAdv id="formulaIndice0" top="0"
+																		bottom="20" horizontalCenter="0" creationComplete="formulaIndice_creationCompleteHandler(event)">
+													
+												</Componentes:FormulaAdv>
 											</s:NavigatorContent>
 											<s:NavigatorContent width="100%" height="100%" label="Paso 3">
 												<s:Label x="32" y="7" fontSize="14" fontWeight="bold"
