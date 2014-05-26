@@ -26,14 +26,14 @@ class ModeloSQLServer
 		    print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
 		} 	
-		
+
 		unset($con); 
 		unset($stmt);
-		
-		
-		        
+
+
+
 	}
-	    
+
 	public function countGrupos(){
 		try {
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');					
@@ -54,13 +54,13 @@ class ModeloSQLServer
 		    print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
 		} 	
-		
+
 		unset($con); 
 		unset($stmt);
-		
-		
+
+
 	}
-		
+
 	public function insertar($arrInf, $table){
 		try { 
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');			
@@ -90,15 +90,15 @@ class ModeloSQLServer
 		    print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
 		} 	
-		
+
 		unset($con); 
 		unset($stmt);
 	}
-		
+
 	public function editar($arrInf, $table, $where){
 		try {
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-			
+
 			$sql = "UPDATE " . $table . " SET ";
 			foreach($arrInf as $key => $value){
 				$sql .= $key . " = '" . $value . "', ";
@@ -111,25 +111,25 @@ class ModeloSQLServer
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
 				$con->commit(); 
-										
+
 				return true;
 			} catch(PDOExecption $e) {
 		        $con->rollback();
 		        print "Error!: " . $e->getMessage() . "</br>";
 				return 0;
 		    } 
-			
+
 		} catch( PDOExecption $e ) {
 		    print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
 		} 	
 		unset($con); 
 		unset($stmt);
-				
+
 	}
-				
-				
-				
+
+
+
 	public function comboGrupos(){
 		try {
 			$arr = array();			
@@ -144,18 +144,18 @@ class ModeloSQLServer
 				$arr[$i]['descripcion'] = $row[2];			                     
 				$i++; 
 			}
-			
+
 			return $arr;
 		} catch( PDOExecption $e ) {
 		    print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
 		} 	
-		
+
 		unset($con); 
 		unset($stmt);
-		
-		
-	}//fin metodo				
+
+
+	}o				
 /********************************************************************************************************************/	
 /****************************SubGrupos*******************************************************************************/
 
@@ -181,8 +181,8 @@ class ModeloSQLServer
 		unset($con); 
 		unset($stmt);	         
 	}
-			    
-			    
+
+
 	public function editarSubGrupo($arrInf, $table, $where, $param, $id){
 	    try {
 		    $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	    
@@ -212,7 +212,8 @@ class ModeloSQLServer
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
 				$stmt = $con->prepare($sql);
-				$stmt->execute();                 
+				$stmt->execute();   
+				$con->commit();
 				return true;
 			} catch(PDOExecption $e) {
 		        $con->rollback();
@@ -239,12 +240,14 @@ class ModeloSQLServer
 			}
 			$sql .= ");";	
 			try {
+				$con->beginTransaction(); 
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
 		        $ultimo_id = $con->lastInsertId();
 				$sql = "INSERT INTO GRUPOS_SUBGRUPOS VALUES (" . $param[0] . ", " . $ultimo_id . ");";
 				$stmt = $con->prepare($sql);
-				$stmt->execute();			            
+				$stmt->execute();
+				$con->commit();
 			    $arr = array();
 			    $arr[0]['ID'] = $ultimo_id;
 			    return $arr;
@@ -253,7 +256,7 @@ class ModeloSQLServer
 		        print "Error!: " . $e->getMessage() . "</br>";
 				return 0;
 		    }
-			
+
 		} catch( PDOExecption $e ) {
 		    print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
@@ -289,8 +292,8 @@ class ModeloSQLServer
 		unset($con); 
 		unset($stmt);        
 	}
-	    
-	    
+
+
 	public function subGrillaSubGrupos($tipo){
 		try {
 			$arr = array();			
@@ -314,11 +317,12 @@ class ModeloSQLServer
 		unset($con); 
 		unset($stmt);    	        
 	}
-	    
+
 	public function countSubGrupos(){
 	    try {		       
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	               
 	        $stmt = $con->prepare("SELECT a.ID_SUBGRUPO, nombre, descripcion, ID_TIPO_EMPRESA FROM subgrupos a, grupos_subgrupos b where a.id_subgrupo = b.id_subgrupo");
+			$stmt->execute();
 	        $i=0;
 			while($row = $stmt->fetch())
 			{                       
@@ -336,7 +340,7 @@ class ModeloSQLServer
 		unset($con); 
 		unset($stmt);           
 	}
-		
+
 /********************************************************************************************************************/	
 /****************************EMPRESA*******************************************************************************/
 
@@ -345,6 +349,7 @@ class ModeloSQLServer
 		try {
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			try {
+				$con->beginTransaction(); 
 				$stmt = $con->prepare("INSERT INTO logs values ('" . print_r($arrInf, true) . "');");
 				$stmt->execute();			
 				$sql = "INSERT INTO " . $table . " VALUES (null";
@@ -355,11 +360,14 @@ class ModeloSQLServer
 				$sql2 = str_replace("'", "''", $sql);
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();				
-		        /*$stmt = $con->prepare($sql);*/			    
+		        /*$stmt = $con->prepare($sql);
+				$stmt->execute();
+				*/			    
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
+				$con->commit();
 		        $ultimo_id = $con->lastInsertId();
-				    
+
 		/*		$sql = "INSERT INTO GRUPOS_SUBGRUPOS VALUES (" . $param[0] . ", " . $ultimo_id . ");";
 				$sql2 = str_replace("'", "''", $sql);
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
@@ -373,7 +381,7 @@ class ModeloSQLServer
 						select null, a.id_tag_agf, " . $ultimo_id . ", b.id_periodo, 'TRIMESTRAL', 0, '1900-01-01', 1, 0
 						from tag_agf a, periodos b
 						where a.oa = 1";
-						
+
 				$sql2 = str_replace("'", "''", $sql);
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
@@ -443,7 +451,7 @@ class ModeloSQLServer
 					if(!isset($row[7]))
 						$row[7] = 0;
 					$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
-					
+
 					$stmt = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
 					$stmt->execute();	
 					$evaluacionDiv = explode('/', $operacion);
@@ -458,7 +466,7 @@ class ModeloSQLServer
 						eval( '$res = ' . $operacion . ';');		
 					}
 					$nuevoValor = (float)$res;
-					
+
 					$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`, `id_formula`, HIST_FORMULA) 
 											VALUES (null,  " . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01',2, " . $row[11] . ", '" . $row[14] . "|" . $row[15] . "|" . $row[16] . "|" . $row[17] . "|" . $row[18] . "');";
 					$sql2 = str_replace("'", "''", $sql);
@@ -468,7 +476,7 @@ class ModeloSQLServer
 					$stmt->execute();
 					//$this->insertaCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
 				}	
-				
+
 				$sql = "SELECT DISTINCT b.id_indice_financiero 
 						FROM indices_financieros b 
 							INNER JOIN formulas a
@@ -543,9 +551,9 @@ class ModeloSQLServer
 						ORDER BY b.id_indice_Financiero		
 						;";  
 
-				
-				
-					
+
+
+
 					$sql2 = str_replace("'", "''", $sql);
 					$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 					$stmt->execute();
@@ -569,7 +577,7 @@ class ModeloSQLServer
 						if(!isset($row[7]))
 							$row[7] = 0;
 						$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
-						
+
 						/*$stmt = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
 						$stmt->execute();*/	
 						$evaluacionDiv = explode('/', $operacion);
@@ -584,7 +592,7 @@ class ModeloSQLServer
 							eval( '$res = ' . $operacion . ';');		
 						}
 						$nuevoValor = (float)$res;
-						
+
 						$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`, `id_formula`, hist_formula) 
 												VALUES (null,  " . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01', 2, " . $row[11] . ", '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "');";
 						$sql2 = str_replace("'", "''", $sql);
@@ -601,16 +609,16 @@ class ModeloSQLServer
 		        print "Error!: " . $e->getMessage() . "</br>";
 				return 0;
 		    }
-			
-			
+
+
 		} catch( PDOExecption $e ) {
 		    print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
 		} 	
 		unset($con); 
 		unset($stmt);	    
-	    
-		    
+
+
 	}
 
 	function insertaCascada($nuevoValor, $indice, $empresa, $periodo, $mysqli){
@@ -630,6 +638,7 @@ class ModeloSQLServer
 						origen = 2";
 			$sql2 = str_replace("'", "''", $sql);
 			try {
+				$con->beginTransaction(); 
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
 				$stmt = $con->prepare($sql);
@@ -655,9 +664,9 @@ class ModeloSQLServer
 				$stmt->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
-				
-				
-				
+				$con->commit();
+
+
 				while($row = $stmt->fetch()){
 					$operacion = $row[1];
 
@@ -676,12 +685,12 @@ class ModeloSQLServer
 					if(!isset($row[7]))
 						$row[7] = 0;
 					$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
-					
+
 					/*$stmt = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
 							$stmt->execute();	*/ 
 					eval( "\$res = " . $operacion . ";");		
 					$nuevoValor = (float)$res;
-					
+
 					$this->actualizarCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
 				}	
 				return true;
@@ -690,21 +699,22 @@ class ModeloSQLServer
 		        print "Error!: " . $e->getMessage() . "</br>";
 				return 0;
 		    }
-			
+
 		} catch( PDOExecption $e ) {
 			    print "Error!: " . $e->getMessage() . "</br>";
 				return 0;
 			} 	
 			unset($con); 
 			unset($stmt);	
-		
+
 	}
 
-		
+
 	public function insertarSubgrupoEmpresa($grupo, $empresas){	
 		try{
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	
 			try {
+				$con->beginTransaction(); 
 				$sql = "delete from subgrupos_empresas where id_subgrupo = " . $grupo;
 				$sql2 = str_replace("'", "", $sql);
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
@@ -715,6 +725,7 @@ class ModeloSQLServer
 					$sql = "INSERT INTO subgrupos_empresas VALUES ( " . $grupo . " , " .  $empresas[$i]. " );";
 					$stmt = $con->prepare($sql);
 					$stmt->execute();
+					$con->commit();
 					$ultimo_id = $con->lastInsertId();		
 				}		              
 				$arr = array();
@@ -725,7 +736,7 @@ class ModeloSQLServer
 		        print "Error!: " . $e->getMessage() . "</br>";
 				return 0;
 		    }
-			
+
 		} catch( PDOExecption $e ) {
 			print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
@@ -733,34 +744,28 @@ class ModeloSQLServer
 		unset($con); 
 		unset($stmt);	            
 	}
-		
+
 	public function grillaEmpresa(){
 		try {		
 	        $arr = array();	        
-	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-			try {			
-				$stmt = $con->prepare("SELECT b.`ID_EMPRESA` , `RUT` , `RSO` , `NOMBRE_FANTASIA` , `NOMBRE_BOLSA` , `VALOR_ACCION` , `TIPO_BALANCE` , `TIPO_IFRS` , color
-				FROM `empresas` b ");
-				$stmt->execute();
-				$i=0;
-				while($row = $stmt->fetch())
-				{					
-					$arr[$i]['ID_EMPRESA']=$row[0];
-					$arr[$i]['RUT']=$row[1];
-					$arr[$i]['RSO']=$row[2];
-					$arr[$i]['NOMBRE_FANTASIA']=$row[3];
-					$arr[$i]['NOMBRE_BOLSA']=$row[4];
-					$arr[$i]['TIPO_BALANCE']=$row[6];			     
-					$arr[$i]['TIPO_IFRS']=$row[7];					
-					$arr[$i]['color']=$row[8];
-					$i++; 
-				}	
-				return $arr;
-			} catch(PDOExecption $e) {
-		        $con->rollback();
-		        print "Error!: " . $e->getMessage() . "</br>";
-				return 0;
-		    }				
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');			
+			$stmt = $con->prepare("SELECT b.`ID_EMPRESA` , `RUT` , `RSO` , `NOMBRE_FANTASIA` , `NOMBRE_BOLSA` , `VALOR_ACCION` , `TIPO_BALANCE` , `TIPO_IFRS` , color
+			FROM `empresas` b ");
+			$stmt->execute();
+			$i=0;
+			while($row = $stmt->fetch())
+			{					
+				$arr[$i]['ID_EMPRESA']=$row[0];
+				$arr[$i]['RUT']=$row[1];
+				$arr[$i]['RSO']=$row[2];
+				$arr[$i]['NOMBRE_FANTASIA']=$row[3];
+				$arr[$i]['NOMBRE_BOLSA']=$row[4];
+				$arr[$i]['TIPO_BALANCE']=$row[6];			     
+				$arr[$i]['TIPO_IFRS']=$row[7];					
+				$arr[$i]['color']=$row[8];
+				$i++; 
+			}	
+			return $arr;							
 		} catch( PDOExecption $e ) {
 			print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
@@ -770,149 +775,114 @@ class ModeloSQLServer
 	}
 
 
-	    public function grillaEmpresaSinSubGrupo($id){
-	    	        //creando variable array
-	    	        $arr = array();
-	    	        //conectamos con la mysql
-	    	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	    	            //validamos que la conexion sea exitosa
-	    	            if (!$con)
-	    	            {
-	    	              //si existe error en conexion
-	    	              die('Error conectando: ' . mysql_error());
-	    	            }
-	    	                //si no existe error de conexion
-	    	                //seleccionamos base de datos
-	    	                mysql_select_db("agf", $con);
-	    	                
-	    	                //seleccionamos registros de tabla tb_persona
-							
-							$sql = "SELECT  `ID_EMPRESA`, `RUT`, `RSO`, `NOMBRE_FANTASIA`, `NOMBRE_BOLSA`, `VALOR_ACCION`, `TIPO_BALANCE`, `TIPO_IFRS`, `color`, `MONEDA`, `ESTADOS`, `ORIGEN`, `OA`
-				    		       FROM Empresas 
-						       Where id_empresa not in (select id_empresa from subgrupos_empresas WHERE id_subgrupo = " . $id . ")
-						       Order by `NOMBRE_FANTASIA`";
-							   $sql2 = str_replace("'", "''", $sql);
-						$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-		$stmt->execute();
-	    	                $stmt = $con->prepare($sql)
-	    	                or die(mysql_error());
-	    	                //el LIMIT se configura con los parametros recibidos
-	    	                //$startIndex
-	    	                //$numItems
-	    	                //EJ. seleccione desde el registro 0 hasta el 10
-	    	                $i=0;
-	    	                while($row = $stmt->fetch())
-	    	                {
-	    	                    //almacenamos los registros en la var array
-	    			     $arr[$i]['ID_EMPRESA']=$row[0];
-	    			     $arr[$i]['RUT']=$row[1];
-	    	                     $arr[$i]['RSO']=$row[2];
-	    	                     $arr[$i]['NOMBRE_FANTASIA']=$row[3];
-	    			     $arr[$i]['NOMBRE_BOLSA']=$row[4];
-	    			     $arr[$i]['TIPO_BALANCE']=$row[6];			     
-	    			     $arr[$i]['TIPO_IFRS']=$row[7];
-				     $arr[$i]['color']=$row[8];
-	    	                 $i++; 
-	    	                }
-	    	            //cerramos la conexion con mysql
-	    	            mysql_close($con);
-	    	            
-	    	        //retornamos el arreglo
-	    	        return $arr;
-	    	        
-	    	    }//fin metodo
+	public function grillaEmpresaSinSubGrupo($id){
+		try {			        
+			$arr = array();	    	        
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
+	    	try {
+				$con->beginTransaction(); 
+				$sql = "SELECT  `ID_EMPRESA`, `RUT`, `RSO`, `NOMBRE_FANTASIA`, `NOMBRE_BOLSA`, `VALOR_ACCION`, `TIPO_BALANCE`, `TIPO_IFRS`, `color`, `MONEDA`, `ESTADOS`, `ORIGEN`, `OA`
+					   FROM Empresas 
+				   Where id_empresa not in (select id_empresa from subgrupos_empresas WHERE id_subgrupo = " . $id . ")
+				   Order by `NOMBRE_FANTASIA`";
+				$sql2 = str_replace("'", "''", $sql);
+				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmt->execute();
+				$stmt = $con->prepare($sql);
+				$stmt->execute();	
+				$con->commit();				
+				$i=0;
+				while($row = $stmt->fetch()){
+					$arr[$i]['ID_EMPRESA']=$row[0];
+					$arr[$i]['RUT']=$row[1];
+					$arr[$i]['RSO']=$row[2];
+					$arr[$i]['NOMBRE_FANTASIA']=$row[3];
+					$arr[$i]['NOMBRE_BOLSA']=$row[4];
+					$arr[$i]['TIPO_BALANCE']=$row[6];			     
+					$arr[$i]['TIPO_IFRS']=$row[7];
+					$arr[$i]['color']=$row[8];
+					$i++; 
+				}
+				
+				return $arr;
+			} catch(PDOExecption $e) {
+		        $con->rollback();
+		        print "Error!: " . $e->getMessage() . "</br>";
+				return 0;
+		    }       
 			
-			
-	public function grillaEmpresaDelSubGrupo($cod){
-    	        //creando variable array
-    	        $arr = array();
-    	        //conectamos con la mysql
-    	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-    	            //validamos que la conexion sea exitosa
-    	            if (!$con)
-    	            {
-    	              //si existe error en conexion
-    	              die('Error conectando: ' . mysql_error());
-    	            }
-    	                //si no existe error de conexion
-    	                //seleccionamos base de datos
-    	                mysql_select_db("agf", $con);
-    	                
-    	                //seleccionamos registros de tabla tb_persona
-						$sql = "SELECT  `ID_EMPRESA`, `RUT`, `RSO`, `NOMBRE_FANTASIA`, `NOMBRE_BOLSA`, `VALOR_ACCION`, `TIPO_BALANCE`, `TIPO_IFRS`, `color`, `MONEDA`, `ESTADOS`, `ORIGEN`, `OA`  
-			    			FROM Empresas 
-						Where id_empresa in (select id_empresa from subgrupos_empresas where id_subgrupo = " . $cod . ")";
-						$sql2 = str_replace("'", "''", $sql);
-						$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-		$stmt->execute();
-						
-    	                $stmt = $con->prepare($sql)
-    	                or die(mysql_error());
-    	                //el LIMIT se configura con los parametros recibidos
-    	                //$startIndex
-    	                //$numItems
-    	                //EJ. seleccione desde el registro 0 hasta el 10
-    	                $i=0;
-    	                while($row = $stmt->fetch())
-    	                {
-    	                    //almacenamos los registros en la var array
-    			     $arr[$i]['ID_EMPRESA']=$row[0];
-    			     $arr[$i]['RUT']=$row[1];
-    	                     $arr[$i]['RSO']=$row[2];
-    	                     $arr[$i]['NOMBRE_FANTASIA']=$row[3];
-    			     $arr[$i]['NOMBRE_BOLSA']=$row[4];
-    			     $arr[$i]['TIPO_BALANCE']=$row[6];			     
-    			     $arr[$i]['TIPO_IFRS']=$row[7];
-			     $arr[$i]['color']=$row[8];
-    	                 $i++; 
-    	                }
-    	            //cerramos la conexion con mysql
-    	            mysql_close($con);
-    	            
-    	        //retornamos el arreglo
-    	        return $arr;
-    	        
-    	    }//fin metodo		
+		} catch( PDOExecption $e ) {
+			print "Error!: " . $e->getMessage() . "</br>";
+			return 0;
+		} 	
+		unset($con); 
+		unset($stmt);	
+	}
 
-	    
-	    public function countEmpresa(){
-	    
-	            //conectamos con la mysql
-	            $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	                //validamos que la conexion sea exitosa
-	                if (!$con)
-	                {
-	                  //si existe error en conexion
-	                  die('Error conectando: ' . mysql_error());
-	                }
-	                    //si no existe error de conexion
-	                    //seleccionamos base de datos
-	                    mysql_select_db("agf", $con);
-	                    
-	                    //seleccionamos todos los registros de tabla tb_persona
-	                    $stmt = $con->prepare("SELECT b.`ID_EMPRESA` , `RUT` , `RSO` , `NOMBRE_FANTASIA` , `NOMBRE_BOLSA` , `VALOR_ACCION` , `TIPO_BALANCE` , `TIPO_IFRS` , color
-	                FROM `empresas` b")
-	                    or die(mysql_error());
-	                    $i=0;
-	                    while($row = $stmt->fetch())
-	                    {
-	                        //almacenamos los registros en la var array
+
+	public function grillaEmpresaDelSubGrupo($cod){
+		try {
+		    
+    	    $arr = array();    	    
+    	    $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');    	           
+			$sql = "SELECT  `ID_EMPRESA`, `RUT`, `RSO`, `NOMBRE_FANTASIA`, `NOMBRE_BOLSA`, `VALOR_ACCION`, `TIPO_BALANCE`, `TIPO_IFRS`, `color`, `MONEDA`, `ESTADOS`, `ORIGEN`, `OA`  
+						FROM Empresas 
+					Where id_empresa in (select id_empresa from subgrupos_empresas where id_subgrupo = " . $cod . ")";
+			$sql2 = str_replace("'", "''", $sql);
+			$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+			$stmt->execute();
+			$stmt = $con->prepare($sql);
+			$stmt->execute();
+    	    $i=0;
+    	    while($row = $stmt->fetch())
+    	    {    	    
 				$arr[$i]['ID_EMPRESA']=$row[0];
-							     $arr[$i]['RUT']=$row[1];
-					                     $arr[$i]['RSO']=$row[2];
-					                     $arr[$i]['NOMBRE_FANTASIA']=$row[4];
-							     $arr[$i]['NOMBRE_BOLSA']=$row[6];
-							     $arr[$i]['TIPO_BALANCE']=$row[7];			     
-							     $arr[$i]['TIPO_IFRS']=$row[8];
-	                     	$i++; 
-	                    }
-	                mysql_close($con);
-	                
-	            //retornamos el largo del arreglo
-	            return count($arr);
-	            
-	        }		
-	
+    			$arr[$i]['RUT']=$row[1];
+    	        $arr[$i]['RSO']=$row[2];
+    	        $arr[$i]['NOMBRE_FANTASIA']=$row[3];
+    			$arr[$i]['NOMBRE_BOLSA']=$row[4];
+    			$arr[$i]['TIPO_BALANCE']=$row[6];			     
+    			$arr[$i]['TIPO_IFRS']=$row[7];
+			    $arr[$i]['color']=$row[8];
+    	        $i++; 
+    	    }
+    	    return $arr;
+		} catch( PDOExecption $e ) {
+			print "Error!: " . $e->getMessage() . "</br>";
+			return 0;
+		} 	
+		unset($con); 
+		unset($stmt);   	        
+    }
+
+
+	public function countEmpresa(){
+		try {		
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	        	        
+			$stmt = $con->prepare("SELECT b.`ID_EMPRESA` , `RUT` , `RSO` , `NOMBRE_FANTASIA` , `NOMBRE_BOLSA` , `VALOR_ACCION` , `TIPO_BALANCE` , `TIPO_IFRS` , color
+									FROM `empresas` b");
+			$stmt->execute();
+	        $i=0;
+	        while($row = $stmt->fetch())
+	        {	        
+				$arr[$i]['ID_EMPRESA']=$row[0];
+				$arr[$i]['RUT']=$row[1];
+				$arr[$i]['RSO']=$row[2];
+				$arr[$i]['NOMBRE_FANTASIA']=$row[4];
+				$arr[$i]['NOMBRE_BOLSA']=$row[6];
+				$arr[$i]['TIPO_BALANCE']=$row[7];			     
+				$arr[$i]['TIPO_IFRS']=$row[8];
+	            $i++; 
+	        }
+			return count($arr);
+		} catch( PDOExecption $e ) {
+			print "Error!: " . $e->getMessage() . "</br>";
+			return 0;
+		} 	
+		unset($con); 
+		unset($stmt);
+	}		
+
 
 
 /********************************************************************************************************************/	
@@ -920,692 +890,612 @@ class ModeloSQLServer
 
 
 
-		
-public function grillaIndicesFinancieros(){
-	        //creando variable array
-	        $arr = array();
-	        //conectamos con la mysql
+
+	public function grillaIndicesFinancieros(){
+	    try {
+		    $arr = array();	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	            //validamos que la conexion sea exitosa
-	            if (!$con)
-	            {
-	              //si existe error en conexion
-	              die('Error conectando: ' . mysql_error());
-	            }
-	                //si no existe error de conexion
-	                //seleccionamos base de datos
-	                mysql_select_db("agf", $con);
-	                
-	                //seleccionamos registros de tabla tb_persona
-					$sql = "SELECT a.ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, DESCRIPCION, formula, decimales, ID_GRUPO_INDICE_FINANCIERO, formula_desc, rango_superior, rango_inferior,rangos_desc,
+	        $sql = "SELECT a.ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, DESCRIPCION, formula, decimales, ID_GRUPO_INDICE_FINANCIERO, formula_desc, rango_superior, rango_inferior,rangos_desc,
 							campo1, campo2, campo3, campo4, campo5
 	                	                    FROM indices_financieros a, formulas b
 	                	                    WHERE a.id_formula = b.id_formula";
-	                $stmt = $con->prepare($sql)
-	                or die(mysql_error());
-					
-					$sql2 = str_replace("'", "", $sql);
-					$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-		$stmt->execute();
-					
-	                //el LIMIT se configura con los parametros recibidos
-	                //$startIndex
-	                //$numItems
-	                //EJ. seleccione desde el registro 0 hasta el 10
-	                $i=0;
-	                while($row = $stmt->fetch())
-	                {
-	                    //almacenamos los registros en la var array
-			     $arr[$i]['ID_INDICE_FINANCIERO']=$row[0];
-			     $arr[$i]['id_formula']=$row[1];
-	                     $arr[$i]['NOMBRE']=$row[2];
-	                     $arr[$i]['DESCRIPCION']=$row[3];
-			     $arr[$i]['formula']=$row[4];
-			     $arr[$i]['decimales']=$row[5];
-			     $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[6];
-			     $arr[$i]['formula_desc']=$row[7];
-	                     $arr[$i]['rango_superior']=$row[8];
-	                     $arr[$i]['rango_inferior']=$row[9];
-			     $arr[$i]['rangos_desc']=$row[10];
-			     $arr[$i]['campo1']=$row[11];
-			     $arr[$i]['campo2']=$row[12];
-			     $arr[$i]['campo3']=$row[13];
-				 $arr[$i]['campo4']=$row[14];
-			     $arr[$i]['campo5']=$row[15];
-	                 $i++; 
-	                }
-	            //cerramos la conexion con mysql
-	            mysql_close($con);
-	            
-	        //retornamos el arreglo
+	        $stmt = $con->prepare($sql);			
+			$stmt->execute();
+			$sql2 = str_replace("'", "", $sql);
+			try {
+				$con->beginTransaction(); 
+				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmt->execute();
+				$con->commit();
+			} catch(PDOExecption $e) {
+		        $con->rollback();
+		        print "Error!: " . $e->getMessage() . "</br>";
+				return 0;
+		    }   
+			
+	        $i=0;
+	        while($row = $stmt->fetch())
+	        {	        
+			    $arr[$i]['ID_INDICE_FINANCIERO']=$row[0];
+			    $arr[$i]['id_formula']=$row[1];
+	            $arr[$i]['NOMBRE']=$row[2];
+	            $arr[$i]['DESCRIPCION']=$row[3];
+			    $arr[$i]['formula']=$row[4];
+			    $arr[$i]['decimales']=$row[5];
+			    $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[6];
+			    $arr[$i]['formula_desc']=$row[7];
+	            $arr[$i]['rango_superior']=$row[8];
+	            $arr[$i]['rango_inferior']=$row[9];
+			    $arr[$i]['rangos_desc']=$row[10];
+			    $arr[$i]['campo1']=$row[11];
+			    $arr[$i]['campo2']=$row[12];
+			    $arr[$i]['campo3']=$row[13];
+				$arr[$i]['campo4']=$row[14];
+			    $arr[$i]['campo5']=$row[15];
+	            $i++; 
+	        }
 	        return $arr;
-	        
-	    }//fin metodo
+		} catch( PDOExecption $e ) {
+			print "Error!: " . $e->getMessage() . "</br>";
+			return 0;
+		} 	
+		unset($con); 
+		unset($stmt);
+	}
 
 
-	    		
 
-	    
-	    public function countIndicesFinancieros(){
-	    
-	            //conectamos con la mysql
-	            $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	                //validamos que la conexion sea exitosa
-	                if (!$con)
-	                {
-	                  //si existe error en conexion
-	                  die('Error conectando: ' . mysql_error());
-	                }
-	                    //si no existe error de conexion
-	                    //seleccionamos base de datos
-	                    mysql_select_db("agf", $con);
-	                    
-	                    //seleccionamos todos los registros de tabla tb_persona
-	                    $stmt = $con->prepare("SELECT ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, DESCRIPCION, formula, decimales, ID_GRUPO_INDICE_FINANCIERO, formula_desc, rango_superior, rango_inferior,rangos_desc,
-	                    							campo1, campo2, campo3 
-	                    FROM indices_financieros a, formulas b
-	                    WHERE a.id_formula = b.id_formula")
-	                    or die(mysql_error());
-	                    $i=0;
-	                    while($row = $stmt->fetch())
-	                    {
-	                        //almacenamos los registros en la var array
-			     $arr[$i]['ID_INDICE_FINANCIERO']=$row[0];
-			     $arr[$i]['id_formula']=$row[1];
-	                     $arr[$i]['NOMBRE']=$row[2];
-	                     $arr[$i]['DESCRIPCION']=$row[3];
-			     $arr[$i]['formula']=$row[4];
-			     $arr[$i]['decimales']=$row[5];
-			     $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[6];
-     			     $arr[$i]['formula_desc']=$row[7];
-     	                     $arr[$i]['rango_superior']=$row[8];
-     	                     $arr[$i]['rango_inferior']=$row[9];
-     			     $arr[$i]['rangos_desc']=$row[10];
-     			     $arr[$i]['campo1']=$row[11];
-     			     $arr[$i]['campo2']=$row[12];
-     			     $arr[$i]['campo3']=$row[13];			     
-							     
-	                     	$i++; 
-	                    }
-	                mysql_close($con);
-	                
-	            //retornamos el largo del arreglo
-	            return count($arr);
-	            
-	        }	
-		
-		public function comboItems(){
-					        //creando variable array
-					        $arr = array();
-					        //conectamos con la mysql
-					        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-					            //validamos que la conexion sea exitosa
-					            if (!$con)
-					            {
-					              //si existe error en conexion
-					              die('Error conectando: ' . mysql_error());
-					            }
-					                //si no existe error de conexion
-					                //seleccionamos base de datos
-					                mysql_select_db("agf", $con);
-					                
-					                //seleccionamos registros de tabla tb_persona
-					                $stmt = $con->prepare("SELECT `ID_TAG_AGF`, concat(etiqueta, '(', origen, ')') etiqueta,1 
-															FROM tag_agf
-															UNION
-															SELECT id_indice_financiero, nombre, 2
-															from indices_financieros 
-															order by 2")
-					                or die(mysql_error());
-					                //el LIMIT se configura con los parametros recibidos
-					                //$startIndex
-					                //$numItems
-					                //EJ. seleccione desde el registro 0 hasta el 10
-					                $i=0;
-					                while($row = $stmt->fetch())
-					                {
-					                    //almacenamos los registros en la var array
-							     $arr[$i]['ID_tag_agf']=$row[0];
-					                   //  $arr[$i]['nombre']=$row[1];
-							     $arr[$i]['etiqueta']=$row[1];
-							     //$arr[$i]['componente']=$row[3];
-							     $arr[$i]['origen']=$row[2];			                     
-					                 $i++; 
-					                }
-					            //cerramos la conexion con mysql
-					            mysql_close($con);
-					            
-					        //retornamos el arreglo
-					        return $arr;
-					        
-					    }//fin metodo
-					    
-	public function comboGrupoIndicesFinancieros(){
-		//creando variable array
-		$arr = array();
-		//conectamos con la mysql
-		$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-			//validamos que la conexion sea exitosa
-			if (!$con)
-			{
-			  //si existe error en conexion
-			  die('Error conectando: ' . mysql_error());
-			}
-				//si no existe error de conexion
-				//seleccionamos base de datos
-				mysql_select_db("agf", $con);
-				
-				//seleccionamos registros de tabla tb_persona
-				$stmt = $con->prepare("SELECT * FROM Grupos_Indices_Financieros")
-				or die(mysql_error());
-				//el LIMIT se configura con los parametros recibidos
-				//$startIndex
-				//$numItems
-				//EJ. seleccione desde el registro 0 hasta el 10
-				$i=0;
-				while($row = $stmt->fetch())
-				{
-					//almacenamos los registros en la var array
-			 $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[0];
-					 $arr[$i]['nombre']=$row[1];
-			 $arr[$i]['descripcion']=$row[2];
-											 
-				 $i++; 
-				}
-			//cerramos la conexion con mysql
-			mysql_close($con);
-			
-		//retornamos el arreglo
-		return $arr;
-		
-	}//fin metodo
-					    			
-					    	
-	public function insertarIndicesFinancieros($arrInf, $tabla, $arrEmp, $tipo, $formulas, $formulasCampos){
-						
-	//conectamos con la mysql
-		//return 1;		
-				
-			//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-		$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-		//$mysqli->autocommit(false);
-				//validamos que la conexion sea exitosa
-				//if (!$con)
-		if (mysqli_connect_errno()) 
-		{
-		  //si existe error en conexion
-		  die('Error conectando: ' . mysql_error());
-		}
-					//si no existe error de conexion
-					//seleccionamos base de datos
-					///////////////////////mysql_select_db("agf", $con);
-		//$mysqli->autocommit(FALSE);
-					//seleccionamos todos los registros de tabla tb_persona
-		//$mysqli->query("INSERT INTO logs values ('arrInf : " . print_r($arrInf, 1) . "');");
-		//$mysqli->query("INSERT INTO logs values ('tabla : " . $tabla . "');");
-		//$mysqli->query("INSERT INTO logs values ('arrEmp : " . print_r($arrEmp, 1) . "');");		
-		//$mysqli->query("INSERT INTO logs values ('tipo : " . $tipo . "');");
-		//$mysqli->query("INSERT INTO logs values ('formulas : " . print_r($formulas, 1) . "');");		
-		//$mysqli->query("INSERT INTO logs values ('formulasCampos : " . print_r($formulasCampos, 1) . "');");		
-		for($i = 0; $i < count($formulasCampos); $i++){
-			$formulasCampos[$i] = explode(';', $formulasCampos[$i]);
-		}
-		
-		//exit(0);
-		
-		
-		$sql = "INSERT INTO indices_financieros (`ID_INDICE_FINANCIERO`, `ID_GRUPO_INDICE_FINANCIERO`, 
-			`ID_COMPONENTE`, `NOMBRE`, `DESCRIPCION`, `ID_FORMULA`, `FORMULA_DESC`, `RANGO_SUPERIOR`, 
-				`RANGO_INFERIOR`, `RANGOS_DESC`, `OA`) 
-				VALUES (null, '" . $arrInf[9] . "', 4, '" . $arrInf[0] . "', '" . $arrInf[1] . "', 
-				'0', '" . $arrInf[2] . "', '" . $arrInf[5] . "', '" . $arrInf[4] . "', '" . $arrInf[3] . "', 1);";
-		$sql2 = str_replace("'", "''", $sql);
-		//$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
-							
-		$stmt = $con->prepare($sql);
-		$stmt->execute();			    
-		$indiceNuevo = $con->lastInsertId();
-		
-		
-		
-		
-		
-		//$mysqli->query("INSERT INTO logs values ('arrInf[6] = " . count($arrInf[6]) . "');");
-		$nn = count($formulas);//$arrInf[6]);
-		for($ii = 0; $ii < $nn; $ii++){
-			$arr = array();
-			$arr = $formulasCampos[$ii];//$arrInf[8][$ii];
-			//$mysqli->query("INSERT INTO logs values ('formulasCampos = " . print_r($formulasCampos, true) . "');");
-			//$mysqli->query("INSERT INTO logs values ('arr = " . print_r($arr, true) . "');");
-			$formula1 = explode(".", $arr[10]);
-			$formula2 = explode(".", $arr[11]);
-			$formula3 = explode(".", $arr[12]);
-			$formula4 = explode(".", $arr[13]);
-			$formula5 = explode(".", $arr[14]);
-			
-			$formula1[0] = $formula1[0] == 'C' ? 1 : 2;
-			$formula2[0] = $formula2[0] == 'C' ? 1 : 2;
-			$formula3[0] = $formula3[0] == 'C' ? 1 : 2;
-			$formula4[0] = $formula4[0] == 'C' ? 1 : 2;
-			$formula5[0] = $formula5[0] == 'C' ? 1 : 2;
-			
-			if($arr[5] == 'C'){
-				$arr[5] = 1;
-				$valor1 = ' v.valor C1, ';
-				$valorLeft1 = " LEFT JOIN valores v ON v.id_tag_agf = a.campo1 
-                            AND v.tipo = 'TRIMESTRAL' 
-                            AND v.id_empresa = d.id_empresa                             
-                            AND v.origen = a.tipoc1     
-							AND v.id_formula =  a.id_formula 							
-                            AND v.id_periodo = c.id_periodo ";
-			} elseif($arr[5] == 'F'){
-				$arr[5] = 2;
-			} else {
-				$arr[5] = 0;
-			}
-			
-			if($arr[6] == 'C'){
-				$arr[6] = 1;
-			} elseif($arr[6] == 'F'){
-				$arr[6] = 2;
-			} else {
-				$arr[6] = 0;
-			}
-			
-			if($arr[7] == 'C'){
-				$arr[7] = 1;
-			} elseif($arr[7] == 'F'){
-				$arr[7] = 2;
-			} else {
-				$arr[7] = 0;
-			}
-			
-			if($arr[8] == 'C'){
-				$arr[8] = 1;
-			} elseif($arr[8] == 'F'){
-				$arr[8] = 2;
-			} else {
-				$arr[8] = 0;
-			}
-			
-			if($arr[9] == 'C'){
-				$arr[9] = 1;
-			} elseif($arr[9] == 'F'){
-				$arr[9] = 2;
-			} else {
-				$arr[9] = 0;
-			}
-			
-			$sum = 0;   
-			for($i = 0; $i < 5; $i++){
-				if($arr[$i] != -1){
-					$sum++;
-				}
-			}   
-			
-			
-			
-			$arrInf[6] = str_replace('_', '', $formulas[$ii]);
-			
-			$sql = "INSERT INTO formulas (`ID_FORMULA`, `CAMPO1`, `CAMPO2`, `CAMPO3`, `CAMPO4`, `CAMPO5`, `tipoc1`, `tipoc2`, 
-					`tipoc3`, `tipoc4`, `tipoc5`, `FORMULA`, `CANTIDAD_CAMPOS`, `DECIMALES`, `cod1`, `cod2`, `cod3`, `cod4`, 
-					`cod5`, `id_indice_financiero`, `num_formula`) values 
-					(null, '" . $arr[0] . "', '" . $arr[1] . "', '" . 
-					$arr[2] . "', '" . $arr[3] . "', '" . $arr[4] .
-					"', '" . $arr[5] . "', '" . $arr[6] . "', '" . 
-					$arr[7] . "', '" . $arr[8] . "', '" . $arr[9]. "', '" . 
-					$arrInf[6] . "', '" . $sum . "', '" . $arrInf[7]. "', '" . 
-					$arr[10]. "', '" . $arr[11]. "', '" . $arr[12]. "', '" . 
-					$arr[13]. "', '" . $arr[14] . "', " . $indiceNuevo . ", " . $ii . " );";
-			$sql2 = str_replace("'", "''", $sql);
-			////$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
-			$stmt = $con->prepare($sql);
-		$stmt->execute();
-			$ultimo_id = $con->lastInsertId();
-			
-			
-			
-			if($ii == 0){
-				$ultimo = $ultimo_id;
-			}
-			/*$stmt = $con->prepare($sql)
-					or die(mysql_error());*/
-						
-			
-		}
-			////$mysqli->query("INSERT INTO logs values ('ii = " . $ii . "');");
-		$sql = "INSERT INTO `empresa_indice`(`id_empresa`, `id_indice_financiero`, `num_formula`, `id_formula`) 
-					SELECT id_empresa, " . $indiceNuevo . ", 0, " . $ultimo . " 
-					FROM empresas;";
-			$sql2 = str_replace("'", "''", $sql);
-			////$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
-			$stmt = $con->prepare($sql);
-		$stmt->execute();
-			
-		for($i = 0; $i < count($arrEmp); $i++){
-			$sql = "INSERT INTO indice_empresa values ('" . $indiceNuevo . "', '" . $arrEmp[$i] . "', '" . $tipo ."');";
-			$sql2 = str_replace("'", "''", $sql);
-			////$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();				
-			$stmt = $con->prepare($sql);
-		$stmt->execute();
-		}
-		
-		$comp1 = ' AND x.id_periodo = c.id_periodo ';
-		$comp2 = ' AND x.id_periodo = c.id_periodo ';
-		$comp3 = ' AND x.id_periodo = c.id_periodo ';
-		$comp4 = ' AND x.id_periodo = c.id_periodo ';
-		$comp5 = ' AND x.id_periodo = c.id_periodo ';
-			
-			////$mysqli->query("INSERT INTO logs values ('formula1 = " . print_r($formula1, 1) . "');");
-			
-		
-			
-		if(count($formula1) > 1){
-			switch($formula1[2]){
-				case 'NN':
-						$comp1 = 'TRIMESTRAL';
-						break;
-				case 'AN':
-						$comp1 = "(SELECT id_tag_agf, id_empresa, origen, SUM(valor) valor
-									FROM valores 
-									WHERE tipo = 'TRIMESTRAL '
-										AND id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
-															FROM periodos m WHERE m.id_periodo = c.id_periodo) 
-									GROUP BY id_tag_agf, id_empresa, origen)";
-						break;
-				case 'AA':
-						$comp1 = "ACUMULADO";/*"(SELECT id_tag_agf, id_empresa, origen, SUM(valor) valor
-									FROM valores 
-									WHERE tipo = 'TRIMESTRAL '
-										AND id_periodo in (SELECT r.id_periodo
-																FROM periodos r, periodos p
-																WHERE r.ano = p.ano
-																		  AND r.mes < p.mes
-																		  AND r.oa = 1
-																		  AND p.id_periodo = c.id_periodo) 
-									GROUP BY id_tag_agf, id_empresa, origen)";									  */
-						break;
-				case 'AC':
-					$comp1 = 'ANUAL';/*" (SELECT id_tag_agf, id_empresa, origen, SUM(valor) valor
-									FROM valores 
-									WHERE tipo = 'TRIMESTRAL '				
-										AND id_periodo in (SELECT r.id_periodo
-															FROM periodos r
-															WHERE r.oa = 1
-																AND r.orden in (e.orden, e.orden - 1, e.orden - 2,e.orden - 3)) 
-								GROUP BY id_tag_agf, id_empresa, origen)";        */
-					break;
-				case 'AS':
-						$comp1 = " AND 'QUERY' ";
-						break;        
-					
-			}
-		}
-                        
-		if(count($formula2) > 1){
-			switch($formula2[2]){
-				case 'NN':
-						$comp2 = 'TRIMESTRAL';
-						break;
-				case 'AN':
-						$comp2 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
-									FROM periodos m WHERE m.id_periodo = c.id_periodo) ';
-						break;
-				case 'AA':
-						$comp2 = 'ACUMULADO';
-						break;
-				case 'AC':
-						$comp2 = 'ANUAL';        
-						break;        
-				case 'AS':
-						$comp2 = " AND 'QUERY' ";
-						break;        
-				
-			}
-		}
-                        
-		if(count($formula3) > 1){
-			switch($formula3[2]){
-					case 'NN':
-							$comp3 = 'TRIMESTRAL';
-							break;
-					case 'AN':
-							$comp3 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
-																															FROM periodos m WHERE m.id_periodo = c.id_periodo) ';
-							break;
-					case 'AA':
-							$comp3 = 'ACUMULADO';
-							break;
-					case 'AC':
-							$comp3 = 'ANUAL';        
-					break;
-					case 'AS':
-							$comp3 = " AND 'QUERY' ";
-							break;        
-			
-			}
-		}
-                        ////$mysqli->query("INSERT INTO logs values ('" . $formula4[0] . "');");
-                        
-		if(count($formula4) > 1){
-			switch($formula4[2]){
-				case 'NN':
-						$comp4 = 'TRIMESTRAL';
-						break;
-				case 'AN':
-						$comp4 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
-									FROM periodos m WHERE m.id_periodo = c.id_periodo) ';
-						break;
-				case 'AA':
-						$comp4 = 'ACUMULADO';
-						break;
-				case 'AC':
-						$comp4 = 'ANUAL';        
-						break;
-				case 'AS':
-						$comp4 = " AND 'QUERY' ";
-						break;        
-				
-			}
-		}
-                        
-		if(count($formula5) > 1){
-			switch($formula5[2]){
-				case 'NN':
-						$comp5 = 'TRIMESTRAL';
-						break;
-				case 'AN':
-						$comp5 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
-																														FROM periodos m WHERE m.id_periodo = c.id_periodo) ';
-						break;
-				case 'AA':
-						$comp5 = 'ACUMULADO';
-						break;
-				case 'AC':
-						$comp5 = 'ANUAL';        
-						break;        
-				case 'AS':
-						$comp5 = " AND 'QUERY' ";
-						break;        
-		
-			}
-		}
-			
-			
-			
-			
-					$sql = "SELECT b.id_indice_financiero, 
-					d.id_empresa, 
-					c.id_periodo,						
-					v.valor C1,
-					w.valor C2,
-					x.valor C3,                        
-					y.valor C4,         
-					z.valor C5, 
-					concat(d.rso, ': ', b.nombre), 
-					label, 
-					formula, 
-					a.id_formula, 
-					c.mes,						
-					d.color, d.rso, b.nombre, 				   
-					v.id_valor C1H, 
-					w.id_valor C2H,
-					x.id_valor C3H,
-					y.id_valor C4H,
-					z.id_valor C5H
-				FROM formulas a
-					INNER JOIN indices_financieros b 
-					 ON a.id_indice_financiero = b.id_indice_financiero					   
-					INNER JOIN periodos c
-					INNER JOIN empresas d 
-					LEFT JOIN valores v ON v.id_tag_agf = a.campo1 
-						AND v.tipo = '" . $comp1 . "' 
-						AND v.id_empresa = d.id_empresa                             
-						AND v.origen = a.tipoc1                          	
-													
-						AND v.id_periodo = c.id_periodo
-					LEFT JOIN valores w ON w.id_tag_agf = a.campo2 
-						AND w.tipo = '" . $comp2 . "' 
-						AND w.id_empresa = d.id_empresa                             
-						AND w.origen = a.tipoc2                          	
-													
-						AND w.id_periodo = c.id_periodo
-					LEFT JOIN valores x ON x.id_tag_agf = a.campo3 
-						AND x.tipo = '" . $comp3 . "' 
-						AND x.id_empresa = d.id_empresa                             
-						AND x.origen = a.tipoc3                          	
-						 							
-						AND x.id_periodo = c.id_periodo
-					LEFT JOIN valores y ON y.id_tag_agf = a.campo4 
-						AND y.tipo = '" . $comp4 . "' 
-						AND y.id_empresa = d.id_empresa                             
-						AND y.origen = a.tipoc4                          	
-													
-						AND y.id_periodo = c.id_periodo
-					LEFT JOIN valores z ON z.id_tag_agf = a.campo5 
-						AND z.tipo = '" . $comp5 . "' 
-						AND z.id_empresa = d.id_empresa                             
-						AND z.origen = a.tipoc5                          	
-													
-						AND z.id_periodo = c.id_periodo	
-				WHERE b.id_indice_financiero = " . $indiceNuevo . "
-					;";  
-	
-			
-			
-			
-			
 
-			
-					
-					
-			$sql2 = str_replace("'", "''", $sql);
-			$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();			
-			
-			$stmt = $con->prepare($sql);
-		$stmt->execute();
-					
-			$mysqli->query("INSERT INTO logs values ('Nº de rows = " . $result->num_rows . "');");
-			
-			$i = 0;
-			$formula = '';
-			$operacion = array();
-			//$arrInf = array();	
+
+	public function countIndicesFinancieros(){
+		try {
+		        
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	        
+			$stmt = $con->prepare("SELECT ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, DESCRIPCION, formula, decimales, ID_GRUPO_INDICE_FINANCIERO, formula_desc, rango_superior, rango_inferior,rangos_desc,
+																campo1, campo2, campo3 
+									FROM indices_financieros a, formulas b
+									WHERE a.id_formula = b.id_formula");
+			$stmt->execute();
+			$i=0;
 			while($row = $stmt->fetch())
 			{
-						//almacenamos los registros en la var array
-				/* //$mysqli->query("INSERT INTO logs values ('" . print_r($row, 1) . "');");
-				 $arr[$i]['id_tag_agf']=$row[0];
-				 $arr[$i]['id_empresa']=$row[1];
-						 $arr[$i]['id_periodo']=$row[2];	     */
-				$operacion = $row[10];
-				$mysqli->query("INSERT INTO logs values ('operacion = " . $operacion . "');");	 
-				if(!isset($row[3]))
-				$row[3] = 0;
-				////$mysqli->query("INSERT INTO logs values ('r3(C1) = " . $row[3] . "');");	
-				$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
-				if(!isset($row[4]))
-					$row[4] = 0;
-				$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
-				if(!isset($row[5]))			
-					$row[5] = 0;
-				$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
-				if(!isset($row[6]))
-					$row[6] = 0;
-				$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
-				if(!isset($row[7]))
-					$row[7] = 0;
-				$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
-				
-				$mysqli->query("INSERT INTO logs values ('operacion = " . $operacion . "');");	
-				$res = 0;
-				$evaluacionDiv = explode('/', $operacion);
-				if(count($evaluacionDiv) > 1){					
-					eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
-					if($resultDiv != 0){
-						eval( '$res = ' . $operacion . ';');		
+			    $arr[$i]['ID_INDICE_FINANCIERO']=$row[0];
+			    $arr[$i]['id_formula']=$row[1];
+	            $arr[$i]['NOMBRE']=$row[2];
+	            $arr[$i]['DESCRIPCION']=$row[3];
+			    $arr[$i]['formula']=$row[4];
+			    $arr[$i]['decimales']=$row[5];
+			    $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[6];
+     			$arr[$i]['formula_desc']=$row[7];
+     	        $arr[$i]['rango_superior']=$row[8];
+     	        $arr[$i]['rango_inferior']=$row[9];
+     			$arr[$i]['rangos_desc']=$row[10];
+     			$arr[$i]['campo1']=$row[11];
+     			$arr[$i]['campo2']=$row[12];
+     			$arr[$i]['campo3']=$row[13];			     
+				$i++; 
+	        }	        
+	        return count($arr);
+		} catch( PDOExecption $e ) {
+			print "Error!: " . $e->getMessage() . "</br>";
+			return 0;
+		} 	
+		unset($con); 
+		unset($stmt);
+	}	
+
+	public function comboItems(){
+		try {					        
+			$arr = array();
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');			
+			$stmt = $con->prepare("SELECT `ID_TAG_AGF`, concat(etiqueta, '(', origen, ')') etiqueta,1 
+									FROM tag_agf
+									UNION
+									SELECT id_indice_financiero, nombre, 2
+									from indices_financieros 
+									order by 2");
+			$stmt->execute();
+			$i=0;
+			while($row = $stmt->fetch())
+			{			
+				$arr[$i]['ID_tag_agf']=$row[0];				
+				$arr[$i]['etiqueta']=$row[1];				
+				$arr[$i]['origen']=$row[2];			                     
+				$i++; 
+			}
+			
+			return $arr;
+		} catch( PDOExecption $e ) {
+			print "Error!: " . $e->getMessage() . "</br>";
+			return 0;
+		} 	
+		unset($con); 
+		unset($stmt);
+	}
+
+	public function comboGrupoIndicesFinancieros(){
+		try {		
+			$arr = array();		
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');			
+			$stmt = $con->prepare("SELECT * FROM Grupos_Indices_Financieros");
+			$stmt->execute();
+			$i=0;
+			while($row = $stmt->fetch())
+			{			
+				$arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[0];
+				$arr[$i]['nombre']=$row[1];
+				$arr[$i]['descripcion']=$row[2];
+				$i++; 
+			}			
+			return $arr;
+		} catch( PDOExecption $e ) {
+			print "Error!: " . $e->getMessage() . "</br>";
+			return 0;
+		} 	
+		unset($con); 
+		unset($stmt);		
+
+	}
+
+
+	public function insertarIndicesFinancieros($arrInf, $tabla, $arrEmp, $tipo, $formulas, $formulasCampos){
+		try {
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');				
+			//$mysqli->autocommit(FALSE);		
+			//$mysqli->query("INSERT INTO logs values ('arrInf : " . print_r($arrInf, 1) . "');");
+			//$mysqli->query("INSERT INTO logs values ('tabla : " . $tabla . "');");
+			//$mysqli->query("INSERT INTO logs values ('arrEmp : " . print_r($arrEmp, 1) . "');");		
+			//$mysqli->query("INSERT INTO logs values ('tipo : " . $tipo . "');");
+			//$mysqli->query("INSERT INTO logs values ('formulas : " . print_r($formulas, 1) . "');");		
+			//$mysqli->query("INSERT INTO logs values ('formulasCampos : " . print_r($formulasCampos, 1) . "');");		
+			for($i = 0; $i < count($formulasCampos); $i++){
+				$formulasCampos[$i] = explode(';', $formulasCampos[$i]);
+			}
+			//exit(0);
+
+			try {
+				beginTransaction(); 
+								$sql = "INSERT INTO indices_financieros (`ID_INDICE_FINANCIERO`, `ID_GRUPO_INDICE_FINANCIERO`, 
+					`ID_COMPONENTE`, `NOMBRE`, `DESCRIPCION`, `ID_FORMULA`, `FORMULA_DESC`, `RANGO_SUPERIOR`, 
+						`RANGO_INFERIOR`, `RANGOS_DESC`, `OA`) 
+						VALUES (null, '" . $arrInf[9] . "', 4, '" . $arrInf[0] . "', '" . $arrInf[1] . "', 
+						'0', '" . $arrInf[2] . "', '" . $arrInf[5] . "', '" . $arrInf[4] . "', '" . $arrInf[3] . "', 1);";
+				$sql2 = str_replace("'", "''", $sql);
+				/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+						$stmt->execute();*/
+				$stmt = $con->prepare($sql);
+				$stmt->execute();			    
+				$indiceNuevo = $con->lastInsertId();
+				//$mysqli->query("INSERT INTO logs values ('arrInf[6] = " . count($arrInf[6]) . "');");
+				$nn = count($formulas);//$arrInf[6]);
+				for($ii = 0; $ii < $nn; $ii++){
+					$arr = array();
+					$arr = $formulasCampos[$ii];//$arrInf[8][$ii];
+					//$mysqli->query("INSERT INTO logs values ('formulasCampos = " . print_r($formulasCampos, true) . "');");
+					//$mysqli->query("INSERT INTO logs values ('arr = " . print_r($arr, true) . "');");
+					$formula1 = explode(".", $arr[10]);
+					$formula2 = explode(".", $arr[11]);
+					$formula3 = explode(".", $arr[12]);
+					$formula4 = explode(".", $arr[13]);
+					$formula5 = explode(".", $arr[14]);
+
+					$formula1[0] = $formula1[0] == 'C' ? 1 : 2;
+					$formula2[0] = $formula2[0] == 'C' ? 1 : 2;
+					$formula3[0] = $formula3[0] == 'C' ? 1 : 2;
+					$formula4[0] = $formula4[0] == 'C' ? 1 : 2;
+					$formula5[0] = $formula5[0] == 'C' ? 1 : 2;
+
+					if($arr[5] == 'C'){
+						$arr[5] = 1;
+						$valor1 = ' v.valor C1, ';
+						$valorLeft1 = " LEFT JOIN valores v ON v.id_tag_agf = a.campo1 
+									AND v.tipo = 'TRIMESTRAL' 
+									AND v.id_empresa = d.id_empresa                             
+									AND v.origen = a.tipoc1     
+									AND v.id_formula =  a.id_formula 							
+									AND v.id_periodo = c.id_periodo ";
+					} elseif($arr[5] == 'F'){
+						$arr[5] = 2;
 					} else {
-						$res = 0;
+						$arr[5] = 0;
 					}
-				} else {
-					eval( '$res = ' . $operacion . ';');		
+
+					if($arr[6] == 'C'){
+						$arr[6] = 1;
+					} elseif($arr[6] == 'F'){
+						$arr[6] = 2;
+					} else {
+						$arr[6] = 0;
+					}
+
+					if($arr[7] == 'C'){
+						$arr[7] = 1;
+					} elseif($arr[7] == 'F'){
+						$arr[7] = 2;
+					} else {
+						$arr[7] = 0;
+					}
+
+					if($arr[8] == 'C'){
+						$arr[8] = 1;
+					} elseif($arr[8] == 'F'){
+						$arr[8] = 2;
+					} else {
+						$arr[8] = 0;
+					}
+
+					if($arr[9] == 'C'){
+						$arr[9] = 1;
+					} elseif($arr[9] == 'F'){
+						$arr[9] = 2;
+					} else {
+						$arr[9] = 0;
+					}
+
+					$sum = 0;   
+					for($i = 0; $i < 5; $i++){
+						if($arr[$i] != -1){
+							$sum++;
+						}
+					}   
+
+
+
+					$arrInf[6] = str_replace('_', '', $formulas[$ii]);
+
+					$sql = "INSERT INTO formulas (`ID_FORMULA`, `CAMPO1`, `CAMPO2`, `CAMPO3`, `CAMPO4`, `CAMPO5`, `tipoc1`, `tipoc2`, 
+							`tipoc3`, `tipoc4`, `tipoc5`, `FORMULA`, `CANTIDAD_CAMPOS`, `DECIMALES`, `cod1`, `cod2`, `cod3`, `cod4`, 
+							`cod5`, `id_indice_financiero`, `num_formula`) values 
+							(null, '" . $arr[0] . "', '" . $arr[1] . "', '" . 
+							$arr[2] . "', '" . $arr[3] . "', '" . $arr[4] .
+							"', '" . $arr[5] . "', '" . $arr[6] . "', '" . 
+							$arr[7] . "', '" . $arr[8] . "', '" . $arr[9]. "', '" . 
+							$arrInf[6] . "', '" . $sum . "', '" . $arrInf[7]. "', '" . 
+							$arr[10]. "', '" . $arr[11]. "', '" . $arr[12]. "', '" . 
+							$arr[13]. "', '" . $arr[14] . "', " . $indiceNuevo . ", " . $ii . " );";
+					$sql2 = str_replace("'", "''", $sql);
+					/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+						$stmt->execute();*/
+					$stmt = $con->prepare($sql);
+					$stmt->execute();
+					$ultimo_id = $con->lastInsertId();
+					if($ii == 0){
+						$ultimo = $ultimo_id;
+					}
+					/*$stmt = $con->prepare($sql);
+					$stmt->execute();*/
 				}
-				////$mysqli->query("INSERT INTO logs values ('operacion = " . $operacion . "');");	
-				$mysqli->query("INSERT INTO logs values ('res = " . $res . "');");	
-				
-					
-					
-				$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`, `id_formula`, `hist_formula`) 
-				VALUES (null," . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'TRIMESTRAL'," . $res . ",'2013',2, " . $row[11] . ", '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "');";
+				////$mysqli->query("INSERT INTO logs values ('ii = " . $ii . "');");
+				$sql = "INSERT INTO `empresa_indice`(`id_empresa`, `id_indice_financiero`, `num_formula`, `id_formula`) 
+							SELECT id_empresa, " . $indiceNuevo . ", 0, " . $ultimo . " 
+							FROM empresas;";
+				$sql2 = str_replace("'", "''", $sql);
+				/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+					$stmt->execute();*/
+				$stmt = $con->prepare($sql);
+				$stmt->execute();
+
+				for($i = 0; $i < count($arrEmp); $i++){
+					$sql = "INSERT INTO indice_empresa values ('" . $indiceNuevo . "', '" . $arrEmp[$i] . "', '" . $tipo ."');";
+					$sql2 = str_replace("'", "''", $sql);
+					/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+						$stmt->execute();	*/			
+					$stmt = $con->prepare($sql);
+				$stmt->execute();
+				}
+
+				$comp1 = ' AND x.id_periodo = c.id_periodo ';
+				$comp2 = ' AND x.id_periodo = c.id_periodo ';
+				$comp3 = ' AND x.id_periodo = c.id_periodo ';
+				$comp4 = ' AND x.id_periodo = c.id_periodo ';
+				$comp5 = ' AND x.id_periodo = c.id_periodo ';
+
+				////$mysqli->query("INSERT INTO logs values ('formula1 = " . print_r($formula1, 1) . "');");
+
+
+
+				if(count($formula1) > 1){
+					switch($formula1[2]){
+						case 'NN':
+								$comp1 = 'TRIMESTRAL';
+								break;
+						case 'AN':
+								$comp1 = "(SELECT id_tag_agf, id_empresa, origen, SUM(valor) valor
+											FROM valores 
+											WHERE tipo = 'TRIMESTRAL '
+												AND id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																	FROM periodos m WHERE m.id_periodo = c.id_periodo) 
+											GROUP BY id_tag_agf, id_empresa, origen)";
+								break;
+						case 'AA':
+								$comp1 = "ACUMULADO";/*"(SELECT id_tag_agf, id_empresa, origen, SUM(valor) valor
+											FROM valores 
+											WHERE tipo = 'TRIMESTRAL '
+												AND id_periodo in (SELECT r.id_periodo
+																		FROM periodos r, periodos p
+																		WHERE r.ano = p.ano
+																				  AND r.mes < p.mes
+																				  AND r.oa = 1
+																				  AND p.id_periodo = c.id_periodo) 
+											GROUP BY id_tag_agf, id_empresa, origen)";									  */
+								break;
+						case 'AC':
+							$comp1 = 'ANUAL';/*" (SELECT id_tag_agf, id_empresa, origen, SUM(valor) valor
+											FROM valores 
+											WHERE tipo = 'TRIMESTRAL '				
+												AND id_periodo in (SELECT r.id_periodo
+																	FROM periodos r
+																	WHERE r.oa = 1
+																		AND r.orden in (e.orden, e.orden - 1, e.orden - 2,e.orden - 3)) 
+										GROUP BY id_tag_agf, id_empresa, origen)";        */
+							break;
+						case 'AS':
+								$comp1 = " AND 'QUERY' ";
+								break;        
+
+					}
+				}
+							
+				if(count($formula2) > 1){
+					switch($formula2[2]){
+						case 'NN':
+								$comp2 = 'TRIMESTRAL';
+								break;
+						case 'AN':
+								$comp2 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+											FROM periodos m WHERE m.id_periodo = c.id_periodo) ';
+								break;
+						case 'AA':
+								$comp2 = 'ACUMULADO';
+								break;
+						case 'AC':
+								$comp2 = 'ANUAL';        
+								break;        
+						case 'AS':
+								$comp2 = " AND 'QUERY' ";
+								break;        
+
+					}
+				}
+							
+				if(count($formula3) > 1){
+					switch($formula3[2]){
+						case 'NN':
+								$comp3 = 'TRIMESTRAL';
+								break;
+						case 'AN':
+								$comp3 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																																FROM periodos m WHERE m.id_periodo = c.id_periodo) ';
+								break;
+						case 'AA':
+								$comp3 = 'ACUMULADO';
+								break;
+						case 'AC':
+								$comp3 = 'ANUAL';        
+						break;
+						case 'AS':
+								$comp3 = " AND 'QUERY' ";
+								break;        
+
+					}
+				}
+							////$mysqli->query("INSERT INTO logs values ('" . $formula4[0] . "');");
+							
+				if(count($formula4) > 1){
+					switch($formula4[2]){
+						case 'NN':
+								$comp4 = 'TRIMESTRAL';
+								break;
+						case 'AN':
+								$comp4 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+											FROM periodos m WHERE m.id_periodo = c.id_periodo) ';
+								break;
+						case 'AA':
+								$comp4 = 'ACUMULADO';
+								break;
+						case 'AC':
+								$comp4 = 'ANUAL';        
+								break;
+						case 'AS':
+								$comp4 = " AND 'QUERY' ";
+								break;        
+
+					}
+				}
+							
+				if(count($formula5) > 1){
+					switch($formula5[2]){
+						case 'NN':
+								$comp5 = 'TRIMESTRAL';
+								break;
+						case 'AN':
+								$comp5 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																																FROM periodos m WHERE m.id_periodo = c.id_periodo) ';
+								break;
+						case 'AA':
+								$comp5 = 'ACUMULADO';
+								break;
+						case 'AC':
+								$comp5 = 'ANUAL';        
+								break;        
+						case 'AS':
+								$comp5 = " AND 'QUERY' ";
+								break;        
+
+					}
+				}
+
+
+
+
+				$sql = "SELECT b.id_indice_financiero, 
+						d.id_empresa, 
+						c.id_periodo,						
+						v.valor C1,
+						w.valor C2,
+						x.valor C3,                        
+						y.valor C4,         
+						z.valor C5, 
+						concat(d.rso, ': ', b.nombre), 
+						label, 
+						formula, 
+						a.id_formula, 
+						c.mes,						
+						d.color, d.rso, b.nombre, 				   
+						v.id_valor C1H, 
+						w.id_valor C2H,
+						x.id_valor C3H,
+						y.id_valor C4H,
+						z.id_valor C5H
+					FROM formulas a
+						INNER JOIN indices_financieros b 
+						 ON a.id_indice_financiero = b.id_indice_financiero					   
+						INNER JOIN periodos c
+						INNER JOIN empresas d 
+						LEFT JOIN valores v ON v.id_tag_agf = a.campo1 
+							AND v.tipo = '" . $comp1 . "' 
+							AND v.id_empresa = d.id_empresa                             
+							AND v.origen = a.tipoc1                          	
+														
+							AND v.id_periodo = c.id_periodo
+						LEFT JOIN valores w ON w.id_tag_agf = a.campo2 
+							AND w.tipo = '" . $comp2 . "' 
+							AND w.id_empresa = d.id_empresa                             
+							AND w.origen = a.tipoc2                          	
+														
+							AND w.id_periodo = c.id_periodo
+						LEFT JOIN valores x ON x.id_tag_agf = a.campo3 
+							AND x.tipo = '" . $comp3 . "' 
+							AND x.id_empresa = d.id_empresa                             
+							AND x.origen = a.tipoc3                          	
+														
+							AND x.id_periodo = c.id_periodo
+						LEFT JOIN valores y ON y.id_tag_agf = a.campo4 
+							AND y.tipo = '" . $comp4 . "' 
+							AND y.id_empresa = d.id_empresa                             
+							AND y.origen = a.tipoc4                          	
+														
+							AND y.id_periodo = c.id_periodo
+						LEFT JOIN valores z ON z.id_tag_agf = a.campo5 
+							AND z.tipo = '" . $comp5 . "' 
+							AND z.id_empresa = d.id_empresa                             
+							AND z.origen = a.tipoc5                          	
+														
+							AND z.id_periodo = c.id_periodo	
+					WHERE b.id_indice_financiero = " . $indiceNuevo . "
+						;";  
+
+
+
+
+
+
+
+
+
 				$sql2 = str_replace("'", "''", $sql);
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();			
+
 				$stmt = $con->prepare($sql);
-		$stmt->execute();
-			}	
-				
-										
-				
-
-
-		
-		$sql = "UPDATE indices_financieros 
-				SET `id_formula` =  " . $ultimo . "
-				WHERE id_indice_financiero = " . $indiceNuevo . ";";
-		$sql2 = str_replace("'", "''", $sql);
-		$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
-		$stmt = $con->prepare($sql);
-		$stmt->execute();	
-				
-		//$arr[0]['ID'] = $ultimo_id;
+
+				$mysqli->query("INSERT INTO logs values ('Nº de rows = " . $result->num_rows . "');");
+
+				$i = 0;
+				$formula = '';
+				$operacion = array();
+				//$arrInf = array();	
+				while($row = $stmt->fetch())
+				{
+							
+					/* //$mysqli->query("INSERT INTO logs values ('" . print_r($row, 1) . "');");
+					 $arr[$i]['id_tag_agf']=$row[0];
+					 $arr[$i]['id_empresa']=$row[1];
+							 $arr[$i]['id_periodo']=$row[2];	     */
+					$operacion = $row[10];
+					$mysqli->query("INSERT INTO logs values ('operacion = " . $operacion . "');");	 
+					if(!isset($row[3]))
+					$row[3] = 0;
+					////$mysqli->query("INSERT INTO logs values ('r3(C1) = " . $row[3] . "');");	
+					$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
+					if(!isset($row[4]))
+						$row[4] = 0;
+					$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
+					if(!isset($row[5]))			
+						$row[5] = 0;
+					$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
+					if(!isset($row[6]))
+						$row[6] = 0;
+					$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
+					if(!isset($row[7]))
+						$row[7] = 0;
+					$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
+
+					$mysqli->query("INSERT INTO logs values ('operacion = " . $operacion . "');");	
+					$res = 0;
+					$evaluacionDiv = explode('/', $operacion);
+					if(count($evaluacionDiv) > 1){					
+						eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+						if($resultDiv != 0){
+							eval( '$res = ' . $operacion . ';');		
+						} else {
+							$res = 0;
+						}
+					} else {
+						eval( '$res = ' . $operacion . ';');		
+					}
+					////$mysqli->query("INSERT INTO logs values ('operacion = " . $operacion . "');");	
+					$mysqli->query("INSERT INTO logs values ('res = " . $res . "');");	
+
+
+
+					$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`, `id_formula`, `hist_formula`) 
+					VALUES (null," . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'TRIMESTRAL'," . $res . ",'2013',2, " . $row[11] . ", '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "');";
+					$sql2 = str_replace("'", "''", $sql);
+					$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+					$stmt->execute();			
+					$stmt = $con->prepare($sql);
+					$stmt->execute();
+				}	
+				$sql = "UPDATE indices_financieros 
+						SET `id_formula` =  " . $ultimo . "
+						WHERE id_indice_financiero = " . $indiceNuevo . ";";
+				$sql2 = str_replace("'", "''", $sql);
+				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+						$stmt->execute();
+				$stmt = $con->prepare($sql);
+				$stmt->execute();	
+				return $ultimo;
+
+			} catch(PDOExecption $e) {
+		        $con->rollback();
+		        print "Error!: " . $e->getMessage() . "</br>";
+				return 0;
+		    }   
+		} catch( PDOExecption $e ) {
+			print "Error!: " . $e->getMessage() . "</br>";
+			return 0;
+		} 	
+		unset($con); 
+		unset($stmt);		
 		
-		return $ultimo;
-	   			            
+
 	}
-	
-	   	public function editarIndicesFinancieros($arrInf2, $table, $where){
-	   					    
-	   	//conectamos con la mysql
-		   
-	   			    
+
+	public function editarIndicesFinancieros($arrInf2, $table, $where){
 	            //$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 		    $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	                //validamos que la conexion sea exitosa
+	                
 	                //if (!$con)
-			//$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
+			/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmt->execute();*/
 			$arrInf = array();
    			foreach($arrInf2 as $key => $value){
 			    	$arrInf[$key] = $value;
 			    }	    
 			$mysqli->query("INSERT INTO logs values ('" . print_r($arrInf, 1) . "');");
-			
+
 			if (mysqli_connect_errno()) 
 	                {
 	                  //si existe error en conexion
@@ -1613,10 +1503,10 @@ public function grillaIndicesFinancieros(){
 	                }
 	                    //si no existe error de conexion
 	                    //seleccionamos base de datos
-	                    ///////////////////////mysql_select_db("agf", $con);
-	                    
+	                    ///////////////////////
+
 	                    //seleccionamos todos los registros de tabla tb_persona
-			    
+
 			    $sum = 0;   
 			    for($i = 1; $i < 6 ; $i++){
 			    	if($arrInf['campo' . $i] != -1){
@@ -1624,41 +1514,41 @@ public function grillaIndicesFinancieros(){
 						$sum++;
 					}
 			    }   
-			    
+
 			    $sql = "select id_formula from indices_financieros where ". $where .";";
 			    $mysqli->query("INSERT INTO logs values ('" . $sql . "');");
-			    
+
 			    $stmt = $con->prepare($sql);
 		$stmt->execute();			    		
 			    $row = $stmt->fetch();
 			    $mysqli->query("INSERT INTO logs values ('" . print_r($result, 1) . "');");
-			    	    
+
 			    $sql = "delete from formulas where id_formula = " . $row[0] .";";
 			    $sql2 = str_replace("'", "''", $sql);
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
-			    				     
-	                    /*$stmt = $con->prepare($sql)
-	                    or die(mysql_error());*/
-			    
+
+	                    /*$stmt = $con->prepare($sql);
+						$stmt->execute();*/
+
 			    $stmt = $con->prepare($sql);
 		$stmt->execute();			    
 			    $a = isset($arrInf['campo1']) ? $arrInf['campo1'] : -1;
 			    $b = isset($arrInf['campo2']) ? $arrInf['campo2'] : -1;
 			    $c = isset($arrInf['campo3']) ? $arrInf['campo3'] : -1;
-			    
+
 			    $sql = "INSERT INTO formulas values (null, '" . $a . "', '" . $b . "', '" . $c . "', 0, 0, '" . $arrInf['formula'] . "', '" . $sum . "', '" . $arrInf['decimales'] . "');";
 			    $sql2 = str_replace("'", "", $sql);
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
-			    				     
-	                    /*$stmt = $con->prepare($sql)
-	                    or die(mysql_error());*/
-			    
+
+	                    /*$stmt = $con->prepare($sql);
+						$stmt->execute();*/
+
 			    $stmt = $con->prepare($sql);
 		$stmt->execute();
 	                    $ultimo_id = $con->lastInsertId();
-			    
+
 			    $sql = "update indices_financieros 
 						SET ID_GRUPO_INDICE_FINANCIERO = '" . $arrInf['ID_GRUPO_INDICE_FINANCIERO'] . "', 
 							nombre = '" . $arrInf['NOMBRE'] . "',  
@@ -1672,28 +1562,28 @@ public function grillaIndicesFinancieros(){
 			    $sql2 = str_replace("'", "", $sql);
 			    $stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
-			       				
+
 			    $stmt = $con->prepare($sql);
 		$stmt->execute();			    
-			    
+
 	                    $mysqli->close();
-	                //mysql_close($con);
-	                
+	                // 
+
 	            //retornamos el largo del arreglo
 		  //  $ultimo_id = mysql_insert_id($con);
 	            //return $ultimo_id;
 		    $arr = array();
 		    $arr[0]['ID'] = $ultimo_id;
 		    return $arr;
-	   			            
+
 	}
-	
-	
+
+
 public function grillaGrupoIndices(){
 	     $arr = array();
-	     	        //conectamos con la mysql
+	     	        
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-				//validamos que la conexion sea exitosa
+				
 				if (!$con)
 				{
 				  //si existe error en conexion
@@ -1701,38 +1591,38 @@ public function grillaGrupoIndices(){
 				}
 					//si no existe error de conexion
 					//seleccionamos base de datos
-					mysql_select_db("agf", $con);
 					
-					//seleccionamos registros de tabla tb_persona
-					$stmt = $con->prepare("SELECT `ID_GRUPO_INDICE_FINANCIERO`, `NOMBRE`, `DESCRIPCION` FROM grupos_indices_financieros")
-					or die(mysql_error());
-					//el LIMIT se configura con los parametros recibidos
-					//$startIndex
-					//$numItems
-					//EJ. seleccione desde el registro 0 hasta el 10
+
+					
+					$stmt = $con->prepare("SELECT `ID_GRUPO_INDICE_FINANCIERO`, `NOMBRE`, `DESCRIPCION` FROM grupos_indices_financieros");
+					$stmt->execute();
+					
+					
+					
+					
 					$i=0;
 					while($row = $stmt->fetch())
 					{
-						//almacenamos los registros en la var array
+						
 						 $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[0];
 						 $arr[$i]['nombre']=$row[1];
 						 $arr[$i]['descripcion']=$row[2];
 						 $i++; 
 					}
-				//cerramos la conexion con mysql
-				mysql_query("INSERT INTO logs VALUES ('" . print_r($arr, true) . "');");
-				mysql_close($con);
 				
-			//retornamos el arreglo
-			return $arr;
+				mysql_query("INSERT INTO logs VALUES ('" . print_r($arr, true) . "');");
+				 
+
 			
-		}//fin metodo
-		
+			return $arr;
+
+		}
+
 function grillaGrupoIndices2(){
 	     $arr = array();
-	     	        //conectamos con la mysql
+	     	        
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-				//validamos que la conexion sea exitosa
+				
 				if (!$con)
 				{
 				  //si existe error en conexion
@@ -1740,38 +1630,38 @@ function grillaGrupoIndices2(){
 				}
 					//si no existe error de conexion
 					//seleccionamos base de datos
-					mysql_select_db("agf", $con);
 					
-					//seleccionamos registros de tabla tb_persona
-					$stmt = $con->prepare("SELECT `ID_GRUPO_INDICE_FINANCIERO`, `NOMBRE`, `DESCRIPCION` FROM grupos_indices_financieros")
-					or die(mysql_error());
-					//el LIMIT se configura con los parametros recibidos
-					//$startIndex
-					//$numItems
-					//EJ. seleccione desde el registro 0 hasta el 10
+
+					
+					$stmt = $con->prepare("SELECT `ID_GRUPO_INDICE_FINANCIERO`, `NOMBRE`, `DESCRIPCION` FROM grupos_indices_financieros");
+					$stmt->execute();
+					
+					
+					
+					
 					$i=0;
 					while($row = $stmt->fetch())
 					{
-						//almacenamos los registros en la var array
+						
 						 $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[0];
 						 $arr[$i]['nombre']=$row[1];
 						 $arr[$i]['descripcion']=$row[2];
 						 $i++; 
 					}
-				//cerramos la conexion con mysql
-				mysql_query("INSERT INTO logs VALUES ('" . print_r($arr, true) . "');");
-				mysql_close($con);
 				
-			//retornamos el arreglo
-			return $arr;
+				mysql_query("INSERT INTO logs VALUES ('" . print_r($arr, true) . "');");
+				 
+
 			
-		}//fin metodo
-	     	    
+			return $arr;
+
+		}
+
 	     	    public function countGrupoIndices(){
-	     	    
-	     	            //conectamos con la mysql
+
+	     	            
 	     	            $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	     	                //validamos que la conexion sea exitosa
+	     	                
 	     	                if (!$con)
 	     	                {
 	     	                  //si existe error en conexion
@@ -1779,33 +1669,33 @@ function grillaGrupoIndices2(){
 	     	                }
 	     	                    //si no existe error de conexion
 	     	                    //seleccionamos base de datos
-	     	                    mysql_select_db("agf", $con);
 	     	                    
+
 	     	                    //seleccionamos todos los registros de tabla tb_persona
-	     	                    $stmt = $con->prepare("SELECT * FROM grupos_indices_financieros")
-	     	                    or die(mysql_error());
+	     	                    $stmt = $con->prepare("SELECT * FROM grupos_indices_financieros");
+								$stmt->execute();
 	     	                    $i=0;
 	     	                    while($row = $stmt->fetch())
 	     	                    {
-	     	                        //almacenamos los registros en la var array
+	     	                        
 	     				 $arr['ID_GRUPO_INDICE_FINANCIERO']=$row[0];
 	     	                         $arr['nombre']=$row[1];
 	     	                         $arr[$i]['descripcion']=$row[2];
 	     	                     $i++; 
 	     	                    }
-	     	                mysql_close($con);
-	     	                
+	     	                 
+
 	     	            //retornamos el largo del arreglo
 	     	            return count($arr);
-	     	            
+
 	     	        }
-			     
-			     
+
+
 public function grillaMonedas($startIndex, $numItems){
 	     $arr = array();
-	     	        //conectamos con la mysql
+	     	        
 	     	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	     	            //validamos que la conexion sea exitosa
+	     	            
 	     	            if (!$con)
 	     	            {
 	     	              //si existe error en conexion
@@ -1813,9 +1703,9 @@ public function grillaMonedas($startIndex, $numItems){
 	     	            }
 	     	                //si no existe error de conexion
 	     	                //seleccionamos base de datos
-	     	                mysql_select_db("agf", $con);
 	     	                
-	     	                //seleccionamos registros de tabla tb_persona
+
+	     	                
 	     	                $stmt = $con->prepare("SELECT id, nombre, codigo, valor_defecto,
 	     	                CASE operacion
 	     	                WHEN '*'
@@ -1823,16 +1713,16 @@ public function grillaMonedas($startIndex, $numItems){
 	     	                WHEN '/'
 	     	                THEN 'Dividir'
 	     	                END as op, signo, cantidad_decimal
-	     	                FROM monedas LIMIT $startIndex, $numItems")
-	     	                or die(mysql_error());
-	     	                //el LIMIT se configura con los parametros recibidos
-	     	                //$startIndex
-	     	                //$numItems
-	     	                //EJ. seleccione desde el registro 0 hasta el 10
+	     	                FROM monedas LIMIT $startIndex, $numItems");
+							$stmt->execute();
+	     	                
+	     	                
+	     	                
+	     	                
 	     	                $i=0;
 	     	                while($row = mysql_fetch_array($result))
 	     	                {
-	     	                    //almacenamos los registros en la var array
+	     	                    
 	     			     $arr[$i]['id']=$row['id'];
 	     	                     $arr[$i]['nombre']=$row['nombre'];
 	     	                     $arr[$i]['codigo']=$row['codigo'];
@@ -1842,19 +1732,19 @@ public function grillaMonedas($startIndex, $numItems){
 	     			     $arr[$i]['cantidad_decimal']=$row['cantidad_decimal'];	     	                     
 	     	                 $i++; 
 	     	                }
-	     	            //cerramos la conexion con mysql
-	     	            mysql_close($con);
 	     	            
-	     	        //retornamos el arreglo
-	     	        return $arr;
+	     	             
+
 	     	        
-	     	    }//fin metodo
-	     	    
+	     	        return $arr;
+
+	     	    }
+
 	     	    public function countMonedas(){
-	     	    
-	     	            //conectamos con la mysql
+
+	     	            
 	     	            $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	     	                //validamos que la conexion sea exitosa
+	     	                
 	     	                if (!$con)
 	     	                {
 	     	                  //si existe error en conexion
@@ -1862,31 +1752,31 @@ public function grillaMonedas($startIndex, $numItems){
 	     	                }
 	     	                    //si no existe error de conexion
 	     	                    //seleccionamos base de datos
-	     	                    mysql_select_db("agf", $con);
 	     	                    
+
 	     	                    //seleccionamos todos los registros de tabla tb_persona
-	     	                    $stmt = $con->prepare("SELECT * FROM monedas")
-	     	                    or die(mysql_error());
+	     	                    $stmt = $con->prepare("SELECT * FROM monedas");
+								$stmt->execute();
 	     	                    $i=0;
 	     	                    while($row = $stmt->fetch())
 	     	                    {
-	     	                        //almacenamos los registros en la var array
+	     	                        
 	     				 $arr['ID_MONEDA']=$row[0];	     	                         
 	     	                     $i++; 
 	     	                    }
-	     	                mysql_close($con);
-	     	                
+	     	                 
+
 	     	            //retornamos el largo del arreglo
 	     	            return count($arr);
-	     	            
+
 	     	        }
-	
+
 	public function grillaTodasEmpresa(){
-	        //creando variable array
+	       
 	        $arr = array();
-	        //conectamos con la mysql
+	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	            //validamos que la conexion sea exitosa
+	            
 	            if (!$con)
 	            {
 	              //si existe error en conexion
@@ -1894,21 +1784,21 @@ public function grillaMonedas($startIndex, $numItems){
 	            }
 	                //si no existe error de conexion
 	                //seleccionamos base de datos
-	                mysql_select_db("agf", $con);
 	                
-	                //seleccionamos registros de tabla tb_persona
+
+	                
 	                $stmt = $con->prepare("SELECT a.`ID_EMPRESA` , `RUT` , `RSO` , `NOMBRE_FANTASIA` , `NOMBRE_BOLSA` , `VALOR_ACCION` , `TIPO_BALANCE` , `TIPO_IFRS` , a.`ID_SUBGRUPO`
 	                FROM `subgrupos_empresas` a, `empresas` b
-	                WHERE a.`ID_EMPRESA` = b.`ID_EMPRESA`")
-	                or die(mysql_error());
-	                //el LIMIT se configura con los parametros recibidos
-	                //$startIndex
-	                //$numItems
-	                //EJ. seleccione desde el registro 0 hasta el 10
+	                WHERE a.`ID_EMPRESA` = b.`ID_EMPRESA`");
+					$stmt->execute();
+	                
+	                
+	                
+	                
 	                $i=0;
 	                while($row = $stmt->fetch())
 	                {
-	                    //almacenamos los registros en la var array
+	                    
 			     $arr[$i]['ID_EMPRESA']=$row[0];
 			     $arr[$i]['RUT']=$row[1];
 	                     $arr[$i]['RSO']=$row[2];
@@ -1919,20 +1809,20 @@ public function grillaMonedas($startIndex, $numItems){
 			     $arr[$i]['ID_SUBGRUPO']=$row[8];
 	                 $i++; 
 	                }
-	            //cerramos la conexion con mysql
-	            mysql_close($con);
 	            
-	        //retornamos el arreglo
-	        return $arr;
+	             
+
 	        
-	    }//fin metodo			
+	        return $arr;
+
+	    }			
 
 	public function grillaTodosGrupos(){
-	        //creando variable array
+	       
 	        $arr = array();
-	        //conectamos con la mysql
+	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	            //validamos que la conexion sea exitosa
+	            
 	            if (!$con)
 	            {
 	              //si existe error en conexion
@@ -1940,77 +1830,73 @@ public function grillaMonedas($startIndex, $numItems){
 	            }
 	                //si no existe error de conexion
 	                //seleccionamos base de datos
-	                mysql_select_db("agf", $con);
 	                
-	                //seleccionamos registros de tabla tb_persona
-	                $stmt = $con->prepare("SELECT * FROM tipos_empresas")
-	                or die(mysql_error());
-	                //el LIMIT se configura con los parametros recibidos
-	                //$startIndex
-	                //$numItems
-	                //EJ. seleccione desde el registro 0 hasta el 10
+
+	                
+	                $stmt = $con->prepare("SELECT * FROM tipos_empresas");
+					$stmt->execute();
+	                
+	                
+	                
+	                
 	                $i=0;
 	                while($row = $stmt->fetch())
 	                {
-	                    //almacenamos los registros en la var array
+	                    
 			     $arr[$i]['ID_TIPO_EMPRESA']=$row[0];
 	                     $arr[$i]['nombre']=$row[1];
 	                     $arr[$i]['descripcion']=$row[2];
 	                 $i++; 
 	                }
-	            //cerramos la conexion con mysql
-	            mysql_close($con);
 	            
-	        //retornamos el arreglo
-	        return $arr;
+	             
+
 	        
-	    }//fin metodo
-	    
+	        return $arr;
+
+	    }o
+
 	public function grillaTodoSubGrupos(){
-	        //creando variable array
+	       
 	        $arr = array();
-	        //conectamos con la mysql
+	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	            //validamos que la conexion sea exitosa
-	            if (!$con)
-	            {
-	              //si existe error en conexion
-	              die('Error conectando: ' . mysql_error());
-	            }
+	            
+	            
 	                //si no existe error de conexion
 	                //seleccionamos base de datos
-	                mysql_select_db("agf", $con);
 	                
-	                //seleccionamos registros de tabla tb_persona
-	                $stmt = $con->prepare("SELECT a.ID_SUBGRUPO, nombre, descripcion, ID_TIPO_EMPRESA  FROM subgrupos a, grupos_subgrupos b where a.id_subgrupo = b.id_subgrupo")
-	                or die(mysql_error());
-	                //el LIMIT se configura con los parametros recibidos
-	                //$startIndex
-	                //$numItems
-	                //EJ. seleccione desde el registro 0 hasta el 10
+
+	                
+	                $stmt = $con->prepare("SELECT a.ID_SUBGRUPO, nombre, descripcion, ID_TIPO_EMPRESA  FROM subgrupos a, grupos_subgrupos b where a.id_subgrupo = b.id_subgrupo");
+					$stmt->execute();
+	                
+	                
+	                
+	                
 	                $i=0;
 	                while($row = $stmt->fetch())
 	                {
-	                    //almacenamos los registros en la var array
+	                    
 			     $arr[$i]['ID_SUBGRUPO']=$row[0];
 	                     $arr[$i]['nombre']=$row[1];
 	                     $arr[$i]['descripcion']=$row[2];
 			     $arr[$i]['ID_TIPO_EMPRESA']=$row[3];
 	                 $i++; 
 	                }
-	            //cerramos la conexion con mysql
-	            mysql_close($con);
 	            
-	        //retornamos el arreglo
-	        return $arr;
+	             
+
 	        
-	    }//fin metodo	
-	    
+	        return $arr;
+
+	    }o	
+
 public function grillaTodosGrupoIndices(){
 	     $arr = array();
-	     	        //conectamos con la mysql
+	     	        
 	     	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	     	            //validamos que la conexion sea exitosa
+	     	            
 	     	            if (!$con)
 	     	            {
 	     	              //si existe error en conexion
@@ -2018,61 +1904,57 @@ public function grillaTodosGrupoIndices(){
 	     	            }
 	     	                //si no existe error de conexion
 	     	                //seleccionamos base de datos
-	     	                mysql_select_db("agf", $con);
 	     	                
-	     	                //seleccionamos registros de tabla tb_persona
-	     	                $stmt = $con->prepare("SELECT * FROM grupos_indices_financieros")
-	     	                or die(mysql_error());
-	     	                //el LIMIT se configura con los parametros recibidos
-	     	                //$startIndex
-	     	                //$numItems
-	     	                //EJ. seleccione desde el registro 0 hasta el 10
+
+	     	                
+	     	                $stmt = $con->prepare("SELECT * FROM grupos_indices_financieros");
+							$stmt->execute();
+	     	                
+	     	                
+	     	                
+	     	                
 	     	                $i=0;
 	     	                while($row = $stmt->fetch())
 	     	                {
-	     	                    //almacenamos los registros en la var array
+	     	                    
 	     			     $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[0];
 	     	                     $arr[$i]['nombre']=$row[1];
 	     	                     $arr[$i]['descripcion']=$row[2];
 	     	                 $i++; 
 	     	                }
-	     	            //cerramos la conexion con mysql
-	     	            mysql_close($con);
 	     	            
-	     	        //retornamos el arreglo
-	     	        return $arr;
+	     	             
+
 	     	        
-	     	    }//fin metodo	    
-			 
+	     	        return $arr;
+
+	     	    }o	    
+
 	public function grillaTodoIndicesFinancieros(){
-	        //creando variable array
+	       
 	        $arr = array();
-	        //conectamos con la mysql
+	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	            //validamos que la conexion sea exitosa
-	            if (!$con)
-	            {
-	              //si existe error en conexion
-	              die('Error conectando: ' . mysql_error());
-	            }
+	            
+	            
 	                //si no existe error de conexion
 	                //seleccionamos base de datos
-	                mysql_select_db("agf", $con);
 	                
-	                //seleccionamos registros de tabla tb_persona
+
+	                
 	                $stmt = $con->prepare("SELECT a.ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, DESCRIPCION, formula, decimales, ID_GRUPO_INDICE_FINANCIERO, formula_desc, rango_superior, rango_inferior,rangos_desc,
 							campo1, campo2, campo3
 	                	                    FROM indices_financieros a, formulas b
-	                	                    WHERE a.id_formula = b.id_formula")
-	                or die(mysql_error());
-	                //el LIMIT se configura con los parametros recibidos
-	                //$startIndex
-	                //$numItems
-	                //EJ. seleccione desde el registro 0 hasta el 10
+	                	                    WHERE a.id_formula = b.id_formula");
+					$stmt->execute();
+	                
+	                
+	                
+	                
 	                $i=0;
 	                while($row = $stmt->fetch())
 	                {
-	                    //almacenamos los registros en la var array
+	                    
 			     $arr[$i]['ID_INDICE_FINANCIERO']=$row[0];
 			     $arr[$i]['id_formula']=$row[1];
 	                     $arr[$i]['NOMBRE']=$row[2];
@@ -2089,42 +1971,38 @@ public function grillaTodosGrupoIndices(){
 			     $arr[$i]['campo3']=$row[13];
 	                 $i++; 
 	                }
-	            //cerramos la conexion con mysql
-	            mysql_close($con);
 	            
-	        //retornamos el arreglo
-	        return $arr;
+	             
+
 	        
-	    }//fin metodo
-	    
+	        return $arr;
+
+	    }o
+
 	function comboEmpresa(){
-	        //creando variable array
+	       
 	        $arr = array();
-	        //conectamos con la mysql
+	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	            //validamos que la conexion sea exitosa
-	            if (!$con)
-	            {
-	              //si existe error en conexion
-	              die('Error conectando: ' . mysql_error());
-	            }
+	            
+	            
 	                //si no existe error de conexion
 	                //seleccionamos base de datos
-	                mysql_select_db("agf", $con);
 	                
-	                //seleccionamos registros de tabla tb_persona
+
+	                
 	                $stmt = $con->prepare("SELECT `ID_EMPRESA` , `RUT` , `RSO` , `NOMBRE_FANTASIA` , `NOMBRE_BOLSA` , `VALOR_ACCION` , `TIPO_BALANCE` , `TIPO_IFRS`, color 
 	                	                FROM `empresas` 
-	                ")
-	                or die(mysql_error());
-	                //el LIMIT se configura con los parametros recibidos
-	                //$startIndex
-	                //$numItems
-	                //EJ. seleccione desde el registro 0 hasta el 10
+	                ");
+					$stmt->execute();
+	                
+	                
+	                
+	                
 	                $i=0;
 	                while($row = $stmt->fetch())
 	                {
-	                    //almacenamos los registros en la var array
+	                    
 			     $arr[$i]['ID_EMPRESA']=$row[0];
 			     $arr[$i]['RUT']=$row[1];
 	                     $arr[$i]['RSO']=$row[2];
@@ -2135,30 +2013,30 @@ public function grillaTodosGrupoIndices(){
 			     $arr[$i]['color']=$row[8];
 	                 $i++; 
 	                }
-	            //cerramos la conexion con mysql
-	            mysql_close($con);
 	            
-	        //retornamos el arreglo
-	        return $arr;
+	             
+
 	        
-	    }//fin metodo
-	    
-	    
+	        return $arr;
+
+	    }o
+
+
 	function valores($principal, $idEmpresas, $idPeriodos, $formulas, $op){//
-	        //creando variable array
+	       
 	    $arr  = array();
 		$arr2 = array();
 		$arr3 = array();
-		
-		
-		
-	        //conectamos con la mysql
+
+
+
+	        
 		if($idPeriodos == 'AND a.id_periodo in (0)'){
 			$idPeriodos=' and d.mes <> 0 ';
 		}
-			
+
 	    $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	            //validamos que la conexion sea exitosa
+	            
 		if (mysqli_connect_errno()) 
 		{
 		  //si existe error en conexion
@@ -2168,7 +2046,7 @@ public function grillaTodosGrupoIndices(){
                 //seleccionamos base de datos
                // $op = 'Trimestral';
        $mysqli->query("INSERT INTO logs values ('$principal, $idEmpresas, $idPeriodos, $formulas, $op');");		
-		
+
 		$comp1 = ' AND x.id_periodo = c.id_periodo ';
 		$comp2 = ' AND x.id_periodo = c.id_periodo ';
 		$comp3 = ' AND x.id_periodo = c.id_periodo ';
@@ -2179,10 +2057,10 @@ public function grillaTodosGrupoIndices(){
 		$f = explode(",", $f[0]);
 		$arrResult = array();
 		$ind = 0;
-		
+
 		$e = explode(":", $idEmpresas);
 		$ee = count(explode(",", $e[0]));
-		
+
 		//$mysqli->query("INSERT INTO logs values ('" . print_r($f, true) . "');");		
 		$jj = 0;
 		for($j = 1; $j < count($f) ; $j++, $jj++){
@@ -2191,13 +2069,13 @@ public function grillaTodosGrupoIndices(){
 									FROM `formulas` a, `indices_financieros` b
 									WHERE a.`ID_FORMULA` = b.`ID_FORMULA` 
 										AND b.`id_indice_financiero` = " . $f[$j] . ";";
-										
+
 			$sql2 = str_replace("'", "''", $sql);
-	       // $stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();									
+	       /* $stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmt->execute();									*/
 			$stmt = $con->prepare($sql);
 		$stmt->execute();	
-										
+
 			while($row = $stmt->fetch()){
 				$formula1 = explode(".", $row[0]);
 				$formula2 = explode(".", $row[1]);
@@ -2210,13 +2088,13 @@ public function grillaTodosGrupoIndices(){
 				$formula3[0] = $formula3[0] == 'C' ? 1 : 2;
 				$formula4[0] = $formula4[0] == 'C' ? 1 : 2;
 				$formula5[0] = $formula5[0] == 'C' ? 1 : 2;
-	
+
 				$comp1 = ' AND x.id_periodo = c.id_periodo ';
 				$comp2 = ' AND x.id_periodo = c.id_periodo ';
 				$comp3 = ' AND x.id_periodo = c.id_periodo ';
 				$comp4 = ' AND x.id_periodo = c.id_periodo ';
 				$comp5 = ' AND x.id_periodo = c.id_periodo ';
-				
+
 				if(count($formula1) > 1){
 					switch($formula1[2]){
 						case 'NN':
@@ -2245,10 +2123,10 @@ public function grillaTodosGrupoIndices(){
 						case 'AS':
 							$comp1 = " AND 'QUERY' ";
 							break;	
-					
+
 					}
 				}
-				
+
 				if(count($formula2) > 1){
 					switch($formula2[2]){
 						case 'NN':
@@ -2277,10 +2155,10 @@ public function grillaTodosGrupoIndices(){
 						case 'AS':
 							$comp2 = " AND 'QUERY' ";
 							break;	
-					
+
 					}
 				}
-				
+
 				if(count($formula3) > 1){
 					switch($formula3[2]){
 						case 'NN':
@@ -2309,11 +2187,11 @@ public function grillaTodosGrupoIndices(){
 						case 'AS':
 							$comp3 = " AND 'QUERY' ";
 							break;	
-					
+
 					}
 				}
 			//	$mysqli->query("INSERT INTO logs values ('" . $formula4[0] . "');");
-				
+
 				if(count($formula4) > 1){
 					switch($formula4[2]){
 						case 'NN':
@@ -2342,10 +2220,10 @@ public function grillaTodosGrupoIndices(){
 						case 'AS':
 							$comp4 = " AND 'QUERY' ";
 							break;	
-					
+
 					}
 				}
-				
+
 				if(count($formula5) > 1){
 					switch($formula5[2]){
 						case 'NN':
@@ -2374,11 +2252,11 @@ public function grillaTodosGrupoIndices(){
 						case 'AS':
 							$comp5 = " AND QUERY ";
 							break;	
-					
+
 					}
 				}
-			
-				
+
+
 				$sql = "SELECT a.`ID_TAG_AGF`, rso, color, a.`VALOR`, 
 							c.nombre indice, a.`ID_PERIODO`, 0 nro_grafico, 
 							ano year, mask, concat(b.rso, ': ', c.nombre) nombre_final, 
@@ -2416,20 +2294,20 @@ public function grillaTodosGrupoIndices(){
 							AND a.origen = 2					
 							AND b.id_empresa = " . $principal . " " . $idPeriodos . "
 						order by 8, 14, 15;";
-					 
+
 			}
-			
+
 			$sql2 = str_replace("'", "''", $sql);
 	        $stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();			
-		
+
 			$mysqli->query($sql)
 			or die(mysql_error());
-			
+
 			$sql2 = str_replace("'", "''", $sqlCmp);
 	        $stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();			
-			
+
 			$resultCmp = $mysqli->query($sqlCmp)
 			or die(mysql_error());
 			$i = 0;
@@ -2443,24 +2321,24 @@ public function grillaTodosGrupoIndices(){
 			$arr3 = array();
 			$arrF3 = array();
 			$rowCmp = $resultCmp->fetch_array(MYSQLI_NUM);
-			
+
 			while($row2 = $stmt->fetch())
 	        {
-				
+
 				if($row2[8] != $rowCmp[8]){
 					$rowCmp = $resultCmp->fetch_array(MYSQLI_NUM);
-					
+
 				}
-				
+
 				//$mysqli->query("INSERT INTO logs values ('rowCmp = " . print_r($rowCmp, true) . "');");		
 				//$mysqli->query("INSERT INTO logs values ('row2 = " . print_r($row2, true) . "');");		
 
 				$arr[$i]['id_tag_agf']=$row2[0];
 			    $arr[$i]['id_empresa'] = $row2[11];
 	            $arr[$i]['id_periodo']=$row2[5];	     
-			     
+
 				$arr[$i]['valor'] = (float)$row2[3];
-				
+
 				$arr[$i]['nombre_final']=$row2[9];
 				$arr[$i]['label'] = $row2[8];			
 				$arr[$i]['color'] = $row2[2];
@@ -2472,7 +2350,7 @@ public function grillaTodosGrupoIndices(){
 				$campos = array();
 				$campos = explode('|', $row2[12]);
 				//$mysqli->query("INSERT INTO logs values ('dependencias : " . print_r($campos, true) . "');");	
-				
+
 				for($w = 0; $w < count($campos); $w++){
 					if($campos[$w] != ''){
 						$swArr = true;
@@ -2480,22 +2358,22 @@ public function grillaTodosGrupoIndices(){
 						$campo[0] = $campos[$w];
 						$s = 0;
 						while($swArr && $s < count($campo)){
-							
-							
+
+
 							$sqlReq = "SELECT a.origen
 										FROM valores a 
 										WHERE a.id_valor = " . $campo[$s] . "
 											;";
 							$sql2 = str_replace("'", "''", $sqlReq);
-							//$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();			
+							/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmt->execute();*/			
 							$resultReq = $mysqli->query($sqlReq);							
 							$rOrigen = $resultReq->fetch_array(MYSQLI_NUM);
 							//$mysqli->query("INSERT INTO logs values ('ORIGEN = " . $rOrigen[0] . "');");			
 							if($rOrigen[0] == 1){
 								$s++;							
 								//$mysqli->query("INSERT INTO logs values ('S = " . $s . " y COUNT (largo de campo): " . count($campo) . "');");			
-								
+
 							} else {
 								$sqlReq = "SELECT a.origen, a.hist_formula
 											FROM valores a 
@@ -2505,12 +2383,12 @@ public function grillaTodosGrupoIndices(){
 											WHERE a.id_valor = " . $campo[$s] . "
 												;";
 								$sql2 = str_replace("'", "''", $sqlReq);
-								//$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();			
+								/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmt->execute();*/			
 								$resultReq = $mysqli->query($sqlReq);
-								
+
 								//$mysqli->query("INSERT INTO logs values ('NRO ROWS: " . $resultReq->num_rows . "');");		
-								
+
 								if($resultReq->num_rows == 0){
 									$swArr = false;
 									break;
@@ -2528,16 +2406,16 @@ public function grillaTodosGrupoIndices(){
 									$s++;
 								}
 							}
-							
-							
+
+
 						}
 					}
-					
+
 					if(!$swArr){
 						break;
 					}		
 				}
-				
+
 				if($swArr){
 					$arrF[count($arrF)] = $arr[$i];
 					//$mysqli->query("INSERT INTO logs values ('ARRAYF: " . print_r($arrF, true) . "');");	
@@ -2549,7 +2427,7 @@ public function grillaTodosGrupoIndices(){
 					} else {
 						$arr2[$i]['valor'] = (float)0;
 					}
-					
+
 					//$mysqli->query("INSERT INTO logs values ('VALOR DE DIVISION: " . $arr2[$i]['valor'] . "');");	
 					$arr2[$i]['nombre_final']=$row2[9];
 					$arr2[$i]['label'] = $row2[8];			
@@ -2559,14 +2437,14 @@ public function grillaTodosGrupoIndices(){
 					$arr2[$i]['indice'] = $row2[4];
 					$arr2[$i]['year'] = $row2[7];
 					$arr2[$i]['nro_grafico'] = $jj;
-					
-					
-					
+
+
+
 					//$mysqli->query("INSERT INTO logs values ('ARR2: " . print_r($arr2, true) . "');");	
-					
-					
+
+
 					$num = count(explode(',', $e[$jj])) - 1;
-					
+
 					//$mysqli->query("INSERT INTO logs values ('" .($i - $num) . "');");	
 					//$mysqli->query("INSERT INTO logs values ('" .print_r($e, 1) . " num = $num');");	
 					if($i - $num + 1 > 0){
@@ -2591,26 +2469,26 @@ public function grillaTodosGrupoIndices(){
 							} else {
 								$arr3[$i]['valor'] = (float)((($arr[$i]['valor']/$arr[$i - $num]['valor']) - 1) * 100);
 							}
-							
+
 							//$mysqli->query("INSERT INTO logs values (' " . $arr[$i]['valor'] . "/" .$arr[$i - $num]['valor'] .  " empresa : " .$row[8] . "');");	
 						}
-						
-					
+
+
 					}				
 				}	
 				$i++;
 	        }		
 			//$mysqli->query("INSERT INTO logs values ('" . print_r($arr, 1) . "');");	
-			
-			
+
+
 			array_merge($arrF, $arr2, $arr3);    
 			$arrResult[$ind++] = $result; 	
 		    /*$mysqli->query("INSERT INTO logs values ('" . print_r($arr, 1) . "');");
 		    $mysqli->query("INSERT INTO logs values ('" . print_r($arr2, 1) . "');");*/
 		    $mysqli->query("INSERT INTO logs values ('" . print_r($result, 1) . "');");
-			
+
 		}
-				
+
 		$result2 = array();
 		$s = 0;
 	/*	for($i = 0; $i < count($result); $i++){
@@ -2621,69 +2499,65 @@ public function grillaTodosGrupoIndices(){
         $mysqli->query("INSERT INTO logs values ('" . print_r($result, 1) . "');");						 
 		$mysqli->query("INSERT INTO logs values ('" . print_r($result2, 1) . "');");						 
 */		
-	    
+
 	   // $mysqli->query("INSERT INTO logs values ('" . print_r($arrResult, 1) . "');");
-	     
+
         $mysqli->close();
         
-        //retornamos el arreglo
+        
         //return $result2;
-		
+
 		return $arrResult;
-	        
-	}//fin metodo
+
+	}o
 
 function periodos(){
-	        //creando variable array
+	       
 	        $arr = array();
-	        //conectamos con la mysql
+	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	            //validamos que la conexion sea exitosa
-	            if (!$con)
-	            {
-	              //si existe error en conexion
-	              die('Error conectando: ' . mysql_error());
-	            }
+	            
+	            
 	                //si no existe error de conexion
 	                //seleccionamos base de datos
-	                mysql_select_db("agf", $con);
 	                
-	                //seleccionamos registros de tabla tb_persona
+
+	                
 	                $stmt = $con->prepare("SELECT `ID_periodo` , `label` , `oa`, ano, mes
 	                	                FROM `periodos`
 						order by  ano, mes
-	                ")
-	                or die(mysql_error());
-	                //el LIMIT se configura con los parametros recibidos
-	                //$startIndex
-	                //$numItems
-	                //EJ. seleccione desde el registro 0 hasta el 10
+	                ");
+					$stmt->execute();
+	                
+	                
+	                
+	                
 	                $i=0;
 	                while($row = $stmt->fetch())
 	                {
-	                    //almacenamos los registros en la var array
+	                    
 			     $arr[$i]['id_periodo']=$row[0];
 			     $arr[$i]['RSO']=$row[1];
 	                     $arr[$i]['oa']=$row[2];
-	                   
+
 	                 $i++; 
 	                }
-	            //cerramos la conexion con mysql
-	            mysql_close($con);
 	            
-	        //retornamos el arreglo
-	        return $arr;
+	             
+
 	        
-	    }//fin metodo
-	    
-	    
-	    
-	    
+	        return $arr;
+
+	    }o
+
+
+
+
 public function grillaAgf(){
 	     $arr = array();
-	     	        //conectamos con la mysql
+	     	        
 	     	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	     	            //validamos que la conexion sea exitosa
+	     	            
 	     	            if (!$con)
 	     	            {
 	     	              //si existe error en conexion
@@ -2691,39 +2565,39 @@ public function grillaAgf(){
 	     	            }
 	     	                //si no existe error de conexion
 	     	                //seleccionamos base de datos
-	     	                mysql_select_db("agf", $con);
 	     	                
-	     	                //seleccionamos registros de tabla tb_persona
+
+	     	                
 	     	                $stmt = $con->prepare("SELECT id_tag_agf, nombre, etiqueta, origen	     	                
-	     	                FROM tag_agf order by nombre")
-	     	                or die(mysql_error());
-	     	                //el LIMIT se configura con los parametros recibidos
-	     	                //$startIndex
-	     	                //$numItems
-	     	                //EJ. seleccione desde el registro 0 hasta el 10
+	     	                FROM tag_agf order by nombre");
+							$stmt->execute();
+	     	                
+	     	                
+	     	                
+	     	                
 	     	                $i=0;
 	     	                while($row = mysql_fetch_array($result))
 	     	                {
-	     	                    //almacenamos los registros en la var array
+	     	                    
 	     			     $arr[$i]['id_tag_agf']=$row['id_tag_agf'];
 	     	                     $arr[$i]['nombre']=$row['nombre'];
 	     	                     $arr[$i]['etiqueta']=$row['etiqueta'];
 	     			     $arr[$i]['origen']=$row['origen'];	     	                     
 	     	                 $i++; 
 	     	                }
-	     	            //cerramos la conexion con mysql
-	     	            mysql_close($con);
 	     	            
-	     	        //retornamos el arreglo
-	     	        return $arr;
+	     	             
+
 	     	        
-	     	    }//fin metodo
-	     	    
+	     	        return $arr;
+
+	     	    }o
+
 	     	    public function countAgf(){
-	     	    
-	     	            //conectamos con la mysql
+
+	     	            
 	     	            $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	     	                //validamos que la conexion sea exitosa
+	     	                
 	     	                if (!$con)
 	     	                {
 	     	                  //si existe error en conexion
@@ -2731,32 +2605,32 @@ public function grillaAgf(){
 	     	                }
 	     	                    //si no existe error de conexion
 	     	                    //seleccionamos base de datos
-	     	                    mysql_select_db("agf", $con);
 	     	                    
+
 	     	                    //seleccionamos todos los registros de tabla tb_persona
-	     	                    $stmt = $con->prepare("SELECT * FROM monedas")
-	     	                    or die(mysql_error());
+	     	                    $stmt = $con->prepare("SELECT * FROM monedas");
+								$stmt->execute();
 	     	                    $i=0;
 	     	                    while($row = $stmt->fetch())
 	     	                    {
-	     	                        //almacenamos los registros en la var array
+	     	                        
 	     				 $arr['ID_MONEDA']=$row[0];	     	                         
 	     	                     $i++; 
 	     	                    }
-	     	                mysql_close($con);
-	     	                
+	     	                 
+
 	     	            //retornamos el largo del arreglo
 	     	            return count($arr);
-	     	            
+
 	     	        }
 public function insertarItem($arrInf, $table, $empresa){
-			    
-	            //conectamos con la mysql
-		    
-		    
+
+	            
+
+
 	            //$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 		    $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	                //validamos que la conexion sea exitosa
+	                
 	                //if (!$con)
 			if (mysqli_connect_errno()) 
 	                {
@@ -2765,16 +2639,16 @@ public function insertarItem($arrInf, $table, $empresa){
 	                }
 	                    //si no existe error de conexion
 	                    //seleccionamos base de datos
-	                    ///////////////////////mysql_select_db("agf", $con);
-	                    
+	                    ///////////////////////
+
 	                    //seleccionamos todos los registros de tabla tb_persona
-			    
+
 			    $sql = "INSERT INTO " . $table . " VALUES (null";
 			    for($i = 0; $i < count($arrInf); $i++){
 			    	$sql .= ", '" . $arrInf[$i] . "'";
 			    }
 			    $sql .= ");";
-			    
+
 	                    /*$stmt = $con->prepare($sql)
 	                    or die(mysql_error());*/
 			    $sql2 = str_replace("'", "", $sql);
@@ -2783,7 +2657,7 @@ public function insertarItem($arrInf, $table, $empresa){
 			    $stmt = $con->prepare($sql);
 		$stmt->execute();
 	            $ultimo_id = $con->lastInsertId();
-			    
+
 			    $sql = "select count(*) from formulario_item WHERE id_empresa = " . $empresa;
 			    $stmt = $con->prepare($sql);
 		$stmt->execute();			    		
@@ -2795,19 +2669,19 @@ public function insertarItem($arrInf, $table, $empresa){
 			    	$r = $stmt->fetch();
 			    }*/
 			    $mysqli->query("INSERT INTO logs values ('" . print_r($r[0], 1) . "');");
-			   
-			   
+
+
 			    $sql = "INSERT INTO formulario_item (`id_empresa`, `id_tag_agf`, `fecha_insert`, `nun_item`) VALUES (" . $empresa . ", " . $ultimo_id . ", '1900-01-01', " . $r[0] . ");";
 			    $sql2 = str_replace("'", "", $sql);
 			    $stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
 			    $stmt = $con->prepare($sql);
 		$stmt->execute();
-	                    
-	               
+
+
 			    $arr = array();
 			    $arr[0]['ID'] = $ultimo_id;
-			
+
 				$sql = "INSERT INTO `valores`(`ID_VALOR`, `ID_TAG_AGF`, `ID_EMPRESA`, `ID_PERIODO`, `tipo`, `VALOR`, `DT_MODIFICACION`, `origen`) 
 				select null, " . $ultimo_id .", id_empresa, id_periodo, 'TRIMESTRAL', 0.00, '1900-01-01', 1
 				from periodos a inner join empresas
@@ -2816,28 +2690,28 @@ public function insertarItem($arrInf, $table, $empresa){
 				select null, " . $ultimo_id .", id_empresa, id_periodo, 'TRIMESTRAL', 0.00, '1900-01-01', 1
 				from periodos a inner join empresas
 				";*/
-				
+
 				$stmt = $con->prepare($sql);
 		$stmt->execute();
 				$sql2 = str_replace("'", "''", $sql);
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
 				$mysqli->close();
-				
-			
+
+
 		    //return $ultimo_id;
-	            
+
 	        }
-		
-		
+
+
 public function insertarItemExistente($empresa, $idTag){
-			    
-	            //conectamos con la mysql
-		    
-		    
+
+	            
+
+
 	            //$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 		    $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	                //validamos que la conexion sea exitosa
+	                
 	                //if (!$con)
 			if (mysqli_connect_errno()) 
 	                {
@@ -2846,11 +2720,11 @@ public function insertarItemExistente($empresa, $idTag){
 	                }
 	                    //si no existe error de conexion
 	                    //seleccionamos base de datos
-	                    ///////////////////////mysql_select_db("agf", $con);
-	                    
+	                    ///////////////////////
+
 	                    //seleccionamos todos los registros de tabla tb_persona
-			    
-			    
+
+
 			    $sql = "select count(*) from formulario_item WHERE id_empresa = " . $empresa;
 			    $stmt = $con->prepare($sql);
 		$stmt->execute();			    		
@@ -2861,8 +2735,8 @@ public function insertarItemExistente($empresa, $idTag){
 			    } else {
 			    	$r = $stmt->fetch();
 			    }*/
-			    
-				
+
+
 				$sql = "SELECT count(*)
 						FROM formulario_item
 						WHERE `id_empresa` = " . $empresa . "
@@ -2871,7 +2745,7 @@ public function insertarItemExistente($empresa, $idTag){
 				$stmt = $con->prepare($sql);
 		$stmt->execute();			    		
 			    $r2 = $stmt->fetch();
-				
+
 				$mysqli->query("INSERT INTO logs values ('" . print_r($r2, true) . "');");
 				if($r2[0] == 0){
 					$sql = "INSERT INTO formulario_item (`id_empresa`, `id_tag_agf`, `fecha_insert`, `nun_item`) 
@@ -2881,34 +2755,34 @@ public function insertarItemExistente($empresa, $idTag){
 				$stmt->execute();
 				    $stmt = $con->prepare($sql);
 		$stmt->execute();
-		            
+
 				}
 				$mysqli->close();
-			    
-	                //mysql_close($con);
-	                
+
+	                // 
+
 	            //retornamos el largo del arreglo
 		  //  $ultimo_id = mysql_insert_id($con);
 	            //return $ultimo_id;
-		  
+
 		    return true;
-	            
+
 	        }		
-		
-	    
+
+
 public function insertarValor($arrInf){
-			    
-	         
+
+
 	$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-		   
+
 	if (mysqli_connect_errno()) 
 	{	 
 		die('Error conectando: ' . mysql_error());
 	}
-	
+
 	$stmt = $con->prepare("INSERT INTO logs values ('" . print_r($arrInf, true) . "');");
 				$stmt->execute();	  
-	
+
 	$sql = "SELECT id_tag_agf 
 			FROM tag_agf 
 			WHERE (nombre like '" . $arrInf[0] . "') 
@@ -2921,14 +2795,14 @@ public function insertarValor($arrInf){
 		$stmt->execute();			    		
 	$r = $stmt->fetch();	
 	$arrInf[0] = $r[0];
-	
+
 	$sql = "SELECT id_valor, valor
 			FROM valores
 			WHERE id_empresa = " . $arrInf[1] . " 
 				AND id_periodo = " . $arrInf[2] . " 
 				AND	id_tag_agf = " .  $arrInf[0] . " 
 				AND	origen = 1";		
-		
+
 	$sql2 = str_replace("'", "''", $sql);
 	$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
@@ -2936,39 +2810,39 @@ public function insertarValor($arrInf){
 		$stmt->execute();	
 
 	$r = $stmt->fetch();	
-	
+
 	if($r[1] == $arrInf[3]){
 		return true;
 	}
-		
+
 	$sql = "UPDATE valores 
 			SET valor = " . $arrInf[3] . " 
 			WHERE id_empresa = " . $arrInf[1] . " 
 				AND id_periodo = " . $arrInf[2] . " 
 				AND	id_tag_agf = " .  $arrInf[0] . " 
 				AND	origen = 1";		
-		
+
 	$sql2 = str_replace("'", "''", $sql);
 	$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
 	$stmt = $con->prepare($sql);
 		$stmt->execute();	
 
-	
-	
+
+
 	$sql = "SELECT id_valor, id_formula, hist_formula
 			FROM valores
 			WHERE id_empresa = " . $arrInf[1] . " 
 				AND id_periodo = " . $arrInf[2] . " 				
 				AND	origen = 2
 			ORDER BY 1;";		
-		
+
 	$sql2 = str_replace("'", "''", $sql);
 	$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
 	$stmt = $con->prepare($sql);
 		$stmt->execute();	
-	
+
 	while($row = $stmt->fetch()){
 		$arrCampos = explode("|", $row[2]);
 		for($y = 0; $y < 5; $y++){
@@ -2999,13 +2873,13 @@ public function insertarValor($arrInf){
 				LEFT JOIN valores c5
 					ON c5.id_tag_agf = a.campo5 AND c5.id_empresa = " . $arrInf[1] . " AND c5.id_periodo = " . $arrInf[2] . " AND c5.origen = a.tipoc5" . $arrCampos[4] . "					
 			WHERE  a.id_formula = " . $row[1] . "";
-			
+
 			$sql2 = str_replace("'", "''", $sql);
 			$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
 			$resultRow = $stmt = $con->prepare($sql);
 		$stmt->execute();	
-			
+
 			while($row2 = $resultRow->fetch_array(MYSQLI_NUM)){
 				$operacion = $row2[1];
 
@@ -3024,9 +2898,9 @@ public function insertarValor($arrInf){
 				if(!isset($row2[7]))
 					$row2[7] = 0;
 				$operacion = str_replace('C5', '(' . $row2[7] . ')', $operacion);
-				
-				//$stmt = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
-				$stmt->execute();	
+
+				/*$stmt = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
+				$stmt->execute();	*/
 				$evaluacionDiv = explode('/', $operacion);
 				if(count($evaluacionDiv) > 1){					
 					eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
@@ -3047,14 +2921,14 @@ public function insertarValor($arrInf){
 				$stmt->execute();
 				$stmt = $con->prepare($sql);
 		$stmt->execute();
-				
+
 				//$this->actualizarCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
 			}	
-	
+
 	}	
 	$mysqli->close();			
 	return true;
-	            
+
 }
 
 function actualizarCascada($nuevoValor, $indice, $empresa, $periodo, $mysqli){
@@ -3097,9 +2971,9 @@ function actualizarCascada($nuevoValor, $indice, $empresa, $periodo, $mysqli){
 				$stmt->execute();*/
 	$stmt = $con->prepare($sql);
 		$stmt->execute();
-	
-	
-	
+
+
+
 	while($row = $stmt->fetch()){
 		$operacion = $row[1];
 
@@ -3118,33 +2992,29 @@ function actualizarCascada($nuevoValor, $indice, $empresa, $periodo, $mysqli){
 		if(!isset($row[7]))
 			$row[7] = 0;
 		$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
-		
-		//$stmt = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
-				$stmt->execute();	
+
+		/*$stmt = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
+				$stmt->execute();	*/
 		eval( "\$res = " . $operacion . ";");		
 		$nuevoValor = (float)$res;
-		
+
 		$this->actualizarCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
 	}	
 	return true;
 }
 
 function valores2($empresa, $periodo){
-	        //creando variable array
+	       
 	        $arr = array();
-	        //conectamos con la mysql
+	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	            //validamos que la conexion sea exitosa
-	            if (!$con)
-	            {
-	              //si existe error en conexion
-	              die('Error conectando: ' . mysql_error());
-	            }
+	            
+	            
 	                //si no existe error de conexion
 	                //seleccionamos base de datos
-	                mysql_select_db("agf", $con);
 	                
-	                //seleccionamos registros de tabla tb_persona
+
+	                
 			$sql = "SELECT (select concat(nombre, '(', origen, ')') 
 					from tag_agf b 
 					where  b.id_tag_agf = a.id_tag_agf) `nombre` , 
@@ -3163,29 +3033,29 @@ function valores2($empresa, $periodo){
 			$sql2 = str_replace("'", "''", $sql);
 			$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 		$stmt->execute();	
-	                $stmt = $con->prepare($sql)
-	                or die(mysql_error());
-	                //el LIMIT se configura con los parametros recibidos
-	                //$startIndex
-	                //$numItems
-	                //EJ. seleccione desde el registro 0 hasta el 10
+	                $stmt = $con->prepare($sql);
+					$stmt->execute();
+	                
+	                
+	                
+	                
 	                $i=0;
 	                while($row = $stmt->fetch())
 	                {
-	                    //almacenamos los registros en la var array
+	                    
 			     $arr[$i]['nombre']=$row[0];
 			     $arr[$i]['valor']=$row[1];
 			     $arr[$i]['id_tag_agf']=$row[3];	                     
-	                   
+
 	                 $i++; 
 	                }
-	            //cerramos la conexion con mysql
-	            mysql_close($con);
 	            
-	        //retornamos el arreglo
-	        return $arr;
+	             
+
 	        
-	    }//fin metodo		
+	        return $arr;
+
+	    }o		
 
 	    function deleteFormularioItem($empresa, $tagAgf){
 	    	$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
@@ -3202,17 +3072,17 @@ function valores2($empresa, $periodo){
 	    	$mysqli->close();
 		return true;
 	    }
-		
+
 		function insertarConfig($arrInf){
-			    
+
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
             if (mysqli_connect_errno()) 
 			{
 			  //si existe error en conexion
 			  die('Error conectando: ' . mysql_error());
 			}
-	            
-			    
+
+
 			$sql = "DELETE FROM configexport";
 			$stmt = $con->prepare($sql);
 		$stmt->execute();			    		
@@ -3221,7 +3091,7 @@ function valores2($empresa, $periodo){
 				$sql = "INSERT INTO configexport VALUES ('" . $arrInf[$i] . "');";
 				$stmt = $con->prepare($sql);
 		$stmt->execute();	
-				
+
 			}	
 			$sql2 = str_replace("'", "''", $sql);
 			$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
@@ -3229,22 +3099,18 @@ function valores2($empresa, $periodo){
 			$mysqli->query("INSERT INTO logs values ('" . print_r($arrInf, 1) . "');");
 			$mysqli->close();        
 		    return true;
-	            
+
 	    }
-		
+
 		function indicesFinancieros(){
-	        //creando variable array
+	       
 	        $arr = array();
-	        //conectamos con la mysql
+	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	            //validamos que la conexion sea exitosa
-	            if (!$con)
-	            {
-	              //si existe error en conexion
-	              die('Error conectando: ' . mysql_error());
-	            }
+	            
+	            
+
 	                
-	                mysql_select_db("agf", $con);
 	                $sql = "SELECT a.id_indice_financiero, a.nombre,
 							CASE isnull( b.id_indice )
 							WHEN TRUE THEN 0
@@ -3252,34 +3118,34 @@ function valores2($empresa, $periodo){
 							END AS oa, b.id_indice
 							FROM `indices_financieros` a
 							LEFT JOIN configexport b ON a.id_indice_financiero = b.id_indice";
-	                //seleccionamos registros de tabla tb_persona
-	                $stmt = $con->prepare($sql)
-	                or die(mysql_error());
+	                
+	                $stmt = $con->prepare($sql);
+					$stmt->execute();
 					$sql2 = str_replace("'", "''", $sql);
 					$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 		$stmt->execute();
-	                //el LIMIT se configura con los parametros recibidos
-	                //$startIndex
-	                //$numItems
-	                //EJ. seleccione desde el registro 0 hasta el 10
+	                
+	                
+	                
+	                
 	                $i=0;
 	                while($row = $stmt->fetch())
 	                {
-	                    //almacenamos los registros en la var array
+	                    
 					     $arr[$i]['id_indice_financiero']=$row[0];
 					     $arr[$i]['nombre']=$row[1];
 	                     $arr[$i]['oa']=$row[2];
-	                   
+
 	                 $i++; 
 	                }
-	            //cerramos la conexion con mysql
-	            mysql_close($con);
 	            
-	        //retornamos el arreglo
-	        return $arr;
+	             
+
 	        
-	    }//fin metodo
-		
+	        return $arr;
+
+	    }o
+
 		function listEmpresa($id){
 			$where = "";
 	        if($id == 0){
@@ -3297,19 +3163,19 @@ function valores2($empresa, $periodo){
 						WHERE b.id_indice = " . $id;
 			}
 	        $arr = array();
-	        //conectamos con la mysql
+	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-	            //validamos que la conexion sea exitosa
+	            
 	            if (!$con)
 	            {
 	              //si existe error en conexion
 	              die('Error conectando: ' . mysql_error());
 	            }
-				mysql_select_db("agf", $con);
 				
-				
-				$stmt = $con->prepare($sql)
-				or die(mysql_error());
+
+
+				$stmt = $con->prepare($sql);
+				$stmt->execute();
 				$i=0;
 				while($row = $stmt->fetch())
 				{
@@ -3324,12 +3190,12 @@ function valores2($empresa, $periodo){
 					 $arr[$i]['oa']=$row[9];
 					 $i++; 
 				}
-			mysql_close($con);
-	            
+			 
+
 	        return $arr;
-	        
-	    }//fin metod
-		
+
+	    }
+
 		function listSubgrupo($id){
 			$where = "";
 	        if($id == 0){
@@ -3343,45 +3209,41 @@ function valores2($empresa, $periodo){
 						FROM subgrupos a LEFT JOIN indice_subgrupo_empresa b On a.id_subgrupo = b.id_subgrupo 
 						WHERE b.id_indice = " . $id;
 			}
-	         //creando variable array
+	        
 				$arr = array();
-				//conectamos con la mysql
-				$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
-			//validamos que la conexion sea exitosa
-			if (!$con)
-			{
-			  //si existe error en conexion
-			  die('Error conectando: ' . mysql_error());
-			}
-				//si no existe error de conexion
-				//seleccionamos base de datos
-				mysql_select_db("agf", $con);
 				
-				//seleccionamos registros de tabla tb_persona
-				$stmt = $con->prepare($sql)
-				or die(mysql_error());
-				//el LIMIT se configura con los parametros recibidos
-				//$startIndex
-				//$numItems
-				//EJ. seleccione desde el registro 0 hasta el 10
+				$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
+			
+			'Error conectando: ' . mysql_error());
+			}
+								
+				
+
+				
+				$stmt = $con->prepare($sql));
+				$stmt->execute();
+				
+				
+				
+				
 				$i=0;
 				while($row = $stmt->fetch())
 				{
-					//almacenamos los registros en la var array
+					
 					$arr[$i]['ID_SUBGRUPO']=$row[0];
 					$arr[$i]['nombre']=$row[1];
 					$arr[$i]['descripcion']=$row[2];			                     
 					$arr[$i]['oa']=$row[3];			                     
 					$i++; 
 				}
-			//cerramos la conexion con mysql
-			mysql_close($con);
-				
-			//retornamos el arreglo
+			
+			 
+
+			
 			return $arr;
-	        
-	   }//fin metod
-		
+
+	   }
+
 	function parametrosGrafico(){
 		$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 		if (mysqli_connect_errno()) 
@@ -3433,11 +3295,11 @@ function valores2($empresa, $periodo){
 				$stmt->execute();
 		$stmt = $con->prepare($sql);
 		$stmt->execute();		
-		
+
 		$mysqli->close();   
 		return true;     
 	}
-	
+
 	function rescataFormulas($indice, $empresa){
 		$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 		if (mysqli_connect_errno()) 
@@ -3513,7 +3375,7 @@ function valores2($empresa, $periodo){
 		$mysqli->close();   
 		return $arr;     
 	}
-	
+
 	function actualizaEmpresaIndice($indice, $empresa, $numFormula, $formula){
 		$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 		if (mysqli_connect_errno()) 
@@ -3530,11 +3392,11 @@ function valores2($empresa, $periodo){
 				$stmt->execute();
 		$stmt = $con->prepare($sql);
 		$stmt->execute();		
-		
+
 		$mysqli->close();   
 		return true;     
 	}
-	
+
 	function carga(){
 		echo "";
 	}
