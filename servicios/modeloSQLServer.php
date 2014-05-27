@@ -377,18 +377,20 @@ class Modelo
 				return true;
 			*/	    
 		        $arr = array();
+				/*Ingresa valores para todos los tag ingresados de tipo xbrl y estimadores manuales*/
 				$sql = "INSERT INTO valores(ID_VALOR, ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula) 
 						select null, a.id_tag_agf, " . $ultimo_id . ", b.id_periodo, 'TRIMESTRAL', 0, '1900-01-01', 1, 0
 						from tag_agf a, periodos b
 						where a.oa = 1";
 
+						
 				$sql2 = str_replace("'", "''", $sql);
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
 
-
+				/*Carga las formulas por default para la nueva empresa*/
 				$sql = "INSERT INTO empresa_indice(id_empresa, id_indice_financiero, num_formula, id_formula) 
 						SELECT " . $ultimo_id . ", id_indice_financiero, 0, id_formula 
 						FROM formulas;";
@@ -465,8 +467,7 @@ class Modelo
 					} else {
 						eval( '$res = ' . $operacion . ';');		
 					}
-					$nuevoValor = (float)$res;
-
+					$nuevoValor = (float)$res;					
 					$sql = "INSERT INTO valores(ID_VALOR, ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula, HIST_FORMULA) 
 											VALUES (null,  " . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01',2, " . $row[11] . ", '" . $row[14] . "|" . $row[15] . "|" . $row[16] . "|" . $row[17] . "|" . $row[18] . "');";
 					$sql2 = str_replace("'", "''", $sql);
@@ -555,8 +556,8 @@ class Modelo
 
 
 					$sql2 = str_replace("'", "''", $sql);
-					$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-					$stmt->execute();
+					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+					$stmtlog->execute();
 					$stmt2 = $con->prepare($sql);
 					$stmt2->execute();			
 					$arrResult = array();	
@@ -596,10 +597,10 @@ class Modelo
 						$sql = "INSERT INTO valores(ID_VALOR, ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula, hist_formula) 
 												VALUES (null,  " . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01', 2, " . $row[11] . ", '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "');";
 						$sql2 = str_replace("'", "''", $sql);
-						$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-						$stmt->execute();
-						$stmt = $con->prepare($sql);
-						$stmt->execute();
+						$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+						$stmtlog->execute();
+						$stmtins = $con->prepare($sql);
+						$stmtins->execute();
 						//$this->insertaCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
 					}	
 				}		
@@ -616,7 +617,10 @@ class Modelo
 			return 0;
 		} 	
 		unset($con); 
-		unset($stmt);	    
+		unset($stmt);
+		unset($stmt2);
+		unset($stmtlog);
+		unset($stmtins);	    
 
 
 	}
@@ -664,7 +668,6 @@ class Modelo
 				$stmt->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
-				$con->commit();
 
 
 				while($row = $stmt->fetch()){
@@ -691,8 +694,9 @@ class Modelo
 					eval( "\$res = " . $operacion . ";");		
 					$nuevoValor = (float)$res;
 
-					$this->actualizarCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
+					$this->actualizarCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $con);
 				}	
+				$con->commit();
 				return true;
 			} catch(PDOExecption $e) {
 		        $con->rollback();
