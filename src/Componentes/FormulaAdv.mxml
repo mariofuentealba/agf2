@@ -19,7 +19,7 @@
 			private var c:int = 1;
 			public var _s:String; 
 			public var hgBotones:ArrayCollection = new ArrayCollection();
-			public var dataProvider:Array;
+			[Bindable] public var dataProvider:Array;
 			
 			protected function linkbutton1_clickHandler(datos:ArrayCollection, s:String):void
 			{
@@ -68,6 +68,8 @@
 			protected function addElementos(item:*):void{
 				gFormulas.addElement(item);
 			}
+			
+			
 			
 		]]>
 	</fx:Script>
