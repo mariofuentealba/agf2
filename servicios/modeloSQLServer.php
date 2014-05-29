@@ -350,22 +350,22 @@ class Modelo
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			try {
 				$con->beginTransaction(); 
-				$stmt = $con->prepare("INSERT INTO logs values ('" . print_r($arrInf, true) . "');");
-				$stmt->execute();			
-				$sql = "INSERT INTO " . $table . " VALUES (null";
-				for($i = 0; $i < count($arrInf); $i++){
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . print_r($arrInf, true) . "');");
+				$stmtlog->execute();			
+				$sql = "INSERT INTO " . $table . " VALUES ('" .$arrInf[0] ."'";
+				for($i = 1; $i < count($arrInf); $i++){
 					$sql .= ", '" . $arrInf[$i] . "'";
 				}
 				$sql .= ", 0);";
 				$sql2 = str_replace("'", "''", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();				
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();				
 		        /*$stmt = $con->prepare($sql);
 				$stmt->execute();
 				*/			    
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
-				$con->commit();
+				
 		        $ultimo_id = $con->lastInsertId();
 
 		/*		$sql = "INSERT INTO GRUPOS_SUBGRUPOS VALUES (" . $param[0] . ", " . $ultimo_id . ");";
@@ -378,16 +378,20 @@ class Modelo
 			*/	    
 		        $arr = array();
 				/*Ingresa valores para todos los tag ingresados de tipo xbrl y estimadores manuales*/
-				$sql = "INSERT INTO valores(ID_VALOR, ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula) 
-						select null, a.id_tag_agf, " . $ultimo_id . ", b.id_periodo, 'TRIMESTRAL', 0, '1900-01-01', 1, 0
+				/*$sql = "INSERT INTO valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula) 
+						select a.id_tag_agf, " . $ultimo_id . ", b.id_periodo, 'TRIMESTRAL', 0, '1900-01-01', 1, 0
 						from tag_agf a, periodos b
-						where a.oa = 1";
+						where a.oa = 1";*/
 
-						
+				$sql = "CALL spInsertaValoresItemEmpresaNueva(?)";
+				
+
+				
 				$sql2 = str_replace("'", "''", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
-				$stmt = $con->prepare($sql);
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
+				$stmt = $con->prepare($sql);				
+				$stmt->bindParam(1, $ultimo_id); 
 				$stmt->execute();
 
 				/*Carga las formulas por default para la nueva empresa*/
@@ -395,8 +399,8 @@ class Modelo
 						SELECT " . $ultimo_id . ", id_indice_financiero, 0, id_formula 
 						FROM formulas;";
 				$sql2 = str_replace("'", "''", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
 				$sql = "SELECT b.id_indice_financiero, 
@@ -431,12 +435,12 @@ class Modelo
 							AND a.tipoc5 < 2
 											";
 				$sql2 = str_replace("'", "''", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
-				$stmt = $con->prepare($sql);
-				$stmt->execute();
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
+				$stmtq = $con->prepare($sql);
+				$stmtq->execute();
 				$arrResult = array();	
-				while($row = $stmt->fetch()){
+				while($row = $stmtq->fetch()){
 					$operacion = $row[10];
 					if(!isset($row[3]))
 						$row[3] = 0;
@@ -454,8 +458,8 @@ class Modelo
 						$row[7] = 0;
 					$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
 
-					$stmt = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
-					$stmt->execute();	
+					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
+					$stmtlog->execute();	
 					$evaluacionDiv = explode('/', $operacion);
 					if(count($evaluacionDiv) > 1){					
 						eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
@@ -468,11 +472,11 @@ class Modelo
 						eval( '$res = ' . $operacion . ';');		
 					}
 					$nuevoValor = (float)$res;					
-					$sql = "INSERT INTO valores(ID_VALOR, ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula, HIST_FORMULA) 
-											VALUES (null,  " . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01',2, " . $row[11] . ", '" . $row[14] . "|" . $row[15] . "|" . $row[16] . "|" . $row[17] . "|" . $row[18] . "');";
+					$sql = "INSERT INTO valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula, HIST_FORMULA) 
+											VALUES (" . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01',2, " . $row[11] . ", '" . $row[14] . "|" . $row[15] . "|" . $row[16] . "|" . $row[17] . "|" . $row[18] . "');";
 					$sql2 = str_replace("'", "''", $sql);
-					$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-					$stmt->execute();
+					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+					$stmtlog->execute();
 					$stmt = $con->prepare($sql);
 					$stmt->execute();
 					//$this->insertaCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
@@ -488,11 +492,11 @@ class Modelo
 								OR a.tipoc4 > 1
 								OR a.tipoc5 > 1)";
 				$sql2 = str_replace("'", "''", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
-				$stmt = $con->prepare($sql);
-				$stmt->execute();			
-				while($rowInd = $stmt->fetch()){		
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
+				$stmtq = $con->prepare($sql);
+				$stmtq->execute();			
+				while($rowInd = $stmtq->fetch()){		
 					$sql = "SELECT b.id_indice_financiero, 
 						d.id_empresa, 
 						c.id_periodo,						
@@ -558,10 +562,10 @@ class Modelo
 					$sql2 = str_replace("'", "''", $sql);
 					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 					$stmtlog->execute();
-					$stmt2 = $con->prepare($sql);
-					$stmt2->execute();			
+					$stmtq2 = $con->prepare($sql);
+					$stmtq2->execute();			
 					$arrResult = array();	
-					while($row = $stmt2->fetch()){
+					while($row = $stmtq2->fetch()){
 						$operacion = $row[10];
 						if(!isset($row[3]))
 							$row[3] = 0;
@@ -594,8 +598,8 @@ class Modelo
 						}
 						$nuevoValor = (float)$res;
 
-						$sql = "INSERT INTO valores(ID_VALOR, ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula, hist_formula) 
-												VALUES (null,  " . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01', 2, " . $row[11] . ", '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "');";
+						$sql = "INSERT INTO valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula, hist_formula) 
+												VALUES (" . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01', 2, " . $row[11] . ", '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "');";
 						$sql2 = str_replace("'", "''", $sql);
 						$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 						$stmtlog->execute();
@@ -603,7 +607,8 @@ class Modelo
 						$stmtins->execute();
 						//$this->insertaCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
 					}	
-				}		
+				}	
+				$con->commit();
 				return true;//$arr;
 			} catch(PDOExecption $e) {
 		        $con->rollback();
@@ -2779,7 +2784,7 @@ class Modelo
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			try {
 				$con->beginTransaction();
-				$sql = "SELECT (select concat(nombre, '(', origen, ')') 
+				$sql = "SELECT (select nombre + '(' + origen + ')' 
 					from tag_agf b 
 					where  b.id_tag_agf = a.id_tag_agf) nombre , 
 					(select valor 
