@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			private var lblVacio:Label = new Label();
+			
+			protected function txtFormula_keyUpHandler(event:KeyboardEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function vgCampos_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				lblVacio.text = 'No existen campos seleccionados. Para agregar campo seleccione de los tres listados de arriba y arrastre el campo hasta aquí';
+				vgCampos.addElement(lblVacio);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Label text="Fórmula"/>
+	<s:TextArea id="txtFormula" keyUp="txtFormula_keyUpHandler(event)"/>
+	<s:HGroup width="100%">
+		<s:List id="itemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true"/>
+		<s:List id="manualList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true"/>
+		<s:List id="indicesList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true"/>
+	</s:HGroup>
+	<s:Label text="Campos"/>
+	<s:VGroup id="vgCampos" creationComplete="vgCampos_creationCompleteHandler(event)" horizontalAlign="center">
+		
+	</s:VGroup>	
+</s:Group>
