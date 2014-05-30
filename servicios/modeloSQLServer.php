@@ -396,31 +396,21 @@ class Modelo
 				$stmtlog->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
-				$sql = "SELECT b.id_indice_financiero, 
-							d.id_empresa, 
-							c.id_periodo,						
-							(SELECT valor FROM valores WHERE id_tag_agf = a.campo1 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C1,
-							(SELECT valor FROM valores WHERE id_tag_agf = a.campo2 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C2,
-							(SELECT valor FROM valores WHERE id_tag_agf = a.campo3 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C3,                        
-							(SELECT valor FROM valores WHERE id_tag_agf = a.campo4 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C4,         
-							(SELECT valor FROM valores WHERE id_tag_agf = a.campo5 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C5, 
-							d.rso + ': '  b.nombre, 
-							label, 
-							formula, 
-							a.id_formula, 
-							c.ano, 
-							c.mes,						
-							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo1 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C1N,
-							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo2 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C2N,
-							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo3 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C3N,                        
-							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo4 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C4N,         
-							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo5 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1) C5N
-						FROM formulas a
-						   INNER JOIN indices_financieros b 
-							ON a.id_indice_financiero = b.id_indice_financiero 
-						   INNER JOIN periodos c
-						   INNER JOIN empresas d
+				$sql = "SELECT b.ID_INDICE_FINANCIERO, d.ID_EMPRESA, c.ANO,
+							(SELECT valor FROM valores WHERE id_tag_agf = a.campo1 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C1,
+							(SELECT valor FROM valores WHERE id_tag_agf = a.campo2 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C2,
+							(SELECT valor FROM valores WHERE id_tag_agf = a.campo3 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C3,
+							(SELECT valor FROM valores WHERE id_tag_agf = a.campo4 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C4,
+							(SELECT valor FROM valores WHERE id_tag_agf = a.campo5 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C5,
+							d.RSO + ': ' + b.NOMBRE label, a.FORMULA, a.ID_FORMULA, c.ANO, c.MES ,
+							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo1 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C1N,
+							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo2 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C2N,
+							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo3 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C3N,
+							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo4 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C4N,                 
+							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo5 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C5N
+						FROM formulas a, indices_financieros b, periodos c, empresas d 
 						WHERE d.id_empresa = " . $ultimo_id . "
+							AND a.id_indice_financiero = b.id_indice_financiero
 							AND a.tipoc1 < 2
 							AND a.tipoc2 < 2
 							AND a.tipoc3 < 2
