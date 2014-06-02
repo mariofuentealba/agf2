@@ -8,7 +8,7 @@ class Modelo
 	public function grillaGrupos(){		
 		try {
 			$arr = array();
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf'); 
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf'); 
 			$stmt = $con->prepare("SELECT * FROM tipos_empresas");
 			$stmt->execute();
 			$i=0;
@@ -36,7 +36,7 @@ class Modelo
 
 	public function countGrupos(){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');					
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');					
 			$stmt = $con->prepare("SELECT * FROM tipos_empresas");
 			$stmt->execute();	
 			$i=0;
@@ -63,7 +63,7 @@ class Modelo
 
 	public function insertar($arrInf, $table){
 		try { 
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');			
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');			
 			$sql = "INSERT INTO " . $table . " VALUES (null";
 			for($i = 0; $i < count($arrInf); $i++){
 				$sql .= ", '" . $arrInf[$i] . "'";
@@ -97,7 +97,7 @@ class Modelo
 
 	public function editar($arrInf, $table, $where){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 
 			$sql = "UPDATE " . $table . " SET ";
 			foreach($arrInf as $key => $value){
@@ -133,7 +133,7 @@ class Modelo
 	public function comboGrupos(){
 		try {
 			$arr = array();			
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			$stmt = $con->prepare("SELECT * FROM tipos_empresas");		
 			$stmt->execute();			
 			$i=0;
@@ -162,7 +162,7 @@ class Modelo
 	public function comboSubGrupos(){
 		try {
 			$arr = array();			       
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');			   
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');			   
 			$stmt = $con->prepare("SELECT * FROM subgrupos");	
 			$stmt->execute();			
 			$i=0;
@@ -185,7 +185,7 @@ class Modelo
 
 	public function editarSubGrupo($arrInf, $table, $where, $param, $id){
 	    try {
-		    $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	    
+		    $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	    
 		    $sql = "UPDATE " . $table . " SET ";		    
 		    foreach($arrInf as $key => $value){
 		    	$sql .= $key . " = '" . $value . "', ";
@@ -233,7 +233,7 @@ class Modelo
 
 	public function insertarSubgrupo($arrInf, $table, $param){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	
 			$sql = "INSERT INTO " . $table . " VALUES (null";
 			for($i = 0; $i < count($arrInf); $i++){
 				$sql .= ", '" . $arrInf[$i] . "'";
@@ -268,7 +268,7 @@ class Modelo
 	public function grillaSubGrupos(){	
 		try {
 		    $arr = array();	        
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	            	           
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	            	           
 			$sql = "SELECT a.ID_SUBGRUPO, nombre, descripcion, ID_TIPO_EMPRESA  FROM subgrupos a, grupos_subgrupos b where a.id_subgrupo = b.id_subgrupo";
 			$sql2 = str_replace("'", "", $sql);
 			$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
@@ -297,7 +297,7 @@ class Modelo
 	public function subGrillaSubGrupos($tipo){
 		try {
 			$arr = array();			
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			$stmt = $con->prepare("SELECT a.ID_SUBGRUPO, nombre, descripcion, ID_TIPO_EMPRESA  FROM subgrupos a, grupos_subgrupos b where a.id_subgrupo = b.id_subgrupo and ID_TIPO_EMPRESA = " . $tipo . ";");
 			$stmt->execute();					
 			$i=0;
@@ -320,7 +320,7 @@ class Modelo
 
 	public function countSubGrupos(){
 	    try {		       
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	               
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	               
 	        $stmt = $con->prepare("SELECT a.ID_SUBGRUPO, nombre, descripcion, ID_TIPO_EMPRESA FROM subgrupos a, grupos_subgrupos b where a.id_subgrupo = b.id_subgrupo");
 			$stmt->execute();
 	        $i=0;
@@ -347,7 +347,7 @@ class Modelo
 
 	public function insertarEmpresa($arrInf, $table, $param){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	 
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			try {
 				$con->beginTransaction(); 
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . print_r($arrInf, true) . "');");
@@ -396,31 +396,12 @@ class Modelo
 				$stmtlog->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
-				$sql = "SELECT b.ID_INDICE_FINANCIERO, d.ID_EMPRESA, c.ANO,
-							(SELECT valor FROM valores WHERE id_tag_agf = a.campo1 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C1,
-							(SELECT valor FROM valores WHERE id_tag_agf = a.campo2 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C2,
-							(SELECT valor FROM valores WHERE id_tag_agf = a.campo3 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C3,
-							(SELECT valor FROM valores WHERE id_tag_agf = a.campo4 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C4,
-							(SELECT valor FROM valores WHERE id_tag_agf = a.campo5 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C5,
-							d.RSO + ': ' + b.NOMBRE label, a.FORMULA, a.ID_FORMULA, c.ANO, c.MES ,
-							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo1 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C1N,
-							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo2 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C2N,
-							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo3 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C3N,
-							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo4 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C4N,                 
-							(SELECT id_valor FROM valores WHERE id_tag_agf = a.campo5 AND id_empresa = d.id_empresa AND id_periodo = c.id_periodo AND origen = 1 AND tipo = 'TRIMESTRAL') C5N
-						FROM formulas a, indices_financieros b, periodos c, empresas d 
-						WHERE d.id_empresa = " . $ultimo_id . "
-							AND a.id_indice_financiero = b.id_indice_financiero
-							AND a.tipoc1 < 2
-							AND a.tipoc2 < 2
-							AND a.tipoc3 < 2
-							AND a.tipoc4 < 2
-							AND a.tipoc5 < 2
-											";
+				$sql = "sp_rescata_formula_simple ? ";
 				$sql2 = str_replace("'", "''", $sql);
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmtlog->execute();
 				$stmtq = $con->prepare($sql);
+				$stmtq->bindParam(1, $ultimo_id);
 				$stmtq->execute();
 				$arrResult = array();	
 				while($row = $stmtq->fetch()){
@@ -441,18 +422,19 @@ class Modelo
 						$row[7] = 0;
 					$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
 
-					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
-					$stmtlog->execute();	
+						
 					$evaluacionDiv = explode('/', $operacion);
 					if(count($evaluacionDiv) > 1){					
-						eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+						@eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
 						if($resultDiv != 0){
-							eval( '$res = ' . $operacion . ';');		
+							@eval( '$res = ' . $operacion . ';');		
 						} else {
 							$res = 0;
 						}
 					} else {
-						eval( '$res = ' . $operacion . ';');		
+					$stmtlog = $con->prepare("INSERT INTO logs values ('RES = " . $operacion . ";');");
+					$stmtlog->execute();
+						@eval( '$res = ' . $operacion . ';');		
 					}
 					$nuevoValor = (float)$res;					
 					$sql = "INSERT INTO valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula, HIST_FORMULA) 
@@ -465,87 +447,23 @@ class Modelo
 					//$this->insertaCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
 				}	
 
-				$sql = "SELECT DISTINCT b.id_indice_financiero 
-						FROM indices_financieros b 
-							INNER JOIN formulas a
-								ON a.id_indice_financiero = b.id_indice_financiero
-						WHERE (a.tipoc1 > 1
-								OR a.tipoc2 > 1
-								OR a.tipoc3 > 1
-								OR a.tipoc4 > 1
-								OR a.tipoc5 > 1)";
+				$sql = "exec sp_rescata_formulas_complejas";
 				$sql2 = str_replace("'", "''", $sql);
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmtlog->execute();
 				$stmtq = $con->prepare($sql);
 				$stmtq->execute();			
-				while($rowInd = $stmtq->fetch()){		
-					$sql = "SELECT b.id_indice_financiero, 
-						d.id_empresa, 
-						c.id_periodo,						
-						v.valor C1,
-						w.valor C2,
-						x.valor C3,                        
-						y.valor C4,         
-						z.valor C5, 
-						d.rso + ': ' + b.nombre, 
-						label, 
-						formula, 
-						a.id_formula, 
-						c.mes,						
-						d.color, d.rso, b.nombre, 				   
-						v.id_valor C1H, 
-						w.id_valor C2H,
-						x.id_valor C3H,
-						y.id_valor C4H,
-						z.id_valor C5H
-					FROM formulas a
-						INNER JOIN indices_financieros b 
-						 ON a.id_indice_financiero = b.id_indice_financiero					   
-						INNER JOIN periodos c
-						INNER JOIN empresas d 
-						LEFT JOIN valores v ON v.id_tag_agf = a.campo1 
-							AND v.tipo = 'TRIMESTRAL' 
-							AND v.id_empresa = d.id_empresa                             
-							AND v.origen = a.tipoc1                          	
-														
-							AND v.id_periodo = c.id_periodo
-						LEFT JOIN valores w ON w.id_tag_agf = a.campo2 
-							AND w.tipo = 'TRIMESTRAL' 
-							AND w.id_empresa = d.id_empresa                             
-							AND w.origen = a.tipoc2                          	
-														
-							AND w.id_periodo = c.id_periodo
-						LEFT JOIN valores x ON x.id_tag_agf = a.campo3 
-							AND x.tipo = 'TRIMESTRAL' 
-							AND x.id_empresa = d.id_empresa                             
-							AND x.origen = a.tipoc3                          	
-							 							
-							AND x.id_periodo = c.id_periodo
-						LEFT JOIN valores y ON y.id_tag_agf = a.campo4 
-							AND y.tipo = 'TRIMESTRAL' 
-							AND y.id_empresa = d.id_empresa                             
-							AND y.origen = a.tipoc4                          	
-														
-							AND y.id_periodo = c.id_periodo
-						LEFT JOIN valores z ON z.id_tag_agf = a.campo5 
-							AND z.tipo = 'TRIMESTRAL' 
-							AND z.id_empresa = d.id_empresa                             
-							AND z.origen = a.tipoc5                          	
-														
-							AND z.id_periodo = c.id_periodo					
-					WHERE d.id_empresa = " . $ultimo_id . "
-							AND b.id_indice_financiero = " . $rowInd[0] . "						
-						ORDER BY b.id_indice_Financiero		
-						;";  
+				while($rowInd = $stmtq->fetch()){	
 
-
-
-
+					/*$stmtlog = $con->prepare("INSERT INTO logs values ('INDICE PROCESADO = " . $rowInd[0] . "');");
+					$stmtlog->execute();*/
+					$sql = "exec sp_procesa_formulas_complejas ?, ?";	
 					$sql2 = str_replace("'", "''", $sql);
 					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 					$stmtlog->execute();
 					$stmtq2 = $con->prepare($sql);
+					$stmtq2->bindParam(1,  $rowInd[0]); 
+					$stmtq2->bindParam(2, $ultimo_id); 
 					$stmtq2->execute();			
 					$arrResult = array();	
 					while($row = $stmtq2->fetch()){
@@ -566,23 +484,22 @@ class Modelo
 							$row[7] = 0;
 						$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
 
-						/*$stmt = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
-						$stmt->execute();*/	
+							
 						$evaluacionDiv = explode('/', $operacion);
 						if(count($evaluacionDiv) > 1){					
-							eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+							@eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
 							if($resultDiv != 0){
-								eval( '$res = ' . $operacion . ';');		
+								@eval( '$res = ' . $operacion . ';');		
 							} else {
 								$res = 0;
 							}
 						} else {
-							eval( '$res = ' . $operacion . ';');		
+							@eval( '$res = ' . $operacion . ';');		
 						}
 						$nuevoValor = (float)$res;
 
 						$sql = "INSERT INTO valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula, hist_formula) 
-												VALUES (" . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01', 2, " . $row[11] . ", '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "');";
+												VALUES (" . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",SYSDATETIME(), 2, " . $row[11] . ", '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "');";
 						$sql2 = str_replace("'", "''", $sql);
 						$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 						$stmtlog->execute();
@@ -592,6 +509,8 @@ class Modelo
 					}	
 				}	
 				$con->commit();
+				/*$stmtlog = $con->prepare("INSERT INTO logs values ('TERMINE');");
+				$stmtlog->execute();*/
 				return true;//$arr;
 			} catch(PDOExecption $e) {
 		        $con->rollback();
@@ -679,7 +598,7 @@ class Modelo
 
 					/*$stmt = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
 							$stmt->execute();	*/ 
-					eval( "\$res = " . $operacion . ";");		
+					@eval( "\$res = " . $operacion . ";");		
 					$nuevoValor = (float)$res;
 
 					$this->actualizarCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $con);
@@ -704,7 +623,7 @@ class Modelo
 
 	public function insertarSubgrupoEmpresa($grupo, $empresas){	
 		try{
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	
 			try {
 				$con->beginTransaction(); 
 				$sql = "delete from subgrupos_empresas where id_subgrupo = " . $grupo;
@@ -740,7 +659,7 @@ class Modelo
 	public function grillaEmpresa(){
 		try {		
 	        $arr = array();	        
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');			
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');			
 			$stmt = $con->prepare("SELECT b.ID_EMPRESA , RUT , RSO , NOMBRE_FANTASIA , NOMBRE_BOLSA , VALOR_ACCION , TIPO_BALANCE , TIPO_IFRS , color
 			FROM empresas b ");
 			$stmt->execute();
@@ -770,7 +689,7 @@ class Modelo
 	public function grillaEmpresaSinSubGrupo($id){
 		try {			        
 			$arr = array();	    	        
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 	    	try {
 				$con->beginTransaction(); 
 				$sql = "SELECT  ID_EMPRESA, RUT, RSO, NOMBRE_FANTASIA, NOMBRE_BOLSA, VALOR_ACCION, TIPO_BALANCE, TIPO_IFRS, color, MONEDA, ESTADOS, ORIGEN, OA
@@ -816,7 +735,7 @@ class Modelo
 		try {
 		    
     	    $arr = array();    	    
-    	    $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');    	           
+    	    $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');    	           
 			$sql = "SELECT  ID_EMPRESA, RUT, RSO, NOMBRE_FANTASIA, NOMBRE_BOLSA, VALOR_ACCION, TIPO_BALANCE, TIPO_IFRS, color, MONEDA, ESTADOS, ORIGEN, OA  
 						FROM Empresas 
 					Where id_empresa in (select id_empresa from subgrupos_empresas where id_subgrupo = " . $cod . ")";
@@ -850,7 +769,7 @@ class Modelo
 
 	public function countEmpresa(){
 		try {		
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	        	        
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	        	        
 			$stmt = $con->prepare("SELECT b.ID_EMPRESA , RUT , RSO , NOMBRE_FANTASIA , NOMBRE_BOLSA , VALOR_ACCION , TIPO_BALANCE , TIPO_IFRS , color
 									FROM empresas b");
 			$stmt->execute();
@@ -886,7 +805,7 @@ class Modelo
 	public function grillaIndicesFinancieros(){
 	    try {
 		    $arr = array();	        
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 	        $sql = "SELECT a.ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, DESCRIPCION, formula, decimales, ID_GRUPO_INDICE_FINANCIERO, formula_desc, rango_superior, rango_inferior,rangos_desc,
 							campo1, campo2, campo3, campo4, campo5
 	                	                    FROM indices_financieros a, formulas b
@@ -942,7 +861,7 @@ class Modelo
 	public function countIndicesFinancieros(){
 		try {
 		    $arr = array();    
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	        
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	        
 			$stmt = $con->prepare("SELECT a.ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, DESCRIPCION, formula, decimales, ID_GRUPO_INDICE_FINANCIERO, formula_desc, rango_superior, rango_inferior,rangos_desc,
 																campo1, campo2, campo3 
 									FROM indices_financieros a, formulas b
@@ -979,7 +898,7 @@ class Modelo
 	public function comboItems(){
 		try {					        
 			$arr = array();
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');			
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');			
 			$stmt = $con->prepare("SELECT ID_TAG_AGF, etiqueta + '(' + origen + ')' as etiqueta,1 
 									FROM tag_agf
 									UNION
@@ -1008,7 +927,7 @@ class Modelo
 	public function comboGrupoIndicesFinancieros(){
 		try {		
 			$arr = array();		
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');			
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');			
 			$stmt = $con->prepare("SELECT * FROM Grupos_Indices_Financieros");
 			$stmt->execute();
 			$i=0;
@@ -1032,7 +951,7 @@ class Modelo
 
 	public function insertarIndicesFinancieros($arrInf, $tabla, $arrEmp, $tipo, $formulas, $formulasCampos){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');				
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');				
 			//$mysqli->autocommit(FALSE);		
 			//$mysqli->query("INSERT INTO logs values ('arrInf : " . print_r($arrInf, 1) . "');");
 			//$mysqli->query("INSERT INTO logs values ('tabla : " . $tabla . "');");
@@ -1428,14 +1347,14 @@ class Modelo
 					$res = 0;
 					$evaluacionDiv = explode('/', $operacion);
 					if(count($evaluacionDiv) > 1){					
-						eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+						@eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
 						if($resultDiv != 0){
-							eval( '$res = ' . $operacion . ';');		
+							@eval( '$res = ' . $operacion . ';');		
 						} else {
 							$res = 0;
 						}
 					} else {
-						eval( '$res = ' . $operacion . ';');		
+						@eval( '$res = ' . $operacion . ';');		
 					}
 					////$mysqli->query("INSERT INTO logs values ('operacion = " . $operacion . "');");	
 					$mysqli->query("INSERT INTO logs values ('res = " . $res . "');");	
@@ -1478,7 +1397,7 @@ class Modelo
 
 	public function editarIndicesFinancieros($arrInf2, $table, $where){
 	    try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');              
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');              
 			/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();*/
 			$arrInf = array();
@@ -1568,7 +1487,7 @@ class Modelo
 	public function grillaGrupoIndices(){
 		try {
 			$arr = array();	     	        
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');			
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');			
 			$stmt = $con->prepare("SELECT ID_GRUPO_INDICE_FINANCIERO, NOMBRE, DESCRIPCION FROM grupos_indices_financieros");
 			$stmt->execute();
 			$i=0;
@@ -1601,7 +1520,7 @@ class Modelo
 	function grillaGrupoIndices2(){
 		try {
 			$arr = array();	     	        
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');				
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');				
 			$stmt = $con->prepare("SELECT ID_GRUPO_INDICE_FINANCIERO, NOMBRE, DESCRIPCION FROM grupos_indices_financieros");
 			$stmt->execute();			
 			$i=0;
@@ -1626,7 +1545,7 @@ class Modelo
 
 	public function countGrupoIndices(){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	     	             
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	     	             
 			$stmt = $con->prepare("SELECT * FROM grupos_indices_financieros");
 			$stmt->execute();
 			$i=0;
@@ -1650,7 +1569,7 @@ class Modelo
 	public function grillaMonedas(){
 		try {
 			$arr = array();	     	        
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');				
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');				
 			$stmt = $con->prepare("SELECT id, nombre, codigo, valor_defecto,
 			CASE operacion
 			WHEN '*'
@@ -1684,7 +1603,7 @@ class Modelo
 	public function countMonedas(){
 		try {
 			$arr = array();  
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	     	                
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	     	                
 			$stmt = $con->prepare("SELECT * FROM monedas");
 			$stmt->execute();
 			$i=0;
@@ -1706,7 +1625,7 @@ class Modelo
 	    try {
 			$arr = array();
 	        
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	         
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	         
 			$stmt = $con->prepare("SELECT a.ID_EMPRESA , RUT , RSO , NOMBRE_FANTASIA , NOMBRE_BOLSA , VALOR_ACCION , TIPO_BALANCE , TIPO_IFRS , a.ID_SUBGRUPO
 			FROM subgrupos_empresas a, empresas b
 			WHERE a.ID_EMPRESA = b.ID_EMPRESA");
@@ -1737,7 +1656,7 @@ class Modelo
 	    try {
 			$arr = array();
 	        
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 	        $stmt = $con->prepare("SELECT * FROM tipos_empresas");
 			$stmt->execute();
 			$i=0;
@@ -1760,7 +1679,7 @@ class Modelo
 	public function grillaTodoSubGrupos(){
 	    try {
 			 $arr = array();	        
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	        
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	        
 			$stmt = $con->prepare("SELECT a.ID_SUBGRUPO, nombre, descripcion, ID_TIPO_EMPRESA  FROM subgrupos a, grupos_subgrupos b where a.id_subgrupo = b.id_subgrupo");
 			$stmt->execute();		
 			$i=0;
@@ -1784,7 +1703,7 @@ class Modelo
 	public function grillaTodosGrupoIndices(){
 		try {
 			$arr = array();	     	        
-	     	$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	     	          
+	     	$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	     	          
 			$stmt = $con->prepare("SELECT * FROM grupos_indices_financieros");
 			$stmt->execute();		
 			$i=0;
@@ -1807,7 +1726,7 @@ class Modelo
 	public function grillaTodoIndicesFinancieros(){
 	    try {
 			$arr = array();	        
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			$stmt = $con->prepare("SELECT a.ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, DESCRIPCION, formula, decimales, ID_GRUPO_INDICE_FINANCIERO, formula_desc, rango_superior, rango_inferior,rangos_desc,
 					campo1, campo2, campo3
 									FROM indices_financieros a, formulas b
@@ -1844,7 +1763,7 @@ class Modelo
 	function comboEmpresa(){
 	    try {
 			$arr = array();	        
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	      
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	      
 			$stmt = $con->prepare("SELECT ID_EMPRESA , RUT , RSO , NOMBRE_FANTASIA , NOMBRE_BOLSA , VALOR_ACCION , TIPO_BALANCE , TIPO_IFRS, color 
 								FROM empresas 
 			");
@@ -1880,7 +1799,7 @@ class Modelo
 			if($idPeriodos == 'AND a.id_periodo in (0)'){
 				$idPeriodos=' and d.mes <> 0 ';
 			}
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			try {
 				$con->beginTransaction(); 
 				$stmt = $con->prepare("INSERT INTO logs values ('$principal, $idEmpresas, $idPeriodos, $formulas, $op');");
@@ -2341,7 +2260,7 @@ class Modelo
 	function periodos(){
 	    try {
 			$arr = array();	        
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	         
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	         
 			$stmt = $con->prepare("SELECT ID_periodo , label , oa, ano, mes
 										FROM periodos
 										order by  ano, mes
@@ -2370,7 +2289,7 @@ class Modelo
 	public function grillaAgf(){
 		try {
 			$arr = array();	     	        
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	     	          
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	     	          
 			$stmt = $con->prepare("SELECT id_tag_agf, nombre, etiqueta, origen	     	                
 			FROM tag_agf order by nombre");
 			$stmt->execute();			
@@ -2395,7 +2314,7 @@ class Modelo
 	public function countAgf(){
 		try {
 			$arr = array();
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');				
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');				
 			$stmt = $con->prepare("SELECT * FROM monedas");
 			$stmt->execute();
 			$i=0;
@@ -2416,7 +2335,7 @@ class Modelo
 	
 	public function insertarItem($arrInf, $table, $empresa){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			try{
 				$con->beginTransaction(); 
 				$sql = "INSERT INTO " . $table . " VALUES (null";
@@ -2482,7 +2401,7 @@ class Modelo
 
 	public function insertarItemExistente($empresa, $idTag){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			$sql = "select count(*) from formulario_item WHERE id_empresa = " . $empresa;
 			$stmt = $con->prepare($sql);
 			$stmt->execute();			    		
@@ -2524,7 +2443,7 @@ class Modelo
 
 	public function insertarValor($arrInf){
 		try{
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			try {
 				$con->beginTransaction();
 				$stmt = $con->prepare("INSERT INTO logs values ('" . print_r($arrInf, true) . "');");
@@ -2642,14 +2561,14 @@ class Modelo
 							$stmt->execute();	*/
 							$evaluacionDiv = explode('/', $operacion);
 							if(count($evaluacionDiv) > 1){					
-								eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+								@eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
 								if($resultDiv != 0){
-									eval( '$res = ' . $operacion . ';');		
+									@eval( '$res = ' . $operacion . ';');		
 								} else { 
 									$res = 0;
 								}
 							} else {
-								eval( '$res = ' . $operacion . ';');		
+								@eval( '$res = ' . $operacion . ';');		
 							}
 							$nuevoValor = (float)$res;
 							$sql = "UPDATE valores 
@@ -2742,7 +2661,7 @@ class Modelo
 
 					/*$stmt = $con->prepare("INSERT INTO logs values ('" . $operacion . "');");
 							$stmt->execute();	*/
-					eval( "\$res = " . $operacion . ";");		
+					@eval( "\$res = " . $operacion . ";");		
 					$nuevoValor = (float)$res;
 					$this->actualizarCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
 				}	
@@ -2764,7 +2683,7 @@ class Modelo
 	function valores2($empresa, $periodo){
 	    try {
 			$arr = array();	        
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			try {
 				$con->beginTransaction();
 				$sql = "SELECT (select nombre + '(' + origen + ')' 
@@ -2812,7 +2731,7 @@ class Modelo
 
 	function deleteFormularioItem($empresa, $tagAgf){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');   
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');   
 			try {
 				$con->beginTransaction();
 				$sql = "UPDATE formulario_item SET estado = 'E' WHERE id_empresa = '" . $empresa . "' AND id_tag_agf = " . $tagAgf . ";";
@@ -2838,7 +2757,7 @@ class Modelo
 
 	function insertarConfig($arrInf){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			try {
 				$con->beginTransaction();
 				$sql = "DELETE FROM configexport";
@@ -2874,7 +2793,7 @@ class Modelo
 	function indicesFinancieros(){
 		try {
 			$arr = array();
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			$sql = "SELECT a.id_indice_financiero, a.nombre,
 					CASE b.id_indice 
 					WHEN null THEN 0
@@ -2932,7 +2851,7 @@ class Modelo
 						WHERE b.id_indice = " . $id;
 			}
 	        $arr = array();	        
-	        $con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 	         
 			$stmt = $con->prepare($sql);
 			$stmt->execute();
@@ -2974,7 +2893,7 @@ class Modelo
 						WHERE b.id_indice = " . $id;
 			}	        
 			$arr = array();			
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');	
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	
 			$stmt = $con->prepare($sql);
 			$stmt->execute();		
 			$i=0;
@@ -2998,7 +2917,7 @@ class Modelo
 
 	function parametrosGrafico(){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');			
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');			
 			$sql = "SELECT a.id_indice_financiero, a.nombre, c.id_empresa, c.RSO, 0, ID_GRUPO_INDICE_FINANCIERO
 					FROM indices_financieros a inner join 
 						 indice_empresa b on id_indice_financiero = id_indice inner join 
@@ -3058,7 +2977,7 @@ class Modelo
 
 	function deleteIndiceFinanciero($id){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			try {
 				$con->beginTransaction();
 				$sql = "DELETE FROM indices_financieros Where id_indice_financiero = " . $id . ";";
@@ -3085,7 +3004,7 @@ class Modelo
 
 	function rescataFormulas($indice, $empresa){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');		
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');		
 			$sql = "SELECT a.ID_FORMULA, 
 	               CASE  when a.tipoc1 = 1
 	               THEN (select nombre from tag_agf b where b.ID_TAG_AGF = a.campo1 and b.oa = a.tipoc1) 
@@ -3173,7 +3092,7 @@ class Modelo
 
 	function actualizaEmpresaIndice($indice, $empresa, $numFormula, $formula){
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\\WOTAN;Database=agf');
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');
 			try {
 				$con->beginTransaction();
 				$sql = "UPDATE empresa_indice 
