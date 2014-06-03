@@ -532,7 +532,7 @@ class Modelo
 
 	}
 
-	function insertaCascada($nuevoValor, $indice, $empresa, $periodo, $mysqli){
+	function insertaCascada($nuevoValor, $indice, $empresa, $periodo, $con){
 		try {
 			$sql = "UPDATE valores
 						SET
@@ -550,8 +550,8 @@ class Modelo
 			$sql2 = str_replace("'", "''", $sql);
 			try {
 				$con->beginTransaction(); 
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
 				$sql = "SELECT  
@@ -571,13 +571,13 @@ class Modelo
 							OR (a.campo4 = " . $indice . " AND a.tipoc4 = 2) 
 							OR (a.campo5 = " . $indice . " AND a.tipoc5 = 2)";
 				$sql2 = str_replace("'", "''", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
-				$stmt = $con->prepare($sql);
-				$stmt->execute();
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
+				$stmtq = $con->prepare($sql);
+				$stmtq->execute();
 
 
-				while($row = $stmt->fetch()){
+				while($row = $stmtq->fetch()){
 					$operacion = $row[1];
 
 					if(!isset($row[3]))
@@ -1406,7 +1406,7 @@ class Modelo
 			}	    
 			try {
 				$con->beginTransaction(); 
-								$stmt = $con->prepare("INSERT INTO logs values ('" . print_r($arrInf, 1) . "')");
+				$stmt = $con->prepare("INSERT INTO logs values ('" . print_r($arrInf, 1) . "')");
 				$stmt->execute();
 				$sum = 0;   
 				for($i = 1; $i < 6 ; $i++){
@@ -1423,8 +1423,10 @@ class Modelo
 				$stmt = $con->prepare($sql);
 				$stmt->execute();			    		
 				$row = $stmt->fetch();
-				$mysqli->query("INSERT INTO logs values ('" . print_r($result, 1) . "');");
-
+				
+				$stmt = $con->prepare("INSERT INTO logs values ('" . print_r($result, 1) . "');");
+				$stmt->execute();
+				
 				$sql = "delete from formulas where id_formula = " . $row[0] .";";
 				$sql2 = str_replace("'", "''", $sql);
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
@@ -1437,10 +1439,10 @@ class Modelo
 				$b = isset($arrInf['campo2']) ? $arrInf['campo2'] : -1;
 				$c = isset($arrInf['campo3']) ? $arrInf['campo3'] : -1;
 
-				$sql = "INSERT INTO formulas values (null, '" . $a . "', '" . $b . "', '" . $c . "', 0, 0, '" . $arrInf['formula'] . "', '" . $sum . "', '" . $arrInf['decimales'] . "');";
+				$sql = "INSERT INTO formulas values ('" . $a . "', '" . $b . "', '" . $c . "', 0, 0, '" . $arrInf['formula'] . "', '" . $sum . "', '" . $arrInf['decimales'] . "');";
 				$sql2 = str_replace("'", "", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
 				/*$stmt = $con->prepare($sql);
 				$stmt->execute();*/
 				$stmt = $con->prepare($sql);
