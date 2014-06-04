@@ -48,7 +48,7 @@ BEGIN
 			[valor] [int] NOT NULL)
 		
 		
-		INSERT INTO [agf].[dbo].[valores2]
+	/*	INSERT INTO [agf].[dbo].[valores2]
            ([ID_TAG_AGF]
            ,[ID_EMPRESA]
            ,[ID_PERIODO]
@@ -78,7 +78,7 @@ BEGIN
 				inner join inserted i
 					ON 	v.id_tag_agf = i.id_tag_agf AND v.id_empresa = i.id_empresa and p.orden between @orden - 3 and @orden
 			where v.origen = 1	
-				and v.tipo = 'TRIMESTRAL'
+				and v.tipo = 'TRIMESTRAL'*/
 				
 				
 		INSERT INTO @valoresPer 
