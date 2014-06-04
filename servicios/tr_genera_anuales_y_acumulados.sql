@@ -102,7 +102,7 @@ BEGIN
            ,[origen]
            ,[id_formula]
            ,[hist_formula])	 
-		select i.id_tag_agf, i.id_empresa, v.id_periodo, 'ANUAL', sum(i.valor), sysdatetime(), 1, 0, 'nuevo'--isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = a.ID_TAG_AGF and vp.orden = b.orden -1), '')
+		select i.id_tag_agf, i.id_empresa, v.id_periodo, 'ANUAL', sum(i.valor), sysdatetime(), 1, 0, isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = i.ID_TAG_AGF and vp.orden = @orden -1), '') + '|' + isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = i.ID_TAG_AGF and vp.orden = @orden -2), '') + '|' + isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = i.ID_TAG_AGF and vp.orden = @orden -3), '')
 				from inserted v 
 					inner join @valoresPer i 
 						ON v.id_tag_agf = i.id_tag_agf and v.id_empresa = i.id_empresa					
@@ -121,12 +121,12 @@ BEGIN
            ,[origen]
            ,[id_formula]
            ,[hist_formula])	 
-		select i.id_tag_agf, i.id_empresa, v.id_periodo, 'ACUMULADO', sum(i.valor), sysdatetime(), 1, 0, 'nuevo'--isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = a.ID_TAG_AGF and vp.orden = b.orden -1), '')
+		select i.id_tag_agf, i.id_empresa, v.id_periodo, 'ACUMULADO', sum(i.valor), sysdatetime(), 1, 0, isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = i.ID_TAG_AGF and vp.orden = @orden -1 and vp.anio = p.ano), '') + '|' + isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = i.ID_TAG_AGF and vp.orden = @orden -2 and vp.anio = p.ano), '') + '|' + isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = i.ID_TAG_AGF and vp.orden = @orden -3 and vp.anio = p.ano), '')
 				from inserted v  inner join periodos p ON v.id_periodo = p.id_periodo 
 					inner join @valoresPer i 
 						ON v.id_tag_agf = i.id_tag_agf and v.id_empresa = i.id_empresa	and p.ANO = i.anio						
 				where v.origen = 1					
-		group by i.id_tag_agf, i.id_empresa, v.id_periodo
+		group by i.id_tag_agf, i.id_empresa, v.id_periodo, p.ano
 		
 		
 	end
