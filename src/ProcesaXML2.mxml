@@ -33,13 +33,20 @@
 						} else {
 							if(userGroup.name()['localName'] == 'context' && userGroup.children()[2] == null){
 								trace(userGroup.name()['localName']);
-								arrContextos.push(userGroup);
+								var info:XMLList = userGroup.children();
+								var infoPer:XMLList = info[1].children();
+								var arrPer:Array = [];
+								for(var j:int = 0; j < infoPer.length(); j++){
+									arrPer.push(String(infoPer[j]));
+								}
+								
+								arrContextos.push({idTag: String(userGroup.@id), entity: String(info[0].children()[0]), period: arrPer});
 							}
 						}
 					}
-						
+					
 				}
-			catch (e:Error)
+				catch (e:Error)
 				{
 					trace(e.getStackTrace());
 				}
@@ -59,7 +66,7 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 		<s:HTTPService id="httpXML"
 					   concurrency="multiple"
-					   url="91337000_201312_C.xbrl"
+					   url="81062300_201303_C.xbrl"
 					   result="cargarXML(event)"
 					   fault="errorHttpService(event)"
 					   useProxy="false"
