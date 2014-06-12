@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" creationComplete="application1_creationCompleteHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			
+			private function errorHttpService(event:FaultEvent):void
+			{
+				Alert.show("Error en carga de archivo configurador de WebService: " + event.message, "Fault");
+			}
+			
+			private var arrContextos:Array = [];
+			private var arrTag:Array = [];
+			
+			private function cargarXML(event:ResultEvent):void
+			{
+				try
+				{
+					var xml:XML=new XML(event.result);
+					var clabberList:XMLList = xml.children();
+					for (var i:int = 0; i < clabberList.length(); i++) {						
+						var userGroup:XML = clabberList[i];
+						if(userGroup.@contextRef[0] != null){
+							trace(userGroup.name()['localName']);
+							arrTag.push({idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef)});
+						} else {
+							if(userGroup.name()['localName'] == 'context' && userGroup.children()[2] == null){
+								trace(userGroup.name()['localName']);
+								arrContextos.push(userGroup);
+							}
+						}
+					}
+						
+				}
+			catch (e:Error)
+				{
+					trace(e.getStackTrace());
+				}
+			}
+			
+			
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				httpXML.send();
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:HTTPService id="httpXML"
+					   concurrency="multiple"
+					   url="91337000_201312_C.xbrl"
+					   result="cargarXML(event)"
+					   fault="errorHttpService(event)"
+					   useProxy="false"
+					   resultFormat="e4x"/>
+	</fx:Declarations>
+</s:Application>
