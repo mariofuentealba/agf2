@@ -5598,8 +5598,17 @@ INSERT INTO etiquetasXBRL values ('ConsolidatedMember','Consolidado [miembro]',9
 INSERT INTO etiquetasXBRL values ('SeparateMember','Separado [miembro]',913000)
 
 
+CREATE TABLE [dbo].[xbrl_taxonomia](
+	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,
+	[tag] [varchar](500)  NOT NULL,
+	[traduccion] [varchar](500)  NOT NULL	
+)
 
 
+
+Insert into xbrl_taxonomia
+select distinct [tag], [traduccion]
+from etiquetasXBRL
 
 
 select tag, COUNT(*)--, traduccion
@@ -5608,7 +5617,11 @@ group by tag, traduccion
 having COUNT(*) = 1
 
 
-select *
+select distinct tag, traduccion, id_xbrl_contenedor
 from etiquetasXBRL
-where tag = 'AtFairValueMember'
-order by id_xbrl_contenedor
+--where tag = 'ActivosNota'
+order by tag
+
+
+select *
+from xbrl_taxonomia
