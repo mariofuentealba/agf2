@@ -64,10 +64,11 @@ class Modelo
 	public function insertar($arrInf, $table){
 		try { 
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');			
-			$sql = "INSERT INTO " . $table . " VALUES (null";
+			$sql = "INSERT INTO " . $table . " VALUES (";
 			for($i = 0; $i < count($arrInf); $i++){
-				$sql .= ", '" . $arrInf[$i] . "'";
+				$sql .= " '" . $arrInf[$i] . "',";
 			}
+			$sql = substr($sql, -1);
 			$sql .= ");";
 			$sql2 = str_replace("'", "''", $sql);		
 			try {
