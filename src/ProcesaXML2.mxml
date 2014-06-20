@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
-			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" creationComplete="application1_creationCompleteHandler(event)">
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:xbrlcarga="services.xbrlcarga.*"
+			   minWidth="955" minHeight="600"
+			   creationComplete="application1_creationCompleteHandler(event)">
 	
 	<fx:Script>
 		<![CDATA[
+			import flash.xml.XMLDocument;
+			import flash.xml.XMLNode;
+			import flash.xml.XMLNodeType;
+			
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.FaultEvent;
@@ -19,17 +26,39 @@
 			private var arrContextos:Array = [];
 			private var arrTag:Array = [];
 			
+			
+			private function muestra(event:ResultEvent):void{
+				txtXML.text = event.result.toString();
+			}
+			
 			private function cargarXML(event:ResultEvent):void
 			{
 				try
 				{
 					var xml:XML=new XML(event.result);
+			
+					var xmlParam:XMLDocument = new XMLDocument();
+					
+					
+					var xmlNode:XMLNode;
+					
+					
 					var clabberList:XMLList = xml.children();
 					for (var i:int = 0; i < clabberList.length(); i++) {						
 						var userGroup:XML = clabberList[i];
 						if(userGroup.@contextRef[0] != null){
 							trace(userGroup.name()['localName']);
 							arrTag.push({idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef)});
+							xmlNode = new XMLNode(1, 'tag');
+							xmlNode.attributes = {idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef)}
+							
+							//xmlNode.@idTag = userGroup.name()['localName'];	
+								
+								
+								//<tag idTag={userGroup.name()['localName']} valor={String(userGroup.text())} decimals={String(userGroup.@decimals)} unitRef={String(userGroup.@unitRef)}/>
+							
+							xmlParam.appendChild(xmlNode);
+							
 						} else {
 							if(userGroup.name()['localName'] == 'context' && userGroup.children()[2] == null){
 								trace(userGroup.name()['localName']);
@@ -44,6 +73,9 @@
 							}
 						}
 					}
+					//var f:XML = XML(xmlParam);
+					insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)});
+					insertarValorResult.addEventListener(ResultEvent.RESULT, muestra);
 					
 				}
 				catch (e:Error)
@@ -57,6 +89,7 @@
 			{
 				// TODO Auto-generated method stub
 				httpXML.send();
+				
 			}
 			
 		]]>
@@ -71,5 +104,10 @@
 					   fault="errorHttpService(event)"
 					   useProxy="false"
 					   resultFormat="e4x"/>
+		<s:CallResponder id="insertarValorResult"/>
+		<xbrlcarga:XbrlCarga id="xbrlCarga"
+							 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+							 showBusyCursor="true"/>
 	</fx:Declarations>
+	<s:TextArea id="txtXML" x="177" y="232" width="676"/>
 </s:Application>
