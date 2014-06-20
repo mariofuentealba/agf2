@@ -25,6 +25,7 @@
 			
 			private var arrContextos:Array = [];
 			private var arrTag:Array = [];
+			private var objContextos:Object = {};
 			
 			
 			private function muestra(event:ResultEvent):void{
@@ -38,7 +39,7 @@
 					var xml:XML=new XML(event.result);
 			
 					var xmlParam:XMLDocument = new XMLDocument();
-					
+					var xmlParamSub:XMLNode = new XMLNode(1, 'Tags');
 					
 					var xmlNode:XMLNode;
 					
@@ -47,21 +48,31 @@
 					for (var i:int = 0; i < clabberList.length(); i++) {						
 						var userGroup:XML = clabberList[i];
 						if(userGroup.@contextRef[0] != null){
-							trace(userGroup.name()['localName']);
+							//trace(userGroup.name()['localName']);
 							arrTag.push({idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef)});
-							xmlNode = new XMLNode(1, 'tag');
-							xmlNode.attributes = {idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef)}
 							
+							if(String(userGroup.@unitRef) != ''){
+								/*for(var j:int = 0; j < arrContextos.length; j++){
+									if(){
+										break;
+									}
+								}*/
+								trace(objContextos[String(userGroup.@contextRef)]);
+								if(objContextos[String(userGroup.@contextRef)] == String(userGroup.@contextRef)){
+									xmlNode = new XMLNode(1, 'tag');
+									xmlNode.attributes = {idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef), contextRef: String(userGroup.@contextRef)}
+									xmlParamSub.appendChild(xmlNode);
+									
+								}
+								
+							}
 							//xmlNode.@idTag = userGroup.name()['localName'];	
-								
-								
 								//<tag idTag={userGroup.name()['localName']} valor={String(userGroup.text())} decimals={String(userGroup.@decimals)} unitRef={String(userGroup.@unitRef)}/>
 							
-							xmlParam.appendChild(xmlNode);
 							
 						} else {
 							if(userGroup.name()['localName'] == 'context' && userGroup.children()[2] == null){
-								trace(userGroup.name()['localName']);
+								//trace(userGroup.name()['localName']);
 								var info:XMLList = userGroup.children();
 								var infoPer:XMLList = info[1].children();
 								var arrPer:Array = [];
@@ -70,10 +81,11 @@
 								}
 								
 								arrContextos.push({idTag: String(userGroup.@id), entity: String(info[0].children()[0]), period: arrPer});
+								objContextos[String(userGroup.@id)] = String(userGroup.@id);
 							}
 						}
 					}
-					//var f:XML = XML(xmlParam);
+					xmlParam.appendChild(xmlParamSub);
 					insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)});
 					insertarValorResult.addEventListener(ResultEvent.RESULT, muestra);
 					
@@ -90,6 +102,13 @@
 				// TODO Auto-generated method stub
 				httpXML.send();
 				
+				
+			}
+			
+			protected function btnDescarga_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				descargaSVSResult.token = xbrlCarga.descargaSVS('9');
 			}
 			
 		]]>
@@ -108,6 +127,8 @@
 		<xbrlcarga:XbrlCarga id="xbrlCarga"
 							 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
 							 showBusyCursor="true"/>
+		<s:CallResponder id="descargaSVSResult"/>
 	</fx:Declarations>
 	<s:TextArea id="txtXML" x="177" y="232" width="676"/>
+	<s:Button x="86" y="139" label="descargar Información de SVS" id="btnDescarga" click="btnDescarga_clickHandler(event)"/>
 </s:Application>
