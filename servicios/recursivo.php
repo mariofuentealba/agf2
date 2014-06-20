@@ -51,7 +51,12 @@ for(; $s < $nn; $s++){
 		$bufer = $bufer[0];
 		$bufer2 = explode("&", $bufer);
 		
-		$bufer = array(explode("=", $bufer2[3])[1], explode("=", $bufer2[9])[1], explode("=", $bufer2[10])[1], explode("=", $bufer2[11])[1]);
+		$aux = explode("=", $bufer2[3]);
+		$aux1 = explode("=", $bufer2[9]);
+		$aux2 =  explode("=", $bufer2[10]);
+		$aux3 = explode("=", $bufer2[11]);
+		$bufer = array($aux[1], $aux1[1], $aux2[1], $aux3[1]);//, explode("=", $bufer2[9])[1], explode("=", $bufer2[10])[1], explode("=", $bufer2[11])[1]);
+		
 		$url = "http://www.svs.cl/institucional/inc/inf_financiera/ifrs/safec_ifrs_verarchivo.php?auth=&send=&rut=" . $bufer[0] . "&mm=" . $bufer[1] . "&aa=" . $bufer[2] . "&archivo=" . $bufer[0] . "_" . $bufer[2] . $bufer[1] . "_" . $bufer[3] . ".zip&desc_archivo=Estados financieros (XBRL)&tipo_archivo=XBRL";
 	
 		fwrite($f, $url . "\r\n");
