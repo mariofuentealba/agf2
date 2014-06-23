@@ -12,6 +12,7 @@
 			import flash.xml.XMLNode;
 			import flash.xml.XMLNodeType;
 			
+			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.FaultEvent;
@@ -26,6 +27,7 @@
 			private var arrContextos:Array = [];
 			private var arrTag:Array = [];
 			private var objContextos:Object = {};
+			private var arrPer:ArrayCollection = new ArrayCollection([{per: '03-2009'}, {per: '06-2009'}, {per: '09-2009'}, {per: '12-2009'}, {per: '03-2010'}, {per: '06-2010'}, {per: '09-2010'}, {per: '12-2010'}, {per: '03-2011'}, {per: '06-2011'}, {per: '09-2011'}, {per: '12-2011'}, {per: '03-2012'}, {per: '06-2012'}, {per: '09-2012'}, {per: '12-2012'}, {per: '03-2013'}, {per: '06-2013'}, {per: '09-2013'}, {per: '12-2013'}, {per: '03-2014'}, {per: '06-2014'}, {per: '09-2014'}, {per: '12-2014'}])
 			
 			
 			private function muestra(event:ResultEvent):void{
@@ -37,7 +39,7 @@
 				try
 				{
 					var xml:XML=new XML(event.result);
-			
+					
 					var xmlParam:XMLDocument = new XMLDocument();
 					var xmlParamSub:XMLNode = new XMLNode(1, 'Tags');
 					
@@ -53,9 +55,9 @@
 							
 							if(String(userGroup.@unitRef) != ''){
 								/*for(var j:int = 0; j < arrContextos.length; j++){
-									if(){
-										break;
-									}
+								if(){
+								break;
+								}
 								}*/
 								trace(objContextos[String(userGroup.@contextRef)]);
 								if(objContextos[String(userGroup.@contextRef)] == String(userGroup.@contextRef)){
@@ -67,7 +69,7 @@
 								
 							}
 							//xmlNode.@idTag = userGroup.name()['localName'];	
-								//<tag idTag={userGroup.name()['localName']} valor={String(userGroup.text())} decimals={String(userGroup.@decimals)} unitRef={String(userGroup.@unitRef)}/>
+							//<tag idTag={userGroup.name()['localName']} valor={String(userGroup.text())} decimals={String(userGroup.@decimals)} unitRef={String(userGroup.@unitRef)}/>
 							
 							
 						} else {
@@ -108,7 +110,12 @@
 			protected function btnDescarga_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				descargaSVSResult.token = xbrlCarga.descargaSVS('9');
+				descargaSVSResult.token = xbrlCarga.descargaSVS(ddlPeriodo.selectedItem['per']);
+				descargaSVSResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
+			}
+			
+			private function listarEmpresas(event:ResultEvent):void{
+				
 			}
 			
 		]]>
@@ -131,4 +138,7 @@
 	</fx:Declarations>
 	<s:TextArea id="txtXML" x="177" y="232" width="676"/>
 	<s:Button x="86" y="139" label="descargar Información de SVS" id="btnDescarga" click="btnDescarga_clickHandler(event)"/>
+	<s:DropDownList id="ddlPeriodo" x="86" y="110" dataProvider="{arrPer}" labelField="per">
+	
+	</s:DropDownList>
 </s:Application>
