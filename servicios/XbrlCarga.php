@@ -3,58 +3,38 @@ class XbrlCarga{
 
 	public function insertarValor($xmlParam){//$etiqueta, $valor, $rut, $periodo){
 	
-		/*try { 
+		try { 
 			//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
-			$sql = "INSERT INTO [agf].[dbo].[valoresResp]
-						   ([ID_TAG_AGF]
-						   ,[ID_EMPRESA]
-						   ,[ID_PERIODO]
-						   ,[tipo]
-						   ,[VALOR]
-						   ,[DT_MODIFICACION]
-						   ,[origen]
-						   ,[id_formula]
-						   ,[hist_formula])
-					 VALUES
-						   (<ID_TAG_AGF, int,>
-						   ,<ID_EMPRESA, int,>
-						   ," . $periodo . "
-						   ," . $ . "
-						   ," . $valor ."
-						   ,'1900-01-01'
-						   ,<origen, int,>
-						   ,0
-						   ,null)";
-			
-			
-			$sql2 = str_replace("'", "''", $sql);		
+							
 			try {
 		        $con->beginTransaction(); 
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$sql = "exec sp_xbrl_insertar_valores ?";
+				
+				$sql2 = str_replace("'", "''", $sql);
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
+				$stmt = $con->prepare($sql);				
+				$stmt->bindParam(1, $xmlParam->xmlParam); 
 				$stmt->execute();
-				$stmt = $con->prepare($sql);
-				$stmt->execute();
-				$con->commit(); 
-				$ultimo_id = $con->lastInsertId();
-				$arr = array();
-				$arr[0]['ID'] = $ultimo_id;
-				return $arr;
+				return $xmlParam->xmlParam;
 			} catch(PDOExecption $e) {
 		        $con->rollback();
 		        print "Error!: " . $e->getMessage() . "</br>";
-				return 0;
+				return "bien";//$xmlParam->xmlParam;
 		    } 			
 		} catch( PDOExecption $e ) {
 		    print "Error!: " . $e->getMessage() . "</br>";
-			return 0;
+			return "mal 1";//$xmlParam->xmlParam;
 		} 	
 
 		unset($con); 
 		unset($stmt);
-		*/
 		
-		return $xmlParam->xmlParam;
+		
+		
+		
+		return "mal 2";//$xmlParam->xmlParam;
 	}
 	
 	public function descargaSVS($periodo){
