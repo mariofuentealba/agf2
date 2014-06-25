@@ -27,16 +27,16 @@
 			private var arrContextos:Array = [];
 			private var arrTag:Array = [];
 			private var objContextos:Object = {};
-			private var arrPer:ArrayCollection = new ArrayCollection([{per: '03-2009'}, {per: '06-2009'}, {per: '09-2009'}, {per: '12-2009'}, {per: '03-2010'}, {per: '06-2010'}, {per: '09-2010'}, {per: '12-2010'}, {per: '03-2011'}, {per: '06-2011'}, {per: '09-2011'}, {per: '12-2011'}, {per: '03-2012'}, {per: '06-2012'}, {per: '09-2012'}, {per: '12-2012'}, {per: '03-2013'}, {per: '06-2013'}, {per: '09-2013'}, {per: '12-2013'}, {per: '03-2014'}, {per: '06-2014'}, {per: '09-2014'}, {per: '12-2014'}])
+			[Bindable] private var arrPer:ArrayCollection = new ArrayCollection([{per: '03-2009'}, {per: '06-2009'}, {per: '09-2009'}, {per: '12-2009'}, {per: '03-2010'}, {per: '06-2010'}, {per: '09-2010'}, {per: '12-2010'}, {per: '03-2011'}, {per: '06-2011'}, {per: '09-2011'}, {per: '12-2011'}, {per: '03-2012'}, {per: '06-2012'}, {per: '09-2012'}, {per: '12-2012'}, {per: '03-2013'}, {per: '06-2013'}, {per: '09-2013'}, {per: '12-2013'}, {per: '03-2014'}, {per: '06-2014'}, {per: '09-2014'}, {per: '12-2014'}])
 			
 			
 			private function muestra(event:ResultEvent):void{
-				txtXML.text = event.result.toString();
+				//txtXML.text = event.result.toString();
 			}
 			
 			private function cargarXML(event:ResultEvent):void
 			{
-				try
+			/*	try
 				{
 					var xml:XML=new XML(event.result);
 					
@@ -54,11 +54,6 @@
 							arrTag.push({idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef)});
 							
 							if(String(userGroup.@unitRef) != ''){
-								/*for(var j:int = 0; j < arrContextos.length; j++){
-								if(){
-								break;
-								}
-								}*/
 								trace(objContextos[String(userGroup.@contextRef)]);
 								if(objContextos[String(userGroup.@contextRef)] == String(userGroup.@contextRef)){
 									xmlNode = new XMLNode(1, 'tag');
@@ -95,7 +90,7 @@
 				catch (e:Error)
 				{
 					trace(e.getStackTrace());
-				}
+				}*/
 			}
 			
 			
@@ -105,18 +100,105 @@
 				httpXML.send();
 				
 				
+				
 			}
 			
 			protected function btnDescarga_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				descargaSVSResult.token = xbrlCarga.descargaSVS(ddlPeriodo.selectedItem['per']);
+				descargaSVSResult.token = xbrlCarga.recursivo(ddlPeriodo.selectedItem['per']);
 				descargaSVSResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
 			}
 			
+			[Bindable] private var arrRut:ArrayCollection = new ArrayCollection();
+			
 			private function listarEmpresas(event:ResultEvent):void{
-				
+				var xml:XML=new XML(event.result);
+				var rutList:XMLList = xml.children();
+				for each(var node:XML in rutList){
+					//arrRut.addItem({rut: node.toString()});
+					arrRut.addItem({rut: node.@id, nombre: node.@nombre, tipoEntidad: node.@tipoEntidad, vigencia: node.@vigencia});
+				}
 			}
+			
+			protected function btnProcXBRL_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				var str:String = '';
+				if(dgEmpresas.selectedItems.length > 0){
+					for(var i:int = 0; i < dgEmpresas.selectedItems.length; i++){
+						str +=  dgEmpresas.selectedItems[i]['rut'] + ';';
+					}
+				}
+				str = str.substr(0, str.length - 1);
+				descargaSeleccionResult.token = xbrlCarga.descargaSeleccion(str);
+				descargaSeleccionResult.addEventListener(ResultEvent.RESULT, descargaZipResult);
+			}
+			
+			
+			private function descargaZipResult(event:ResultEvent):void{
+				Alert.show('Descargado archivos', 'Fin Proceso');
+				try
+				{
+					
+					
+					var xml:XML=new XML();
+					var xmlParam:XMLDocument = new XMLDocument();
+					var xmlParamSub:XMLNode = new XMLNode(1, 'Tags');
+					var xmlNode:XMLNode;				
+					var clabberList:XMLList;
+					
+					for(var s:int = 0; s < ArrayCollection(event.result).length - 1; s++){
+						xml = new XML(ArrayCollection(event.result).getItemAt(s));
+						clabberList = xml.children();
+						for (var i:int = 0; i < clabberList.length(); i++) {						
+							var userGroup:XML = clabberList[i];
+							if(userGroup.@contextRef[0] != null){
+								//trace(userGroup.name()['localName']);
+								arrTag.push({idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef)});
+								
+								if(String(userGroup.@unitRef) != ''){
+									trace(objContextos[String(userGroup.@contextRef)]);
+									if(objContextos[String(userGroup.@contextRef)] == String(userGroup.@contextRef)){
+										xmlNode = new XMLNode(1, 'tag');
+										xmlNode.attributes = {idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef), contextRef: String(userGroup.@contextRef)}
+										xmlParamSub.appendChild(xmlNode);
+										
+									}
+									
+								}
+								//xmlNode.@idTag = userGroup.name()['localName'];	
+								//<tag idTag={userGroup.name()['localName']} valor={String(userGroup.text())} decimals={String(userGroup.@decimals)} unitRef={String(userGroup.@unitRef)}/>
+								
+								
+							} else {
+								if(userGroup.name()['localName'] == 'context' && userGroup.children()[2] == null){
+									//trace(userGroup.name()['localName']);
+									var info:XMLList = userGroup.children();
+									var infoPer:XMLList = info[1].children();
+									var arrPer:Array = [];
+									for(var j:int = 0; j < infoPer.length(); j++){
+										arrPer.push(String(infoPer[j]));
+									}
+									
+									arrContextos.push({idTag: String(userGroup.@id), entity: String(info[0].children()[0]), period: arrPer});
+									objContextos[String(userGroup.@id)] = String(userGroup.@id);
+								}
+							}
+						}
+						xmlParam.appendChild(xmlParamSub);
+						insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)});
+						insertarValorResult.addEventListener(ResultEvent.RESULT, muestra);
+					}
+					
+					
+				}
+				catch (e:Error)
+				{
+					trace(e.getStackTrace());
+				}
+			}
+			
 			
 		]]>
 	</fx:Script>
@@ -135,10 +217,32 @@
 							 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
 							 showBusyCursor="true"/>
 		<s:CallResponder id="descargaSVSResult"/>
+		<s:CallResponder id="descargaSeleccionResult"/>
 	</fx:Declarations>
-	<s:TextArea id="txtXML" x="177" y="232" width="676"/>
-	<s:Button x="86" y="139" label="descargar Información de SVS" id="btnDescarga" click="btnDescarga_clickHandler(event)"/>
-	<s:DropDownList id="ddlPeriodo" x="86" y="110" dataProvider="{arrPer}" labelField="per">
+	<s:layout>
+		<s:HorizontalLayout paddingLeft="20" paddingRight="20" paddingTop="30"/>
+	</s:layout>
+	<s:VGroup>
+		<s:DropDownList id="ddlPeriodo" x="39" y="33" dataProvider="{arrPer}" labelField="per"></s:DropDownList>
+		<s:Button x="39" y="63" label="descargar Información de SVS" id="btnDescarga" click="btnDescarga_clickHandler(event)"/>	
+	</s:VGroup>
+	<!--<s:List x="286" y="10" id="lstRut" width="300" height="200" dataProvider="{arrRut}" labelField="rut" allowMultipleSelection="true"></s:List>-->
+	<s:DataGrid id="dgEmpresas"  requestedRowCount="4" dataProvider="{arrRut}" selectionMode="multipleRows">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="rut" headerText="Rut"></s:GridColumn>
+				<s:GridColumn dataField="nombre" headerText="Nombre"></s:GridColumn>
+				<s:GridColumn dataField="tipoEntidad" headerText="Tipo Entidad"></s:GridColumn>
+				<s:GridColumn dataField="vigencia" headerText="Vigencia"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		
+	</s:DataGrid>
+	<s:Button id="btnProcXBRL" x="602" y="9" label="Procesar XBRL" click="btnProcXBRL_clickHandler(event)"/>
+	<!--<s:TextArea id="txtXML" x="177" y="232" width="676"/>-->
 	
-	</s:DropDownList>
+	
+		
+	
+	
 </s:Application>
