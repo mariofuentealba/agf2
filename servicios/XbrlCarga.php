@@ -3,7 +3,7 @@ class XbrlCarga{
 
 	public function insertarValor($xmlParam){//$etiqueta, $valor, $rut, $periodo){
 		$log = fopen('xbrl\\log.txt', 'a');
-		fwrite($log, print_r($xmlParam, true) . "\r\n");
+		fwrite($log, print_r($xmlParam, true) . "\r\n\r\n\r\n\r\n\r\n");
 		fclose($log);
 		/*try { 
 			//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
@@ -234,8 +234,8 @@ class XbrlCarga{
 		
 		
 		try { 
-			//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
+			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
 							
 			try {
 		        $con->beginTransaction(); 
