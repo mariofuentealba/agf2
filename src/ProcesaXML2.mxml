@@ -36,60 +36,60 @@
 			
 			private function cargarXML(event:ResultEvent):void
 			{
-			/*	try
+				/*	try
 				{
-					var xml:XML=new XML(event.result);
-					
-					var xmlParam:XMLDocument = new XMLDocument();
-					var xmlParamSub:XMLNode = new XMLNode(1, 'Tags');
-					
-					var xmlNode:XMLNode;
-					
-					
-					var clabberList:XMLList = xml.children();
-					for (var i:int = 0; i < clabberList.length(); i++) {						
-						var userGroup:XML = clabberList[i];
-						if(userGroup.@contextRef[0] != null){
-							//trace(userGroup.name()['localName']);
-							arrTag.push({idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef)});
-							
-							if(String(userGroup.@unitRef) != ''){
-								trace(objContextos[String(userGroup.@contextRef)]);
-								if(objContextos[String(userGroup.@contextRef)] == String(userGroup.@contextRef)){
-									xmlNode = new XMLNode(1, 'tag');
-									xmlNode.attributes = {idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef), contextRef: String(userGroup.@contextRef)}
-									xmlParamSub.appendChild(xmlNode);
-									
-								}
-								
-							}
-							//xmlNode.@idTag = userGroup.name()['localName'];	
-							//<tag idTag={userGroup.name()['localName']} valor={String(userGroup.text())} decimals={String(userGroup.@decimals)} unitRef={String(userGroup.@unitRef)}/>
-							
-							
-						} else {
-							if(userGroup.name()['localName'] == 'context' && userGroup.children()[2] == null){
-								//trace(userGroup.name()['localName']);
-								var info:XMLList = userGroup.children();
-								var infoPer:XMLList = info[1].children();
-								var arrPer:Array = [];
-								for(var j:int = 0; j < infoPer.length(); j++){
-									arrPer.push(String(infoPer[j]));
-								}
-								
-								arrContextos.push({idTag: String(userGroup.@id), entity: String(info[0].children()[0]), period: arrPer});
-								objContextos[String(userGroup.@id)] = String(userGroup.@id);
-							}
-						}
-					}
-					xmlParam.appendChild(xmlParamSub);
-					insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)});
-					insertarValorResult.addEventListener(ResultEvent.RESULT, muestra);
-					
+				var xml:XML=new XML(event.result);
+				
+				var xmlParam:XMLDocument = new XMLDocument();
+				var xmlParamSub:XMLNode = new XMLNode(1, 'Tags');
+				
+				var xmlNode:XMLNode;
+				
+				
+				var clabberList:XMLList = xml.children();
+				for (var i:int = 0; i < clabberList.length(); i++) {						
+				var userGroup:XML = clabberList[i];
+				if(userGroup.@contextRef[0] != null){
+				//trace(userGroup.name()['localName']);
+				arrTag.push({idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef)});
+				
+				if(String(userGroup.@unitRef) != ''){
+				trace(objContextos[String(userGroup.@contextRef)]);
+				if(objContextos[String(userGroup.@contextRef)] == String(userGroup.@contextRef)){
+				xmlNode = new XMLNode(1, 'tag');
+				xmlNode.attributes = {idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef), contextRef: String(userGroup.@contextRef)}
+				xmlParamSub.appendChild(xmlNode);
+				
+				}
+				
+				}
+				//xmlNode.@idTag = userGroup.name()['localName'];	
+				//<tag idTag={userGroup.name()['localName']} valor={String(userGroup.text())} decimals={String(userGroup.@decimals)} unitRef={String(userGroup.@unitRef)}/>
+				
+				
+				} else {
+				if(userGroup.name()['localName'] == 'context' && userGroup.children()[2] == null){
+				//trace(userGroup.name()['localName']);
+				var info:XMLList = userGroup.children();
+				var infoPer:XMLList = info[1].children();
+				var arrPer:Array = [];
+				for(var j:int = 0; j < infoPer.length(); j++){
+				arrPer.push(String(infoPer[j]));
+				}
+				
+				arrContextos.push({idTag: String(userGroup.@id), entity: String(info[0].children()[0]), period: arrPer});
+				objContextos[String(userGroup.@id)] = String(userGroup.@id);
+				}
+				}
+				}
+				xmlParam.appendChild(xmlParamSub);
+				insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)});
+				insertarValorResult.addEventListener(ResultEvent.RESULT, muestra);
+				
 				}
 				catch (e:Error)
 				{
-					trace(e.getStackTrace());
+				trace(e.getStackTrace());
 				}*/
 			}
 			
@@ -125,7 +125,7 @@
 			{
 				// TODO Auto-generated method stub
 				var str:String = '';
-				if(dgEmpresas.selectedItems.length > 0){
+				if(dgEmpresas.selectedItems != null && dgEmpresas.selectedItems.length > 0){
 					for(var i:int = 0; i < dgEmpresas.selectedItems.length; i++){
 						str +=  dgEmpresas.selectedItems[i]['rut'] + ';';
 					}
@@ -142,14 +142,17 @@
 				{
 					
 					
-					var xml:XML=new XML();
-					var xmlParam:XMLDocument = new XMLDocument();
-					var xmlParamSub:XMLNode = new XMLNode(1, 'Tags');
+					var xml:XML;
+					var xmlParam:XMLDocument;
+					var xmlParamSub:XMLNode;
 					var xmlNode:XMLNode;				
 					var clabberList:XMLList;
 					
 					for(var s:int = 0; s < ArrayCollection(event.result).length - 1; s++){
 						xml = new XML(ArrayCollection(event.result).getItemAt(s));
+						xmlParam = new XMLDocument();
+						xmlParamSub = new XMLNode(1, 'Tags');
+						xmlParamSub.attributes = {rut: dgEmpresas.selectedItems[s]['rut'], periodo: ddlPeriodo.selectedItem['per']};
 						clabberList = xml.children();
 						for (var i:int = 0; i < clabberList.length(); i++) {						
 							var userGroup:XML = clabberList[i];
@@ -242,7 +245,7 @@
 	<!--<s:TextArea id="txtXML" x="177" y="232" width="676"/>-->
 	
 	
-		
+	
 	
 	
 </s:Application>
