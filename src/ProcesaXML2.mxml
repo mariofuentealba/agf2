@@ -150,7 +150,9 @@
 					var xmlNode:XMLNode;				
 					var clabberList:XMLList;
 					
-					for(var s:int = 0; s < ArrayCollection(event.result).length - 1; s++){
+					
+					var dat:int = ArrayCollection(event.result).length - 1;
+					for(var s:int = 0; s < dat; s++){
 						xml = new XML(ArrayCollection(event.result).getItemAt(s));
 						xmlParam = new XMLDocument();
 						xmlParamSub = new XMLNode(1, 'Tags');
