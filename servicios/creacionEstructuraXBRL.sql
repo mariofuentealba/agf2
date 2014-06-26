@@ -7,7 +7,25 @@ drop table [dbo].[xbrl_contenedor]
 
 drop table [dbo].[xbrl_taxonomia]
 
+drop table [dbo].[xbrl_tag]
+
+drop table [dbo].[xbrl_traduccion]
+
+drop table [dbo].[xbrl_tag_traduccion]
+
+drop table [dbo].[xbrl_contexto]
+
+drop table [dbo].[valoresResp]
+
 go
+
+CREATE TABLE [dbo].[xbrl_taxonomia](
+	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,
+	[tag] [varchar](500)  NOT NULL,
+	[traduccion] [varchar](500)  NOT NULL,
+	[periodo] [varchar](10)  NOT NULL		
+	
+)
 
 CREATE TABLE [dbo].[xbrl_contenedor](
 	[id] [int] PRIMARY KEY NOT NULL,
@@ -54,14 +72,15 @@ CREATE TABLE [dbo].[etiquetasXBRL](
 	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,
 	[tag] [varchar](500)  NOT NULL,
 	[traduccion] [varchar](500)  NOT NULL,
-	[id_xbrl_contenedor] int NOT NULL
+	[id_xbrl_contenedor] int NOT NULL,
+	[periodo] [varchar](10)  NOT NULL		
 )
 
 
 DECLARE @etiquetasXBRL table(
                   [tag] [varchar](500)  NOT NULL,
 					[traduccion] [varchar](500)  NOT NULL,
-					[id_xbrl_contenedor] int NOT NULL
+					[id_xbrl_contenedor] int NOT NULL		
             )
 
 
@@ -2438,6 +2457,17 @@ INSERT INTO @etiquetasXBRL values ('DisposalGroupsClassifiedAsHeldForSaleMember'
 INSERT INTO @etiquetasXBRL values ('ConsolidatedAndSeparateFinancialStatementsAxis','Estados financieros consolidados y separados [eje]',913000)
 INSERT INTO @etiquetasXBRL values ('ConsolidatedMember','Consolidado [miembro]',913000)
 INSERT INTO @etiquetasXBRL values ('SeparateMember','Separado [miembro]',913000)
+
+
+Insert into xbrl_taxonomia
+select distinct [tag], [traduccion], '06-2013'
+from @etiquetasXBRL
+where id_xbrl_contenedor in (210000, 310000, 420000, 510000, 610000)
+
+insert into etiquetasXBRL
+select tag, traduccion, id_xbrl_contenedor, '06-2013'--, COUNT(*)
+from @etiquetasXBRL
+group by tag, traduccion, id_xbrl_contenedor
 
 
 INSERT INTO @etiquetasXBRL values ('ManagementCommentaryExplanatory','Comentarios de la gerencia [bloque de texto]',105000)
@@ -5609,16 +5639,16 @@ INSERT INTO @etiquetasXBRL values ('ConsolidatedMember','Consolidado [miembro]',
 INSERT INTO @etiquetasXBRL values ('SeparateMember','Separado [miembro]',913000)
 
 
-CREATE TABLE [dbo].[xbrl_taxonomia](
-	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,
-	[tag] [varchar](500)  NOT NULL,
-	[traduccion] [varchar](500)  NOT NULL	
-)
 
 
+
+
+select distinct [tag], [traduccion]
+from @etiquetasXBRL
+where id_xbrl_contenedor in (210000, 310000, 420000, 510000, 610000)
 
 Insert into xbrl_taxonomia
-select distinct [tag], [traduccion]
+select distinct [tag], [traduccion], '03-2013'
 from @etiquetasXBRL
 where id_xbrl_contenedor in (210000, 310000, 420000, 510000, 610000)
 
@@ -5639,6 +5669,14 @@ where id_xbrl_contenedor in (210000, 310000, 420000, 510000, 610000)
 order by tag
 
 
+
+select tag--, traduccion, id_xbrl_contenedor
+from etiquetasXBRL
+group by tag--, traduccion, id_xbrl_contenedor
+
+
+
+
 select *
 from xbrl_taxonomia
 order by tag
@@ -5646,9 +5684,126 @@ order by tag
 
 
 insert into etiquetasXBRL
-select tag, traduccion, id_xbrl_contenedor--, COUNT(*)
+select tag, traduccion, id_xbrl_contenedor, '03-2013'--, COUNT(*)
 from @etiquetasXBRL
 group by tag, traduccion, id_xbrl_contenedor
 
 
+
+
+
+
 --having COUNT(*) = 1
+
+CREATE TABLE [dbo].[xbrl_tag](
+	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,
+	[tag] [varchar](500)  NOT NULL
+	
+)
+
+
+insert into [dbo].[xbrl_tag]
+select distinct tag
+from xbrl_taxonomia
+
+CREATE TABLE [dbo].[xbrl_traduccion](
+	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,	
+	[traduccion] [varchar](500)  NOT NULL	
+)
+
+insert into [dbo].[xbrl_traduccion]
+select distinct traduccion
+from xbrl_taxonomia
+
+
+
+select *
+from [dbo].[xbrl_tag]
+
+select *
+from [dbo].[xbrl_traduccion]
+
+
+
+CREATE TABLE [dbo].[xbrl_tag_traduccion](
+	[id_tag] [int] NOT NULL,	
+	[id_traduccion] [int]  NOT NULL	
+	PRIMARY KEY(id_tag, id_traduccion) 
+	
+)
+
+insert into [dbo].[xbrl_tag_traduccion]
+select (select max(t.ID) from xbrl_tag t where t.tag = a.tag), (select max(t.ID) from xbrl_traduccion t where t.traduccion = a.traduccion)
+from xbrl_taxonomia a
+
+
+select traduccion, tag
+from [dbo].[xbrl_tag_traduccion] a 
+		inner join xbrl_tag b on a.id_tag = b.id
+		inner join xbrl_traduccion c on a.id_traduccion = c.id
+where a.id_traduccion in (select id_traduccion from [dbo].[xbrl_tag_traduccion] group by id_traduccion having COUNT(*) > 1)
+
+CREATE TABLE [dbo].[xbrl_contexto](
+	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,	
+	[nombre] [varchar](500)  NOT NULL	,
+	[id_periodo] int
+)
+
+
+insert into [dbo].[xbrl_contexto] values
+('CierreTrimestreActual', 9),
+('CierreTrimestreAnterior', 9),
+('SaldoActualInicio', 9),
+('SaldoAnteriorInicio', 9),
+('TrimestreAcumuladoActual', 9),
+('TrimestreAcumuladoAnterior', 9)
+
+
+CREATE TABLE [dbo].[valoresResp](
+	[ID_VALOR] [int] IDENTITY(1,1) NOT NULL,
+	[ID_TAG_AGF] [int] NULL,
+	[ID_EMPRESA] [int] NULL,
+	[ID_PERIODO] [int] NULL,
+	[tipo] [int] NOT NULL,
+	[VALOR] [decimal](25, 2) NOT NULL,
+	[DT_MODIFICACION] [datetime] NULL,
+	[origen] [int] NOT NULL,
+	[id_formula] [int] NOT NULL,
+	[hist_formula] [varchar](20) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID_VALOR] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) 
+
+DROP TABLE [dbo].[xbrl_extraccion]
+
+CREATE TABLE [dbo].[xbrl_extraccion](
+	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,	
+	[rut] [varchar](10)  NOT NULL	,
+	[url] varchar(300),
+	[periodo] varchar(10)
+)
+
+
+DROP TABLE [dbo].[xbrl_empresas]
+
+CREATE TABLE [dbo].[xbrl_empresas](
+	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,	
+	[rut] [varchar](10)  NOT NULL	,
+	[nombre] varchar(100),
+	[tipoEntidad] varchar(100),
+	[vigencia] varchar(20)
+)
+
+
+/*
+  update [agf].[dbo].[periodos]
+  set label = '0' + convert(varchar(2), MES) + '-' + convert(varchar(4), ANO)
+  where MES in (3, 6, 9)
+  
+  
+  
+  update [agf].[dbo].[periodos]
+  set label = convert(varchar(2), MES) + '-' + convert(varchar(4), ANO)
+  where MES not in (3, 6, 9)*/
