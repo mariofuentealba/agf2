@@ -32,12 +32,18 @@ function manipulaZip($data, $log){
 }
 
 $data = $argv[1];
+$periodo = $argv[2];
+
+$log2 = fopen('xbrl\\log3.txt', 'a');
+fwrite($log2, "$data\r\n");
+fwrite($log2, "$periodo\r\n");
+fclose($log2);
 
 
-$dat = fopen("xbrl\\" . "DATA.txt", "r");
+//$dat = fopen("xbrl\\" . "DATA.txt", "r");
 $re =  fopen("xbrl\\" . "DATARE.txt", "w");
 $log = fopen("xbrl\\" . 'log.txt', 'a');
-$log2 = fopen("C:\\xampp\\htdocs\\ProcesaXml2\\logZZZZZ.txt", "a");
+$log2 = fopen("C:\\xampp\\htdocs\\ProcesaXml2\\xbrl\\logZZZZZ.txt", "a");
 fwrite($log2, print_r($argv, true) . "\r\n");
 fclose($log2);
 
@@ -49,23 +55,45 @@ $data = explode(";", $data);
 
 $xbrlResult = "";
 
+
+$ruts = '<Tags periodo="' . $periodo . '">';
 for($i = 0; $i < count($data); $i++){
-	$ruts[$data[$i]] = $data[$i];
+	$ruts .= '<tag rut="' . $data[$i] . '" />';
 }
+$ruts .= '</Tags>';
 $n = count($ruts);
 fwrite($log, print_r($ruts, true) . "\r\n");
 fwrite($log, "N = " . $n . "\r\n");
 
-while(!feof($dat) && $n > 0){
+
+
+try { 
+	//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
+	$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
+					
 	
-	$xbrl = fgets($dat);
+	$sql = "exec [dbo].[sp_xbrl_rescata_extraccion] ?";
 	
-	$rut = explode("rut=", $xbrl);
-	$rut = explode("&mm", $rut[1]);
+	$sql2 = str_replace("'", "''", $sql);
+	$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+	$stmtlog->execute();
+	$stmt = $con->prepare($sql);				
+	$stmt->bindParam(1, $ruts); 
+	$stmt->execute();
+	$logf = fopen('xbrl\\logXML.txt', 'a');
+	$dataXML = $stmt->fetchAll();
+	fwrite($logf, $ruts . "\r\n");
+	fwrite($logf, "\r\nRETORNO [dbo].[sp_xbrl_rescata_extraccion]:" . print_r($dataXML, true) . "\r\n");
+	fwrite($logf, "\r\nRUTS:: " . print_r($ruts, true) . "\r\n");
+	fclose($logf);
+	foreach($dataXML as $dat){
 	
-	fwrite($log, "RUT" . $rut[0] . "\r\n");
-	if(isset($ruts[$rut[0]])){
-		$n--;
+		$xbrl = $dat[0];
+		$xbrl = str_replace("::", "&", $xbrl);
+		$rut = explode("rut=", $xbrl);
+		$rut = explode("&mm", $rut[1]);
+		
+		fwrite($log, "RUT" . $rut[0] . "\r\n");
 		fwrite($log, "N = " . $n . "\r\n");
 		$xbrl = str_replace(" ", "%20", $xbrl);
 		$xbrl = trim($xbrl);	
@@ -97,7 +125,7 @@ while(!feof($dat) && $n > 0){
 			file_put_contents("xbrl\\" . $xbrl, $lineas)
 			or die("<br />No se puede escribir el archivo local<br />");
 			$xbrlResult .= manipulaZip("xbrl\\" . $xbrl, $log) . ";;;;;;;";
-			fwrite($log, "PASE\r\n");
+			//fwrite($log, "PASE\r\n");
 	
 			
 			
@@ -105,52 +133,69 @@ while(!feof($dat) && $n > 0){
 			
 			
 		}
+			
+	}
+	//fclose($dat);
+	fclose($re);
+
+	$dat =  fopen("xbrl\\" . "DATARE.txt", "r");
+	$ruts = array();
+	
+
+
+	//$xbrlResult = "";
+
+	for($i = 0; $i < count($data); $i++){
+		$ruts[$data[$i]] = $data[$i];
 	}
 	
-	
-	
-}
-fclose($dat);
-fclose($re);
-
-$dat =  fopen("xbrl\\" . "DATARE.txt", "r");
-$n = count($ruts);
-while(!feof($dat) && $n > 0){
-	$xbrl = fgets($dat);
-	if($xbrl != ""){
-		$rut = explode("rut=", $xbrl);
-		$rut = explode("&mm", $rut[1]);
-		if(isset($ruts[$rut[0]])){
-			$n--;
-			fwrite($log, "N = " . $n . "\r\n");
-			$xbrl = str_replace(" ", "%20", $xbrl);
-			$xbrl = trim($xbrl);	
-			fwrite($log, "-------------------------------------------------------\r\n");
-			fwrite($log, "procesando: " . $xbrl ."\r\n");
-			
-			$lineas = file($xbrl);
-			$xbrl = explode("&", $xbrl);
-			$xbrl = explode("=", $xbrl[5]);
-			$xbrl = $xbrl[1];
-			fwrite($log, "Se guarda en :" . $xbrl ."\r\n");
-			//fwrite($log, $lineas ."\r\n");
-			file_put_contents("xbrl\\" . $xbrl, $lineas);
-			//fwrite($log, print_r($xbrl, true) ."\r\n");
-			
-			
-			$xbrlResult .= file_get_contents("xbrl\\" . $xbrl) . ";;;;;;;";
-			//or die("<br />No se puede escribir el archivo local<br />");
+	$n = count($ruts);
+	while(!feof($dat) && $n > 0){
+		$xbrl = fgets($dat);
+		if($xbrl != ""){
+			$rut = explode("rut=", $xbrl);
+			$rut = explode("&mm", $rut[1]);
+			if(isset($ruts[$rut[0]])){
+				$n--;
+				fwrite($log, "N = " . $n . "\r\n");
+				$xbrl = str_replace(" ", "%20", $xbrl);
+				$xbrl = trim($xbrl);	
+				fwrite($log, "-------------------------------------------------------\r\n");
+				fwrite($log, "procesando: " . $xbrl ."\r\n");
+				
+				$lineas = file($xbrl);
+				$xbrl = explode("&", $xbrl);
+				$xbrl = explode("=", $xbrl[5]);
+				$xbrl = $xbrl[1];
+				fwrite($log, "Se guarda en :" . $xbrl ."\r\n");
+				//fwrite($log, $lineas ."\r\n");
+				file_put_contents("xbrl\\" . $xbrl, $lineas);
+				//fwrite($log, print_r($xbrl, true) ."\r\n");
+				
+				
+				$xbrlResult .= file_get_contents("xbrl\\" . $xbrl) . ";;;;;;;";
+				//or die("<br />No se puede escribir el archivo local<br />");
+			}
+		
 		}
-	
+		
+		
 	}
-	
-	
-}
 
-//fwrite($log, print_r($xbrlResult, true) . "\r\n");
-fclose($dat);
-fclose($log);
+	//fwrite($log, print_r($xbrlResult, true) . "\r\n");
+	fclose($dat);
+	
 
-echo $xbrlResult;	
+	echo $xbrlResult;	
+
+				
+} catch( PDOExecption $e ) {
+	print "Error!: " . $e->getMessage() . "</br>";
+	
+} 
+
+
+
+
 
 ?>
