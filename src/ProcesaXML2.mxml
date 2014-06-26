@@ -101,12 +101,13 @@
 				
 				
 				
+				
 			}
 			
 			protected function btnDescarga_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				descargaSVSResult.token = xbrlCarga.recursivo(ddlPeriodo.selectedItem['per']);
+				descargaSVSResult.token = xbrlCarga.preparaCarga(ddlPeriodo.selectedItem['per']);
 				descargaSVSResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
 			}
 			
@@ -129,10 +130,11 @@
 					for(var i:int = 0; i < dgEmpresas.selectedItems.length; i++){
 						str +=  dgEmpresas.selectedItems[i]['rut'] + ';';
 					}
+					str = str.substr(0, str.length - 1);
+					descargaSeleccionResult.token = xbrlCarga.descargaSeleccion(str, ddlPeriodo.selectedItem['per']);
+					descargaSeleccionResult.addEventListener(ResultEvent.RESULT, descargaZipResult);
 				}
-				str = str.substr(0, str.length - 1);
-				descargaSeleccionResult.token = xbrlCarga.descargaSeleccion(str);
-				descargaSeleccionResult.addEventListener(ResultEvent.RESULT, descargaZipResult);
+				
 			}
 			
 			
@@ -203,6 +205,13 @@
 			}
 			
 			
+			protected function dgEmpresas_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				rescataEmpresasResult.token = xbrlCarga.rescataEmpresas();
+				rescataEmpresasResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -221,6 +230,7 @@
 							 showBusyCursor="true"/>
 		<s:CallResponder id="descargaSVSResult"/>
 		<s:CallResponder id="descargaSeleccionResult"/>
+		<s:CallResponder id="rescataEmpresasResult"/>
 	</fx:Declarations>
 	<s:layout>
 		<s:HorizontalLayout paddingLeft="20" paddingRight="20" paddingTop="30"/>
@@ -230,7 +240,7 @@
 		<s:Button x="39" y="63" label="descargar Información de SVS" id="btnDescarga" click="btnDescarga_clickHandler(event)"/>	
 	</s:VGroup>
 	<!--<s:List x="286" y="10" id="lstRut" width="300" height="200" dataProvider="{arrRut}" labelField="rut" allowMultipleSelection="true"></s:List>-->
-	<s:DataGrid id="dgEmpresas"  requestedRowCount="4" dataProvider="{arrRut}" selectionMode="multipleRows">
+	<s:DataGrid id="dgEmpresas"  requestedRowCount="4" dataProvider="{arrRut}" selectionMode="multipleRows" creationComplete="dgEmpresas_creationCompleteHandler(event)">
 		<s:columns>
 			<s:ArrayList>
 				<s:GridColumn dataField="rut" headerText="Rut"></s:GridColumn>
