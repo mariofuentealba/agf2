@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:layout>
+		<s:VerticalLayout paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" gap="5"/>
+		
+	</s:layout>
+	<s:Form>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="RUT"/>
+			<s:Label text="RUT"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Razón Social"/>
+			<s:Label text="Razón Social"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Nombre de Fantasía"/>
+			<s:Label text="Nombre de Fantasía"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Vigencia"/>
+			<s:Label text="Vigencia"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Número de Inscripción"/>
+			<s:Label text="Número de Inscripción"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Fecha de Inscripción"/>
+			<s:Label text="Fecha de Inscripción"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Fecha de Cancelación"/>
+			<s:Label text="Fecha de Cancelación"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Antecedentes de Inscripción"/>
+			<s:Label text="Antecedentes de Inscripción"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Teléfono"/>
+			<s:Label text="Teléfono"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Fax"/>
+			<s:Label text="Fax"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Domicilio"/>
+			<s:Label text="Domicilio"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Región"/>
+			<s:Label text="Región"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Ciudad"/>
+			<s:Label text="Ciudad"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Comuna"/>
+			<s:Label text="Comuna"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="e-mail"/>
+			<s:Label text="e-mail"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Sitio web"/>
+			<s:Label text="Sitio web"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Código Postal"/>
+			<s:Label text="Código Postal"/>
+		</s:FormItem>
+		<s:FormItem width="100%">
+			<s:layout>
+				<s:HorizontalLayout/>
+			</s:layout>
+			<s:Label text="Nombre con que transa en la Bolsa"/>
+			<s:Label text="Nombre con que transa en la Bolsa"/>
+		</s:FormItem>
+		
+	</s:Form>
+	
+</s:Group>
