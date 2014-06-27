@@ -1,6 +1,6 @@
 USE [agf]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_xbrl_extraccion]    Script Date: 06/25/2014 20:28:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_xbrl_rescata_extraccion]    Script Date: 06/27/2014 11:07:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,7 +10,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-alter PROCEDURE [dbo].[sp_xbrl_rescata_extraccion] 
+ALTER PROCEDURE [dbo].[sp_xbrl_rescata_extraccion] 
 	-- Add the parameters for the stored procedure here
 	@xmlParam xml
 AS
@@ -35,6 +35,7 @@ BEGIN
 	begin
 		select  url
 		from xbrl_extraccion inner join @xmlParam.nodes('/Tags/tag') AS NODO(ITEM) on NODO.ITEM.value('@rut','VARCHAR(10)') = rut
+		where periodo = @periodo
 	end
 	else
 	begin
