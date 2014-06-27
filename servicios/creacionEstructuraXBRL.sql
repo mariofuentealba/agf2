@@ -5782,7 +5782,8 @@ CREATE TABLE [dbo].[xbrl_extraccion](
 	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,	
 	[rut] [varchar](10)  NOT NULL	,
 	[url] varchar(300),
-	[periodo] varchar(10)
+	[periodo] varchar(10),
+	[utilizado] varchar(1) default 'N'
 )
 
 
