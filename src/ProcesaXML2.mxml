@@ -27,70 +27,17 @@
 			private var arrContextos:Array = [];
 			private var arrTag:Array = [];
 			private var objContextos:Object = {};
-			[Bindable] private var arrPer:ArrayCollection = new ArrayCollection([{per: '03-2009'}, {per: '06-2009'}, {per: '09-2009'}, {per: '12-2009'}, {per: '03-2010'}, {per: '06-2010'}, {per: '09-2010'}, {per: '12-2010'}, {per: '03-2011'}, {per: '06-2011'}, {per: '09-2011'}, {per: '12-2011'}, {per: '03-2012'}, {per: '06-2012'}, {per: '09-2012'}, {per: '12-2012'}, {per: '03-2013'}, {per: '06-2013'}, {per: '09-2013'}, {per: '12-2013'}, {per: '03-2014'}, {per: '06-2014'}, {per: '09-2014'}, {per: '12-2014'}])
+			[Bindable] private var arrPer:ArrayCollection = new ArrayCollection([{per: 'Todos'}, {per: '03-2009'}, {per: '06-2009'}, {per: '09-2009'}, {per: '12-2009'}, {per: '03-2010'}, {per: '06-2010'}, {per: '09-2010'}, {per: '12-2010'}, {per: '03-2011'}, {per: '06-2011'}, {per: '09-2011'}, {per: '12-2011'}, {per: '03-2012'}, {per: '06-2012'}, {per: '09-2012'}, {per: '12-2012'}, {per: '03-2013'}, {per: '06-2013'}, {per: '09-2013'}, {per: '12-2013'}, {per: '03-2014'}, {per: '06-2014'}, {per: '09-2014'}, {per: '12-2014'}])
 			
 			
 			private function muestra(event:ResultEvent):void{
-				//txtXML.text = event.result.toString();
+				//Alert.show(event.result.toString());
+				procesaData(perProc, rutMasivo);
 			}
 			
 			private function cargarXML(event:ResultEvent):void
 			{
-				/*	try
-				{
-				var xml:XML=new XML(event.result);
 				
-				var xmlParam:XMLDocument = new XMLDocument();
-				var xmlParamSub:XMLNode = new XMLNode(1, 'Tags');
-				
-				var xmlNode:XMLNode;
-				
-				
-				var clabberList:XMLList = xml.children();
-				for (var i:int = 0; i < clabberList.length(); i++) {						
-				var userGroup:XML = clabberList[i];
-				if(userGroup.@contextRef[0] != null){
-				//trace(userGroup.name()['localName']);
-				arrTag.push({idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef)});
-				
-				if(String(userGroup.@unitRef) != ''){
-				trace(objContextos[String(userGroup.@contextRef)]);
-				if(objContextos[String(userGroup.@contextRef)] == String(userGroup.@contextRef)){
-				xmlNode = new XMLNode(1, 'tag');
-				xmlNode.attributes = {idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef), contextRef: String(userGroup.@contextRef)}
-				xmlParamSub.appendChild(xmlNode);
-				
-				}
-				
-				}
-				//xmlNode.@idTag = userGroup.name()['localName'];	
-				//<tag idTag={userGroup.name()['localName']} valor={String(userGroup.text())} decimals={String(userGroup.@decimals)} unitRef={String(userGroup.@unitRef)}/>
-				
-				
-				} else {
-				if(userGroup.name()['localName'] == 'context' && userGroup.children()[2] == null){
-				//trace(userGroup.name()['localName']);
-				var info:XMLList = userGroup.children();
-				var infoPer:XMLList = info[1].children();
-				var arrPer:Array = [];
-				for(var j:int = 0; j < infoPer.length(); j++){
-				arrPer.push(String(infoPer[j]));
-				}
-				
-				arrContextos.push({idTag: String(userGroup.@id), entity: String(info[0].children()[0]), period: arrPer});
-				objContextos[String(userGroup.@id)] = String(userGroup.@id);
-				}
-				}
-				}
-				xmlParam.appendChild(xmlParamSub);
-				insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)});
-				insertarValorResult.addEventListener(ResultEvent.RESULT, muestra);
-				
-				}
-				catch (e:Error)
-				{
-				trace(e.getStackTrace());
-				}*/
 			}
 			
 			
@@ -131,32 +78,85 @@
 						str +=  dgEmpresas.selectedItems[i]['rut'] + ';';
 					}
 					str = str.substr(0, str.length - 1);
-					descargaSeleccionResult.token = xbrlCarga.descargaSeleccion(str, ddlPeriodo.selectedItem['per']);
+					perProc = ddlPeriodo.selectedItem['per'];
+					descargaSeleccionResult.token = xbrlCarga.descargaSeleccion(str, perProc);
 					descargaSeleccionResult.addEventListener(ResultEvent.RESULT, descargaZipResult);
 				}
 				
 			}
 			
 			
-			private function descargaZipResult(event:ResultEvent):void{
-				Alert.show('Descargado archivos', 'Fin Proceso');
-				try
-				{
+			private var periodos:Array = ['03-2009', '06-2009', '09-2009', '12-2009', '03-2010', '06-2010', '09-2010', '12-2010', '03-2011', '06-2011', '09-2011', '12-2011', '03-2012', '06-2012', '09-2012', '12-2012', '03-2013', '06-2013', '09-2013', '12-2013', '03-2014', '06-2014', '09-2014', '12-2014'];
+			//private var periodos:Array = ['03-2013', '06-2013', '09-2013', '12-2013'];
+			private var indPeriodos:int;
+			private var callback:Function;
+			
+			
+			
+			
+			
+			
+			private var arrRutMasivo:Array = [];
+			private var rutMasivo:String;
+			
+			protected function procesoMasivo():void{
+				if(periodos.length > indPeriodos){
+					callback = procesoMasivo;					
+					perProc = periodos[indPeriodos++]
+					descargaSeleccionResult.token = xbrlCarga.descargaSeleccion(rutMasivo, perProc);
+					descargaSeleccionResult.addEventListener(ResultEvent.RESULT, descargaZipResult);
+						
+				} else {
+					Alert.show('Descargado archivos', 'Fin Proceso');
+					contMasivo++;
+				}
+			}
+			
+			
+			protected function btnProcXBRLTodoPeriodo_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				indPeriodos = 0;
+				
+				if(ddlPeriodo.selectedItem['per'] == 'Todos'){
+					periodos = ['03-2009', '06-2009', '09-2009', '12-2009', '03-2010', '06-2010', '09-2010', '12-2010', '03-2011', '06-2011', '09-2011', '12-2011', '03-2012', '06-2012', '09-2012', '12-2012', '03-2013', '06-2013', '09-2013', '12-2013', '03-2014', '06-2014', '09-2014', '12-2014'];
+				} else {
+					periodos = [];
+					periodos.push(ddlPeriodo.selectedItem['per']);
+				}
+				
+				
+				flag = true;
+				if(dgEmpresas.selectedItems != null && dgEmpresas.selectedItems.length > 0){
+					for(var i:int = 0; i < dgEmpresas.selectedItems.length; i++){
+						arrRutMasivo.push(String(dgEmpresas.selectedItems[i]['rut']));
+					}
+					rutMasivo = '' + arrRutMasivo.pop();
+					procesoMasivo();
 					
-					
-					var xml:XML;
-					var xmlParam:XMLDocument;
-					var xmlParamSub:XMLNode;
-					var xmlNode:XMLNode;				
-					var clabberList:XMLList;
-					
-					
-					var dat:int = ArrayCollection(event.result).length - 1;
-					for(var s:int = 0; s < dat; s++){
-						xml = new XML(ArrayCollection(event.result).getItemAt(s));
+				}
+				
+				
+			}
+			
+			private var s:int;
+			private var dat:int;
+			private var perProc:String = '';
+			
+			
+			private function procesaData(perProc:String, rut:String):void{
+				try{
+					if(s < dat){
+						var xml:XML;
+						var xmlParam:XMLDocument;
+						var xmlParamSub:XMLNode;
+						var xmlNode:XMLNode;				
+						var clabberList:XMLList;
+						
+						xml = new XML(ArrayCollection(xbrlProcesando).getItemAt(s));
 						xmlParam = new XMLDocument();
 						xmlParamSub = new XMLNode(1, 'Tags');
-						xmlParamSub.attributes = {rut: dgEmpresas.selectedItems[s]['rut'], periodo: ddlPeriodo.selectedItem['per']};
+						xmlParamSub.attributes = {rut: rut, periodo: perProc};
 						clabberList = xml.children();
 						for (var i:int = 0; i < clabberList.length(); i++) {						
 							var userGroup:XML = clabberList[i];
@@ -195,8 +195,40 @@
 						}
 						xmlParam.appendChild(xmlParamSub);
 						insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)});
-						insertarValorResult.addEventListener(ResultEvent.RESULT, muestra);
+						s++;
+					} else {
+						callback.call(this);
 					}
+				} catch (e:Error){
+					trace(e.getStackTrace());
+					s++;
+					procesaData(perProc, rut);
+					
+				}				
+				
+			}
+			
+			
+			private var xbrlProcesando:ArrayCollection;
+			
+			private function descargaZipResult(event:ResultEvent):void{
+				if(callback == null){
+					Alert.show('Descargado archivos', 'Fin Proceso');	
+				}
+				
+				try
+				{
+					
+					
+					
+					
+					
+					dat = ArrayCollection(event.result).length - 1;
+					xbrlProcesando = ArrayCollection(event.result);
+					s = 0;
+					procesaData(perProc, rutMasivo);
+					
+					
 					
 					
 				}
@@ -207,11 +239,28 @@
 			}
 			
 			
+			private var flag:Boolean = false;
+			[Bindable] private var contMasivo:int;
+			
+			
 			protected function dgEmpresas_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
 				rescataEmpresasResult.token = xbrlCarga.rescataEmpresas();
 				rescataEmpresasResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
+			}
+			
+			private function set masivo(val:*):void{
+				if(flag){
+					indPeriodos = 0;
+					rutMasivo = String(arrRutMasivo.pop());
+					if(arrRutMasivo.length == 0){
+						flag =false;	
+					} else {
+						procesoMasivo();	
+					}
+					
+				}
 			}
 			
 		]]>
@@ -226,14 +275,16 @@
 					   fault="errorHttpService(event)"
 					   useProxy="false"
 					   resultFormat="e4x"/>
-		<s:CallResponder id="insertarValorResult"/>
+		<s:CallResponder id="insertarValorResult" result="muestra(event)"/>
 		<xbrlcarga:XbrlCarga id="xbrlCarga"
 							 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
 							 showBusyCursor="true"/>
 		<s:CallResponder id="descargaSVSResult"/>
 		<s:CallResponder id="descargaSeleccionResult"/>
 		<s:CallResponder id="rescataEmpresasResult"/>
+		
 	</fx:Declarations>
+	<fx:Binding source="contMasivo" destination="masivo"/>
 	<s:layout>
 		<s:HorizontalLayout paddingLeft="20" paddingRight="20" paddingTop="30"/>
 	</s:layout>
@@ -254,6 +305,7 @@
 		
 	</s:DataGrid>
 	<s:Button id="btnProcXBRL" x="602" y="9" label="Procesar XBRL" click="btnProcXBRL_clickHandler(event)"/>
+	<s:Button id="btnProcXBRLTodoPeriodo" x="602" y="9" label="Procesar XBRL" click="btnProcXBRLTodoPeriodo_clickHandler(event)"/>
 	<!--<s:TextArea id="txtXML" x="177" y="232" width="676"/>-->
 	
 	
