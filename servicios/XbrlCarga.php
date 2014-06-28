@@ -2,34 +2,35 @@
 class XbrlCarga{
 
 	public function insertarValor($xmlParam){//$etiqueta, $valor, $rut, $periodo){
-		$log = fopen('xbrl\\log.txt', 'a');
+		
 		try { 
 			//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
-							
-			try {
-		        $con->beginTransaction(); 
-				$sql = "exec [dbo].[sp_xbrl_insertar_valores] ?";
-				
-				//fwrite($log, "\r\n\r\n\r\n\r\n\r\n ENTRANDO A GRABAR exec [dbo].[sp_xbrl_insertar_valores]\r\n" . $xmlParam->xmlParam . "\r\n\r\n\r\n\r\n\r\n");
-				
-				$sql2 = str_replace("'", "''", $sql);
-				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmtlog->execute();
-				$stmt = $con->prepare($sql);				
-				$stmt->bindParam(1, $xmlParam->xmlParam); 
-				$stmt->execute();
-				$stmt->commit();
-				return $xmlParam->xmlParam;
-			} catch(PDOExecption $e) {
-		        $con->rollback();
-		        print "Error!: " . $e->getMessage() . "</br>";
-				fwrite($log, "\r\n\r\n\r\n\r\n\r\nError!: " . $e->getMessage());
-				return "bien";//$xmlParam->xmlParam;
-		    } 			
+			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
+			$con->beginTransaction(); 		
+			$log = fopen('xbrl\\log.txt', 'a');				
+			 
+			$sql = "exec [agf].[dbo].[sp_xbrl_insertar_valores] ?";
+			
+			fwrite($log, "\r\n\r\n\r\n\r\n\r\n ENTRANDO A GRABAR exec [dbo].[sp_xbrl_insertar_valores]\r\n" . print_r($xmlParam, true) . "\r\n\r\n\r\n\r\n\r\n");
+			
+			$sql2 = str_replace("'", "''", $sql);
+			$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+			$stmtlog->execute();
+			$stmt = $con->prepare($sql);				
+			$stmt->bindParam(1, $xmlParam->xmlParam); 
+			$stmt->execute();
+			$con->commit();
+			return '' . $xmlParam->xmlParam;
+			
+		        
+		     			
 		} catch( PDOExecption $e ) {
-		    print "Error!: " . $e->getMessage() . "</br>";
-			return "mal 1";//$xmlParam->xmlParam;
+			
+			print "Error!: " . $e->getMessage() . "</br>";
+			fwrite($log, "\r\n\r\n\r\n\r\n\r\nError!: " . $e->getMessage());
+			$con->rollback();
+			return "bien";//$xmlParam->xmlParam;
+		    
 		} 	
 
 		unset($con); 
