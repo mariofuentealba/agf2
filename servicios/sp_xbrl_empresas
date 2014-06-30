@@ -1,0 +1,33 @@
+USE [agf]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_xbrl_empresas]    Script Date: 06/30/2014 14:09:21 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[sp_xbrl_empresas]
+	-- Add the parameters for the stored procedure here
+	@xmlParam xml
+AS
+BEGIN
+	 
+
+	INSERT INTO xbrl_empresas (rut, nombre, tipoEntidad, vigencia) 
+	SELECT NODO.ITEM.value('@id','VARCHAR(10)'), NODO.ITEM.value('@nombre','VARCHAR(100)'), NODO.ITEM.value('@tipoEntidad','VARCHAR(100)'), NODO.ITEM.value('@vigencia','VARCHAR(20)')
+	FROM   @xmlParam.nodes('/Resp/rut') AS NODO(ITEM)
+	where NODO.ITEM.value('@id','VARCHAR(10)') not in (select rut from xbrl_empresas)
+	
+	
+	update xbrl_empresas	
+	set  nombre = NODO.ITEM.value('@nombre','VARCHAR(100)'), 
+		 tipoEntidad = NODO.ITEM.value('@tipoEntidad','VARCHAR(100)'), 
+		 vigencia = NODO.ITEM.value('@vigencia','VARCHAR(20)')
+	from xbrl_empresas inner join @xmlParam.nodes('/Resp/rut') AS NODO(ITEM) on NODO.ITEM.value('@id','VARCHAR(10)') = rut	 
+		  
+	
+END
