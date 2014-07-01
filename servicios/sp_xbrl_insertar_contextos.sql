@@ -1,6 +1,6 @@
 USE [agf]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_xbrl_insertar_contextos]    Script Date: 06/30/2014 21:33:20 ******/
+/****** Object:  StoredProcedure [dbo].[sp_xbrl_insertar_contextos]    Script Date: 07/01/2014 00:56:44 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -22,7 +22,7 @@ BEGIN
 INSERT INTO xbrl_contexto ([nombre],[inicio],[fin], periodo) 
 SELECT NODO.ITEM.value('@idTag','VARCHAR(50)'), NODO.ITEM.value('@inicio','VARCHAR(10)'), NODO.ITEM.value('@fin','VARCHAR(10)'), NODO.ITEM.value('@periodo','VARCHAR(10)')
 FROM   @xmlParam.nodes('/tag') AS NODO(ITEM)
---where NODO.ITEM.value('@idTag','VARCHAR(50)') = 'Assets'
+where NODO.ITEM.value('@idTag','VARCHAR(50)') not in(select nombre from xbrl_contexto)
 
 
 
