@@ -5746,17 +5746,21 @@ where a.id_traduccion in (select id_traduccion from [dbo].[xbrl_tag_traduccion] 
 CREATE TABLE [dbo].[xbrl_contexto](
 	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,	
 	[nombre] [varchar](500)  NOT NULL	,
-	[id_periodo] int
+	[id_periodo] int,
+	[periodo] varchar(10),
+	[inicio] varchar(10),
+	[fin] varchar(10)
 )
 
 
-insert into [dbo].[xbrl_contexto] values
+/*insert into [dbo].[xbrl_contexto] values
 ('CierreTrimestreActual', 9),
 ('CierreTrimestreAnterior', 9),
 ('SaldoActualInicio', 9),
 ('SaldoAnteriorInicio', 9),
 ('TrimestreAcumuladoActual', 9),
-('TrimestreAcumuladoAnterior', 9)
+('TrimestreAcumuladoAnterior', 9),
+('AnualAnterior', 9)*/
 
 
 CREATE TABLE [dbo].[valoresResp](
