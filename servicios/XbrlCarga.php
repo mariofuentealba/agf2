@@ -5,8 +5,8 @@ class XbrlCarga{
 		
 		try { 
 		//return 'hola' ;
-			//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
+			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
 			$con->beginTransaction(); 		
 			
 			
@@ -66,7 +66,7 @@ class XbrlCarga{
 	
 	public function descargaSVS($periodo){		
 		$ArchivoRemoto = "";
-		ini_set('max_execution_time', 20);
+		ini_set('max_execution_time', 0);
 		$arr = explode("-", $periodo);
 		$per = array($arr[0]);
 		$anio = array($arr[1]);
@@ -271,7 +271,8 @@ class XbrlCarga{
 		$arrRut .= '</Resp>';
 		//fwrite($log, $arrRut . "\r\n\r\n\r\n\r\n");
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
+			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
 			$con->beginTransaction(); 
 			$sql = "exec sp_xbrl_empresas ?";
 			
@@ -393,8 +394,8 @@ class XbrlCarga{
 		fwrite($log, "exec sp_xbrl_extraccion '" . $xml . "'\r\n");
 		
 		try { 
-			//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
+			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
 							
 			try {
 		        $con->beginTransaction(); 
@@ -455,7 +456,8 @@ class XbrlCarga{
 		fwrite($log, "PERIODO::" . $periodo . "\r\n");
 		
 		try {
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
+			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
 			
 			$sql = "exec sp_xbrl_rescata_extraccion ?";
 			fwrite($log, "sp_xbrl_rescata_extraccion '" . $ruts . "'\r\n");
@@ -507,8 +509,8 @@ class XbrlCarga{
 	public function rescataEmpresas(){
 		
 		try { 
-			//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
+			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
 							
 			
 			$sql = "exec sp_xbrl_rescata_empresas";
@@ -552,8 +554,8 @@ class XbrlCarga{
 		
 		try { 
 		//return 'hola' ;
-			//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
-			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
+			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
 			$con->beginTransaction(); 		
 			
 			
@@ -573,7 +575,7 @@ class XbrlCarga{
 			$stmt->bindParam(1, $xmlParam); 
 			$stmt->execute();
 			$con->commit();
-			return '' . $xmlParam->xmlParam;
+			return '' . $xmlParam;
 			
 		        
 		     			
