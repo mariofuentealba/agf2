@@ -4,6 +4,7 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:Componentes="Componentes.*"
 			   xmlns:modelo="services.modelo.*"
+			   xmlns:xbrlcarga="services.xbrlcarga.*"
 			   xmlns:c="*"
 			   xmlns:ui="sho.ui.*" 
 			   xmlns:charts="com.charts.*"
@@ -39,6 +40,16 @@
 			import mx.rpc.AsyncResponder;
 			import mx.rpc.AsyncToken;
 			import mx.rpc.events.FaultEvent;
+			import flash.xml.XMLDocument;
+			import flash.xml.XMLNode;
+			import flash.xml.XMLNodeType;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
 			
 			import spark.events.DropDownEvent;
 			
@@ -821,6 +832,278 @@
 				
 			}
 			
+			
+			
+			
+			
+			private function errorHttpService(event:FaultEvent):void
+			{
+				Alert.show("Error en carga de archivo configurador de WebService: " + event.message, "Fault");
+			}
+			
+			private var arrContextos:Array = [];
+			private var arrTag:Array = [];
+			[Bindable] private var objContextos:Object = {};
+			[Bindable] private var arrPer:ArrayCollection = new ArrayCollection([{per: 'Todos'}, {per: '03-2009'}, {per: '06-2009'}, {per: '09-2009'}, {per: '12-2009'}, {per: '03-2010'}, {per: '06-2010'}, {per: '09-2010'}, {per: '12-2010'}, {per: '03-2011'}, {per: '06-2011'}, {per: '09-2011'}, {per: '12-2011'}, {per: '03-2012'}, {per: '06-2012'}, {per: '09-2012'}, {per: '12-2012'}, {per: '03-2013'}, {per: '06-2013'}, {per: '09-2013'}, {per: '12-2013'}, {per: '03-2014'}, {per: '06-2014'}, {per: '09-2014'}, {per: '12-2014'}])
+			private var s:int;
+			private var dat:int;
+			private var perProc:String = '';
+			[Bindable] private var nuevosContextos:int = 0;
+			
+			private function muestra(event:ResultEvent):void{
+				//Alert.show(event.result.toString());
+				procesaData(perProc, rutMasivo);
+			}
+			
+			private function cargarXML(event:ResultEvent):void
+			{
+				
+			}
+			
+			
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				
+				
+				
+				
+				
+			}
+			
+			protected function btnDescarga_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				descargaSVSResult.token = xbrlCarga.preparaCarga(ddlPeriodoMasivo.selectedItem['per']);
+				descargaSVSResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
+			}
+			
+			[Bindable] private var arrRut:ArrayCollection = new ArrayCollection();
+			
+			private function listarEmpresas(event:ResultEvent):void{
+				var xml:XML=new XML(event.result);
+				var rutList:XMLList = xml.children();
+				for each(var node:XML in rutList){
+					//arrRut.addItem({rut: node.toString()});
+					arrRut.addItem({rut: node.@id, nombre: node.@nombre, tipoEntidad: node.@tipoEntidad, vigencia: node.@vigencia});
+				}
+			}
+			
+			protected function btnProcXBRL_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				var str:String = '';
+				if(dgEmpresas.selectedItems != null && dgEmpresas.selectedItems.length > 0){
+					for(var i:int = 0; i < dgEmpresas.selectedItems.length; i++){
+						str +=  dgEmpresas.selectedItems[i]['rut'] + ';';
+					}
+					str = str.substr(0, str.length - 1);
+					perProc = ddlPeriodoMasivo.selectedItem['per'];
+					descargaSeleccionResult.token = xbrlCarga.descargaSeleccion(str, perProc);
+					descargaSeleccionResult.addEventListener(ResultEvent.RESULT, descargaZipResult);
+				}
+				
+			}
+			
+			
+			private var periodos:Array = ['03-2009', '06-2009', '09-2009', '12-2009', '03-2010', '06-2010', '09-2010', '12-2010', '03-2011', '06-2011', '09-2011', '12-2011', '03-2012', '06-2012', '09-2012', '12-2012', '03-2013', '06-2013', '09-2013', '12-2013', '03-2014', '06-2014', '09-2014', '12-2014'];
+			//private var periodos:Array = ['03-2013', '06-2013', '09-2013', '12-2013'];
+			private var indPeriodos:int;
+			private var callback:Function;
+			
+			
+			
+			
+			
+			
+			private var arrRutMasivo:Array = [];
+			private var rutMasivo:String;
+			
+			protected function procesoMasivo():void{
+				if(periodos.length > indPeriodos){
+					callback = procesoMasivo;					
+					perProc = periodos[indPeriodos++]
+					descargaSeleccionResult.token = xbrlCarga.descargaSeleccion(rutMasivo, perProc);
+					descargaSeleccionResult.addEventListener(ResultEvent.RESULT, descargaZipResult);
+					
+				} else {
+					Alert.show('Descargado archivos', 'Fin Proceso');
+					contMasivo++;
+				}
+			}
+			
+			
+			protected function btnProcXBRLTodoPeriodo_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				indPeriodos = 0;
+				
+				if(ddlPeriodoMasivo.selectedItem['per'] == 'Todos'){
+					periodos = ['03-2009', '06-2009', '09-2009', '12-2009', '03-2010', '06-2010', '09-2010', '12-2010', '03-2011', '06-2011', '09-2011', '12-2011', '03-2012', '06-2012', '09-2012', '12-2012', '03-2013', '06-2013', '09-2013', '12-2013', '03-2014', '06-2014', '09-2014', '12-2014'];
+				} else {
+					periodos = [];
+					periodos.push(ddlPeriodoMasivo.selectedItem['per']);
+				}
+				
+				
+				flag = true;
+				if(dgEmpresas.selectedItems != null && dgEmpresas.selectedItems.length > 0){
+					for(var i:int = 0; i < dgEmpresas.selectedItems.length; i++){
+						arrRutMasivo.push(String(dgEmpresas.selectedItems[i]['rut']));
+					}
+					rutMasivo = '' + arrRutMasivo.pop();
+					procesoMasivo();
+					
+				}
+				
+				
+			}
+			
+			
+			
+			
+			private function procesaData(perProc:String, rut:String):void{
+				try{
+					if(s < dat){
+						var xml:XML;
+						var xmlParam:XMLDocument;
+						var xmlParamSub:XMLNode;
+						var xmlNode:XMLNode;				
+						var clabberList:XMLList;
+						xmlContextos = new XMLDocument();
+						xml = new XML(ArrayCollection(xbrlProcesando).getItemAt(s));
+						xmlParam = new XMLDocument();
+						xmlParamSub = new XMLNode(1, 'Tags');
+						xmlParamSub.attributes = {rut: rut, periodo: perProc};
+						clabberList = xml.children();
+						for (var i:int = 0; i < clabberList.length(); i++) {						
+							var userGroup:XML = clabberList[i];
+							if(userGroup.@contextRef[0] != null){
+								//trace(userGroup.name()['localName']);
+								arrTag.push({idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef)});
+								
+								if(String(userGroup.@unitRef) != ''){
+									trace(objContextos[String(userGroup.@contextRef)]);
+									if(objContextos[String(userGroup.@contextRef)] == String(userGroup.@contextRef)){
+										xmlNode = new XMLNode(1, 'tag');
+										xmlNode.attributes = {idTag: userGroup.name()['localName'], valor: String(userGroup.text()), decimals: String(userGroup.@decimals), unitRef: String(userGroup.@unitRef), contextRef: String(userGroup.@contextRef)}
+										xmlParamSub.appendChild(xmlNode);
+										
+									}
+									
+								}
+								//xmlNode.@idTag = userGroup.name()['localName'];	
+								//<tag idTag={userGroup.name()['localName']} valor={String(userGroup.text())} decimals={String(userGroup.@decimals)} unitRef={String(userGroup.@unitRef)}/>
+								
+								
+							} else {
+								if(userGroup.name()['localName'] == 'context' && userGroup.children()[2] == null){
+									//trace(userGroup.name()['localName']);
+									var info:XMLList = userGroup.children();
+									var infoPer:XMLList = info[1].children();
+									var arrPer:Array = [];
+									for(var j:int = 0; j < infoPer.length(); j++){
+										arrPer.push(String(infoPer[j]));
+									}
+									
+									arrContextos.push({idTag: String(userGroup.@id), entity: String(info[0].children()[0]), period: arrPer});
+									//objContextos[String(userGroup.@id)] = String(userGroup.@id);
+									
+									if(objContextos[String(userGroup.@id)] != String(userGroup.@id)){
+										objContextos[String(userGroup.@id)] = String(userGroup.@id);
+										var nod:XMLNode = new XMLNode(1, 'tag');
+										nod.attributes = {idTag: String(userGroup.@id), entity: String(info[0].children()[0]), inicio: arrPer[0], fin: arrPer[1], periodo: perProc};
+										xmlContextos.appendChild(nod);	
+									}
+									
+									//	nuevosContextos++;
+								}
+							}
+						}
+						xmlParam.appendChild(xmlParamSub);
+						insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)}, xmlContextos.toString()); 
+						
+						
+						s++;
+					} else {
+						callback.call(this);
+					}
+				} catch (e:Error){
+					trace(e.getStackTrace());
+					var xmlError:XMLDocument = new XMLDocument();
+					var xmlErrorNode:XMLNode = new XMLNode(1, 'tag');
+					xmlErrorNode.attributes =  {rut: rut, periodo: perProc};
+					xmlError.appendChild(xmlErrorNode);
+					insertarErrorFormatoResult.token = xbrlCarga.insertarErrorFormato(xmlError.toString());
+					s++;
+					procesaData(perProc, rut);
+					
+				}				
+				
+			}
+			
+			
+			private var xbrlProcesando:ArrayCollection;
+			
+			private function descargaZipResult(event:ResultEvent):void{
+				if(callback == null){
+					Alert.show('Descargado archivos', 'Fin Proceso');	
+				}
+				
+				try
+				{
+					
+					
+					
+					
+					
+					dat = ArrayCollection(event.result).length - 1;
+					xbrlProcesando = ArrayCollection(event.result);
+					s = 0;
+					procesaData(perProc, rutMasivo);
+					
+					
+					
+					
+				}
+				catch (e:Error)
+				{
+					trace(e.getStackTrace());
+				}
+			}
+			
+			
+			private var flag:Boolean = false;
+			[Bindable] private var contMasivo:int;
+			
+			
+			protected function dgEmpresas_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				rescataEmpresasResult.token = xbrlCarga.rescataEmpresas();
+				rescataEmpresasResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
+			}
+			
+			private function set masivo(val:*):void{
+				if(flag){
+					indPeriodos = 0;
+					callback = null;
+					rutMasivo = String(arrRutMasivo.pop());
+					if(arrRutMasivo.length == 0){
+						flag =false;	
+					} else {
+						procesoMasivo();	
+					}
+					
+				}
+			}
+			
+			
+			private var xmlContextos:XMLDocument = new XMLDocument();
+			
+			
+			
 		]]>
 	</fx:Script>
 	<s:states>
@@ -928,10 +1211,22 @@
 		<s:CallResponder id="grillaIndicesFinancierosResult2"/>
 		<s:RadioButtonGroup id="rgdFormula"/>
 		
+		
+		
+		
+		<s:CallResponder id="insertarValorResult" result="muestra(event)"/>
+		<xbrlcarga:XbrlCarga id="xbrlCarga"
+							 fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+							 showBusyCursor="true"/>
+		<s:CallResponder id="descargaSVSResult" />
+		<s:CallResponder id="descargaSeleccionResult"/>
+		<s:CallResponder id="rescataEmpresasResult"/>
+		<s:CallResponder id="insertarErrorFormatoResult"/>
+		
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
-	
+	<fx:Binding source="contMasivo" destination="masivo"/>
 	<mx:OLAPDataGrid id="olap" left="10" top="10" height="300" dataProvider="{olapData}" visible="false"/>
 	
 	<s:Image left="0" right="0" top="0" source="assets/dsicback1.jpg"/>
@@ -1972,6 +2267,42 @@
 			</mx:ToggleButtonBar>
 			
 		</s:NavigatorContent>
+		
+		
+		
+		
+		<s:NavigatorContent id="ncXBRL" width="100%" height="100%" label="Carga de Archivos" >
+			<s:Group  width="100%" maxHeight="{this.height}" height="100%">
+				<s:layout>
+					<s:HorizontalLayout paddingLeft="20" paddingRight="20" paddingTop="30"/>
+				</s:layout>
+				<s:VGroup>
+					<s:DropDownList id="ddlPeriodoMasivo" x="39" y="33" dataProvider="{arrPer}" labelField="per"></s:DropDownList>
+					<s:Button x="39" y="63" label="descargar Información de SVS" id="btnDescarga" click="btnDescarga_clickHandler(event)"/>	
+				</s:VGroup>
+				
+				<s:DataGrid id="dgEmpresas"  requestedRowCount="4" dataProvider="{arrRut}" selectionMode="multipleRows" creationComplete="dgEmpresas_creationCompleteHandler(event)">
+					<s:columns>
+						<s:ArrayList>
+							<s:GridColumn dataField="rut" headerText="Rut"></s:GridColumn>
+							<s:GridColumn dataField="nombre" headerText="Nombre"></s:GridColumn>
+							<s:GridColumn dataField="tipoEntidad" headerText="Tipo Entidad"></s:GridColumn>
+							<s:GridColumn dataField="vigencia" headerText="Vigencia"></s:GridColumn>
+						</s:ArrayList>
+					</s:columns>
+					
+				</s:DataGrid>
+				<s:Button id="btnProcXBRL" x="602" y="9" label="Procesar XBRL" click="btnProcXBRL_clickHandler(event)"/>
+				<s:Button id="btnProcXBRLTodoPeriodo" x="602" y="9" label="Procesar XBRL" click="btnProcXBRLTodoPeriodo_clickHandler(event)"/>
+								
+			</s:Group>
+			
+		</s:NavigatorContent>
+		
+		
+		
+		
+		
 	</mx:TabNavigator>
 	<!--mx:LinkBar x="22" y="116" borderStyle="solid"  dataProvider="{viewstack1}">
 	</mx:LinkBar>
