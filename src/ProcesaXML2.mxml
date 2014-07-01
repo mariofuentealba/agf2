@@ -52,6 +52,7 @@
 				
 				
 				
+				
 			}
 			
 			protected function btnDescarga_clickHandler(event:MouseEvent):void
@@ -108,7 +109,7 @@
 					perProc = periodos[indPeriodos++]
 					descargaSeleccionResult.token = xbrlCarga.descargaSeleccion(rutMasivo, perProc);
 					descargaSeleccionResult.addEventListener(ResultEvent.RESULT, descargaZipResult);
-						
+					
 				} else {
 					Alert.show('Descargado archivos', 'Fin Proceso');
 					contMasivo++;
@@ -199,17 +200,17 @@
 										xmlContextos.appendChild(nod);	
 									}
 									
-								//	nuevosContextos++;
+									//	nuevosContextos++;
 								}
 							}
 						}
 						xmlParam.appendChild(xmlParamSub);
 						insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)}, xmlContextos.toString()); 
 						/*if(nuevosContextos > 0){
-							nuevosContextos = 0;
-							
+						nuevosContextos = 0;
+						
 						} else {
-							insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)}, null);	
+						insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)}, null);	
 						}*/
 						
 						s++;
@@ -218,7 +219,11 @@
 					}
 				} catch (e:Error){
 					trace(e.getStackTrace());
-					
+					var xmlError:XMLDocument = new XMLDocument();
+					var xmlErrorNode:XMLNode = new XMLNode(1, 'tag');
+					xmlErrorNode.attributes =  {rut: rut, periodo: perProc};
+					xmlError.appendChild(xmlErrorNode);
+					insertarErrorFormatoResult.token = xbrlCarga.insertarErrorFormato(xmlError.toString());
 					s++;
 					procesaData(perProc, rut);
 					
@@ -286,9 +291,9 @@
 			private var xmlContextos:XMLDocument = new XMLDocument();
 			
 			/*private function set contexto(val:*):void{
-				nuevosContextos++;
-				xmlContextos.appendChild(val as XMLNode);
-				
+			nuevosContextos++;
+			xmlContextos.appendChild(val as XMLNode);
+			
 			}*/
 			
 		]]>
@@ -310,6 +315,7 @@
 		<s:CallResponder id="descargaSVSResult"/>
 		<s:CallResponder id="descargaSeleccionResult"/>
 		<s:CallResponder id="rescataEmpresasResult"/>
+		<s:CallResponder id="insertarErrorFormatoResult"/>
 		
 	</fx:Declarations>
 	<fx:Binding source="contMasivo" destination="masivo"/>
