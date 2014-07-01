@@ -1,7 +1,7 @@
 <?php
 
 function manipulaZip($data, $log){
-	fwrite($log, "ENTRE\r\n");
+	fwrite($log, "manipulaZip\r\n");
 	include_once("..\\pclzip-2-8-2\\pclzip.lib.php");
 	fwrite($log, "Archivo a descomprimir :" . $data ."\r\n");
 	$zip = new PclZip($data);
@@ -44,7 +44,7 @@ fclose($log2);
 $re =  fopen("xbrl\\" . "DATARE.txt", "w");
 $log = fopen("xbrl\\" . 'log.txt', 'a');
 $log2 = fopen("C:\\xampp\\htdocs\\ProcesaXml2\\xbrl\\logZZZZZ.txt", "a");
-fwrite($log2, print_r($argv, true) . "\r\n");
+fwrite($log, "PARAMETROS DE ENTRADA ::" . print_r($argv, true) . "\r\n");
 fclose($log2);
 
 //$ruts = stdClass();
@@ -62,8 +62,8 @@ for($i = 0; $i < count($data); $i++){
 }
 $ruts .= '</Tags>';
 $n = count($ruts);
-fwrite($log, print_r($ruts, true) . "\r\n");
-fwrite($log, "N = " . $n . "\r\n");
+fwrite($log, "RUT A PROCESAR :: " . print_r($ruts, true) . "\r\n");
+fwrite($log, "CANTIDAD DE RUT A PROCESAR = " . $n . "\r\n");
 
 
 
@@ -97,7 +97,7 @@ try {
 		fwrite($log, "N = " . $n . "\r\n");
 		$xbrl = str_replace(" ", "%20", $xbrl);
 		$xbrl = trim($xbrl);	
-		fwrite($log, "-------------------------------------------------------\r\n");
+		//fwrite($log, "-------------------------------------------------------\r\n");
 		fwrite($log, "procesando: " . $xbrl ."\r\n");
 		$lineas = file($xbrl);
 		$i = 0;
@@ -160,7 +160,7 @@ try {
 				fwrite($log, "N = " . $n . "\r\n");
 				$xbrl = str_replace(" ", "%20", $xbrl);
 				$xbrl = trim($xbrl);	
-				fwrite($log, "-------------------------------------------------------\r\n");
+				
 				fwrite($log, "procesando: " . $xbrl ."\r\n");
 				
 				$lineas = file($xbrl);
