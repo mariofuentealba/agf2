@@ -26,9 +26,12 @@
 			
 			private var arrContextos:Array = [];
 			private var arrTag:Array = [];
-			private var objContextos:Object = {};
+			[Bindable] private var objContextos:Object = {};
 			[Bindable] private var arrPer:ArrayCollection = new ArrayCollection([{per: 'Todos'}, {per: '03-2009'}, {per: '06-2009'}, {per: '09-2009'}, {per: '12-2009'}, {per: '03-2010'}, {per: '06-2010'}, {per: '09-2010'}, {per: '12-2010'}, {per: '03-2011'}, {per: '06-2011'}, {per: '09-2011'}, {per: '12-2011'}, {per: '03-2012'}, {per: '06-2012'}, {per: '09-2012'}, {per: '12-2012'}, {per: '03-2013'}, {per: '06-2013'}, {per: '09-2013'}, {per: '12-2013'}, {per: '03-2014'}, {per: '06-2014'}, {per: '09-2014'}, {per: '12-2014'}])
-			
+			private var s:int;
+			private var dat:int;
+			private var perProc:String = '';
+			[Bindable] private var nuevosContextos:int = 0;
 			
 			private function muestra(event:ResultEvent):void{
 				//Alert.show(event.result.toString());
@@ -139,9 +142,7 @@
 				
 			}
 			
-			private var s:int;
-			private var dat:int;
-			private var perProc:String = '';
+			
 			
 			
 			private function procesaData(perProc:String, rut:String):void{
@@ -152,7 +153,7 @@
 						var xmlParamSub:XMLNode;
 						var xmlNode:XMLNode;				
 						var clabberList:XMLList;
-						
+						xmlContextos = new XMLDocument();
 						xml = new XML(ArrayCollection(xbrlProcesando).getItemAt(s));
 						xmlParam = new XMLDocument();
 						xmlParamSub = new XMLNode(1, 'Tags');
@@ -189,18 +190,35 @@
 									}
 									
 									arrContextos.push({idTag: String(userGroup.@id), entity: String(info[0].children()[0]), period: arrPer});
-									objContextos[String(userGroup.@id)] = String(userGroup.@id);
+									//objContextos[String(userGroup.@id)] = String(userGroup.@id);
+									
+									if(objContextos[String(userGroup.@id)] != String(userGroup.@id)){
+										objContextos[String(userGroup.@id)] = String(userGroup.@id);
+										var nod:XMLNode = new XMLNode(1, 'tag');
+										nod.attributes = {idTag: String(userGroup.@id), entity: String(info[0].children()[0]), inicio: arrPer[0], fin: arrPer[1], periodo: perProc};
+										xmlContextos.appendChild(nod);	
+									}
+									
+								//	nuevosContextos++;
 								}
 							}
 						}
 						xmlParam.appendChild(xmlParamSub);
-						insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)});
+						insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)}, xmlContextos.toString()); 
+						/*if(nuevosContextos > 0){
+							nuevosContextos = 0;
+							
+						} else {
+							insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)}, null);	
+						}*/
+						
 						s++;
 					} else {
 						callback.call(this);
 					}
 				} catch (e:Error){
 					trace(e.getStackTrace());
+					
 					s++;
 					procesaData(perProc, rut);
 					
@@ -253,6 +271,7 @@
 			private function set masivo(val:*):void{
 				if(flag){
 					indPeriodos = 0;
+					callback = null;
 					rutMasivo = String(arrRutMasivo.pop());
 					if(arrRutMasivo.length == 0){
 						flag =false;	
@@ -262,6 +281,15 @@
 					
 				}
 			}
+			
+			
+			private var xmlContextos:XMLDocument = new XMLDocument();
+			
+			/*private function set contexto(val:*):void{
+				nuevosContextos++;
+				xmlContextos.appendChild(val as XMLNode);
+				
+			}*/
 			
 		]]>
 	</fx:Script>
@@ -285,6 +313,7 @@
 		
 	</fx:Declarations>
 	<fx:Binding source="contMasivo" destination="masivo"/>
+	<!--<fx:Binding source="nuevosContextos" destination="contexto"/>-->
 	<s:layout>
 		<s:HorizontalLayout paddingLeft="20" paddingRight="20" paddingTop="30"/>
 	</s:layout>
