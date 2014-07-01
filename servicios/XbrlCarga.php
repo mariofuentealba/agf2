@@ -1,14 +1,36 @@
 <?php
 class XbrlCarga{
 
-	public function insertarValor($xmlParam){//$etiqueta, $valor, $rut, $periodo){
+	public function insertarValor($xmlParam, $contextos){//$etiqueta, $valor, $rut, $periodo){
 		
 		try { 
+		//return 'hola' ;
 			//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
 			$con->beginTransaction(); 		
+			
+			
+			
+			
 			$log = fopen('xbrl\\log.txt', 'a');				
-			 
+			
+
+			if(isset($contextos)){
+			
+				$sql = "exec [agf].[dbo].[sp_xbrl_insertar_contextos] ?";
+			
+				fwrite($log, "\r\n\r\n\r\n\r\n\r\n ENTRANDO A GRABAR exec [agf].[dbo].[sp_xbrl_insertar_contextos]\r\n" . print_r($contextos, true) . "\r\n\r\n\r\n\r\n\r\n");
+				
+				$sql2 = str_replace("'", "''", $sql);
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
+				$stmt = $con->prepare($sql);				
+				$stmt->bindParam(1, $contextos); 
+				$stmt->execute();
+			
+			}
+
+			
 			$sql = "exec [agf].[dbo].[sp_xbrl_insertar_valores] ?";
 			
 			fwrite($log, "\r\n\r\n\r\n\r\n\r\n ENTRANDO A GRABAR exec [dbo].[sp_xbrl_insertar_valores]\r\n" . print_r($xmlParam, true) . "\r\n\r\n\r\n\r\n\r\n");
@@ -298,7 +320,10 @@ class XbrlCarga{
 		$rutsProcesados = array();
 		$i = 0;
 		$j = 0;
+		
+		$log = fopen("xbrl\\" . 'log.txt', 'a');
 		$ArchivoRemoto = "http://www.svs.cl/institucional/mercados/novedades_envio_sa_ifrs.php?mm_ifrs=" . $per[$j] . "&aa_ifrs=" . $anio[$i] . "";
+		fwrite($log, "PAGINA A CONSULTAR LINKS :: " . $ArchivoRemoto . "\r\n");
 		$ArchivoLocal = "DATA" . $per[$j] . "" . $anio[$i] . ".txt";
 		$useragent="Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1";
 		$ch = curl_init();
@@ -319,8 +344,7 @@ class XbrlCarga{
 		}
 		//echo --$s . " de " . count($datos) . "\n";
 		$nn = count($datos);
-		$log = fopen("xbrl\\" . 'log.txt', 'a');
-		fwrite($log, count($datos) . "-------------------------------------------------------\r\n");
+		fwrite($log, "LINEAS OBTENIDAS::" . count($datos) . "\r\n");
 		//fwrite($resp, "-------------------------------------------------------\r\n");
 		for(; $s < $nn; $s++){	
 			//print_r($datos[$s]);
@@ -350,6 +374,7 @@ class XbrlCarga{
 				$url = str_replace("::", "&", $url);
 				fwrite($f, $url . "\r\n");
 				fwrite($resp, $url . "\r\n");		
+				fwrite($log, "PAGINA DE DESCARGA :: " . $url . "\r\n");
 				
 				
 				for(; $s < $nn; $s++){
@@ -365,7 +390,7 @@ class XbrlCarga{
 		
 		$xml .= "</Ruts>";
 		
-		
+		fwrite($log, "exec sp_xbrl_extraccion '" . $xml . "'\r\n");
 		
 		try { 
 			//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
@@ -417,16 +442,23 @@ class XbrlCarga{
 		$ruts = '';
 		$dataPre = $data;
 		$data = explode(";", $data);
-		
+		$log = fopen('xbrl\\log.txt', 'a');
 		$ruts = '<Tags periodo="' . $periodo . '">';
 		for($i = 0; $i < count($data); $i++){
 			$ruts .= '<tag rut="' . $data[$i] . '" />';
 		}
 		$ruts .= '</Tags>';
+		
+		fwrite($log, "***********************************************************************\r\n");
+		fwrite($log, "descargaSeleccion:\r\n");
+		fwrite($log, "DATAPRE::" . $dataPre . "\r\n");
+		fwrite($log, "PERIODO::" . $periodo . "\r\n");
+		
 		try {
 			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
 			
 			$sql = "exec sp_xbrl_rescata_extraccion ?";
+			fwrite($log, "sp_xbrl_rescata_extraccion '" . $ruts . "'\r\n");
 			
 			$sql2 = str_replace("'", "''", $sql);
 			$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
@@ -439,24 +471,26 @@ class XbrlCarga{
 			
 			$salida = '';
 			$row = $stmt->fetch();
-			$log = fopen('xbrl\\logXML.txt', 'a');
+			
 			//
-			fwrite($log, print_r($row, true) . "\r\n");
+			fwrite($log, "RESPUESTA::" . print_r($row, true) . "\r\n");
 			if($row[0] == '0'){				
-				fwrite($log, "PAG NO CARGADAS\r\n");
+				fwrite($log, "PAG NO CARGADA\r\n");
 				$this->preparaCarga($periodo);
+				fwrite($log, "this->preparaCarga($periodo)\r\n");
 			}
-			fclose($log);
 			$log2 = fopen('xbrl\\log3.txt', 'a');
 			fwrite($log2, "$dataPre\r\n");
 			fwrite($log2, "$periodo\r\n");
 			
-
+			fwrite($log, "C:\\xampp\\php\\php.exe C:\\xampp\\htdocs\\ProcesaXml2\\procesoRecursivo.php " . $dataPre . " " . $periodo . "\r\n");
 			$salida = shell_exec("C:\\xampp\\php\\php.exe C:\\xampp\\htdocs\\ProcesaXml2\\procesoRecursivo.php " . $dataPre . " " . $periodo);
 			//shell_exec("..\\..\\php5\\php.exe ..\\recursivo.php 0 0 0 0");
 			
 			$salida = explode(";;;;;;;", $salida);
-			fwrite($log2, print_r($salida, true) . "\r\n");
+			
+			fwrite($log, "SALIDA :: " . count($salida) . "\r\n");
+
 			fclose($log2);
 			return $salida;
 			
@@ -466,7 +500,7 @@ class XbrlCarga{
 			print "Error!: " . $e->getMessage() . "</br>";
 			//return "bien";//$xmlParam->xmlParam;
 		} 		
-		
+		fclose($log);
 	}
 	
 	
@@ -513,6 +547,53 @@ class XbrlCarga{
 		
 	}
 	
+	
+	public function insertarErrorFormato($xmlParam){//$etiqueta, $valor, $rut, $periodo){
+		
+		try { 
+		//return 'hola' ;
+			//$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
+			$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
+			$con->beginTransaction(); 		
+			
+			
+			
+			
+			
+			
+
+			$sql = "exec [agf].[dbo].[sp_xbrl_insertar_error_formato] ?";
+			
+			
+			
+			$sql2 = str_replace("'", "''", $sql);
+			$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+			$stmtlog->execute();
+			$stmt = $con->prepare($sql);				
+			$stmt->bindParam(1, $xmlParam); 
+			$stmt->execute();
+			$con->commit();
+			return '' . $xmlParam->xmlParam;
+			
+		        
+		     			
+		} catch( PDOExecption $e ) {
+			
+			print "Error!: " . $e->getMessage() . "</br>";
+		
+			$con->rollback();
+			return "bien";//$xmlParam->xmlParam;
+		    
+		} 	
+
+		unset($con); 
+		unset($stmt);
+		
+		
+		
+		
+		return "mal 2";//$xmlParam->xmlParam;
+	}
 	
 	
 }
