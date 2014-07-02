@@ -5743,13 +5743,17 @@ from [dbo].[xbrl_tag_traduccion] a
 		inner join xbrl_traduccion c on a.id_traduccion = c.id
 where a.id_traduccion in (select id_traduccion from [dbo].[xbrl_tag_traduccion] group by id_traduccion having COUNT(*) > 1)
 
+
+drop table [dbo].[xbrl_contexto]
+
 CREATE TABLE [dbo].[xbrl_contexto](
 	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,	
 	[nombre] [varchar](500)  NOT NULL	,
 	[id_periodo] int,
 	[periodo] varchar(10),
 	[inicio] varchar(10),
-	[fin] varchar(10)
+	[fin] varchar(10),
+	[tipo] varchar(10)
 )
 
 
@@ -5800,6 +5804,19 @@ CREATE TABLE [dbo].[xbrl_empresas](
 	[tipoEntidad] varchar(100),
 	[vigencia] varchar(20)
 )
+
+
+DROP TABLE [dbo].[log_error_carga]
+
+CREATE TABLE [dbo].[log_error_carga](	
+	[empresa] varchar(10),
+	[periodo] varchar(10)	
+)
+
+
+
+
+
 
 
 /*
