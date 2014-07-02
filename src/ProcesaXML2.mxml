@@ -193,12 +193,12 @@
 									arrContextos.push({idTag: String(userGroup.@id), entity: String(info[0].children()[0]), period: arrPer});
 									//objContextos[String(userGroup.@id)] = String(userGroup.@id);
 									
-									if(objContextos[String(userGroup.@id)] != String(userGroup.@id)){
+								//	if(objContextos[String(userGroup.@id)] != String(userGroup.@id)){
 										objContextos[String(userGroup.@id)] = String(userGroup.@id);
 										var nod:XMLNode = new XMLNode(1, 'tag');
 										nod.attributes = {idTag: String(userGroup.@id), entity: String(info[0].children()[0]), inicio: arrPer[0], fin: arrPer[1], periodo: perProc};
 										xmlContextos.appendChild(nod);	
-									}
+								//	}
 									
 									//	nuevosContextos++;
 								}
