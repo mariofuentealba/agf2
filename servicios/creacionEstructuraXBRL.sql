@@ -5753,7 +5753,7 @@ CREATE TABLE [dbo].[xbrl_contexto](
 	[periodo] varchar(10),
 	[inicio] varchar(10),
 	[fin] varchar(10),
-	[tipo] varchar(10)
+	[tipo] varchar(50)
 )
 
 
