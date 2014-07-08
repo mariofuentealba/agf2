@@ -23,7 +23,8 @@ CREATE TABLE [dbo].[xbrl_taxonomia](
 	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,
 	[tag] [varchar](500)  NOT NULL,
 	[traduccion] [varchar](500)  NOT NULL,
-	[periodo] [varchar](10)  NOT NULL		
+	[periodo] [varchar](10)  NOT NULL,
+	[rol] int NOT NULL		
 	
 )
 
@@ -2460,7 +2461,7 @@ INSERT INTO @etiquetasXBRL values ('SeparateMember','Separado [miembro]',913000)
 
 
 Insert into xbrl_taxonomia
-select distinct [tag], [traduccion], '06-2013'
+select distinct [tag], [traduccion], '06-2013', [id_xbrl_contenedor]
 from @etiquetasXBRL
 where id_xbrl_contenedor in (210000, 310000, 420000, 510000, 610000)
 
@@ -2468,6 +2469,16 @@ insert into etiquetasXBRL
 select tag, traduccion, id_xbrl_contenedor, '06-2013'--, COUNT(*)
 from @etiquetasXBRL
 group by tag, traduccion, id_xbrl_contenedor
+
+
+
+
+/*DECLARE @etiquetasXBRL table(
+                  [tag] [varchar](500)  NOT NULL,
+					[traduccion] [varchar](500)  NOT NULL,
+					[id_xbrl_contenedor] int NOT NULL		
+            )
+*/
 
 
 INSERT INTO @etiquetasXBRL values ('ManagementCommentaryExplanatory','Comentarios de la gerencia [bloque de texto]',105000)
@@ -5640,17 +5651,17 @@ INSERT INTO @etiquetasXBRL values ('SeparateMember','Separado [miembro]',913000)
 
 
 
-
+Insert into xbrl_taxonomia
+select distinct [tag], [traduccion], '03-2013',[id_xbrl_contenedor]
+from @etiquetasXBRL
+where id_xbrl_contenedor in (210000, 310000, 420000, 510000, 610000)
 
 
 select distinct [tag], [traduccion]
 from @etiquetasXBRL
 where id_xbrl_contenedor in (210000, 310000, 420000, 510000, 610000)
 
-Insert into xbrl_taxonomia
-select distinct [tag], [traduccion], '03-2013'
-from @etiquetasXBRL
-where id_xbrl_contenedor in (210000, 310000, 420000, 510000, 610000)
+
 
 
 select tag, COUNT(*)--, traduccion
