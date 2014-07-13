@@ -5744,7 +5744,7 @@ CREATE TABLE [dbo].[xbrl_tag_traduccion](
 )
 
 insert into [dbo].[xbrl_tag_traduccion]
-select (select max(t.ID) from xbrl_tag t where t.tag = a.tag), (select max(t.ID) from xbrl_traduccion t where t.traduccion = a.traduccion)
+select distinct (select max(t.ID) from xbrl_tag t where t.tag = a.tag), (select max(t.ID) from xbrl_traduccion t where t.traduccion = a.traduccion)
 from xbrl_taxonomia a
 
 
