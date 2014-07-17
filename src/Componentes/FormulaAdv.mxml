@@ -77,7 +77,7 @@
 	<s:BorderContainer x="0" y="10" width="100%" 
 					   borderStyle="inset" borderWeight="2" cornerRadius="4">
 		<s:layout>
-			<s:HorizontalLayout gap="10" paddingLeft="15" paddingRight="15" paddingTop="15" paddingBottom="15" verticalAlign="middle"/>
+			<s:HorizontalLayout gap="30" paddingLeft="15" paddingRight="15" paddingTop="15" paddingBottom="15" verticalAlign="middle"/>
 		</s:layout>
 		<s:backgroundFill>
 			<s:LinearGradient rotation="270">
@@ -90,7 +90,8 @@
 		</s:backgroundFill>
 		<s:Label color="#F2F9FA" fontSize="18" text="Registro de formulas asociadas"
 				 text.campos="Campos Fórmula"/>
-		<s:Button includeIn="State1" label="+" click="button1_clickHandler(event)"/>
+		<s:Button includeIn="State1" width="35" label="+" click="button1_clickHandler(event)"
+				  fontSize="15"/>
 		
 	</s:BorderContainer> 
 	<s:Scroller includeIn="State1" x="10" y="89" width="377" height="171">
@@ -98,6 +99,7 @@
 			<s:layout>
 				<s:VerticalLayout/>
 			</s:layout>
+			<s:Label text="No existe fórmula asociada"/>
 		</s:Group>
 	</s:Scroller>
 	<s:BorderContainer includeIn="campos" x="170" y="260" width="58" height="26" borderStyle="inset"
