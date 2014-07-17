@@ -5866,7 +5866,13 @@ ALTER TABLE [dbo].[indices_financieros] ADD  DEFAULT (NULL) FOR [OA]
 GO
 
 
+ALTER TABLE [agf].[dbo].[indices_financieros]
+DROP constraint DF__indices_f__FORMU__48CFD27E
 
+
+
+ALTER TABLE [agf].[dbo].[indices_financieros]
+DROP COLUMN [DESCRIPCION], [FORMULA_DESC], [RANGO_SUPERIOR], [RANGO_INFERIOR], [RANGOS_DESC]
 
 
 
