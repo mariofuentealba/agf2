@@ -55,7 +55,7 @@
 			
 			include "agf.as";
 			
-			/*	[Bindable]private var flatData:ArrayCollection = new ArrayCollection();
+		/*	[Bindable]private var flatData:ArrayCollection = new ArrayCollection();
 			[Bindable]private var olapData:OLAPResult;
 			
 			public var olapx:IList;
@@ -72,71 +72,71 @@
 			public var olapy:IList;
 			
 			/*private function creationCompleteHandler():void {
-			// You must initialize the cube before you 
-			// can execute a query on it.
-			myMXMLCube.refresh();
+				// You must initialize the cube before you 
+				// can execute a query on it.
+				myMXMLCube.refresh();
 			}
 			
 			// Create the OLAP query.
 			private function getQuery(cube:IOLAPCube):IOLAPQuery {
-			// Create an instance of OLAPQuery to represent the query. 
-			var query:OLAPQuery = new OLAPQuery;
-			
-			// Get the row axis from the query instance.
-			var rowQueryAxis:IOLAPQueryAxis = 
-			query.getAxis(OLAPQuery.ROW_AXIS);
-			// Create an OLAPSet instance to configure the axis.
-			var productSet:OLAPSet = new OLAPSet;
-			// Add the Product to the row to aggregate data 
-			// by the Product dimension.
-			productSet.addElements(
-			cube.findDimension("RSODim").findAttribute("RSO").children);
-			// Add the OLAPSet instance to the axis.
-			rowQueryAxis.addSet(productSet);
-			
-			// Get the column axis from the query instance, and configure it
-			// to aggregate the columns by the Quarter dimension. 
-			var colQueryAxis:IOLAPQueryAxis = query.getAxis(OLAPQuery.COLUMN_AXIS);  
-			var yearSet:OLAPSet= new OLAPSet;
-			yearSet.addElements(
-			cube.findDimension("TimeDim").findAttribute("Year").children);
-			var quarterSet:OLAPSet= new OLAPSet;
-			quarterSet.addElements(
-			cube.findDimension("TimeDim").findAttribute("Periodo").children);
-			colQueryAxis.addSet(yearSet.crossJoin(quarterSet));
-			
-			olapx = cube.findDimension("TimeDim").findAttribute("Periodo").children
-			olapy = cube.findDimension("RSODim").findAttribute("RSO").children;
-			return query;       
+				// Create an instance of OLAPQuery to represent the query. 
+				var query:OLAPQuery = new OLAPQuery;
+				
+				// Get the row axis from the query instance.
+				var rowQueryAxis:IOLAPQueryAxis = 
+					query.getAxis(OLAPQuery.ROW_AXIS);
+				// Create an OLAPSet instance to configure the axis.
+				var productSet:OLAPSet = new OLAPSet;
+				// Add the Product to the row to aggregate data 
+				// by the Product dimension.
+				productSet.addElements(
+					cube.findDimension("RSODim").findAttribute("RSO").children);
+				// Add the OLAPSet instance to the axis.
+				rowQueryAxis.addSet(productSet);
+				
+				// Get the column axis from the query instance, and configure it
+				// to aggregate the columns by the Quarter dimension. 
+				var colQueryAxis:IOLAPQueryAxis = query.getAxis(OLAPQuery.COLUMN_AXIS);  
+				var yearSet:OLAPSet= new OLAPSet;
+				yearSet.addElements(
+					cube.findDimension("TimeDim").findAttribute("Year").children);
+				var quarterSet:OLAPSet= new OLAPSet;
+				quarterSet.addElements(
+					cube.findDimension("TimeDim").findAttribute("Periodo").children);
+				colQueryAxis.addSet(yearSet.crossJoin(quarterSet));
+				
+				olapx = cube.findDimension("TimeDim").findAttribute("Periodo").children
+				olapy = cube.findDimension("RSODim").findAttribute("RSO").children;
+				return query;       
 			}
 			
 			// Event handler to execute the OLAP query 
 			// after the cube completes initialization.
 			private function runQuery(event:CubeEvent):void {
-			// Get cube.
-			var cube:IOLAPCube = IOLAPCube(event.currentTarget);
-			// Create a query instance.
-			var query:IOLAPQuery = getQuery(cube);
-			// Execute the query.
-			var token:AsyncToken = cube.execute(query);
-			// Setup handlers for the query results.
-			token.addResponder(new AsyncResponder(showResult, showFault));
+				// Get cube.
+				var cube:IOLAPCube = IOLAPCube(event.currentTarget);
+				// Create a query instance.
+				var query:IOLAPQuery = getQuery(cube);
+				// Execute the query.
+				var token:AsyncToken = cube.execute(query);
+				// Setup handlers for the query results.
+				token.addResponder(new AsyncResponder(showResult, showFault));
 			}
 			
 			// Handle a query fault.
 			private function showFault(result:Object, token:Object):void {
-			Alert.show("Error in query.");
-			PopUpManager.removePopUp(bloqueo);
+				Alert.show("Error in query.");
+				PopUpManager.removePopUp(bloqueo);
 			}
 			
 			// Handle a successful query by passing the query results to 
 			// the OLAPDataGrid control..
 			private function showResult(result:Object, token:Object):void {
-			if (!result) {
-			Alert.show("No results from query.");
-			return;
-			}
-			olapData= result as OLAPResult;            
+				if (!result) {
+					Alert.show("No results from query.");
+					return;
+				}
+				olapData= result as OLAPResult;            
 			}   */     
 			
 			private function items(datos:ResultEvent):void{
@@ -150,28 +150,28 @@
 						vformulaIndice.arrFormulas.addItem(o);
 					}
 				}
-				
+			
 			}
 			
 			public function cerrando(formula:String, vg:VGroup):void{
-				/*				Ind7.text = formula;
+/*				Ind7.text = formula;
 				var arr:ArrayCollection = new ArrayCollection();
 				for(var i:int = 1; i < vg.numElements; i++){
-				if((vg.getElementAt(i) as ComponenteFormula).cb.selectedIndex > -1){
-				var o:Object = {};
-				var str:String = ''
-				
-				o['campo'] = (vg.getElementAt(i)['ddl'] as DropDownList).name;
-				o['ID_tag_agf'] = (vg.getElementAt(i)['cb'] as ComboBox).selectedItem['ID_tag_agf'];
-				o['etiqueta'] = (vg.getElementAt(i)['cb'] as ComboBox).selectedItem['etiqueta'];
-				o['periodo'] = (vg.getElementAt(i)['ddl'] as DropDownList).selectedItem['label'];
-				o['origen'] = (vg.getElementAt(i)['cb'] as ComboBox).selectedItem['origen'];
-				
-				arr.addItem(o);
-				}
+					if((vg.getElementAt(i) as ComponenteFormula).cb.selectedIndex > -1){
+						var o:Object = {};
+						var str:String = ''
+						
+						o['campo'] = (vg.getElementAt(i)['ddl'] as DropDownList).name;
+						o['ID_tag_agf'] = (vg.getElementAt(i)['cb'] as ComboBox).selectedItem['ID_tag_agf'];
+						o['etiqueta'] = (vg.getElementAt(i)['cb'] as ComboBox).selectedItem['etiqueta'];
+						o['periodo'] = (vg.getElementAt(i)['ddl'] as DropDownList).selectedItem['label'];
+						o['origen'] = (vg.getElementAt(i)['cb'] as ComboBox).selectedItem['origen'];
+						
+						arr.addItem(o);
+					}
 				}
 				dgc.dataProvider = arr;
-				*/				
+*/				
 			}
 			
 			
@@ -212,9 +212,9 @@
 					formulas.push(vformulaIndice.txtFormula.text);
 				}
 				
+				 
 				
-				
-				arr.push(Ind1.text, 0, 0, DD_ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO']); 
+				arr.push(Ind1.text, 0,  0, DD_ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO']); 
 				var arrEmp:Array = [];
 				if(vwEmpresasIndice.selectedIndex == 0){
 					for each(var o:Object in listEmpresas.lSelect.dataProvider){
@@ -239,7 +239,7 @@
 				grillaIndicesFinancieros2Result.addEventListener(ResultEvent.RESULT, indicesResult);				
 				grillaIndicesFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina2);
 				grillaGrupoIndicesResult.addEventListener(ResultEvent.RESULT, generaPagina2);
-				//	parametrosGraficoResult.addEventListener(ResultEvent.RESULT, armaParametrizacion);
+			//	parametrosGraficoResult.addEventListener(ResultEvent.RESULT, armaParametrizacion);
 			}
 			
 			protected function export_clickHandler(event:MouseEvent):void
@@ -261,7 +261,7 @@
 					var val:String = '';
 					var indices:String = '';
 					
-					//	export = listEmpresaSelect.dataProvider.length;
+				//	export = listEmpresaSelect.dataProvider.length;
 					
 					
 					for(var x:int = 0; x < tnGrafico.numElements; x++){
@@ -317,7 +317,7 @@
 				}
 				
 			}
-			[Bindable] var r:int = 44;
+			[Bindable] private var r:int = 44;
 			protected function accordion1_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
@@ -336,10 +336,10 @@
 			protected function acAplicacion_changeHandler(event:IndexChangedEvent):void
 			{
 				// TODO Auto-generated method stub
-				/*	if(acAplicacion.selectedIndex == 0){
-				acAplicacion.height = 600;
+			/*	if(acAplicacion.selectedIndex == 0){
+					acAplicacion.height = 600;
 				} else {
-				acAplicacion.percentHeight = 600;
+					acAplicacion.percentHeight = 600;
 				}*/
 			}
 			
@@ -448,18 +448,18 @@
 				return arrResult;
 			}
 			
-			/*	protected function list1_creationCompleteHandler(event:FlexEvent):void
+		/*	protected function list1_creationCompleteHandler(event:FlexEvent):void
 			{
-			// TODO Auto-generated method stub
-			parametrosGraficoResult.token = modelo.parametrosGrafico();
-			parametrosGraficoResult.addEventListener(ResultEvent.RESULT, armaParametrizacion);
+				// TODO Auto-generated method stub
+				parametrosGraficoResult.token = modelo.parametrosGrafico();
+				parametrosGraficoResult.addEventListener(ResultEvent.RESULT, armaParametrizacion);
 			}*/
 			
 			protected function modelo_faultHandler(event:FaultEvent):void
 			{
 				// TODO Auto-generated method stub
 				Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)
-				PopUpManager.removePopUp(bloqueo);
+					PopUpManager.removePopUp(bloqueo);
 			}
 			
 			
@@ -597,7 +597,7 @@
 			protected function acAplicacion_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				//	Alert.show('' + event.target.className);
+			//	Alert.show('' + event.target.className);
 				if(event.target is AccordionHeader){
 					acAplicacion.selectedIndex = acAplicacion.selectedIndex == 0 ? 1 : 0; 
 				}
@@ -617,17 +617,17 @@
 				parametrosGraficoResult.addEventListener(ResultEvent.RESULT, armaParametrizacion);
 			}
 			
-			[Bindable]var arrIndicesFiltrados:ArrayCollection;
+			[Bindable] private var arrIndicesFiltrados:ArrayCollection;
 			protected function listIndiceAntiguo_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				arrIndicesFiltrados = new ArrayCollection();
-				listSeleccionEmpresas.dataProvider = new ArrayCollection();
+				 arrIndicesFiltrados = new ArrayCollection();
+				 listSeleccionEmpresas.dataProvider = new ArrayCollection();
 				for each(var o:Object in listIndiceAntiguo.selectedItems){
 					arrIndicesFiltrados.addItem(o);	
 				}
-				/*	if(listEmpresasPreseleccion.selectedItems.length > 0){
-				listEmpresasPreseleccion.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+			/*	if(listEmpresasPreseleccion.selectedItems.length > 0){
+					listEmpresasPreseleccion.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 				}*/
 			}
 			
@@ -635,44 +635,44 @@
 			{
 				// TODO Auto-generated method stub
 				//if(listIndiceAntiguo.selectedItems.length > 0){
-				for each(var o:Object in listIndiceAntiguo.dataProvider){
-					var n:int = o['asociados'].length;
-					
-					for(var i:int = 0; i < n; i++){
-						o['asociados'][i]['sel'] = false;
-					}
+					for each(var o:Object in listIndiceAntiguo.dataProvider){
+						var n:int = o['asociados'].length;
+						
+						for(var i:int = 0; i < n; i++){
+							o['asociados'][i]['sel'] = false;
+						}
 					/*		var arr:ArrayCollection = new ArrayCollection();
 					for each(var o2:Object in listEmpresasPreseleccion.dataProvider as ArrayCollection){
-					if(o2['sel'] == true){
-					arr.addItem(o2);
-					}
-					}
-					for(i = 0; i < n; i++){
-					for(var j:int = 0; j < arr.length; j++){
-					if(o['asociados'][i]['id_empGrupo'] == arr.getItemAt(j)['ID_EMPRESA']){
-					o['asociados'][i]['sel'] = true;
-					}
-					}
-					
-					}*/
-					for(i = 0; i < n; i++){
-						for each(var o2:Object in listEmpresaSelect.dataProvider as ArrayCollection){
-							if(o['asociados'][i]['id_empGrupo'] == o2['cod']){
-								o['asociados'][i]['sel'] = true;
+							if(o2['sel'] == true){
+								arr.addItem(o2);
 							}
 						}
+						for(i = 0; i < n; i++){
+							for(var j:int = 0; j < arr.length; j++){
+								if(o['asociados'][i]['id_empGrupo'] == arr.getItemAt(j)['ID_EMPRESA']){
+									o['asociados'][i]['sel'] = true;
+								}
+							}
+							
+						}*/
+						for(i = 0; i < n; i++){
+							for each(var o2:Object in listEmpresaSelect.dataProvider as ArrayCollection){
+								if(o['asociados'][i]['id_empGrupo'] == o2['cod']){
+									o['asociados'][i]['sel'] = true;
+								}
+							}
+							
+						}
 						
-					}
-					
-					
-				}/*					
+						
+					}/*					
 				} else {
-				for each(var o:Object in listIndiceAntiguo.selectedItems){
-				var n:int = o['asociados'].length;
-				for(var i:int = 0; i < n; i++){
-				o['asociados'][i]['sel'] = true;
-				}
-				}	
+					for each(var o:Object in listIndiceAntiguo.selectedItems){
+						var n:int = o['asociados'].length;
+						for(var i:int = 0; i < n; i++){
+							o['asociados'][i]['sel'] = true;
+						}
+					}	
 				}*/
 				
 			}
@@ -680,17 +680,17 @@
 			protected function listEmpresasPreseleccion_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
-				/*	empresasPreResult.token = modelo.comboEmpresa();
+			/*	empresasPreResult.token = modelo.comboEmpresa();
 				empresasPreResult.addEventListener(ResultEvent.RESULT, llenaEmpresasPre);*/
 			}
 			
-			/*	private function llenaEmpresasPre(event:ResultEvent):void{
-			var arr:ArrayCollection = event.result as ArrayCollection;
-			var arr2:ArrayCollection = new ArrayCollection();
-			for each(var o:Object in arr){
-			arr2.addItem({RSO : o['RSO'], ID_EMPRESA : o['ID_EMPRESA'], sel : false}); 
-			}
-			listEmpresasPreseleccion.dataProvider = arr2;
+		/*	private function llenaEmpresasPre(event:ResultEvent):void{
+				var arr:ArrayCollection = event.result as ArrayCollection;
+				var arr2:ArrayCollection = new ArrayCollection();
+				for each(var o:Object in arr){
+					arr2.addItem({RSO : o['RSO'], ID_EMPRESA : o['ID_EMPRESA'], sel : false}); 
+				}
+				listEmpresasPreseleccion.dataProvider = arr2;
 			}*/
 			
 			protected function listSeleccionEmpresas_creationCompleteHandler(event:FlexEvent):void
@@ -707,24 +707,24 @@
 			
 			/*protected function hgroup2_clickHandler(event:MouseEvent):void
 			{
-			// TODO Auto-generated method stub
-			if(event.target.className == 'RadioButton'){
-			switch(event.target.label){
-			case 'Todas':
-			vSelectEmpresas.selectedIndex = 0;
-			break;
-			case 'Grupos':
-			vSelectEmpresas.selectedIndex = 1;
-			break;
-			}
-			}
-			
+				// TODO Auto-generated method stub
+				if(event.target.className == 'RadioButton'){
+					switch(event.target.label){
+						case 'Todas':
+							vSelectEmpresas.selectedIndex = 0;
+							break;
+						case 'Grupos':
+							vSelectEmpresas.selectedIndex = 1;
+							break;
+					}
+				}
+				
 			}*/
 			
 			protected function hgroup2_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
-				//		selectGrupo.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+		//		selectGrupo.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 			}
 			
 			protected function button9_clickHandler(event:MouseEvent):void
@@ -739,7 +739,7 @@
 			}
 			
 			
-			
+		
 			
 			protected function completioninput1_dataChangeHandler(event:FlexEvent):void
 			{
@@ -1111,7 +1111,7 @@
 	</s:states>
 	
 	<fx:Declarations>
-		
+			
 		<mx:OLAPCube name="FlatSchemaCube" dataProvider="{flatData}" id="myMXMLCube" complete="runQuery(event);">
 			
 			
@@ -1234,7 +1234,7 @@
 	<s:Image left="0" top="0" width="256" alpha=".7" source="assets/chico 12.jpg"/>
 	
 	<!--s:VScrollBar viewport="{vv}" 
-	height="{vv.height}"/-->	
+				  height="{vv.height}"/-->	
 	<mx:TabNavigator left="10" top="120" right="10" bottom="50">
 		<s:NavigatorContent id="vv" width="100%" height="100%" label="Analizador" >
 			<s:VGroup  width="100%" maxHeight="{this.height}" height="100%">
@@ -1247,20 +1247,20 @@
 							<s:Label x="6" y="10" text="Datos de Gráfico"/>
 							<s:Label text="Empresa Principal"/>
 							<!--<s:ComboBox id="principal"
-							
-							creationComplete="comboBox_creationCompleteHandler(event)"
-							dataProvider="{arrEmpresas}"
-							keyUp="comboBox_keyDownHandler(event)"
-							labelField="NOMBRE_FANTASIA"
-							selectedIndex="{ComboBoxEmpresaPrincipalSelectedIndex}"/>-->
+										
+										creationComplete="comboBox_creationCompleteHandler(event)"
+										dataProvider="{arrEmpresas}"
+										keyUp="comboBox_keyDownHandler(event)"
+										labelField="NOMBRE_FANTASIA"
+										selectedIndex="{ComboBoxEmpresaPrincipalSelectedIndex}"/>-->
 							<s:Label text="Empresas a Comparar:"/>
 							<!--<s:ComboBox id="comboBoxEmpresa"
-							creationComplete="comboBox_creationCompleteHandler(event)"
-							labelField="NOMBRE_FANTASIA"  keyUp="comboBox_keyDownHandler(event)"
-							dataProvider="{arrEmpresas}"
-							change="comboBoxEmpresa_changeHandler(event)">
-							
-							
+										creationComplete="comboBox_creationCompleteHandler(event)"
+										labelField="NOMBRE_FANTASIA"  keyUp="comboBox_keyDownHandler(event)"
+										dataProvider="{arrEmpresas}"
+										change="comboBoxEmpresa_changeHandler(event)">
+								
+								
 							</s:ComboBox>-->
 							<c:CheckList id="listEmpresaSelect" width="170" height="70" creationComplete="comboBox_creationCompleteHandler(event)"></c:CheckList>
 							<s:Button id="btnBorrarEmpresa" label="Borrar"
@@ -1298,7 +1298,7 @@
 										 enabled="{rbPeriodosActivos.selected}"
 										 itemRendererFunction="myRendererFunction"></c:CheckList>
 							
-							
+								
 							
 							
 							<s:DropDownList id="ddlPeriodo" selectedIndex="0" visible="false" height="0">
@@ -1339,11 +1339,11 @@
 										<s:Label x="43" y="66" fontSize="12" fontWeight="bold"
 												 text="Empresa Principal:"/>
 										<!--<s:ComboBox id="ComboBoxEmpresaPrincipal" x="42" y="79"
-										creationComplete="comboBox_creationCompleteHandler(event)"
-										dataProvider="{arrEmpresas}"
-										keyUp="comboBox_keyDownHandler(event)"
-										selectedIndex="{principal.selectedIndex}"
-										labelField="NOMBRE_FANTASIA"/>-->
+													creationComplete="comboBox_creationCompleteHandler(event)"
+													dataProvider="{arrEmpresas}"
+													keyUp="comboBox_keyDownHandler(event)"
+													selectedIndex="{principal.selectedIndex}"
+													labelField="NOMBRE_FANTASIA"/>-->
 									</s:BorderContainer>
 									<s:BorderContainer width="20%" height="100%">
 										<s:Label x="23" y="10" fontSize="14" fontWeight="bold" text="Paso 3"/>
@@ -1353,7 +1353,7 @@
 							</s:NavigatorContent>
 							
 							<s:NavigatorContent label="Gráfico" width="100%" height="100%">
-								
+														
 							</s:NavigatorContent>
 						</mx:Accordion>
 						<mx:TabNavigator id="tnGrafico" top="40" bottom="0" width="80%"
@@ -1840,11 +1840,8 @@
 											<s:GridColumn visible="false" dataField="id_formula"
 														  headerText="id_formula"></s:GridColumn>
 											<s:GridColumn dataField="NOMBRE" headerText="NOMBRE"></s:GridColumn>
-											<!--<s:GridColumn dataField="DESCRIPCION"
-														  headerText="DESCRIPCION"></s:GridColumn>-->
-											<s:GridColumn dataField="formula" headerText="formula"></s:GridColumn>
-											<!--<s:GridColumn dataField="decimales"
-														  headerText="decimales"></s:GridColumn>-->
+											
+											<s:GridColumn dataField="formula" headerText="formula"></s:GridColumn>		
 											
 											
 										</s:ArrayList>
@@ -1868,7 +1865,7 @@
 												  horizontalCenter="0">
 										<s:NavigatorContent width="100%" height="100%"
 															label="Paso 1">
-											<s:VGroup left="20" right="20" top="5" horizontalAlign="left" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+											<s:VGroup left="20" right="20" top="5" horizontalAlign="left">
 												<s:Label fontWeight="bold" text="Grupo:"/>
 												<s:DropDownList id="DD_ID_GRUPO_INDICE_FINANCIERO"
 																width="200"
@@ -1882,27 +1879,26 @@
 												<s:Label y="20" left="20" height="13" fontWeight="bold"
 														 text="Nombre:"/>
 												<s:TextInput id="Ind1" y="32" left="20" right="20"
-															 width="100%" height="25"/>
+															 width="100%" height="25"/>								
 											</s:VGroup>
-											<mx:TabNavigator id="tnFormulas" x="0" y="118" width="100%"
-															 height="100%"
-															 change="tnFormulas_changeHandler(event)">
+										</s:NavigatorContent>
+										
+										<s:NavigatorContent width="100%" height="100%" label="Paso 2">
+											<mx:TabNavigator id="tnFormulas" change="tnFormulas_changeHandler(event)" width="100%" height="100%">
 												<s:NavigatorContent label="Fórmula Principal">
 													<s:layout>
 														<s:VerticalLayout/>
 													</s:layout>
 													<Componentes:Formula2  id="formulaIndice" top="0" visible="true"
-																		   creationComplete="formulaIndice_creationCompleteHandler(event)">
+																		  creationComplete="formulaIndice_creationCompleteHandler(event)">
 													</Componentes:Formula2>
 													<!--<Componentes:FormulaAdv width="100%">
-													
+														
 													</Componentes:FormulaAdv>-->
 												</s:NavigatorContent>
 												<s:NavigatorContent id="AddFormula" label="+" fontWeight="bold" width="100%" height="100%"/>	
 											</mx:TabNavigator>
-										</s:NavigatorContent>
-										
-										<s:NavigatorContent width="100%" height="100%" label="Paso 2">
+											
 										</s:NavigatorContent>
 										<s:NavigatorContent width="100%" height="100%" label="Paso 3">
 											<s:Label x="32" y="7" fontSize="14" fontWeight="bold"
@@ -1999,7 +1995,7 @@
 											<s:NavigatorContent width="100%" height="100%" label="Paso 2">
 												
 												<!--<Componentes:Formula2 id="formulaIndice0" top="0"
-												bottom="20" horizontalCenter="0" creationComplete="formulaIndice_creationCompleteHandler(event)">
+																	  bottom="20" horizontalCenter="0" creationComplete="formulaIndice_creationCompleteHandler(event)">
 												</Componentes:Formula2>-->
 												<Componentes:FormulaAdv id="formulaIndice0" top="0"
 																		bottom="20" horizontalCenter="0" creationComplete="formulaIndice_creationCompleteHandler(event)">
@@ -2124,113 +2120,113 @@
 						</mx:TabNavigator>
 					</s:NavigatorContent>
 					<!--<s:NavigatorContent width="100%" height="100%" label="Monedas">
-					<mx:TabNavigator id="tnMonedas" left="0" right="0" top="0" bottom="0">
-					<s:NavigatorContent label="Listado" >
-					<s:DataGrid id="dgMonedas" x="23" top="0" bottom="20" width="391"
-					click="dgGrupo_clickHandler(event)"
-					creationComplete="dgMonedas_creationCompleteHandler(event)"
-					doubleClick="dgGrupo_doubleClickHandler(event)"
-					doubleClickEnabled="true" requestedRowCount="4">
-					<s:columns>
-					<s:ArrayList>
-					<s:GridColumn dataField="id" headerText="id"></s:GridColumn>
-					<s:GridColumn dataField="nombre" headerText="nombre"></s:GridColumn>
-					<s:GridColumn dataField="codigo" headerText="codigo"></s:GridColumn>
-					<s:GridColumn dataField="valor_defecto"
-					headerText="valor_defecto"></s:GridColumn>
-					<s:GridColumn dataField="signo" headerText="signo"></s:GridColumn>
-					<s:GridColumn dataField="cantidad_decimal"
-					headerText="cantidad_decimal"></s:GridColumn>
-					<s:GridColumn dataField="operacion"
-					headerText="operacion"></s:GridColumn>
-					
-					
-					
-					</s:ArrayList>
-					</s:columns>
-					<s:AsyncListView list="{grillaMonedasResult.lastResult}"/>
-					
-					
-					
-					
-					</s:DataGrid>	
-					<s:TextInput text="grillaMonedasResult" visible="false">
-					
-					</s:TextInput>
-					</s:NavigatorContent>
-					<s:NavigatorContent label="Nuevo">
-					<s:BorderContainer x="121" y="56" width="475" height="338" cornerRadius="15">
-					
-					<s:TextInput id="txtGruposNombre13" y="34" left="20" right="20"/>
-					
-					
-					<s:Label x="20" y="18" width="433" fontWeight="bold"
-					text="Nombre:"/>
-					<s:TextInput id="txtGruposNombre14" y="84" left="20" right="20"/>
-					<s:Label x="22" y="68" width="433" fontWeight="bold"
-					text="Codigo:"/>
-					<s:TextInput id="txtGruposNombre15" y="133" left="20" right="20"/>
-					<s:Label x="25" y="117" width="433" fontWeight="bold"
-					text="Valor X Defecto:"/>
-					<s:DropDownList x="20" y="277">
-					<s:ArrayCollection>
-					<fx:Object data="*" label="Multiplicar"></fx:Object>
-					<fx:Object data="/" label="Dividir"></fx:Object>
-					</s:ArrayCollection>
-					</s:DropDownList>
-					<s:TextInput id="txtGruposNombre16" y="183" left="20" right="20"/>
-					<s:Label x="22" y="167" width="433" fontWeight="bold"
-					text="Signo:"/>
-					<s:TextInput id="txtGruposNombre17" y="225" left="20" right="20"/>
-					<s:Label x="20" y="209" width="433" fontWeight="bold"
-					text="Decimales:"/>
-					
-					<s:Label x="22" y="257" fontWeight="bold" text="Operacion:"/>
-					<s:Button x="11" y="310" label="Guardar" click="guardar_clickHandler(event)"/>
-					</s:BorderContainer>
-					<s:Label x="121" y="43" fontSize="20" text="Moneda"/>
-					
-					</s:NavigatorContent>
-					<s:NavigatorContent width="100%" height="100%" label="Editar" enabled="false">
-					<s:BorderContainer x="121" y="56" width="475" height="338" cornerRadius="15">
-					<s:TextInput visible="false" name="id" text="{dgMonedas.selectedItem['id']}"/>
-					
-					<s:Label x="20" y="18" width="433" fontWeight="bold"
-					text="Nombre:"/>
-					<s:TextInput id="txtGruposNombre18" y="34" left="20" right="20" name="nombre" text="{dgMonedas.selectedItem['nombre']}"/>
-					
-					
-					
-					<s:Label x="22" y="68" width="433" fontWeight="bold"
-					text="Codigo:"/>
-					<s:TextInput id="txtGruposNombre19" y="84" left="20" right="20" name="codigo" text="{dgMonedas.selectedItem['codigo']}"/>
-					
-					<s:Label x="25" y="117" width="433" fontWeight="bold"
-					text="Valor X Defecto:"/>
-					<s:TextInput id="txtGruposNombre20" y="133" left="20" right="20" name="valor_defecto" text="{dgMonedas.selectedItem['valor_defecto']}"/>
-					
-					<s:Label x="22" y="167" width="433" fontWeight="bold"
-					text="Signo:"/>
-					<s:TextInput id="txtGruposNombre21" y="183" left="20" right="20" name="signo" text="{dgMonedas.selectedItem['signo']}"/>
-					
-					<s:Label x="20" y="209" width="433" fontWeight="bold"
-					text="Decimales:"/>
-					<s:TextInput id="txtGruposNombre22" y="225" left="20" right="20" name="cantidad_decimal" text="{dgMonedas.selectedItem['cantidad_decimal']}"/>
-					
-					
-					<s:Label x="22" y="257" fontWeight="bold" text="Operacion:"/>
-					<s:DropDownList x="20" y="277" name="operacion" selectedIndex="{dgMonedas.selectedItem['operacion'] == 'Multiplicar' ? 0 : 1}">
-					<s:ArrayCollection>
-					<fx:Object data="*" label="Multiplicar"></fx:Object>
-					<fx:Object data="/" label="Dividir"></fx:Object>
-					</s:ArrayCollection>
-					</s:DropDownList>
-					
-					<s:Button x="11" y="310" label="Guardar" click="guardar_clickHandler(event)"/>
-					</s:BorderContainer>
-					<s:Label x="121" y="43" fontSize="20" text="Moneda"/>
-					</s:NavigatorContent>
-					</mx:TabNavigator>
+						<mx:TabNavigator id="tnMonedas" left="0" right="0" top="0" bottom="0">
+							<s:NavigatorContent label="Listado" >
+								<s:DataGrid id="dgMonedas" x="23" top="0" bottom="20" width="391"
+											click="dgGrupo_clickHandler(event)"
+											creationComplete="dgMonedas_creationCompleteHandler(event)"
+											doubleClick="dgGrupo_doubleClickHandler(event)"
+											doubleClickEnabled="true" requestedRowCount="4">
+									<s:columns>
+										<s:ArrayList>
+											<s:GridColumn dataField="id" headerText="id"></s:GridColumn>
+											<s:GridColumn dataField="nombre" headerText="nombre"></s:GridColumn>
+											<s:GridColumn dataField="codigo" headerText="codigo"></s:GridColumn>
+											<s:GridColumn dataField="valor_defecto"
+														  headerText="valor_defecto"></s:GridColumn>
+											<s:GridColumn dataField="signo" headerText="signo"></s:GridColumn>
+											<s:GridColumn dataField="cantidad_decimal"
+														  headerText="cantidad_decimal"></s:GridColumn>
+											<s:GridColumn dataField="operacion"
+														  headerText="operacion"></s:GridColumn>
+											
+											
+											
+										</s:ArrayList>
+									</s:columns>
+									<s:AsyncListView list="{grillaMonedasResult.lastResult}"/>
+									
+									
+									
+									
+								</s:DataGrid>	
+								<s:TextInput text="grillaMonedasResult" visible="false">
+									
+								</s:TextInput>
+							</s:NavigatorContent>
+							<s:NavigatorContent label="Nuevo">
+								<s:BorderContainer x="121" y="56" width="475" height="338" cornerRadius="15">
+									
+									<s:TextInput id="txtGruposNombre13" y="34" left="20" right="20"/>
+									
+									
+									<s:Label x="20" y="18" width="433" fontWeight="bold"
+											 text="Nombre:"/>
+									<s:TextInput id="txtGruposNombre14" y="84" left="20" right="20"/>
+									<s:Label x="22" y="68" width="433" fontWeight="bold"
+											 text="Codigo:"/>
+									<s:TextInput id="txtGruposNombre15" y="133" left="20" right="20"/>
+									<s:Label x="25" y="117" width="433" fontWeight="bold"
+											 text="Valor X Defecto:"/>
+									<s:DropDownList x="20" y="277">
+										<s:ArrayCollection>
+											<fx:Object data="*" label="Multiplicar"></fx:Object>
+											<fx:Object data="/" label="Dividir"></fx:Object>
+										</s:ArrayCollection>
+									</s:DropDownList>
+									<s:TextInput id="txtGruposNombre16" y="183" left="20" right="20"/>
+									<s:Label x="22" y="167" width="433" fontWeight="bold"
+											 text="Signo:"/>
+									<s:TextInput id="txtGruposNombre17" y="225" left="20" right="20"/>
+									<s:Label x="20" y="209" width="433" fontWeight="bold"
+											 text="Decimales:"/>
+									
+									<s:Label x="22" y="257" fontWeight="bold" text="Operacion:"/>
+									<s:Button x="11" y="310" label="Guardar" click="guardar_clickHandler(event)"/>
+								</s:BorderContainer>
+								<s:Label x="121" y="43" fontSize="20" text="Moneda"/>
+								
+							</s:NavigatorContent>
+							<s:NavigatorContent width="100%" height="100%" label="Editar" enabled="false">
+								<s:BorderContainer x="121" y="56" width="475" height="338" cornerRadius="15">
+									<s:TextInput visible="false" name="id" text="{dgMonedas.selectedItem['id']}"/>
+									
+									<s:Label x="20" y="18" width="433" fontWeight="bold"
+											 text="Nombre:"/>
+									<s:TextInput id="txtGruposNombre18" y="34" left="20" right="20" name="nombre" text="{dgMonedas.selectedItem['nombre']}"/>
+									
+									
+									
+									<s:Label x="22" y="68" width="433" fontWeight="bold"
+											 text="Codigo:"/>
+									<s:TextInput id="txtGruposNombre19" y="84" left="20" right="20" name="codigo" text="{dgMonedas.selectedItem['codigo']}"/>
+									
+									<s:Label x="25" y="117" width="433" fontWeight="bold"
+											 text="Valor X Defecto:"/>
+									<s:TextInput id="txtGruposNombre20" y="133" left="20" right="20" name="valor_defecto" text="{dgMonedas.selectedItem['valor_defecto']}"/>
+									
+									<s:Label x="22" y="167" width="433" fontWeight="bold"
+											 text="Signo:"/>
+									<s:TextInput id="txtGruposNombre21" y="183" left="20" right="20" name="signo" text="{dgMonedas.selectedItem['signo']}"/>
+									
+									<s:Label x="20" y="209" width="433" fontWeight="bold"
+											 text="Decimales:"/>
+									<s:TextInput id="txtGruposNombre22" y="225" left="20" right="20" name="cantidad_decimal" text="{dgMonedas.selectedItem['cantidad_decimal']}"/>
+									
+									
+									<s:Label x="22" y="257" fontWeight="bold" text="Operacion:"/>
+									<s:DropDownList x="20" y="277" name="operacion" selectedIndex="{dgMonedas.selectedItem['operacion'] == 'Multiplicar' ? 0 : 1}">
+										<s:ArrayCollection>
+											<fx:Object data="*" label="Multiplicar"></fx:Object>
+											<fx:Object data="/" label="Dividir"></fx:Object>
+										</s:ArrayCollection>
+									</s:DropDownList>
+									
+									<s:Button x="11" y="310" label="Guardar" click="guardar_clickHandler(event)"/>
+								</s:BorderContainer>
+								<s:Label x="121" y="43" fontSize="20" text="Moneda"/>
+							</s:NavigatorContent>
+						</mx:TabNavigator>
 					</s:NavigatorContent>-->
 					<!--s:NavigatorContent width="100%" height="100%" label="Asociar AGF-XBRL">
 					</s:NavigatorContent>
@@ -2256,13 +2252,10 @@
 				</s:layout>
 				<s:VGroup>
 					<s:DropDownList id="ddlPeriodoMasivo" x="39" y="33" dataProvider="{arrPer}" labelField="per"></s:DropDownList>
-					<!--<s:Button x="39" y="63" label="descargar Información de SVS" id="btnDescarga" click="btnDescarga_clickHandler(event)"/>-->	
+					<s:Button x="39" y="63" label="descargar Información de SVS" id="btnDescarga" click="btnDescarga_clickHandler(event)"/>	
 				</s:VGroup>
 				
-				<s:DataGrid id="dgEmpresas" width="839" height="241"
-							creationComplete="dgEmpresas_creationCompleteHandler(event)"
-							dataProvider="{arrRut}" requestedRowCount="4"
-							selectionMode="multipleRows">
+				<s:DataGrid id="dgEmpresas"  requestedRowCount="4" dataProvider="{arrRut}" selectionMode="multipleRows" creationComplete="dgEmpresas_creationCompleteHandler(event)">
 					<s:columns>
 						<s:ArrayList>
 							<s:GridColumn dataField="rut" headerText="Rut"></s:GridColumn>
@@ -2275,7 +2268,7 @@
 				</s:DataGrid>
 				<!--<s:Button id="btnProcXBRL" x="602" y="9" label="Procesar XBRL" click="btnProcXBRL_clickHandler(event)"/>-->
 				<s:Button id="btnProcXBRLTodoPeriodo" x="602" y="9" label="Procesar XBRL" click="btnProcXBRLTodoPeriodo_clickHandler(event)"/>
-				
+								
 			</s:Group>
 			
 		</s:NavigatorContent>
@@ -2288,8 +2281,8 @@
 	<!--mx:LinkBar x="22" y="116" borderStyle="solid"  dataProvider="{viewstack1}">
 	</mx:LinkBar>
 	<mx:ViewStack id="viewstack1" left="0" right="0" top="150" bottom="0">
-	
-	
+		
+		
 	</mx:ViewStack-->
 	<s:Label x="10" y="10" text="Sesion iniciada por:"/>
 	<s:Label id="txtUser" x="128" y="10" fontWeight="bold" text="CArriagada"/>
