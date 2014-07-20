@@ -12,7 +12,7 @@
 			   height="1068" 
 			   creationComplete="crearEsquema_creationCompleteHandler(event)"
 			   
-			   width="100%" xmlns:metadata="org.osmf.metadata.*" xmlns:formulasservice="services.formulasservice.*">
+			   width="100%" xmlns:metadata="org.osmf.metadata.*" xmlns:formulasservice="services.formulasservice.*" xmlns:componentesformula="services.componentesformula.*">
 	<s:layout>
 		<s:BasicLayout/>
 	</s:layout>
@@ -1209,6 +1209,13 @@
 		<s:CallResponder id="comboGrupoIndicesFinancierosResult4"/>
 		<s:CallResponder id="comboEmpresaResult"/>
 		<s:CallResponder id="grillaIndicesFinancierosResult2"/>
+		
+		
+		<s:CallResponder id="comboItemsAdvResult" result="comboItemsResult_resultHandler(event)"/>
+		<componentesformula:ComponentesFormula id="componentesFormula"
+											   fault="Alert.show(event.fault.faultString + '\n' + event.fault.faultDetail)"
+											   showBusyCursor="true"/>
+		
 		<s:RadioButtonGroup id="rgdFormula"/>
 		
 		
@@ -1879,7 +1886,8 @@
 												<s:Label y="20" left="20" height="13" fontWeight="bold"
 														 text="Nombre:"/>
 												<s:TextInput id="Ind1" y="32" left="20" right="20"
-															 width="100%" height="25"/>								
+															 width="100%" height="25"/>	
+												<Componentes:FormulaAdv />
 											</s:VGroup>
 										</s:NavigatorContent>
 										

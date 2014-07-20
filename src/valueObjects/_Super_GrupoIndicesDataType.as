@@ -23,7 +23,6 @@ import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 
 use namespace model_internal;
 
-[Managed]
 [ExcludeClass]
 public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
@@ -120,6 +119,7 @@ public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher im
         if (oldValue !== value)
         {
             _internal_ID_TIPO_EMPRESA = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ID_TIPO_EMPRESA", oldValue, _internal_ID_TIPO_EMPRESA));
         }
     }
 
@@ -129,6 +129,7 @@ public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher im
         if (oldValue !== value)
         {
             _internal_nombre = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "nombre", oldValue, _internal_nombre));
         }
     }
 
@@ -138,6 +139,7 @@ public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher im
         if (oldValue !== value)
         {
             _internal_descripcion = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "descripcion", oldValue, _internal_descripcion));
         }
     }
 
@@ -147,6 +149,7 @@ public class _Super_GrupoIndicesDataType extends flash.events.EventDispatcher im
         if (oldValue !== value)
         {
             _internal_ID_GRUPO_INDICE_FINANCIERO = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ID_GRUPO_INDICE_FINANCIERO", oldValue, _internal_ID_GRUPO_INDICE_FINANCIERO));
         }
     }
 

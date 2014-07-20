@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="600" height="300"  xmlns:Componentes="Componentes.*"
+		 creationComplete="bordercontainer1_creationCompleteHandler(event)"
+		 >	
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.DragEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ToolTipEvent;
+			
+			import spark.skins.spark.DefaultItemRenderer;
+			[Bindable] public var arrXbrl:ArrayCollection = new ArrayCollection();
+			[Bindable] public var arrIndices:ArrayCollection = new ArrayCollection();
+			[Bindable] private var add:Number = 0;
+			
+			
+			private function setToolTipStyle():void {
+				styleManager.getStyleDeclaration("mx.controls.ToolTip").setStyle("fontStyle","italic");
+				styleManager.getStyleDeclaration("mx.controls.ToolTip").setStyle("fontSize","19");
+				/*styleManager.getStyleDeclaration("mx.controls.ToolTip").setStyle("fontFamily","Arial");
+				styleManager.getStyleDeclaration("mx.controls.ToolTip").setStyle("color","#FF6699");
+				styleManager.getStyleDeclaration("mx.controls.ToolTip").setStyle("backgroundColor","#33CC99");*/
+			}
+			
+			private function list_itemRendererFunc(item:Object):ClassFactory {
+				var cla:Class = DefaultItemRenderer;
+				switch (item.num) {
+					case 1:// Item
+						cla = CampoItem;
+						break;
+					case 2://Indice formula
+						cla = CampoIndice;
+						break;
+					default:
+						break;
+				}
+				
+				return new ClassFactory(cla);
+			}
+			
+			
+			protected function lstCampos_dragEnterHandler(event:DragEvent):void
+			{
+				// TODO Auto-generated method stub
+				//item['codigo'] = '' + ArrayCollection(lstCampos.dataProvider).length;
+				
+				List(event.dragInitiator).selectedItem['codigo'] += '' + (lstCampos.dataProvider != null ? ArrayCollection(lstCampos.dataProvider).length + 1 : 1);
+			}
+			
+			protected function lstCampos_dragCompleteHandler(event:DragEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function lstCampos_dragDropHandler(event:DragEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function lstCampos_dragExitHandler(event:DragEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function lstCampos_dragOverHandler(event:DragEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function lstCampos_dragStartHandler(event:DragEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			protected function bordercontainer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				setToolTipStyle();
+				this.addEventListener(Event.ENTER_FRAME, oscurese);
+			}
+			
+			private function oscurese(event:Event):void{
+				add += 0.01;
+				if(add > 0.5){
+					this.removeEventListener(Event.ENTER_FRAME, oscurese);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<!--<s:backgroundFill>
+		<s:LinearGradient rotation="270">
+			<s:entries>
+				<s:GradientEntry color="0x000000" ratio="0.00" alpha="0.5"/>
+				<s:GradientEntry color="0x333333" ratio="0.33" alpha="0.5"/>
+				<s:GradientEntry color="0x666666" ratio="0.66" alpha="0.5"/>
+			</s:entries>
+		</s:LinearGradient>
+	</s:backgroundFill>-->
+	<s:Rect width="100%" height="100%" alpha="{add}">
+		<s:fill>
+			<s:SolidColor color="#000000" />
+		</s:fill>
+	</s:Rect>
+	<s:BorderContainer cornerRadius="5" horizontalCenter="0" top="50">
+		<s:layout>
+			<s:VerticalLayout gap="20" paddingBottom="20" paddingLeft="20" paddingRight="20" paddingTop="20"/>
+		</s:layout>
+		<Componentes:TitledBorderBox title="Selección" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" cornerRadius="5" borderColor="0x666666">
+			<s:HGroup gap="5" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" width="600">
+				<s:List id="lstItemXbrl" dataProvider="{arrXbrl}" height="200" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
+					
+				</s:List>
+				<s:List id="lstItemManual" dataProvider="{arrXbrl}" height="200" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
+					
+				</s:List>
+				<s:List id="lstIndice" dataProvider="{arrIndices}" height="200" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
+					
+				</s:List>
+			</s:HGroup>	
+		</Componentes:TitledBorderBox>
+		
+		<Componentes:TitledBorderBox title="Campos Fórmula" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" cornerRadius="5" borderColor="0x666666">
+			<s:BorderContainer width="600" height="300" cornerRadius="5" borderVisible="false">
+				
+				<s:backgroundFill>
+					<s:LinearGradient rotation="270">
+						<s:entries>
+							<s:GradientEntry color="0x000000" ratio="0.00" alpha="0.5"/>
+							<s:GradientEntry color="0x333333" ratio="0.33" alpha="0.5"/>
+							<s:GradientEntry color="0x666666" ratio="0.66" alpha="0.5"/>
+						</s:entries>
+					</s:LinearGradient>
+				</s:backgroundFill>
+				<s:List id="lstCampos" dragEnabled="true" dragMoveEnabled="true" dropEnabled="true" dragEnter="lstCampos_dragEnterHandler(event)" 
+						itemRendererFunction="list_itemRendererFunc" left="2" right="2" bottom="2" top="2" allowMultipleSelection="true"
+						dragComplete="lstCampos_dragCompleteHandler(event)" dragDrop="lstCampos_dragDropHandler(event)" dragExit="lstCampos_dragExitHandler(event)"
+						dragOver="lstCampos_dragOverHandler(event)" dragStart="lstCampos_dragStartHandler(event)"/>
+			</s:BorderContainer>	
+		</Componentes:TitledBorderBox>	
+	</s:BorderContainer>
+	
+	
+	
+</s:Group>

@@ -21,6 +21,7 @@
   <theme themeIsDefault="false" themeIsSDK="true" themeLocation="${SDK_THEMES_DIR}/frameworks/themes/Halo"/>
   <applications>
     <application path="agf.mxml"/>
+    <application path="ProcesaXML2.mxml"/>
   </applications>
   <modules/>
   <buildCSSFiles/>

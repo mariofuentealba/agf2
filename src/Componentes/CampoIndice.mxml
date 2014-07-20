@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				autoDrawBackground="true" creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import spark.components.List				
+			import spark.components.DataGroup;
+			
+			[Bindable] public var txtTipo:String;
+			[Bindable] public var arrContextos:ArrayCollection = new ArrayCollection();
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				try{
+					arrContextos = new ArrayCollection(data.arrContexto);
+					
+					if(this.parent != null && this.parent.parent.parent.parent.parent['className'] == 'List'){
+						//txtTipo = '' + ArrayCollection(List(this.parent.parent.parent.parent.parent).dataProvider).length;	
+						txtTipo = '' + data['codigo'];
+					}	
+				} catch(e:*){
+					
+				}
+				
+				
+				//DataGroup(this.parent).numElements;
+			}
+			
+			/*private function set fn(val:*):void{
+			if(val){
+			txtTipo = '' + val;
+			}
+			}*/
+			
+		]]>
+	</fx:Script>
+	<!--<fx:Binding source="this.parent.numAutomationChildren" destination="fn"/>-->
+	
+	<s:Group width="100%" height="80">
+		<!--<s:layout>
+		<s:HorizontalLayout gap="5" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
+		</s:layout>-->
+		<s:Label fontSize="9" text="Item" top="3" left="20" color="0x666666"/>
+		<s:HGroup verticalCenter="0" left="30">
+			<s:Label text="ID:" top="3" left="3"/>
+			<s:Label text="{'C'  + txtTipo}" top="3" left="3"/>
+			<s:Label text="{data.etiqueta}" width="300" fontWeight="bold" fontSize="12"/>
+			<!--<s:DropDownList dataProvider="{arrContextos}" width="200"></s:DropDownList>-->	
+		</s:HGroup>
+		<s:Rect width="100%" height="0.5" bottom="0">
+			<s:stroke>
+				<s:SolidColorStroke color="0x666666"/> 
+			</s:stroke>
+		</s:Rect>
+		
+	</s:Group>
+	<!--<s:Label text="{data}"/>-->
+	
+</s:ItemRenderer>

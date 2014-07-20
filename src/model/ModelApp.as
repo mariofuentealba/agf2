@@ -12,8 +12,8 @@ package model
 	public class ModelApp
 	{
 		private static var modelLocator:ModelApp;
-		public var arrXBRL:ArrayCollection = new ArrayCollection;
-		public var arrFormulas:ArrayCollection = new ArrayCollection;
+		public var arrXBRL:ArrayCollection = new ArrayCollection();
+		public var arrFormulas:ArrayCollection = new ArrayCollection();
 		public var arrFormulasIndice:ArrayCollection;
 		
 		public static function getInstance():ModelApp

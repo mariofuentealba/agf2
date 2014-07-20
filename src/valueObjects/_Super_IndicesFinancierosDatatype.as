@@ -23,7 +23,6 @@ import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 
 use namespace model_internal;
 
-[Managed]
 [ExcludeClass]
 public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
@@ -200,6 +199,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_id_formula = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "id_formula", oldValue, _internal_id_formula));
         }
     }
 
@@ -209,6 +209,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_NOMBRE = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "NOMBRE", oldValue, _internal_NOMBRE));
         }
     }
 
@@ -218,6 +219,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_rangos_desc = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "rangos_desc", oldValue, _internal_rangos_desc));
         }
     }
 
@@ -227,6 +229,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_rango_superior = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "rango_superior", oldValue, _internal_rango_superior));
         }
     }
 
@@ -236,6 +239,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_DESCRIPCION = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "DESCRIPCION", oldValue, _internal_DESCRIPCION));
         }
     }
 
@@ -245,6 +249,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_formula_desc = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "formula_desc", oldValue, _internal_formula_desc));
         }
     }
 
@@ -254,6 +259,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_decimales = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "decimales", oldValue, _internal_decimales));
         }
     }
 
@@ -263,6 +269,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_campo3 = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "campo3", oldValue, _internal_campo3));
         }
     }
 
@@ -272,6 +279,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_campo2 = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "campo2", oldValue, _internal_campo2));
         }
     }
 
@@ -281,6 +289,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_ID_GRUPO_INDICE_FINANCIERO = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ID_GRUPO_INDICE_FINANCIERO", oldValue, _internal_ID_GRUPO_INDICE_FINANCIERO));
         }
     }
 
@@ -290,6 +299,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_rango_inferior = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "rango_inferior", oldValue, _internal_rango_inferior));
         }
     }
 
@@ -299,6 +309,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_campo1 = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "campo1", oldValue, _internal_campo1));
         }
     }
 
@@ -308,6 +319,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_ID_INDICE_FINANCIERO = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ID_INDICE_FINANCIERO", oldValue, _internal_ID_INDICE_FINANCIERO));
         }
     }
 
@@ -317,6 +329,7 @@ public class _Super_IndicesFinancierosDatatype extends flash.events.EventDispatc
         if (oldValue !== value)
         {
             _internal_formula = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "formula", oldValue, _internal_formula));
         }
     }
 

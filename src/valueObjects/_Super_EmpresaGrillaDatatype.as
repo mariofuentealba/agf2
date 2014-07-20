@@ -23,7 +23,6 @@ import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 
 use namespace model_internal;
 
-[Managed]
 [ExcludeClass]
 public class _Super_EmpresaGrillaDatatype extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
@@ -152,6 +151,7 @@ public class _Super_EmpresaGrillaDatatype extends flash.events.EventDispatcher i
         if (oldValue !== value)
         {
             _internal_RSO = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "RSO", oldValue, _internal_RSO));
         }
     }
 
@@ -161,6 +161,7 @@ public class _Super_EmpresaGrillaDatatype extends flash.events.EventDispatcher i
         if (oldValue !== value)
         {
             _internal_color = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "color", oldValue, _internal_color));
         }
     }
 
@@ -170,6 +171,7 @@ public class _Super_EmpresaGrillaDatatype extends flash.events.EventDispatcher i
         if (oldValue !== value)
         {
             _internal_TIPO_IFRS = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "TIPO_IFRS", oldValue, _internal_TIPO_IFRS));
         }
     }
 
@@ -179,6 +181,7 @@ public class _Super_EmpresaGrillaDatatype extends flash.events.EventDispatcher i
         if (oldValue !== value)
         {
             _internal_TIPO_BALANCE = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "TIPO_BALANCE", oldValue, _internal_TIPO_BALANCE));
         }
     }
 
@@ -188,6 +191,7 @@ public class _Super_EmpresaGrillaDatatype extends flash.events.EventDispatcher i
         if (oldValue !== value)
         {
             _internal_RUT = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "RUT", oldValue, _internal_RUT));
         }
     }
 
@@ -197,6 +201,7 @@ public class _Super_EmpresaGrillaDatatype extends flash.events.EventDispatcher i
         if (oldValue !== value)
         {
             _internal_NOMBRE_BOLSA = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "NOMBRE_BOLSA", oldValue, _internal_NOMBRE_BOLSA));
         }
     }
 
@@ -206,6 +211,7 @@ public class _Super_EmpresaGrillaDatatype extends flash.events.EventDispatcher i
         if (oldValue !== value)
         {
             _internal_NOMBRE_FANTASIA = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "NOMBRE_FANTASIA", oldValue, _internal_NOMBRE_FANTASIA));
         }
     }
 
@@ -215,6 +221,7 @@ public class _Super_EmpresaGrillaDatatype extends flash.events.EventDispatcher i
         if (oldValue !== value)
         {
             _internal_ID_EMPRESA = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ID_EMPRESA", oldValue, _internal_ID_EMPRESA));
         }
     }
 

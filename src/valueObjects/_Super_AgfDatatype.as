@@ -23,7 +23,6 @@ import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 
 use namespace model_internal;
 
-[Managed]
 [ExcludeClass]
 public class _Super_AgfDatatype extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
@@ -120,6 +119,7 @@ public class _Super_AgfDatatype extends flash.events.EventDispatcher implements 
         if (oldValue !== value)
         {
             _internal_nombre = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "nombre", oldValue, _internal_nombre));
         }
     }
 
@@ -129,6 +129,7 @@ public class _Super_AgfDatatype extends flash.events.EventDispatcher implements 
         if (oldValue !== value)
         {
             _internal_id_tag_agf = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "id_tag_agf", oldValue, _internal_id_tag_agf));
         }
     }
 
@@ -138,6 +139,7 @@ public class _Super_AgfDatatype extends flash.events.EventDispatcher implements 
         if (oldValue !== value)
         {
             _internal_etiqueta = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "etiqueta", oldValue, _internal_etiqueta));
         }
     }
 
@@ -147,6 +149,7 @@ public class _Super_AgfDatatype extends flash.events.EventDispatcher implements 
         if (oldValue !== value)
         {
             _internal_origen = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "origen", oldValue, _internal_origen));
         }
     }
 

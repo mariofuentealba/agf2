@@ -15,6 +15,7 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
+			import mx.managers.PopUpManager;
 			private var modelApp:ModelApp = model.ModelApp.getInstance();
 			private var c:int = 1;
 			public var _s:String; 
@@ -57,7 +58,17 @@
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				this.currentState = 'campos';
+				//this.currentState = 'campos';
+				
+				var opcionesFormula:IndiceFormula = new IndiceFormula();
+				opcionesFormula.arrXbrl = modelApp.arrXBRL;
+				opcionesFormula.arrIndices = modelApp.arrFormulasIndice;
+				PopUpManager.addPopUp(opcionesFormula, agf(this.parentApplication));
+				opcionesFormula.width = this.parentApplication.width;
+				opcionesFormula.height = this.parentApplication.height;
+				PopUpManager.centerPopUp(opcionesFormula);
+				
+				
 			}
 			
 			

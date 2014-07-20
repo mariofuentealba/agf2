@@ -23,7 +23,6 @@ import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 
 use namespace model_internal;
 
-[Managed]
 [ExcludeClass]
 public class _Super_MonedasDatatype extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
@@ -144,6 +143,7 @@ public class _Super_MonedasDatatype extends flash.events.EventDispatcher impleme
         if (oldValue !== value)
         {
             _internal_codigo = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "codigo", oldValue, _internal_codigo));
         }
     }
 
@@ -153,6 +153,7 @@ public class _Super_MonedasDatatype extends flash.events.EventDispatcher impleme
         if (oldValue !== value)
         {
             _internal_nombre = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "nombre", oldValue, _internal_nombre));
         }
     }
 
@@ -162,6 +163,7 @@ public class _Super_MonedasDatatype extends flash.events.EventDispatcher impleme
         if (oldValue !== value)
         {
             _internal_id = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "id", oldValue, _internal_id));
         }
     }
 
@@ -171,6 +173,7 @@ public class _Super_MonedasDatatype extends flash.events.EventDispatcher impleme
         if (oldValue !== value)
         {
             _internal_operacion = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "operacion", oldValue, _internal_operacion));
         }
     }
 
@@ -180,6 +183,7 @@ public class _Super_MonedasDatatype extends flash.events.EventDispatcher impleme
         if (oldValue !== value)
         {
             _internal_signo = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "signo", oldValue, _internal_signo));
         }
     }
 
@@ -189,6 +193,7 @@ public class _Super_MonedasDatatype extends flash.events.EventDispatcher impleme
         if (oldValue !== value)
         {
             _internal_valor_defecto = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "valor_defecto", oldValue, _internal_valor_defecto));
         }
     }
 
@@ -198,6 +203,7 @@ public class _Super_MonedasDatatype extends flash.events.EventDispatcher impleme
         if (oldValue !== value)
         {
             _internal_cantidad_decimal = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "cantidad_decimal", oldValue, _internal_cantidad_decimal));
         }
     }
 

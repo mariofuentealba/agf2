@@ -98,6 +98,9 @@ import model.ModelApp;
 import valueObjects.IndicesFinancierosDatatype;
 import valueObjects.IndicesFinancieros2Datatype;
 import services.formulasservice.FormulasService;
+import flash.xml.XMLDocument;
+import VO.Item_Xbrl;
+import VO.IndiceVO;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
@@ -753,10 +756,63 @@ private function generaPagina(event:ResultEvent):void{
 	
 }
 
+
+protected function comboItemsResult_resultHandler(event:ResultEvent):void
+{
+	// TODO Auto-generated method stub
+	
+	var xmlDoc:XMLDocument = new XMLDocument(event.result as String);
+	
+	var xmlList:XMLList = XML(event.result as String)..tag_agf;
+	modelApp.arrXBRL = new ArrayCollection(xmllistToArrayItem(xmlList));
+	
+	xmlList = XML(event.result as String)..indices_financieros;
+	modelApp.arrFormulasIndice = new ArrayCollection(xmllistToArrayIndice(xmlList));
+}
+
+private function xmllistToArrayItem(list:XMLList):Array
+{
+	var arr:Array = new Array();
+	var item:Item_Xbrl;
+	for each(var node :XML in list){
+		item = new Item_Xbrl();
+		item.fillAttributes = node;
+		
+		var xmlContextos:XMLList = node..xbrl_contexto;
+		//
+		for each(var contex:XML in xmlContextos) {				//
+			item.arrContexto.push(contex.@tipo[0]);
+		}
+		
+		
+		arr.push(item);
+	}
+	return arr;
+}
+
+
+private function xmllistToArrayIndice(list:XMLList):Array
+{
+	var arr:Array = new Array();
+	var item:IndiceVO;
+	for each(var node :XML in list){
+		item = new IndiceVO();
+		item.fillAttributes = node;
+		arr.push(item);
+	}
+	return arr;
+}
+
+
 protected function crearEsquema_creationCompleteHandler(event:FlexEvent):void
 {
 	// TODO Auto-generated method stub
 	//Alert.show('' + ExternalInterface.available);
+	
+	comboItemsAdvResult.token = componentesFormula.comboItems();
+	
+	
+	
 	gruposFinancierosResult.token = modelo.grillaTodosGrupos();
 	subGruposFinancierosResult.token = modelo.grillaTodoSubGrupos();
 	empresasResult.token = modelo.grillaTodasEmpresa();
