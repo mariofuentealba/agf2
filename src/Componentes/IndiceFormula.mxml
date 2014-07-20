@@ -16,6 +16,7 @@
 			[Bindable] public var arrXbrl:ArrayCollection = new ArrayCollection();
 			[Bindable] public var arrIndices:ArrayCollection = new ArrayCollection();
 			[Bindable] private var add:Number = 0;
+			public var fnPost:Function;
 			
 			
 			private function setToolTipStyle():void {
@@ -95,6 +96,14 @@
 				}
 			}
 			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(fnPost != null){
+					fnPost.apply(this);
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -119,6 +128,8 @@
 		<s:layout>
 			<s:VerticalLayout gap="20" paddingBottom="20" paddingLeft="20" paddingRight="20" paddingTop="20"/>
 		</s:layout>
+		<s:Label text="Seleccione de la lista los campos que operaran en la fórmula"/>
+		<s:Button label="Aceptar" click="button1_clickHandler(event)"/>
 		<Componentes:TitledBorderBox title="Selección" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" cornerRadius="5" borderColor="0x666666">
 			<s:HGroup gap="5" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" width="600">
 				<s:List id="lstItemXbrl" dataProvider="{arrXbrl}" height="200" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
@@ -150,6 +161,7 @@
 						dragComplete="lstCampos_dragCompleteHandler(event)" dragDrop="lstCampos_dragDropHandler(event)" dragExit="lstCampos_dragExitHandler(event)"
 						dragOver="lstCampos_dragOverHandler(event)" dragStart="lstCampos_dragStartHandler(event)"/>
 			</s:BorderContainer>	
+			
 		</Componentes:TitledBorderBox>	
 	</s:BorderContainer>
 	
