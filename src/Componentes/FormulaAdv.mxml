@@ -66,9 +66,15 @@
 				PopUpManager.addPopUp(opcionesFormula, agf(this.parentApplication));
 				opcionesFormula.width = this.parentApplication.width;
 				opcionesFormula.height = this.parentApplication.height;
+				opcionesFormula.fnPost = cierraPoPup;
 				PopUpManager.centerPopUp(opcionesFormula);
 				
 				
+			}
+			
+			
+			private function cierraPoPup(pop:*):void{
+				PopUpManager.removePopUp(pop);
 			}
 			
 			

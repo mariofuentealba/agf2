@@ -48,7 +48,7 @@
 		<s:Label fontSize="10" text="Item" top="8" left="15" color="0x666666"/>
 		<s:HGroup verticalCenter="0" left="30" right="10">
 			<s:Label text="Identificador:" top="3" left="3"/>
-			<s:Label text="{'C' + txtTipo}" top="3" left="3"/>
+			<s:Label text="{txtTipo}" top="3" left="3"/>
 			<s:Label text="{data.etiqueta}" width="300" fontWeight="bold" fontSize="12"/>
 			<s:DropDownList dataProvider="{arrContextos}" width="100%"></s:DropDownList>	
 		</s:HGroup>

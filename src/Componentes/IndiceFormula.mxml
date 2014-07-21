@@ -7,6 +7,9 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import VO.IndiceVO;
+			import VO.Item_Xbrl;
+			
 			import mx.collections.ArrayCollection;
 			import mx.events.DragEvent;
 			import mx.events.FlexEvent;
@@ -52,35 +55,7 @@
 				List(event.dragInitiator).selectedItem['codigo'] += '' + (lstCampos.dataProvider != null ? ArrayCollection(lstCampos.dataProvider).length + 1 : 1);
 			}
 			
-			protected function lstCampos_dragCompleteHandler(event:DragEvent):void
-			{
-				// TODO Auto-generated method stub
-				
-			}
 			
-			protected function lstCampos_dragDropHandler(event:DragEvent):void
-			{
-				// TODO Auto-generated method stub
-				
-			}
-			
-			protected function lstCampos_dragExitHandler(event:DragEvent):void
-			{
-				// TODO Auto-generated method stub
-				
-			}
-			
-			protected function lstCampos_dragOverHandler(event:DragEvent):void
-			{
-				// TODO Auto-generated method stub
-				
-			}
-			
-			protected function lstCampos_dragStartHandler(event:DragEvent):void
-			{
-				// TODO Auto-generated method stub
-				
-			}
 			
 			protected function bordercontainer1_creationCompleteHandler(event:FlexEvent):void
 			{
@@ -100,8 +75,65 @@
 			{
 				// TODO Auto-generated method stub
 				if(fnPost != null){
-					fnPost.apply(this);
+					fnPost.apply(this, [this]);
 				}
+			}
+			
+		/*	protected function lstItemXbrl_dragEnterHandler(event:DragEvent):void
+			{
+				// TODO Auto-generated method stub
+				for(var i:int = 0; i < List(event.dragInitiator).selectedItems.length; i++){
+					trace(List(event.dragInitiator).selectedItems[i]);
+					if(List(event.dragInitiator).selectedItems[i] is Item_Xbrl){
+						
+					}
+				}
+			}*/
+			
+			protected function lstCampos_dragStartHandler(event:DragEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+				var cantXbrl:int = 0;
+				var cantIndices:int = 0;
+				for(var i:int = 0; i < List(event.dragInitiator).selectedItems.length; i++){
+					trace(List(event.dragInitiator).selectedItems[i]);
+					if(List(event.dragInitiator).selectedItems[i] is Item_Xbrl){
+						lstItemXbrl.dragEnabled = true;
+						cantXbrl++;
+					}
+					
+					if(List(event.dragInitiator).selectedItems[i] is IndiceVO){
+						lstIndice.dragEnabled = true;
+						cantXbrl++;
+					}
+				}
+				
+				if(cantIndices != 0 && cantXbrl == 0){
+					lstIndice.dragEnabled = true;
+					lstIndice.dropEnabled = true;
+					lstItemXbrl.dragEnabled = false;
+					lstItemXbrl.dropEnabled = false;
+				} else {
+					if(cantIndices == 0 && cantXbrl != 0){
+						lstItemXbrl.dragEnabled = true;
+						lstItemXbrl.dropEnabled = true;
+						lstIndice.dragEnabled = false;
+						lstIndice.dropEnabled = false;
+					}
+				}
+				
+			}
+			
+			
+			
+			protected function lstCampos_dragCompleteHandler(event:DragEvent):void
+			{
+				// TODO Auto-generated method stub
+				lstIndice.dragEnabled = true;
+				lstIndice.dropEnabled = true;
+				lstItemXbrl.dragEnabled = true;
+				lstItemXbrl.dropEnabled = true;
 			}
 			
 		]]>
@@ -128,11 +160,13 @@
 		<s:layout>
 			<s:VerticalLayout gap="20" paddingBottom="20" paddingLeft="20" paddingRight="20" paddingTop="20"/>
 		</s:layout>
-		<s:Label text="Seleccione de la lista los campos que operaran en la fórmula"/>
-		<s:Button label="Aceptar" click="button1_clickHandler(event)"/>
+		<s:Label text="Seleccione de la lista los campos de la fórmula y precione 'Aceptar'" fontWeight="bold" fontSize="15"/>
+		<s:Button label="Aceptar" click="button1_clickHandler(event)" fontSize="14"/>
 		<Componentes:TitledBorderBox title="Selección" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" cornerRadius="5" borderColor="0x666666">
 			<s:HGroup gap="5" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" width="600">
-				<s:List id="lstItemXbrl" dataProvider="{arrXbrl}" height="200" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
+				<s:List id="lstItemXbrl" dataProvider="{arrXbrl}" height="200" labelField="etiqueta" 
+						width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" 
+						dragMoveEnabled="true">
 					
 				</s:List>
 				<s:List id="lstItemManual" dataProvider="{arrXbrl}" height="200" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
@@ -158,8 +192,8 @@
 				</s:backgroundFill>
 				<s:List id="lstCampos" dragEnabled="true" dragMoveEnabled="true" dropEnabled="true" dragEnter="lstCampos_dragEnterHandler(event)" 
 						itemRendererFunction="list_itemRendererFunc" left="2" right="2" bottom="2" top="2" allowMultipleSelection="true"
-						dragComplete="lstCampos_dragCompleteHandler(event)" dragDrop="lstCampos_dragDropHandler(event)" dragExit="lstCampos_dragExitHandler(event)"
-						dragOver="lstCampos_dragOverHandler(event)" dragStart="lstCampos_dragStartHandler(event)"/>
+						dragStart="lstCampos_dragStartHandler(event)"
+						dragComplete="lstCampos_dragCompleteHandler(event)"/>
 			</s:BorderContainer>	
 			
 		</Componentes:TitledBorderBox>	
