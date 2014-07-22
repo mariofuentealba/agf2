@@ -5875,6 +5875,19 @@ ALTER TABLE [agf].[dbo].[indices_financieros]
 DROP COLUMN [DESCRIPCION], [FORMULA_DESC], [RANGO_SUPERIOR], [RANGO_INFERIOR], [RANGOS_DESC]
 
 
+drop table empresas
+  
+  CREATE TABLE [dbo].[empresas](
+	[ID_EMPRESA] [int] NOT NULL,
+	[RUT] [varchar](10) NULL,
+	[RSO] [varchar](300) NULL,
+	[color] [int] NULL,
+	[orden] [int] NULL,
+	[tipoEntidad] [varchar](50) NULL,
+	[vigencia] [varchar](20) NULL,
+)  
+
+
 
 /*
   update [agf].[dbo].[periodos]
