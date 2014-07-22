@@ -7,6 +7,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import VO.FormulaVO;
 			import VO.IndiceVO;
 			import VO.Item_Xbrl;
 			
@@ -19,6 +20,10 @@
 			[Bindable] public var arrXbrl:ArrayCollection = new ArrayCollection();
 			[Bindable] public var arrIndices:ArrayCollection = new ArrayCollection();
 			[Bindable] private var add:Number = 0;
+			
+			public var formula:FormulaVO;
+			
+			
 			public var fnPost:Function;
 			
 			
@@ -75,7 +80,11 @@
 			{
 				// TODO Auto-generated method stub
 				if(fnPost != null){
-					fnPost.apply(this, [this]);
+					formula = new FormulaVO();
+					formula.arrCampos = lstCampos.dataProvider as ArrayCollection;
+					formula.formula = txtFormula.text;
+					formula._default = chk.selected;
+					fnPost.apply(this, [this, formula]);
 				}
 			}
 			
@@ -136,6 +145,27 @@
 				lstItemXbrl.dropEnabled = true;
 			}
 			
+			
+			private function eliminaSeleccion(data:*):void{
+				
+			}
+			
+			protected function lstCampos_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(event.target is Button){
+					var obj:* = event.target.parent.parent.parent;
+					switch(obj.className){
+						case "CampoIndice":
+							ArrayCollection(lstIndice.dataProvider).addItem(ArrayCollection(obj.owner.dataProvider).removeItemAt(ArrayCollection(obj.owner.dataProvider).getItemIndex(obj.data)));
+							break;
+						case "CampoItem":
+							ArrayCollection(lstItemXbrl.dataProvider).addItem(ArrayCollection(obj.owner.dataProvider).removeItemAt(ArrayCollection(obj.owner.dataProvider).getItemIndex(obj.data)));
+							break;
+					}
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -160,19 +190,23 @@
 		<s:layout>
 			<s:VerticalLayout gap="20" paddingBottom="20" paddingLeft="20" paddingRight="20" paddingTop="20"/>
 		</s:layout>
-		<s:Label text="Seleccione de la lista los campos de la fórmula y precione 'Aceptar'" fontWeight="bold" fontSize="15"/>
+		<s:Label text="Escriba Fórmula" fontWeight="bold" fontSize="15"/>
+		<s:TextInput id="txtFormula" width="100%"/>
+		<s:CheckBox label="¿Es la fórmula por defecto?" id="chk"/>
+		<s:Label text="Seleccione de la lista los campos de la fórmula y precione 'Aceptar' (Máximo 5)" fontWeight="bold" fontSize="15"/>		
 		<s:Button label="Aceptar" click="button1_clickHandler(event)" fontSize="14"/>
+		
 		<Componentes:TitledBorderBox title="Selección" paddingLeft="10" paddingRight="10" paddingBottom="10" paddingTop="10" cornerRadius="5" borderColor="0x666666">
 			<s:HGroup gap="5" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" width="600">
-				<s:List id="lstItemXbrl" dataProvider="{arrXbrl}" height="200" labelField="etiqueta" 
+				<s:List id="lstItemXbrl" dataProvider="{arrXbrl}" height="150" labelField="etiqueta" 
 						width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" 
 						dragMoveEnabled="true">
 					
 				</s:List>
-				<s:List id="lstItemManual" dataProvider="{arrXbrl}" height="200" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
+				<s:List id="lstItemManual" dataProvider="{arrXbrl}" height="150" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
 					
 				</s:List>
-				<s:List id="lstIndice" dataProvider="{arrIndices}" height="200" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
+				<s:List id="lstIndice" dataProvider="{arrIndices}" height="150" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
 					
 				</s:List>
 			</s:HGroup>	
@@ -193,7 +227,7 @@
 				<s:List id="lstCampos" dragEnabled="true" dragMoveEnabled="true" dropEnabled="true" dragEnter="lstCampos_dragEnterHandler(event)" 
 						itemRendererFunction="list_itemRendererFunc" left="2" right="2" bottom="2" top="2" allowMultipleSelection="true"
 						dragStart="lstCampos_dragStartHandler(event)"
-						dragComplete="lstCampos_dragCompleteHandler(event)"/>
+						dragComplete="lstCampos_dragCompleteHandler(event)" click="lstCampos_clickHandler(event)"/>
 			</s:BorderContainer>	
 			
 		</Componentes:TitledBorderBox>	

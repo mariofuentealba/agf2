@@ -7,11 +7,13 @@
 		<![CDATA[
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
-			import spark.components.List
 			
 			import spark.components.DataGroup;
+			import spark.components.List;
+			import spark.events.DropDownEvent;
 			[Bindable] public var txtTipo:String;
 			[Bindable] public var arrContextos:ArrayCollection = new ArrayCollection();
+			public var fnElim:Function;
 			
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
 			{
@@ -32,25 +34,40 @@
 			}
 			
 			/*private function set fn(val:*):void{
-				if(val){
-					txtTipo = '' + val;
-				}
+			if(val){
+			txtTipo = '' + val;
+			}
 			}*/
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(fnElim != null){
+					fnElim.apply(this, [this]);
+				}
+			}
+			
+			protected function contexto_closeHandler(event:DropDownEvent):void
+			{
+				// TODO Auto-generated method stub
+				this.data.contexto = contexto.selectedItem.toString();
+			}
 			
 		]]>
 	</fx:Script>
 	<!--<fx:Binding source="this.parent.numAutomationChildren" destination="fn"/>-->
-		
+	
 	<s:Group width="100%" height="80">
 		<!--<s:layout>
-			<s:HorizontalLayout gap="5" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
+		<s:HorizontalLayout gap="5" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
 		</s:layout>-->
-		<s:Label fontSize="10" text="Item" top="8" left="15" color="0x666666"/>
-		<s:HGroup verticalCenter="0" left="30" right="10">
+		<s:HGroup verticalCenter="0" left="10" right="10">
+			<s:Label color="0x666666" fontSize="10" text="Item"/>
 			<s:Label text="Identificador:" top="3" left="3"/>
 			<s:Label text="{txtTipo}" top="3" left="3"/>
-			<s:Label text="{data.etiqueta}" width="300" fontWeight="bold" fontSize="12"/>
-			<s:DropDownList dataProvider="{arrContextos}" width="100%"></s:DropDownList>	
+			<s:Label id="lblEtiqueta" text="{data.etiqueta}" width="250" fontWeight="bold" fontSize="12" toolTip="{lblEtiqueta.text}"/>
+			<s:DropDownList id="contexto" dataProvider="{arrContextos}" width="100%" close="contexto_closeHandler(event)"></s:DropDownList>
+			<s:Button label="X" fontSize="14" click="button1_clickHandler(event)" width="30"/>
 		</s:HGroup>
 		<s:Rect width="100%" height="0.5" bottom="0">
 			<s:stroke>

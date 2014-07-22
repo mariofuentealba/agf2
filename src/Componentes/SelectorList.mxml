@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%" xmlns:modelo="services.modelo.*">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="600" height="300"  xmlns:Componentes="Componentes.*"
+		 creationComplete="bordercontainer1_creationCompleteHandler(event)" xmlns:modelo="services.modelo.*"
+		 >
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
@@ -19,7 +21,30 @@
 			[Bindable]public var labelInsert:String = '';
 			public var modelo:Modelo;
 			public var servicioInvocado:String;
+			[Bindable] private var add:Number = 0;
+			public var fnPost:Function;
 			
+			private function setToolTipStyle():void {
+				styleManager.getStyleDeclaration("mx.controls.ToolTip").setStyle("fontStyle","italic");
+				styleManager.getStyleDeclaration("mx.controls.ToolTip").setStyle("fontSize","19");
+				/*styleManager.getStyleDeclaration("mx.controls.ToolTip").setStyle("fontFamily","Arial");
+				styleManager.getStyleDeclaration("mx.controls.ToolTip").setStyle("color","#FF6699");
+				styleManager.getStyleDeclaration("mx.controls.ToolTip").setStyle("backgroundColor","#33CC99");*/
+			}
+			
+			protected function bordercontainer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				setToolTipStyle();
+				this.addEventListener(Event.ENTER_FRAME, oscurese);
+			}
+			
+			private function oscurese(event:Event):void{
+				add += 0.01;
+				if(add > 0.5){
+					this.removeEventListener(Event.ENTER_FRAME, oscurese);
+				}
+			}
 			
 			protected function lTodos_creationCompleteHandler(event:FlexEvent):void
 			{
@@ -41,6 +66,15 @@
 				}
 			}
 			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				if(fnPost != null){
+					
+					fnPost.apply(this, [this, lSelect.dataProvider as ArrayCollection]);
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -49,16 +83,38 @@
 		<s:CallResponder id="infoResult"/>
 		
 	</fx:Declarations>
-	<s:List id="lTodos" left="30" top="0" bottom="20" width="250"
-			creationComplete="lTodos_creationCompleteHandler(event)" dataProvider="{arrTodos}"
-			dragMoveEnabled="true" dragEnabled="true" dropEnabled="true"
-			labelField="{labelInsert}" allowMultipleSelection="true"			
-			>
+	<s:Rect width="100%" height="100%" alpha="{add}">
+		<s:fill>
+			<s:SolidColor color="#000000" />
+		</s:fill>
+	</s:Rect>
+	<s:BorderContainer top="50" width="600" height="240" cornerRadius="5" horizontalCenter="0">
 		
-	</s:List>
-	
-	<s:List id="lSelect" right="30" top="0" bottom="20" width="250" dataProvider="{arrSelect}"
-			dragMoveEnabled="true"  dragEnabled="true" dropEnabled="true"
-			labelField="{labelInsert}" allowMultipleSelection="true"
-			></s:List>
+		
+		<Componentes:TitledBorderBox title="Selección de Empresas" left="15" right="15" bottom="15">
+			<s:Group width="100%" height="100%">
+				<s:List id="lTodos" left="15" top="42" bottom="40" width="250"
+						creationComplete="lTodos_creationCompleteHandler(event)" dataProvider="{arrTodos}"
+						dragMoveEnabled="true" dragEnabled="true" dropEnabled="true"
+						labelField="{labelInsert}" allowMultipleSelection="true"			
+						>
+					
+				</s:List>
+				
+				<s:List id="lSelect" right="15" top="42" bottom="40" width="250" dataProvider="{arrSelect}"
+						dragMoveEnabled="true"  dragEnabled="true" dropEnabled="true"
+						labelField="{labelInsert}" allowMultipleSelection="true"
+						></s:List>
+				<s:Label y="24" left="15" fontSize="12" fontWeight="bold" text="Empresas"/>
+				<s:Label x="333" y="25" fontSize="12" fontWeight="bold" text="Seleccionadas"/>	
+				<s:Button bottom="10" horizontalCenter="0" label="Aceptar" click="button1_clickHandler(event)"/>
+			</s:Group>
+			
+		</Componentes:TitledBorderBox>
+		
+		
+	</s:BorderContainer>
+
+
+
 </s:Group>

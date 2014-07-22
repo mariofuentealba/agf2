@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" width="100%" height="200" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				creationComplete="creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import VO.FormulaVO;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			[Bindable] public var formula:FormulaVO;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+				//formula = this.data as FormulaVO;
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				var selectorEmpresas:SelectorList = new SelectorList();
+				PopUpManager.addPopUp(selectorEmpresas, agf(this.parentApplication));
+				selectorEmpresas.width = this.parentApplication.width;
+				selectorEmpresas.height = this.parentApplication.height;
+				selectorEmpresas.fnPost = cierraPoPup;
+				PopUpManager.centerPopUp(selectorEmpresas);
+			}
+			
+			private function cierraPoPup(pop:*, datosFormula:ArrayCollection):void{		
+				formula.arrEmpresas = datosFormula;
+				PopUpManager.removePopUp(pop);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Group width="100%" height="100%">
+		
+		<s:Label x="19" y="10" fontSize="12" fontWeight="bold" text="Formula Principal"/>
+		<s:DataGrid left="10" right="10" bottom="10" height="121" dataProvider="{formula.arrCampos}">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn visible="true" dataField="codigo"
+								  headerText="Codigo"></s:GridColumn>
+					<s:GridColumn visible="true" dataField="etiqueta"
+								  headerText="etiqueta"></s:GridColumn>
+					<s:GridColumn dataField="contexto" headerText="Contexto"></s:GridColumn>
+					
+							
+					
+					
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:Label x="352" y="10" text="Default" visible="{formula._default}" right="10"/>
+		<s:Label x="10" y="52" fontSize="12" fontWeight="bold" text="Campos"/>
+		<s:Button x="270" y="27" label="Empresas Asociadas" right="10" click="button1_clickHandler(event)"/>
+		<s:Label x="19" y="30" fontSize="16" fontWeight="bold" text="{formula.formula}"/>
+	</s:Group>
+</s:Group> 

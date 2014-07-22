@@ -11,6 +11,8 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import VO.FormulaVO;
+			
 			import model.ModelApp;
 			
 			import mx.collections.ArrayCollection;
@@ -73,16 +75,25 @@
 			}
 			
 			
-			private function cierraPoPup(pop:*):void{
+			private function cierraPoPup(pop:*, datosFormula:FormulaVO):void{
+				var detalleFormula:DetalleFormula = new DetalleFormula();
+				detalleFormula.formula = datosFormula;
+				this.addElementos(detalleFormula);
 				PopUpManager.removePopUp(pop);
 			}
 			
 			
 			protected function set generaHijos(val:*):void{
 				dataProvider.forEach(addElementos);
+				if(dataProvider.length == 0){
+					lblVacio.includeInLayout = true;
+					lblVacio.visible = true;
+				}
 			}
 			
 			protected function addElementos(item:*):void{
+				lblVacio.includeInLayout = false;
+				lblVacio.visible = false;
 				gFormulas.addElement(item);
 			}
 			
@@ -91,7 +102,7 @@
 		]]>
 	</fx:Script>
 	<fx:Binding source="dataProvider" destination="generaHijos"/>
-	<s:BorderContainer x="0" y="10" width="100%" 
+	<s:BorderContainer x="0" y="0" width="100%" 
 					   borderStyle="inset" borderWeight="2" cornerRadius="4">
 		<s:layout>
 			<s:HorizontalLayout gap="30" paddingLeft="15" paddingRight="15" paddingTop="15" paddingBottom="15" verticalAlign="middle"/>
@@ -105,18 +116,19 @@
 				</s:entries>
 			</s:LinearGradient>
 		</s:backgroundFill>
-		<s:Label color="#F2F9FA" fontSize="18" text="Registro de formulas asociadas"
+		<s:Label color="#F2F9FA" fontSize="18" text="Registro de formulas asociadas" width.State1="100%"
 				 text.campos="Campos Fórmula"/>
 		<s:Button includeIn="State1" width="35" label="+" click="button1_clickHandler(event)"
 				  fontSize="15"/>
 		
 	</s:BorderContainer> 
-	<s:Scroller includeIn="State1" x="10" y="89" width="377" height="171">
+	<s:Scroller includeIn="State1" y="63" left="10" right="10" height="200"
+				left.State1="10" right.State1="10">
 		<s:Group id="gFormulas" width="100%">
 			<s:layout>
 				<s:VerticalLayout/>
 			</s:layout>
-			<s:Label text="No existe fórmula asociada"/>
+			<s:Label id="lblVacio" text="No existe fórmula asociada"/>
 		</s:Group>
 	</s:Scroller>
 	<s:BorderContainer includeIn="campos" x="170" y="260" width="58" height="26" borderStyle="inset"

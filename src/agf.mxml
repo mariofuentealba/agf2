@@ -1887,7 +1887,7 @@
 														 text="Nombre:"/>
 												<s:TextInput id="Ind1" y="32" left="20" right="20"
 															 width="100%" height="25"/>	
-												<Componentes:FormulaAdv />
+												<Componentes:FormulaAdv width="100%"/>
 											</s:VGroup>
 										</s:NavigatorContent>
 										
