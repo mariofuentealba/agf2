@@ -26,6 +26,10 @@
 				selectorEmpresas.width = this.parentApplication.width;
 				selectorEmpresas.height = this.parentApplication.height;
 				selectorEmpresas.fnPost = cierraPoPup;
+				
+				selectorEmpresas.labelInsert="NOMBRE_FANTASIA";
+				selectorEmpresas.modelo = agf(this.parentApplication).modelo;
+				selectorEmpresas.servicioInvocado = "listEmpresa"
 				PopUpManager.centerPopUp(selectorEmpresas);
 			}
 			
@@ -42,24 +46,29 @@
 	<s:Group width="100%" height="100%">
 		
 		<s:Label x="19" y="10" fontSize="12" fontWeight="bold" text="Formula Principal"/>
-		<s:DataGrid left="10" right="10" bottom="10" height="121" dataProvider="{formula.arrCampos}">
-			<s:columns>
-				<s:ArrayList>
-					<s:GridColumn visible="true" dataField="codigo"
-								  headerText="Codigo"></s:GridColumn>
-					<s:GridColumn visible="true" dataField="etiqueta"
-								  headerText="etiqueta"></s:GridColumn>
-					<s:GridColumn dataField="contexto" headerText="Contexto"></s:GridColumn>
-					
-							
-					
-					
-				</s:ArrayList>
-			</s:columns>
-		</s:DataGrid>
-		<s:Label x="352" y="10" text="Default" visible="{formula._default}" right="10"/>
+		<s:HGroup left="10" right="10" bottom="10" gap="15">
+			<s:DataGrid left="10" bottom="10" width="70%" height="121" dataProvider="{formula.arrCampos}">
+				<s:columns>
+					<s:ArrayList>
+						<s:GridColumn visible="true" dataField="codigo"
+									  headerText="Codigo"></s:GridColumn>
+						<s:GridColumn visible="true" dataField="etiqueta"
+									  headerText="etiqueta"></s:GridColumn>
+						<s:GridColumn dataField="contexto" headerText="Contexto"></s:GridColumn>
+						
+						
+						
+						
+					</s:ArrayList>
+				</s:columns>
+			</s:DataGrid>
+			<s:List x="579" y="69" width="30%" height="121" labelField="NOMBRE_FANTASIA" dataProvider="{formula.arrEmpresas}"></s:List>	
+		</s:HGroup>
+		
+		<s:Label visible="{formula._default}" y="10" right="25" text="Default"/>
 		<s:Label x="10" y="52" fontSize="12" fontWeight="bold" text="Campos"/>
-		<s:Button x="270" y="27" label="Empresas Asociadas" right="10" click="button1_clickHandler(event)"/>
+		<s:Button y="28" right="21" label="Empresas Asociadas" click="button1_clickHandler(event)"/>
 		<s:Label x="19" y="30" fontSize="16" fontWeight="bold" text="{formula.formula}"/>
+		
 	</s:Group>
 </s:Group> 

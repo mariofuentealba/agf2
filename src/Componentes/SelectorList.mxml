@@ -91,9 +91,9 @@
 	<s:BorderContainer top="50" width="600" height="240" cornerRadius="5" horizontalCenter="0">
 		
 		
-		<Componentes:TitledBorderBox title="Selección de Empresas" left="15" right="15" bottom="15">
+		<Componentes:TitledBorderBox title="Selección de Empresas" left="15" right="15" bottom="15" top="15">
 			<s:Group width="100%" height="100%">
-				<s:List id="lTodos" left="15" top="42" bottom="40" width="250"
+				<s:List id="lTodos" left="15" top="42" bottom="40" width="250" height="100%"
 						creationComplete="lTodos_creationCompleteHandler(event)" dataProvider="{arrTodos}"
 						dragMoveEnabled="true" dragEnabled="true" dropEnabled="true"
 						labelField="{labelInsert}" allowMultipleSelection="true"			
@@ -101,7 +101,7 @@
 					
 				</s:List>
 				
-				<s:List id="lSelect" right="15" top="42" bottom="40" width="250" dataProvider="{arrSelect}"
+				<s:List id="lSelect" right="15" top="42" bottom="40" width="250" dataProvider="{arrSelect}" height="100%"
 						dragMoveEnabled="true"  dragEnabled="true" dropEnabled="true"
 						labelField="{labelInsert}" allowMultipleSelection="true"
 						></s:List>
