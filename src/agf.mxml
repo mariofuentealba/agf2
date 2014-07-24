@@ -16,19 +16,32 @@
 	<s:layout>
 		<s:BasicLayout/>
 	</s:layout>
-	<fx:Style source="estilo.css"/>
+	<!--<fx:Style source="estilo.css"/>-->
 	
 	<fx:Script>
 		<![CDATA[
 			import Componentes.Bloqueo;
 			import Componentes.ComponenteFormula;
 			import Componentes.ConfigExport;
+			import Componentes.DetalleFormula;
+			import Componentes.Formula2;
+			import Componentes.SelectorList;
+			import Componentes.SelectorList2;
+			
+			import VO.FormulaVO;
 			
 			import com.as3xls.xls.Sheet;
 			
+			import flash.xml.XMLDocument;
+			import flash.xml.XMLNode;
+			import flash.xml.XMLNodeType;
+			
+			import mx.collections.ArrayCollection;
 			import mx.collections.IList;
 			import mx.containers.accordionClasses.AccordionHeader;
+			import mx.controls.Alert;
 			import mx.events.CubeEvent;
+			import mx.events.FlexEvent;
 			import mx.events.IndexChangedEvent;
 			import mx.managers.PopUpManager;
 			import mx.olap.IOLAPCube;
@@ -40,16 +53,7 @@
 			import mx.rpc.AsyncResponder;
 			import mx.rpc.AsyncToken;
 			import mx.rpc.events.FaultEvent;
-			import flash.xml.XMLDocument;
-			import flash.xml.XMLNode;
-			import flash.xml.XMLNodeType;
-			
-			import mx.collections.ArrayCollection;
-			import mx.controls.Alert;
-			import mx.events.FlexEvent;
-			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
-			
 			
 			import spark.events.DropDownEvent;
 			
@@ -139,7 +143,7 @@
 				olapData= result as OLAPResult;            
 			}   */     
 			
-			private function items(datos:ResultEvent):void{
+	/*		private function items(datos:ResultEvent):void{
 				var vformulaIndice:Formula2 = (tnFormulas.getElementAt(tnFormulas.selectedIndex) as NavigatorContent).getElementAt(0) as Formula2;
 				vformulaIndice.cerrando = cerrando;
 				var arr:ArrayCollection = datos.result as ArrayCollection;
@@ -151,7 +155,7 @@
 					}
 				}
 			
-			}
+			}*/
 			
 			public function cerrando(formula:String, vg:VGroup):void{
 /*				Ind7.text = formula;
@@ -182,7 +186,7 @@
 				//Alert.show('' + event.target);
 				var tabla:String;
 				var fn:Function;
-				var arr:Array = [];
+				var arr:Array = []; 
 				var dat:String = (event.target.parent.parent.parent.parent.parent.parent.parent as TabNavigator).id;
 				
 				
@@ -199,24 +203,34 @@
 				var formulas:Array = [];
 				var formulasCampos:Array = [];
 				
-				for(var i:int = 0; i < tnFormulas.length - 1; i++){
+				for(var i:int = 0; i < tnFormulas.numElements - 1; i++){
 					var arrForm:String = '';
-					var vformulaIndice:Formula2 = (tnFormulas.getElementAt(i) as NavigatorContent).getElementAt(0) as Formula2;
+					
+					
+					/*var vformulaIndice:Formula2 = (tnFormulas.getElementAt(i) as NavigatorContent).getElementAt(0) as Formula2;
 					var c1:Object = vformulaIndice.vgCombos.numElements > 0 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 					var c2:Object = vformulaIndice.vgCombos.numElements > 1 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 					var c3:Object = vformulaIndice.vgCombos.numElements > 2 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 					var c4:Object = vformulaIndice.vgCombos.numElements > 3 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
-					var c5:Object = vformulaIndice.vgCombos.numElements > 4 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c5:Object = vformulaIndice.vgCombos.numElements > 4 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;*/
+
+					var vformulaIndice:FormulaVO = DetalleFormula(tnFormulas.getElementAt(i)).formula;
+					var c1:Object = vformulaIndice.arrCampos.length > 0 ? {ID_tag_agf: vformulaIndice.arrCampos[0]['id'], origen: String(vformulaIndice.arrCampos[0]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[0]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[0]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[0]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c2:Object = vformulaIndice.arrCampos.length > 1 ? {ID_tag_agf: vformulaIndice.arrCampos[1]['id'], origen: String(vformulaIndice.arrCampos[1]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[1]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[1]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[1]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c3:Object = vformulaIndice.arrCampos.length > 2 ? {ID_tag_agf: vformulaIndice.arrCampos[2]['id'], origen: String(vformulaIndice.arrCampos[2]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[2]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[2]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[2]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c4:Object = vformulaIndice.arrCampos.length > 3 ? {ID_tag_agf: vformulaIndice.arrCampos[3]['id'], origen: String(vformulaIndice.arrCampos[3]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[3]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[3]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[3]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c5:Object = vformulaIndice.arrCampos.length > 4 ? {ID_tag_agf: vformulaIndice.arrCampos[4]['id'], origen: String(vformulaIndice.arrCampos[4]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[4]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[4]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[4]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					
 					arrForm = c1['ID_tag_agf'] + ';' + c2['ID_tag_agf'] + ';' + c3['ID_tag_agf'] + ';' + c4['ID_tag_agf'] + ';' + c5['ID_tag_agf'] + ';' + c1['origen'] + ';' + c2['origen'] + ';' + c3['origen'] + ';' + c4['origen'] + ';' + c5['origen'] + ';' +  c1['campo'] + ';' + c2['campo'] + ';' + c3['campo'] + ';' + c4['campo'] + ';' + c5['campo'];
 					formulasCampos.push(arrForm);
-					formulas.push(vformulaIndice.txtFormula.text);
+					formulas.push(vformulaIndice.formula);
 				}
 				
 				 
 				
-				arr.push(Ind1.text, 0,  0, DD_ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO']); 
+				arr.push(Ind1.text, DD_ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO']); 
 				var arrEmp:Array = [];
-				if(vwEmpresasIndice.selectedIndex == 0){
+				/*if(vwEmpresasIndice.selectedIndex == 0){
 					for each(var o:Object in listEmpresas.lSelect.dataProvider){
 						arrEmp.push(o['ID_EMPRESA']);
 					}
@@ -224,9 +238,9 @@
 					for each(o in listEmpresas.lSelect.dataProvider){
 						arrEmp.push(o['ID_SUBGRUPO']);
 					}	
-				}
+				}*/
 				
-				insertarIndiceResult.token = modelo.insertarIndicesFinancieros(arr, tabla, arrEmp, vwEmpresasIndice.selectedIndex.toString(), formulas, formulasCampos);
+				insertarIndiceResult.token = modelo.insertarIndicesFinancieros(arr, arrEmp, formulas, formulasCampos);
 				//insertarIndiceResult.token = modelo.insertarIndicesFinancieros(arr, tabla, arrEmp, vwEmpresasIndice.selectedIndex.toString(), formulas, formulasCampos);
 				insertarIndiceResult.addEventListener(ResultEvent.RESULT, indiceInsertado);
 			}
@@ -297,7 +311,7 @@
 				PopUpManager.removePopUp(config);
 			}
 			
-			protected function formulaIndice_creationCompleteHandler(event:FlexEvent):void
+/*			protected function formulaIndice_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
 				comboItemsResult.token = modelo.comboItems();
@@ -316,7 +330,7 @@
 					}	
 				}
 				
-			}
+			}*/
 			[Bindable] private var r:int = 44;
 			protected function accordion1_clickHandler(event:MouseEvent):void
 			{
@@ -754,7 +768,7 @@
 			}
 			
 			
-			protected function tnFormulas_changeHandler(event:IndexChangedEvent):void
+		/*	protected function tnFormulas_changeHandler(event:IndexChangedEvent):void
 			{
 				// TODO Auto-generated method stub
 				if(tnFormulas.selectedIndex == tnFormulas.numElements - 1){
@@ -767,7 +781,7 @@
 					
 					tnFormulas.selectedIndex--;
 				}
-			}
+			}*/
 			
 			
 			
@@ -1081,8 +1095,8 @@
 			protected function dgEmpresas_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
-				rescataEmpresasResult.token = xbrlCarga.rescataEmpresas();
-				rescataEmpresasResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
+		/*		rescataEmpresasResult.token = xbrlCarga.rescataEmpresas();
+				rescataEmpresasResult.addEventListener(ResultEvent.RESULT, listarEmpresas);*/
 			}
 			
 			private function set masivo(val:*):void{
@@ -1103,6 +1117,57 @@
 			private var xmlContextos:XMLDocument = new XMLDocument();
 			
 			
+			
+			protected function button11_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				var selectorEmpresas:SelectorList2 = new SelectorList2();
+				PopUpManager.addPopUp(selectorEmpresas, this);
+				selectorEmpresas.width = this.width;
+				selectorEmpresas.height = this.height;
+				selectorEmpresas.fnPost = cierraPoPup;
+				selectorEmpresas.arrTodos = arrRut;
+				selectorEmpresas.conPram = false;
+				selectorEmpresas.labelInsert="nombre";
+				selectorEmpresas.modelo = xbrlCarga;
+				selectorEmpresas.servicioInvocado = "rescataEmpresas";
+				PopUpManager.centerPopUp(selectorEmpresas);
+			}
+			
+			private function cierraPoPup(pop:*, datosFormula:ArrayCollection):void{		
+				dgEmpresa.dataProvider = datosFormula;
+				
+				if(datosFormula.length > 0){
+					var xml:XML;
+					var xmlParam:XMLDocument;
+					var xmlParamSub:XMLNode;
+					xmlParamSub = new XMLNode(1, 'Empresas');
+					xmlParam.appendChild(xmlParamSub);
+					
+					var xmlNode:XMLNode;				
+					for(var i:int = 0; i < datosFormula.length; i++){
+						xmlNode = new XMLNode(1, 'empresa');
+						xmlNode.attributes = {ID_EMPRESA : datosFormula.getItemAt(i)['ID_EMPRESA'] , RUT : datosFormula.getItemAt(i)['RUT'], RSO : datosFormula.getItemAt(i)['RSO'],  color : 0, orden : 0, tipoEntidad : datosFormula.getItemAt(i)['tipoEntidad'], vigencia : datosFormula.getItemAt(i)['vigencia']};
+						xmlParamSub.appendChild(xmlNode);
+					}
+					
+					
+					
+				}	
+				
+				insertarEmpresas2Result.token = xbrlCarga.insertarEmpresas2(xmlParam.toString());
+				insertarEmpresas2Result.addEventListener(ResultEvent.RESULT, terminaCargaEmpresa);
+				
+				PopUpManager.removePopUp(pop);
+				
+				
+				
+			}
+			
+			private function terminaCargaEmpresa(event:ResultEvent):void{
+				
+			}
+		
 			
 		]]>
 	</fx:Script>
@@ -1229,6 +1294,7 @@
 		<s:CallResponder id="descargaSeleccionResult"/>
 		<s:CallResponder id="rescataEmpresasResult"/>
 		<s:CallResponder id="insertarErrorFormatoResult"/>
+		<s:CallResponder id="insertarEmpresas2Result"/>
 		
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
@@ -1436,8 +1502,9 @@
 				
 				
 			</s:BorderContainer>
-			<s:BorderContainer x="228" width="900" cornerRadius="10"
-							   height="900"><!-- heigh="500"-->
+			<s:BorderContainer id="borderContainer" x="228" width="900" height="900"
+							   cornerRadius="10"
+							   ><!-- heigh="500"-->
 				<mx:ViewStack id="vwAdministracion" width="800" height="742" horizontalCenter="0"
 							  verticalCenter="-79"
 							  >
@@ -1659,7 +1726,6 @@
 						<mx:TabNavigator id="tnEmpresas" left="0" right="0" top="0" bottom="0">
 							<s:NavigatorContent label="Listado" >
 								<s:DataGrid id="dgEmpresa" x="23" top="0" bottom="20" width="100%"
-											click="dgGrupo_clickHandler(event)"
 											creationComplete="dgEmpresa_creationCompleteHandler(event)"
 											doubleClick="dgGrupo_doubleClickHandler(event)"
 											doubleClickEnabled="true" requestedRowCount="4">
@@ -1668,14 +1734,7 @@
 										<s:ArrayList>
 											<s:GridColumn dataField="RUT" headerText="RUT"></s:GridColumn>
 											<s:GridColumn dataField="RSO" headerText="RSO"></s:GridColumn>
-											<s:GridColumn dataField="NOMBRE_FANTASIA"
-														  headerText="NOMBRE_FANTASIA"></s:GridColumn>
-											<s:GridColumn dataField="NOMBRE_BOLSA"
-														  headerText="NOMBRE_BOLSA"></s:GridColumn>
-											<s:GridColumn dataField="TIPO_BALANCE"
-														  headerText="TIPO_BALANCE"></s:GridColumn>
-											<s:GridColumn dataField="TIPO_IFRS"
-														  headerText="TIPO_IFRS"></s:GridColumn>
+											
 											<s:GridColumn visible="false" dataField="color"
 														  headerText="Color"></s:GridColumn>
 											<s:GridColumn visible="false" dataField="ID_EMPRESA"
@@ -1688,11 +1747,12 @@
 									
 									
 								</s:DataGrid>	
+								<s:Button label="Agregar Empresa" click="button11_clickHandler(event)"/>
 								<s:TextInput text="grillaEmpresaResult" visible="false">
 									
 								</s:TextInput>
 							</s:NavigatorContent>
-							<s:NavigatorContent label="Nuevo">
+							<!--<s:NavigatorContent label="Nuevo">
 								<s:BorderContainer x="120" y="22" width="475" height="382" cornerRadius="15">
 									<s:Label y="24" left="10" fontWeight="bold" text="Rut:"/>
 									<s:TextInput id="txtGruposNombre0" y="43" left="10" right="10"/>
@@ -1733,7 +1793,7 @@
 								</s:BorderContainer>
 								<s:Label x="120" y="6" fontSize="20" text="Empresa"/>
 								
-							</s:NavigatorContent>
+							</s:NavigatorContent>-->
 							<s:NavigatorContent width="100%" height="100%" label="Editar" enabled="false">
 								<s:BorderContainer x="120" y="19" width="475" height="385" cornerRadius="15">
 									<s:TextInput name="ID_EMPRESA" visible="false" y="193" left="10" right="10" text="{dgEmpresa.selectedItem['ID_EMPRESA']}"/>
@@ -1887,14 +1947,14 @@
 												 text="Nombre:"/>
 										<s:TextInput id="Ind1" y="32" left="20" right="20"
 													 width="100%" height="25"/>	
-										<Componentes:FormulaAdv width="100%" height="400"/>
+										<Componentes:FormulaAdv id="tnFormulas" width="100%" height="400"/>
 									</s:VGroup>
 								</s:BorderContainer>
 								<s:Label x="23" y="10" fontSize="20" text="Indice"/>
 								
 							</s:NavigatorContent>
 							<s:NavigatorContent width="100%" height="100%" label="Editar" enabled="false">
-								<s:NavigatorContent width="100%" height="100%"
+								<!--<s:NavigatorContent width="100%" height="100%"
 													label="Paso 1">
 									<s:BorderContainer x="88" top="20" width="700" height="558"
 													   cornerRadius="15">
@@ -1947,9 +2007,7 @@
 											
 											<s:NavigatorContent width="100%" height="100%" label="Paso 2">
 												
-												<!--<Componentes:Formula2 id="formulaIndice0" top="0"
-																	  bottom="20" horizontalCenter="0" creationComplete="formulaIndice_creationCompleteHandler(event)">
-												</Componentes:Formula2>-->
+												
 												<Componentes:FormulaAdv id="formulaIndice0" top="0"
 																		bottom="20" horizontalCenter="0" creationComplete="formulaIndice_creationCompleteHandler(event)">
 													
@@ -1993,7 +2051,7 @@
 												  enabled="true" horizontalCenter="0"/>
 									</s:BorderContainer>
 									<s:Label x="54" y="10" fontSize="20" text="Indice"/>
-								</s:NavigatorContent>
+								</s:NavigatorContent>-->
 							</s:NavigatorContent>
 						</mx:TabNavigator>
 					</s:NavigatorContent>

@@ -20,8 +20,20 @@ import mx.rpc.AbstractOperation;
 import mx.rpc.AsyncToken;
 import mx.rpc.remoting.Operation;
 import mx.rpc.remoting.RemoteObject;
+import valueObjects.AgfDatatype;
+import valueObjects.EmpresaDatatype;
+import valueObjects.EmpresaGrillaDatatype;
+import valueObjects.EmpresaSinDatatype;
+import valueObjects.EmpresasDelGrupoDatatype;
 import valueObjects.GrupoIndiceFinancieroDatatype;
+import valueObjects.GrupoIndicesDataType;
+import valueObjects.IndicesDatatype;
+import valueObjects.IndicesFinancieros2Datatype;
+import valueObjects.IndicesFinancierosDatatype;
+import valueObjects.ItemDatatype;
+import valueObjects.RescataFormulaDatatype;
 import valueObjects.SubGrupoDatatype1;
+import valueObjects.SubGruposDatatype;
 
 import mx.collections.ItemResponder;
 import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
@@ -141,151 +153,157 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _serviceControl = new mx.rpc.remoting.RemoteObject();
 
         // initialize RemoteClass alias for all entities returned by functions of this service
+        valueObjects.EmpresaDatatype._initRemoteClassAlias();
+        valueObjects.GrupoIndicesDataType._initRemoteClassAlias();
+        valueObjects.ItemDatatype._initRemoteClassAlias();
+        valueObjects.SubGruposDatatype._initRemoteClassAlias();
+        valueObjects.AgfDatatype._initRemoteClassAlias();
+        valueObjects.EmpresaGrillaDatatype._initRemoteClassAlias();
+        valueObjects.EmpresasDelGrupoDatatype._initRemoteClassAlias();
+        valueObjects.EmpresaSinDatatype._initRemoteClassAlias();
+        valueObjects.IndicesFinancieros2Datatype._initRemoteClassAlias();
+        valueObjects.IndicesFinancierosDatatype._initRemoteClassAlias();
+        valueObjects.IndicesDatatype._initRemoteClassAlias();
+        valueObjects.RescataFormulaDatatype._initRemoteClassAlias();
 
         var operations:Object = new Object();
         var operation:mx.rpc.remoting.Operation;
 
-        operation = new mx.rpc.remoting.Operation(null, "grillaGrupos");
+        operation = new mx.rpc.remoting.Operation(null, "actualizaEmpresaIndice");
+         operation.resultType = Boolean;
+        operations["actualizaEmpresaIndice"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "actualizarCascada");
          operation.resultType = Object;
-        operations["grillaGrupos"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "countGrupos");
-         operation.resultType = Object;
-        operations["countGrupos"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "insertar");
-         operation.resultType = Object;
-        operations["insertar"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "editar");
-         operation.resultType = Object;
-        operations["editar"] = operation;
+        operations["actualizarCascada"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "comboEmpresa");
+         operation.resultElementType = valueObjects.EmpresaDatatype;
+        operations["comboEmpresa"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "comboGrupoIndicesFinancieros");
+         operation.resultElementType = valueObjects.GrupoIndicesDataType;
+        operations["comboGrupoIndicesFinancieros"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "comboGrupos");
          operation.resultType = Object;
         operations["comboGrupos"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "comboItems");
+         operation.resultElementType = valueObjects.ItemDatatype;
+        operations["comboItems"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "comboSubGrupos");
-         operation.resultType = Object;
+         operation.resultElementType = valueObjects.SubGruposDatatype;
         operations["comboSubGrupos"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "editarSubGrupo");
+        operation = new mx.rpc.remoting.Operation(null, "countAgf");
          operation.resultType = Object;
-        operations["editarSubGrupo"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "insertarSubgrupo");
-         operation.resultType = Object;
-        operations["insertarSubgrupo"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "grillaSubGrupos");
-         operation.resultType = Object;
-        operations["grillaSubGrupos"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "subGrillaSubGrupos");
-         operation.resultType = Object;
-        operations["subGrillaSubGrupos"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "countSubGrupos");
-         operation.resultType = Object;
-        operations["countSubGrupos"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "insertarEmpresa");
-         operation.resultType = Object;
-        operations["insertarEmpresa"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "insertaCascada");
-         operation.resultType = Object;
-        operations["insertaCascada"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "insertarSubgrupoEmpresa");
-         operation.resultType = Object;
-        operations["insertarSubgrupoEmpresa"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "grillaEmpresa");
-         operation.resultType = Object;
-        operations["grillaEmpresa"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "grillaEmpresaSinSubGrupo");
-         operation.resultType = Object;
-        operations["grillaEmpresaSinSubGrupo"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "grillaEmpresaDelSubGrupo");
-         operation.resultType = Object;
-        operations["grillaEmpresaDelSubGrupo"] = operation;
+        operations["countAgf"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "countEmpresa");
          operation.resultType = Object;
         operations["countEmpresa"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "grillaIndicesFinancieros");
+        operation = new mx.rpc.remoting.Operation(null, "countGrupoIndices");
          operation.resultType = Object;
-        operations["grillaIndicesFinancieros"] = operation;
+        operations["countGrupoIndices"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "countGrupos");
+         operation.resultType = Object;
+        operations["countGrupos"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "countIndicesFinancieros");
          operation.resultType = Object;
         operations["countIndicesFinancieros"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "comboItems");
+        operation = new mx.rpc.remoting.Operation(null, "countMonedas");
          operation.resultType = Object;
-        operations["comboItems"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "comboGrupoIndicesFinancieros");
+        operations["countMonedas"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "countSubGrupos");
          operation.resultType = Object;
-        operations["comboGrupoIndicesFinancieros"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "insertarIndicesFinancieros");
+        operations["countSubGrupos"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "deleteFormularioItem");
          operation.resultType = Object;
-        operations["insertarIndicesFinancieros"] = operation;
+        operations["deleteFormularioItem"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "deleteIndiceFinanciero");
+         operation.resultType = Object;
+        operations["deleteIndiceFinanciero"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "editar");
+         operation.resultType = Object;
+        operations["editar"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "editarIndicesFinancieros");
          operation.resultType = Object;
         operations["editarIndicesFinancieros"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "grillaGrupoIndices");
+        operation = new mx.rpc.remoting.Operation(null, "editarSubGrupo");
          operation.resultType = Object;
+        operations["editarSubGrupo"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "grillaAgf");
+         operation.resultElementType = valueObjects.AgfDatatype;
+        operations["grillaAgf"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "grillaEmpresa");
+         operation.resultElementType = valueObjects.EmpresaGrillaDatatype;
+        operations["grillaEmpresa"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "grillaEmpresaDelSubGrupo");
+         operation.resultElementType = valueObjects.EmpresasDelGrupoDatatype;
+        operations["grillaEmpresaDelSubGrupo"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "grillaEmpresaSinSubGrupo");
+         operation.resultElementType = valueObjects.EmpresaSinDatatype;
+        operations["grillaEmpresaSinSubGrupo"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "grillaGrupoIndices");
+         operation.resultElementType = valueObjects.GrupoIndicesDataType;
         operations["grillaGrupoIndices"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaGrupoIndices2");
          operation.resultType = Object;
         operations["grillaGrupoIndices2"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "countGrupoIndices");
+        operation = new mx.rpc.remoting.Operation(null, "grillaGrupos");
          operation.resultType = Object;
-        operations["countGrupoIndices"] = operation;
+        operations["grillaGrupos"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "grillaIndicesFinancieros");
+         operation.resultElementType = valueObjects.IndicesFinancieros2Datatype;
+        operations["grillaIndicesFinancieros"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaMonedas");
          operation.resultType = Object;
         operations["grillaMonedas"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "countMonedas");
-         operation.resultType = Object;
-        operations["countMonedas"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "grillaSubGrupos");
+         operation.resultElementType = valueObjects.SubGruposDatatype;
+        operations["grillaSubGrupos"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaTodasEmpresa");
-         operation.resultType = Object;
+         operation.resultElementType = valueObjects.EmpresaDatatype;
         operations["grillaTodasEmpresa"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "grillaTodosGrupos");
-         operation.resultType = Object;
-        operations["grillaTodosGrupos"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "grillaTodoSubGrupos");
-         operation.resultType = Object;
-        operations["grillaTodoSubGrupos"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "grillaTodoIndicesFinancieros");
+         operation.resultElementType = valueObjects.IndicesFinancierosDatatype;
+        operations["grillaTodoIndicesFinancieros"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaTodosGrupoIndices");
          operation.resultType = Object;
         operations["grillaTodosGrupoIndices"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "grillaTodoIndicesFinancieros");
+        operation = new mx.rpc.remoting.Operation(null, "grillaTodosGrupos");
+         operation.resultElementType = valueObjects.GrupoIndicesDataType;
+        operations["grillaTodosGrupos"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "grillaTodoSubGrupos");
+         operation.resultElementType = valueObjects.SubGruposDatatype;
+        operations["grillaTodoSubGrupos"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "indicesFinancieros");
+         operation.resultElementType = valueObjects.IndicesDatatype;
+        operations["indicesFinancieros"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "insertaCascada");
          operation.resultType = Object;
-        operations["grillaTodoIndicesFinancieros"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "comboEmpresa");
+        operations["insertaCascada"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "insertar");
          operation.resultType = Object;
-        operations["comboEmpresa"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "valores");
+        operations["insertar"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "insertarConfig");
+         operation.resultType = Boolean;
+        operations["insertarConfig"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "insertarEmpresa");
+         operation.resultType = Boolean;
+        operations["insertarEmpresa"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "insertarIndicesFinancieros");
          operation.resultType = Object;
-        operations["valores"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "periodos");
-         operation.resultType = Object;
-        operations["periodos"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "grillaAgf");
-         operation.resultType = Object;
-        operations["grillaAgf"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "countAgf");
-         operation.resultType = Object;
-        operations["countAgf"] = operation;
+        operations["insertarIndicesFinancieros"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "insertarItem");
          operation.resultType = Object;
         operations["insertarItem"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "insertarItemExistente");
          operation.resultType = Object;
         operations["insertarItemExistente"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "insertarSubgrupo");
+         operation.resultType = Object;
+        operations["insertarSubgrupo"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "insertarSubgrupoEmpresa");
+         operation.resultType = Object;
+        operations["insertarSubgrupoEmpresa"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "insertarValor");
-         operation.resultType = Object;
+         operation.resultType = Boolean;
         operations["insertarValor"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "actualizarCascada");
-         operation.resultType = Object;
-        operations["actualizarCascada"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "valores2");
-         operation.resultType = Object;
-        operations["valores2"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "deleteFormularioItem");
-         operation.resultType = Object;
-        operations["deleteFormularioItem"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "insertarConfig");
-         operation.resultType = Object;
-        operations["insertarConfig"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "indicesFinancieros");
-         operation.resultType = Object;
-        operations["indicesFinancieros"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "listEmpresa");
          operation.resultType = Object;
         operations["listEmpresa"] = operation;
@@ -295,15 +313,21 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         operation = new mx.rpc.remoting.Operation(null, "parametrosGrafico");
          operation.resultType = Object;
         operations["parametrosGrafico"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "deleteIndiceFinanciero");
+        operation = new mx.rpc.remoting.Operation(null, "periodos");
          operation.resultType = Object;
-        operations["deleteIndiceFinanciero"] = operation;
+        operations["periodos"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "rescataFormulas");
-         operation.resultType = Object;
+         operation.resultElementType = valueObjects.RescataFormulaDatatype;
         operations["rescataFormulas"] = operation;
-        operation = new mx.rpc.remoting.Operation(null, "actualizaEmpresaIndice");
+        operation = new mx.rpc.remoting.Operation(null, "subGrillaSubGrupos");
          operation.resultType = Object;
-        operations["actualizaEmpresaIndice"] = operation;
+        operations["subGrillaSubGrupos"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "valores");
+         operation.resultType = Object;
+        operations["valores"] = operation;
+        operation = new mx.rpc.remoting.Operation(null, "valores2");
+         operation.resultType = Object;
+        operations["valores2"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "carga");
          operation.resultType = Object;
         operations["carga"] = operation;
@@ -363,7 +387,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     
 
     /**
-      * This method is a generated wrapper used to call the 'grillaGrupos' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'actualizaEmpresaIndice' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -373,15 +397,15 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function grillaGrupos() : mx.rpc.AsyncToken
+    public function actualizaEmpresaIndice(indice:String, empresa:String, numFormula:String, formula:String) : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaGrupos");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("actualizaEmpresaIndice");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(indice,empresa,numFormula,formula) ;
         return _internal_token;
     }
      
     /**
-      * This method is a generated wrapper used to call the 'countGrupos' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'actualizarCascada' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -391,213 +415,15 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function countGrupos() : mx.rpc.AsyncToken
+    public function actualizarCascada(nuevoValor:Object, indice:Object, empresa:Object, periodo:Object, con:Object) : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countGrupos");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'insertar' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function insertar(arrInf:Object, table:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertar");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,table) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'editar' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function editar(arrInf:Object, table:Object, where:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("editar");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,table,where) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'comboGrupos' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function comboGrupos() : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("comboGrupos");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'comboSubGrupos' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function comboSubGrupos() : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("comboSubGrupos");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'editarSubGrupo' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function editarSubGrupo(arrInf:Object, table:Object, where:Object, param:Object, id:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("editarSubGrupo");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,table,where,param,id) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'insertarSubgrupo' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function insertarSubgrupo(arrInf:Object, table:Object, param:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarSubgrupo");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,table,param) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'grillaSubGrupos' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function grillaSubGrupos() : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaSubGrupos");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'subGrillaSubGrupos' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function subGrillaSubGrupos(tipo:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("subGrillaSubGrupos");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(tipo) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'countSubGrupos' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function countSubGrupos() : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countSubGrupos");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'insertarEmpresa' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function insertarEmpresa(arrInf:Object, table:Object, param:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarEmpresa");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,table,param) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'insertaCascada' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function insertaCascada(nuevoValor:Object, indice:Object, empresa:Object, periodo:Object, con:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertaCascada");
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("actualizarCascada");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(nuevoValor,indice,empresa,periodo,con) ;
         return _internal_token;
     }
      
     /**
-      * This method is a generated wrapper used to call the 'insertarSubgrupoEmpresa' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'comboEmpresa' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -607,135 +433,9 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function insertarSubgrupoEmpresa(grupo:Object, empresas:Object) : mx.rpc.AsyncToken
+    public function comboEmpresa() : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarSubgrupoEmpresa");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(grupo,empresas) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'grillaEmpresa' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function grillaEmpresa() : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaEmpresa");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'grillaEmpresaSinSubGrupo' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function grillaEmpresaSinSubGrupo(id:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaEmpresaSinSubGrupo");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(id) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'grillaEmpresaDelSubGrupo' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function grillaEmpresaDelSubGrupo(cod:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaEmpresaDelSubGrupo");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(cod) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'countEmpresa' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function countEmpresa() : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countEmpresa");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'grillaIndicesFinancieros' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function grillaIndicesFinancieros() : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaIndicesFinancieros");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'countIndicesFinancieros' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function countIndicesFinancieros() : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countIndicesFinancieros");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'comboItems' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function comboItems() : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("comboItems");
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("comboEmpresa");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
         return _internal_token;
     }
@@ -759,7 +459,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     }
      
     /**
-      * This method is a generated wrapper used to call the 'insertarIndicesFinancieros' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'comboGrupos' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -769,10 +469,226 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function insertarIndicesFinancieros(arrInf:Object, tabla:Object, arrEmp:Object, tipo:Object, formulas:Object, formulasCampos:Object) : mx.rpc.AsyncToken
+    public function comboGrupos() : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarIndicesFinancieros");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,tabla,arrEmp,tipo,formulas,formulasCampos) ;
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("comboGrupos");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'comboItems' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function comboItems() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("comboItems");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'comboSubGrupos' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function comboSubGrupos() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("comboSubGrupos");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'countAgf' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function countAgf() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countAgf");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'countEmpresa' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function countEmpresa() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countEmpresa");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'countGrupoIndices' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function countGrupoIndices() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countGrupoIndices");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'countGrupos' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function countGrupos() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countGrupos");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'countIndicesFinancieros' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function countIndicesFinancieros() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countIndicesFinancieros");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'countMonedas' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function countMonedas() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countMonedas");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'countSubGrupos' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function countSubGrupos() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countSubGrupos");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'deleteFormularioItem' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function deleteFormularioItem(empresa:Object, tagAgf:Object) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("deleteFormularioItem");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(empresa,tagAgf) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'deleteIndiceFinanciero' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function deleteIndiceFinanciero(id:Object) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("deleteIndiceFinanciero");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(id) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'editar' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function editar(arrInf:Object, table:Object, where:Object) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("editar");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,table,where) ;
         return _internal_token;
     }
      
@@ -791,6 +707,96 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("editarIndicesFinancieros");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf2,table,where) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'editarSubGrupo' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function editarSubGrupo(arrInf:Object, table:Object, where:Object, param:Object, id:Object) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("editarSubGrupo");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,table,where,param,id) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'grillaAgf' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function grillaAgf() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaAgf");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'grillaEmpresa' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function grillaEmpresa() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaEmpresa");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'grillaEmpresaDelSubGrupo' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function grillaEmpresaDelSubGrupo(cod:int) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaEmpresaDelSubGrupo");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(cod) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'grillaEmpresaSinSubGrupo' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function grillaEmpresaSinSubGrupo(id:int) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaEmpresaSinSubGrupo");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(id) ;
         return _internal_token;
     }
      
@@ -831,7 +837,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     }
      
     /**
-      * This method is a generated wrapper used to call the 'countGrupoIndices' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'grillaGrupos' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -841,9 +847,27 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function countGrupoIndices() : mx.rpc.AsyncToken
+    public function grillaGrupos() : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countGrupoIndices");
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaGrupos");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'grillaIndicesFinancieros' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function grillaIndicesFinancieros() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaIndicesFinancieros");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
         return _internal_token;
     }
@@ -867,7 +891,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     }
      
     /**
-      * This method is a generated wrapper used to call the 'countMonedas' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'grillaSubGrupos' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -877,9 +901,9 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function countMonedas() : mx.rpc.AsyncToken
+    public function grillaSubGrupos() : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countMonedas");
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaSubGrupos");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
         return _internal_token;
     }
@@ -898,6 +922,42 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     public function grillaTodasEmpresa() : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaTodasEmpresa");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'grillaTodoIndicesFinancieros' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function grillaTodoIndicesFinancieros() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaTodoIndicesFinancieros");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'grillaTodosGrupoIndices' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function grillaTodosGrupoIndices() : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaTodosGrupoIndices");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
         return _internal_token;
     }
@@ -939,7 +999,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     }
      
     /**
-      * This method is a generated wrapper used to call the 'grillaTodosGrupoIndices' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'indicesFinancieros' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -949,15 +1009,15 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function grillaTodosGrupoIndices() : mx.rpc.AsyncToken
+    public function indicesFinancieros() : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaTodosGrupoIndices");
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("indicesFinancieros");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
         return _internal_token;
     }
      
     /**
-      * This method is a generated wrapper used to call the 'grillaTodoIndicesFinancieros' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'insertaCascada' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -967,15 +1027,15 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function grillaTodoIndicesFinancieros() : mx.rpc.AsyncToken
+    public function insertaCascada(nuevoValor:Object, indice:Object, empresa:Object, periodo:Object, con:Object) : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaTodoIndicesFinancieros");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertaCascada");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(nuevoValor,indice,empresa,periodo,con) ;
         return _internal_token;
     }
      
     /**
-      * This method is a generated wrapper used to call the 'comboEmpresa' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'insertar' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -985,15 +1045,15 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function comboEmpresa() : mx.rpc.AsyncToken
+    public function insertar(arrInf:Object, table:Object) : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("comboEmpresa");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertar");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,table) ;
         return _internal_token;
     }
      
     /**
-      * This method is a generated wrapper used to call the 'valores' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'insertarConfig' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -1003,15 +1063,15 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function valores(principal:Object, idEmpresas:Object, idPeriodos:Object, formulas:Object, op:Object) : mx.rpc.AsyncToken
+    public function insertarConfig(arrInf:Object) : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("valores");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(principal,idEmpresas,idPeriodos,formulas,op) ;
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarConfig");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf) ;
         return _internal_token;
     }
      
     /**
-      * This method is a generated wrapper used to call the 'periodos' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'insertarEmpresa' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -1021,15 +1081,15 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function periodos() : mx.rpc.AsyncToken
+    public function insertarEmpresa(arrInf:Object, table:Object, param:Object) : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("periodos");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarEmpresa");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,table,param) ;
         return _internal_token;
     }
      
     /**
-      * This method is a generated wrapper used to call the 'grillaAgf' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'insertarIndicesFinancieros' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -1039,28 +1099,10 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function grillaAgf() : mx.rpc.AsyncToken
+    public function insertarIndicesFinancieros(arrInf:Object, arrEmp:Object, formulas:Object, formulasCampos:Object) : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("grillaAgf");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'countAgf' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function countAgf() : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("countAgf");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarIndicesFinancieros");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,arrEmp,formulas,formulasCampos) ;
         return _internal_token;
     }
      
@@ -1101,6 +1143,42 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     }
      
     /**
+      * This method is a generated wrapper used to call the 'insertarSubgrupo' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function insertarSubgrupo(arrInf:Object, table:Object, param:Object) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarSubgrupo");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,table,param) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'insertarSubgrupoEmpresa' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function insertarSubgrupoEmpresa(grupo:Object, empresas:Object) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarSubgrupoEmpresa");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(grupo,empresas) ;
+        return _internal_token;
+    }
+     
+    /**
       * This method is a generated wrapper used to call the 'insertarValor' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
@@ -1119,96 +1197,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     }
      
     /**
-      * This method is a generated wrapper used to call the 'actualizarCascada' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function actualizarCascada(nuevoValor:Object, indice:Object, empresa:Object, periodo:Object, con:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("actualizarCascada");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(nuevoValor,indice,empresa,periodo,con) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'valores2' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function valores2(empresa:Object, periodo:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("valores2");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(empresa,periodo) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'deleteFormularioItem' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function deleteFormularioItem(empresa:Object, tagAgf:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("deleteFormularioItem");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(empresa,tagAgf) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'insertarConfig' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function insertarConfig(arrInf:Object) : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarConfig");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf) ;
-        return _internal_token;
-    }
-     
-    /**
-      * This method is a generated wrapper used to call the 'indicesFinancieros' operation. It returns an mx.rpc.AsyncToken whose 
-      * result property will be populated with the result of the operation when the server response is received. 
-      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-      */
-    public function indicesFinancieros() : mx.rpc.AsyncToken
-    {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("indicesFinancieros");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
-        return _internal_token;
-    }
-     
-    /**
       * This method is a generated wrapper used to call the 'listEmpresa' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
@@ -1219,7 +1207,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function listEmpresa(id:Object) : mx.rpc.AsyncToken
+    public function listEmpresa(id:int) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("listEmpresa");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(id) ;
@@ -1237,7 +1225,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function listSubgrupo(id:Object) : mx.rpc.AsyncToken
+    public function listSubgrupo(id:int) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("listSubgrupo");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(id) ;
@@ -1263,7 +1251,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     }
      
     /**
-      * This method is a generated wrapper used to call the 'deleteIndiceFinanciero' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'periodos' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -1273,10 +1261,10 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function deleteIndiceFinanciero(id:Object) : mx.rpc.AsyncToken
+    public function periodos() : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("deleteIndiceFinanciero");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(id) ;
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("periodos");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
         return _internal_token;
     }
      
@@ -1291,7 +1279,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function rescataFormulas(indice:Object, empresa:Object) : mx.rpc.AsyncToken
+    public function rescataFormulas(indice:String, empresa:String) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("rescataFormulas");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(indice,empresa) ;
@@ -1299,7 +1287,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
     }
      
     /**
-      * This method is a generated wrapper used to call the 'actualizaEmpresaIndice' operation. It returns an mx.rpc.AsyncToken whose 
+      * This method is a generated wrapper used to call the 'subGrillaSubGrupos' operation. It returns an mx.rpc.AsyncToken whose 
       * result property will be populated with the result of the operation when the server response is received. 
       * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
       * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -1309,10 +1297,46 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function actualizaEmpresaIndice(indice:Object, empresa:Object, numFormula:Object, formula:Object) : mx.rpc.AsyncToken
+    public function subGrillaSubGrupos(tipo:Object) : mx.rpc.AsyncToken
     {
-        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("actualizaEmpresaIndice");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(indice,empresa,numFormula,formula) ;
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("subGrillaSubGrupos");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(tipo) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'valores' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function valores(principal:String, idEmpresas:String, idPeriodos:String, formulas:String, op:String) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("valores");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(principal,idEmpresas,idPeriodos,formulas,op) ;
+        return _internal_token;
+    }
+     
+    /**
+      * This method is a generated wrapper used to call the 'valores2' operation. It returns an mx.rpc.AsyncToken whose 
+      * result property will be populated with the result of the operation when the server response is received. 
+      * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+      * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      */
+    public function valores2(empresa:Object, periodo:Object) : mx.rpc.AsyncToken
+    {
+        var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("valores2");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(empresa,periodo) ;
         return _internal_token;
     }
      

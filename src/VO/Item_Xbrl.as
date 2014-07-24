@@ -4,7 +4,7 @@ package VO
 	
 	public class Item_Xbrl extends ObjectFiller
 	{
-		public var ID_TAG_AGF:int;
+		public var id:int;
 		public var etiqueta:String;
 		public var num:int;
 		public var arrContexto:Array = [];

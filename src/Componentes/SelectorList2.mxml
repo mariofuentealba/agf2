@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="600" height="300"  xmlns:Componentes="Componentes.*"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="600" height="500"  xmlns:Componentes="Componentes.*"
 		 creationComplete="bordercontainer1_creationCompleteHandler(event)" xmlns:modelo="services.modelo.*"
 		 >
 	<fx:Script>
@@ -95,7 +95,7 @@
 			<s:SolidColor color="#000000" />
 		</s:fill>
 	</s:Rect>
-	<s:BorderContainer top="50" width="600" height="240" cornerRadius="5" horizontalCenter="0">
+	<s:BorderContainer top="50" width="600" height="500" cornerRadius="5" horizontalCenter="0">
 		
 		
 		<Componentes:TitledBorderBox title="Selección de Empresas" left="15" right="15" bottom="15" top="15">
@@ -114,10 +114,11 @@
 						></s:List>
 				<s:Label y="24" left="15" fontSize="12" fontWeight="bold" text="Empresas"/>
 				<s:Label x="333" y="25" fontSize="12" fontWeight="bold" text="Seleccionadas"/>	
-				<s:Button bottom="10" horizontalCenter="0" label="Aceptar" click="button1_clickHandler(event)"/>
+				<s:Button bottom="10" horizontalCenter="0" label="Grabar" click="button1_clickHandler(event)"/>
 			</s:Group>
 			
 		</Componentes:TitledBorderBox>
+		<s:Button x="518" y="0" label="Cerrar"/>
 		
 		
 	</s:BorderContainer>

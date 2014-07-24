@@ -808,7 +808,8 @@ protected function crearEsquema_creationCompleteHandler(event:FlexEvent):void
 {
 	// TODO Auto-generated method stub
 	//Alert.show('' + ExternalInterface.available);
-	
+	rescataEmpresasResult.token = xbrlCarga.rescataEmpresas();
+	rescataEmpresasResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
 	comboItemsAdvResult.token = componentesFormula.comboItems();
 	
 	
