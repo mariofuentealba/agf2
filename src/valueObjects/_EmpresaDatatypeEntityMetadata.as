@@ -22,14 +22,14 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
 {
     private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("ID_SUBGRUPO", "RSO", "color", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
+    model_internal static var allProperties:Array = new Array("orden", "RSO", "color", "vigencia", "tipoEntidad", "RUT", "ID_EMPRESA");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("ID_SUBGRUPO", "RSO", "color", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("ID_SUBGRUPO", "RSO", "color", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
+    model_internal static var allRequiredProperties:Array = new Array("orden", "RSO", "color", "vigencia", "tipoEntidad", "RUT", "ID_EMPRESA");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("orden", "RSO", "color", "vigencia", "tipoEntidad", "RUT", "ID_EMPRESA");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("ID_SUBGRUPO", "RSO", "color", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
+    model_internal static var dataProperties:Array = new Array("orden", "RSO", "color", "vigencia", "tipoEntidad", "RUT", "ID_EMPRESA");
     model_internal static var sourceProperties:Array = emptyArray
-    model_internal static var nonDerivedProperties:Array = new Array("ID_SUBGRUPO", "RSO", "color", "TIPO_IFRS", "TIPO_BALANCE", "RUT", "NOMBRE_BOLSA", "NOMBRE_FANTASIA", "ID_EMPRESA");
+    model_internal static var nonDerivedProperties:Array = new Array("orden", "RSO", "color", "vigencia", "tipoEntidad", "RUT", "ID_EMPRESA");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;
@@ -38,6 +38,11 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     model_internal static var dependedOnServices:Array = new Array();
     model_internal static var propertyTypeMap:Object;
 
+    
+    model_internal var _ordenIsValid:Boolean;
+    model_internal var _ordenValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _ordenIsValidCacheInitialized:Boolean = false;
+    model_internal var _ordenValidationFailureMessages:Array;
     
     model_internal var _RSOIsValid:Boolean;
     model_internal var _RSOValidator:com.adobe.fiber.styles.StyleValidator;
@@ -49,30 +54,25 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     model_internal var _colorIsValidCacheInitialized:Boolean = false;
     model_internal var _colorValidationFailureMessages:Array;
     
-    model_internal var _TIPO_IFRSIsValid:Boolean;
-    model_internal var _TIPO_IFRSValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _TIPO_IFRSIsValidCacheInitialized:Boolean = false;
-    model_internal var _TIPO_IFRSValidationFailureMessages:Array;
+    model_internal var _vigenciaIsValid:Boolean;
+    model_internal var _vigenciaValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _vigenciaIsValidCacheInitialized:Boolean = false;
+    model_internal var _vigenciaValidationFailureMessages:Array;
     
-    model_internal var _TIPO_BALANCEIsValid:Boolean;
-    model_internal var _TIPO_BALANCEValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _TIPO_BALANCEIsValidCacheInitialized:Boolean = false;
-    model_internal var _TIPO_BALANCEValidationFailureMessages:Array;
+    model_internal var _tipoEntidadIsValid:Boolean;
+    model_internal var _tipoEntidadValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _tipoEntidadIsValidCacheInitialized:Boolean = false;
+    model_internal var _tipoEntidadValidationFailureMessages:Array;
     
     model_internal var _RUTIsValid:Boolean;
     model_internal var _RUTValidator:com.adobe.fiber.styles.StyleValidator;
     model_internal var _RUTIsValidCacheInitialized:Boolean = false;
     model_internal var _RUTValidationFailureMessages:Array;
     
-    model_internal var _NOMBRE_BOLSAIsValid:Boolean;
-    model_internal var _NOMBRE_BOLSAValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _NOMBRE_BOLSAIsValidCacheInitialized:Boolean = false;
-    model_internal var _NOMBRE_BOLSAValidationFailureMessages:Array;
-    
-    model_internal var _NOMBRE_FANTASIAIsValid:Boolean;
-    model_internal var _NOMBRE_FANTASIAValidator:com.adobe.fiber.styles.StyleValidator;
-    model_internal var _NOMBRE_FANTASIAIsValidCacheInitialized:Boolean = false;
-    model_internal var _NOMBRE_FANTASIAValidationFailureMessages:Array;
+    model_internal var _ID_EMPRESAIsValid:Boolean;
+    model_internal var _ID_EMPRESAValidator:com.adobe.fiber.styles.StyleValidator;
+    model_internal var _ID_EMPRESAIsValidCacheInitialized:Boolean = false;
+    model_internal var _ID_EMPRESAValidationFailureMessages:Array;
 
     model_internal var _instance:_Super_EmpresaDatatype;
     model_internal static var _nullStyle:com.adobe.fiber.styles.Style = new com.adobe.fiber.styles.Style();
@@ -84,14 +84,12 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
         {
             // dependents map
             model_internal::dependentsOnMap = new Object();
-            model_internal::dependentsOnMap["ID_SUBGRUPO"] = new Array();
+            model_internal::dependentsOnMap["orden"] = new Array();
             model_internal::dependentsOnMap["RSO"] = new Array();
             model_internal::dependentsOnMap["color"] = new Array();
-            model_internal::dependentsOnMap["TIPO_IFRS"] = new Array();
-            model_internal::dependentsOnMap["TIPO_BALANCE"] = new Array();
+            model_internal::dependentsOnMap["vigencia"] = new Array();
+            model_internal::dependentsOnMap["tipoEntidad"] = new Array();
             model_internal::dependentsOnMap["RUT"] = new Array();
-            model_internal::dependentsOnMap["NOMBRE_BOLSA"] = new Array();
-            model_internal::dependentsOnMap["NOMBRE_FANTASIA"] = new Array();
             model_internal::dependentsOnMap["ID_EMPRESA"] = new Array();
 
             // collection base map
@@ -100,17 +98,20 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
 
         // Property type Map
         model_internal::propertyTypeMap = new Object();
-        model_internal::propertyTypeMap["ID_SUBGRUPO"] = "String";
-        model_internal::propertyTypeMap["RSO"] = "String";
+        model_internal::propertyTypeMap["orden"] = "String";
+        model_internal::propertyTypeMap["RSO"] = "Object";
         model_internal::propertyTypeMap["color"] = "String";
-        model_internal::propertyTypeMap["TIPO_IFRS"] = "String";
-        model_internal::propertyTypeMap["TIPO_BALANCE"] = "String";
+        model_internal::propertyTypeMap["vigencia"] = "String";
+        model_internal::propertyTypeMap["tipoEntidad"] = "String";
         model_internal::propertyTypeMap["RUT"] = "String";
-        model_internal::propertyTypeMap["NOMBRE_BOLSA"] = "String";
-        model_internal::propertyTypeMap["NOMBRE_FANTASIA"] = "String";
         model_internal::propertyTypeMap["ID_EMPRESA"] = "String";
 
         model_internal::_instance = value;
+        model_internal::_ordenValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForOrden);
+        model_internal::_ordenValidator.required = true;
+        model_internal::_ordenValidator.requiredFieldError = "orden is required";
+        //model_internal::_ordenValidator.source = model_internal::_instance;
+        //model_internal::_ordenValidator.property = "orden";
         model_internal::_RSOValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForRSO);
         model_internal::_RSOValidator.required = true;
         model_internal::_RSOValidator.requiredFieldError = "RSO is required";
@@ -121,31 +122,26 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
         model_internal::_colorValidator.requiredFieldError = "color is required";
         //model_internal::_colorValidator.source = model_internal::_instance;
         //model_internal::_colorValidator.property = "color";
-        model_internal::_TIPO_IFRSValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForTIPO_IFRS);
-        model_internal::_TIPO_IFRSValidator.required = true;
-        model_internal::_TIPO_IFRSValidator.requiredFieldError = "TIPO_IFRS is required";
-        //model_internal::_TIPO_IFRSValidator.source = model_internal::_instance;
-        //model_internal::_TIPO_IFRSValidator.property = "TIPO_IFRS";
-        model_internal::_TIPO_BALANCEValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForTIPO_BALANCE);
-        model_internal::_TIPO_BALANCEValidator.required = true;
-        model_internal::_TIPO_BALANCEValidator.requiredFieldError = "TIPO_BALANCE is required";
-        //model_internal::_TIPO_BALANCEValidator.source = model_internal::_instance;
-        //model_internal::_TIPO_BALANCEValidator.property = "TIPO_BALANCE";
+        model_internal::_vigenciaValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForVigencia);
+        model_internal::_vigenciaValidator.required = true;
+        model_internal::_vigenciaValidator.requiredFieldError = "vigencia is required";
+        //model_internal::_vigenciaValidator.source = model_internal::_instance;
+        //model_internal::_vigenciaValidator.property = "vigencia";
+        model_internal::_tipoEntidadValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForTipoEntidad);
+        model_internal::_tipoEntidadValidator.required = true;
+        model_internal::_tipoEntidadValidator.requiredFieldError = "tipoEntidad is required";
+        //model_internal::_tipoEntidadValidator.source = model_internal::_instance;
+        //model_internal::_tipoEntidadValidator.property = "tipoEntidad";
         model_internal::_RUTValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForRUT);
         model_internal::_RUTValidator.required = true;
         model_internal::_RUTValidator.requiredFieldError = "RUT is required";
         //model_internal::_RUTValidator.source = model_internal::_instance;
         //model_internal::_RUTValidator.property = "RUT";
-        model_internal::_NOMBRE_BOLSAValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForNOMBRE_BOLSA);
-        model_internal::_NOMBRE_BOLSAValidator.required = true;
-        model_internal::_NOMBRE_BOLSAValidator.requiredFieldError = "NOMBRE_BOLSA is required";
-        //model_internal::_NOMBRE_BOLSAValidator.source = model_internal::_instance;
-        //model_internal::_NOMBRE_BOLSAValidator.property = "NOMBRE_BOLSA";
-        model_internal::_NOMBRE_FANTASIAValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForNOMBRE_FANTASIA);
-        model_internal::_NOMBRE_FANTASIAValidator.required = true;
-        model_internal::_NOMBRE_FANTASIAValidator.requiredFieldError = "NOMBRE_FANTASIA is required";
-        //model_internal::_NOMBRE_FANTASIAValidator.source = model_internal::_instance;
-        //model_internal::_NOMBRE_FANTASIAValidator.property = "NOMBRE_FANTASIA";
+        model_internal::_ID_EMPRESAValidator = new StyleValidator(model_internal::_instance.model_internal::_doValidationForID_EMPRESA);
+        model_internal::_ID_EMPRESAValidator.required = true;
+        model_internal::_ID_EMPRESAValidator.requiredFieldError = "ID_EMPRESA is required";
+        //model_internal::_ID_EMPRESAValidator.source = model_internal::_instance;
+        //model_internal::_ID_EMPRESAValidator.property = "ID_EMPRESA";
     }
 
     override public function getEntityName():String
@@ -298,8 +294,6 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     override public function getIdentityMap():Object
     {
         var returnMap:Object = new Object();
-        returnMap["ID_SUBGRUPO"] = model_internal::_instance.ID_SUBGRUPO;
-        returnMap["ID_EMPRESA"] = model_internal::_instance.ID_EMPRESA;
 
         return returnMap;
     }
@@ -375,7 +369,7 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     }
 
     [Bindable(event="propertyChange")]
-    public function get isID_SUBGRUPOAvailable():Boolean
+    public function get isOrdenAvailable():Boolean
     {
         return true;
     }
@@ -393,31 +387,19 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     }
 
     [Bindable(event="propertyChange")]
-    public function get isTIPO_IFRSAvailable():Boolean
+    public function get isVigenciaAvailable():Boolean
     {
         return true;
     }
 
     [Bindable(event="propertyChange")]
-    public function get isTIPO_BALANCEAvailable():Boolean
+    public function get isTipoEntidadAvailable():Boolean
     {
         return true;
     }
 
     [Bindable(event="propertyChange")]
     public function get isRUTAvailable():Boolean
-    {
-        return true;
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get isNOMBRE_BOLSAAvailable():Boolean
-    {
-        return true;
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get isNOMBRE_FANTASIAAvailable():Boolean
     {
         return true;
     }
@@ -432,6 +414,14 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     /**
      * derived property recalculation
      */
+    public function invalidateDependentOnOrden():void
+    {
+        if (model_internal::_ordenIsValidCacheInitialized )
+        {
+            model_internal::_instance.model_internal::_doValidationCacheOfOrden = null;
+            model_internal::calculateOrdenIsValid();
+        }
+    }
     public function invalidateDependentOnRSO():void
     {
         if (model_internal::_RSOIsValidCacheInitialized )
@@ -448,20 +438,20 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
             model_internal::calculateColorIsValid();
         }
     }
-    public function invalidateDependentOnTIPO_IFRS():void
+    public function invalidateDependentOnVigencia():void
     {
-        if (model_internal::_TIPO_IFRSIsValidCacheInitialized )
+        if (model_internal::_vigenciaIsValidCacheInitialized )
         {
-            model_internal::_instance.model_internal::_doValidationCacheOfTIPO_IFRS = null;
-            model_internal::calculateTIPO_IFRSIsValid();
+            model_internal::_instance.model_internal::_doValidationCacheOfVigencia = null;
+            model_internal::calculateVigenciaIsValid();
         }
     }
-    public function invalidateDependentOnTIPO_BALANCE():void
+    public function invalidateDependentOnTipoEntidad():void
     {
-        if (model_internal::_TIPO_BALANCEIsValidCacheInitialized )
+        if (model_internal::_tipoEntidadIsValidCacheInitialized )
         {
-            model_internal::_instance.model_internal::_doValidationCacheOfTIPO_BALANCE = null;
-            model_internal::calculateTIPO_BALANCEIsValid();
+            model_internal::_instance.model_internal::_doValidationCacheOfTipoEntidad = null;
+            model_internal::calculateTipoEntidadIsValid();
         }
     }
     public function invalidateDependentOnRUT():void
@@ -472,20 +462,12 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
             model_internal::calculateRUTIsValid();
         }
     }
-    public function invalidateDependentOnNOMBRE_BOLSA():void
+    public function invalidateDependentOnID_EMPRESA():void
     {
-        if (model_internal::_NOMBRE_BOLSAIsValidCacheInitialized )
+        if (model_internal::_ID_EMPRESAIsValidCacheInitialized )
         {
-            model_internal::_instance.model_internal::_doValidationCacheOfNOMBRE_BOLSA = null;
-            model_internal::calculateNOMBRE_BOLSAIsValid();
-        }
-    }
-    public function invalidateDependentOnNOMBRE_FANTASIA():void
-    {
-        if (model_internal::_NOMBRE_FANTASIAIsValidCacheInitialized )
-        {
-            model_internal::_instance.model_internal::_doValidationCacheOfNOMBRE_FANTASIA = null;
-            model_internal::calculateNOMBRE_FANTASIAIsValid();
+            model_internal::_instance.model_internal::_doValidationCacheOfID_EMPRESA = null;
+            model_internal::calculateID_EMPRESAIsValid();
         }
     }
 
@@ -495,9 +477,103 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     }
 
     [Bindable(event="propertyChange")]   
-    public function get ID_SUBGRUPOStyle():com.adobe.fiber.styles.Style
+    public function get ordenStyle():com.adobe.fiber.styles.Style
     {
         return model_internal::_nullStyle;
+    }
+
+    public function get ordenValidator() : StyleValidator
+    {
+        return model_internal::_ordenValidator;
+    }
+
+    model_internal function set _ordenIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_ordenIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_ordenIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ordenIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get ordenIsValid():Boolean
+    {
+        if (!model_internal::_ordenIsValidCacheInitialized)
+        {
+            model_internal::calculateOrdenIsValid();
+        }
+
+        return model_internal::_ordenIsValid;
+    }
+
+    model_internal function calculateOrdenIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_ordenValidator.validate(model_internal::_instance.orden)
+        model_internal::_ordenIsValid_der = (valRes.results == null);
+        model_internal::_ordenIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::ordenValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::ordenValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get ordenValidationFailureMessages():Array
+    {
+        if (model_internal::_ordenValidationFailureMessages == null)
+            model_internal::calculateOrdenIsValid();
+
+        return _ordenValidationFailureMessages;
+    }
+
+    model_internal function set ordenValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_ordenValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_ordenValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ordenValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
     }
 
     [Bindable(event="propertyChange")]   
@@ -701,44 +777,44 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     }
 
     [Bindable(event="propertyChange")]   
-    public function get TIPO_IFRSStyle():com.adobe.fiber.styles.Style
+    public function get vigenciaStyle():com.adobe.fiber.styles.Style
     {
         return model_internal::_nullStyle;
     }
 
-    public function get TIPO_IFRSValidator() : StyleValidator
+    public function get vigenciaValidator() : StyleValidator
     {
-        return model_internal::_TIPO_IFRSValidator;
+        return model_internal::_vigenciaValidator;
     }
 
-    model_internal function set _TIPO_IFRSIsValid_der(value:Boolean):void 
+    model_internal function set _vigenciaIsValid_der(value:Boolean):void 
     {
-        var oldValue:Boolean = model_internal::_TIPO_IFRSIsValid;         
+        var oldValue:Boolean = model_internal::_vigenciaIsValid;         
         if (oldValue !== value)
         {
-            model_internal::_TIPO_IFRSIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "TIPO_IFRSIsValid", oldValue, value));
+            model_internal::_vigenciaIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "vigenciaIsValid", oldValue, value));
         }                             
     }
 
     [Bindable(event="propertyChange")]
-    public function get TIPO_IFRSIsValid():Boolean
+    public function get vigenciaIsValid():Boolean
     {
-        if (!model_internal::_TIPO_IFRSIsValidCacheInitialized)
+        if (!model_internal::_vigenciaIsValidCacheInitialized)
         {
-            model_internal::calculateTIPO_IFRSIsValid();
+            model_internal::calculateVigenciaIsValid();
         }
 
-        return model_internal::_TIPO_IFRSIsValid;
+        return model_internal::_vigenciaIsValid;
     }
 
-    model_internal function calculateTIPO_IFRSIsValid():void
+    model_internal function calculateVigenciaIsValid():void
     {
-        var valRes:ValidationResultEvent = model_internal::_TIPO_IFRSValidator.validate(model_internal::_instance.TIPO_IFRS)
-        model_internal::_TIPO_IFRSIsValid_der = (valRes.results == null);
-        model_internal::_TIPO_IFRSIsValidCacheInitialized = true;
+        var valRes:ValidationResultEvent = model_internal::_vigenciaValidator.validate(model_internal::_instance.vigencia)
+        model_internal::_vigenciaIsValid_der = (valRes.results == null);
+        model_internal::_vigenciaIsValidCacheInitialized = true;
         if (valRes.results == null)
-             model_internal::TIPO_IFRSValidationFailureMessages_der = emptyArray;
+             model_internal::vigenciaValidationFailureMessages_der = emptyArray;
         else
         {
             var _valFailures:Array = new Array();
@@ -746,22 +822,22 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
             {
                 _valFailures.push(valRes.results[a].errorMessage);
             }
-            model_internal::TIPO_IFRSValidationFailureMessages_der = _valFailures;
+            model_internal::vigenciaValidationFailureMessages_der = _valFailures;
         }
     }
 
     [Bindable(event="propertyChange")]
-    public function get TIPO_IFRSValidationFailureMessages():Array
+    public function get vigenciaValidationFailureMessages():Array
     {
-        if (model_internal::_TIPO_IFRSValidationFailureMessages == null)
-            model_internal::calculateTIPO_IFRSIsValid();
+        if (model_internal::_vigenciaValidationFailureMessages == null)
+            model_internal::calculateVigenciaIsValid();
 
-        return _TIPO_IFRSValidationFailureMessages;
+        return _vigenciaValidationFailureMessages;
     }
 
-    model_internal function set TIPO_IFRSValidationFailureMessages_der(value:Array) : void
+    model_internal function set vigenciaValidationFailureMessages_der(value:Array) : void
     {
-        var oldValue:Array = model_internal::_TIPO_IFRSValidationFailureMessages;
+        var oldValue:Array = model_internal::_vigenciaValidationFailureMessages;
 
         var needUpdate : Boolean = false;
         if (oldValue == null)
@@ -789,8 +865,8 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
 
         if (needUpdate)
         {
-            model_internal::_TIPO_IFRSValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "TIPO_IFRSValidationFailureMessages", oldValue, value));
+            model_internal::_vigenciaValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "vigenciaValidationFailureMessages", oldValue, value));
             // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
             // the entire entity.
             if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
@@ -801,44 +877,44 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     }
 
     [Bindable(event="propertyChange")]   
-    public function get TIPO_BALANCEStyle():com.adobe.fiber.styles.Style
+    public function get tipoEntidadStyle():com.adobe.fiber.styles.Style
     {
         return model_internal::_nullStyle;
     }
 
-    public function get TIPO_BALANCEValidator() : StyleValidator
+    public function get tipoEntidadValidator() : StyleValidator
     {
-        return model_internal::_TIPO_BALANCEValidator;
+        return model_internal::_tipoEntidadValidator;
     }
 
-    model_internal function set _TIPO_BALANCEIsValid_der(value:Boolean):void 
+    model_internal function set _tipoEntidadIsValid_der(value:Boolean):void 
     {
-        var oldValue:Boolean = model_internal::_TIPO_BALANCEIsValid;         
+        var oldValue:Boolean = model_internal::_tipoEntidadIsValid;         
         if (oldValue !== value)
         {
-            model_internal::_TIPO_BALANCEIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "TIPO_BALANCEIsValid", oldValue, value));
+            model_internal::_tipoEntidadIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "tipoEntidadIsValid", oldValue, value));
         }                             
     }
 
     [Bindable(event="propertyChange")]
-    public function get TIPO_BALANCEIsValid():Boolean
+    public function get tipoEntidadIsValid():Boolean
     {
-        if (!model_internal::_TIPO_BALANCEIsValidCacheInitialized)
+        if (!model_internal::_tipoEntidadIsValidCacheInitialized)
         {
-            model_internal::calculateTIPO_BALANCEIsValid();
+            model_internal::calculateTipoEntidadIsValid();
         }
 
-        return model_internal::_TIPO_BALANCEIsValid;
+        return model_internal::_tipoEntidadIsValid;
     }
 
-    model_internal function calculateTIPO_BALANCEIsValid():void
+    model_internal function calculateTipoEntidadIsValid():void
     {
-        var valRes:ValidationResultEvent = model_internal::_TIPO_BALANCEValidator.validate(model_internal::_instance.TIPO_BALANCE)
-        model_internal::_TIPO_BALANCEIsValid_der = (valRes.results == null);
-        model_internal::_TIPO_BALANCEIsValidCacheInitialized = true;
+        var valRes:ValidationResultEvent = model_internal::_tipoEntidadValidator.validate(model_internal::_instance.tipoEntidad)
+        model_internal::_tipoEntidadIsValid_der = (valRes.results == null);
+        model_internal::_tipoEntidadIsValidCacheInitialized = true;
         if (valRes.results == null)
-             model_internal::TIPO_BALANCEValidationFailureMessages_der = emptyArray;
+             model_internal::tipoEntidadValidationFailureMessages_der = emptyArray;
         else
         {
             var _valFailures:Array = new Array();
@@ -846,22 +922,22 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
             {
                 _valFailures.push(valRes.results[a].errorMessage);
             }
-            model_internal::TIPO_BALANCEValidationFailureMessages_der = _valFailures;
+            model_internal::tipoEntidadValidationFailureMessages_der = _valFailures;
         }
     }
 
     [Bindable(event="propertyChange")]
-    public function get TIPO_BALANCEValidationFailureMessages():Array
+    public function get tipoEntidadValidationFailureMessages():Array
     {
-        if (model_internal::_TIPO_BALANCEValidationFailureMessages == null)
-            model_internal::calculateTIPO_BALANCEIsValid();
+        if (model_internal::_tipoEntidadValidationFailureMessages == null)
+            model_internal::calculateTipoEntidadIsValid();
 
-        return _TIPO_BALANCEValidationFailureMessages;
+        return _tipoEntidadValidationFailureMessages;
     }
 
-    model_internal function set TIPO_BALANCEValidationFailureMessages_der(value:Array) : void
+    model_internal function set tipoEntidadValidationFailureMessages_der(value:Array) : void
     {
-        var oldValue:Array = model_internal::_TIPO_BALANCEValidationFailureMessages;
+        var oldValue:Array = model_internal::_tipoEntidadValidationFailureMessages;
 
         var needUpdate : Boolean = false;
         if (oldValue == null)
@@ -889,8 +965,8 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
 
         if (needUpdate)
         {
-            model_internal::_TIPO_BALANCEValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "TIPO_BALANCEValidationFailureMessages", oldValue, value));
+            model_internal::_tipoEntidadValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "tipoEntidadValidationFailureMessages", oldValue, value));
             // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
             // the entire entity.
             if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
@@ -1001,209 +1077,103 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
     }
 
     [Bindable(event="propertyChange")]   
-    public function get NOMBRE_BOLSAStyle():com.adobe.fiber.styles.Style
-    {
-        return model_internal::_nullStyle;
-    }
-
-    public function get NOMBRE_BOLSAValidator() : StyleValidator
-    {
-        return model_internal::_NOMBRE_BOLSAValidator;
-    }
-
-    model_internal function set _NOMBRE_BOLSAIsValid_der(value:Boolean):void 
-    {
-        var oldValue:Boolean = model_internal::_NOMBRE_BOLSAIsValid;         
-        if (oldValue !== value)
-        {
-            model_internal::_NOMBRE_BOLSAIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "NOMBRE_BOLSAIsValid", oldValue, value));
-        }                             
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get NOMBRE_BOLSAIsValid():Boolean
-    {
-        if (!model_internal::_NOMBRE_BOLSAIsValidCacheInitialized)
-        {
-            model_internal::calculateNOMBRE_BOLSAIsValid();
-        }
-
-        return model_internal::_NOMBRE_BOLSAIsValid;
-    }
-
-    model_internal function calculateNOMBRE_BOLSAIsValid():void
-    {
-        var valRes:ValidationResultEvent = model_internal::_NOMBRE_BOLSAValidator.validate(model_internal::_instance.NOMBRE_BOLSA)
-        model_internal::_NOMBRE_BOLSAIsValid_der = (valRes.results == null);
-        model_internal::_NOMBRE_BOLSAIsValidCacheInitialized = true;
-        if (valRes.results == null)
-             model_internal::NOMBRE_BOLSAValidationFailureMessages_der = emptyArray;
-        else
-        {
-            var _valFailures:Array = new Array();
-            for (var a:int = 0 ; a<valRes.results.length ; a++)
-            {
-                _valFailures.push(valRes.results[a].errorMessage);
-            }
-            model_internal::NOMBRE_BOLSAValidationFailureMessages_der = _valFailures;
-        }
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get NOMBRE_BOLSAValidationFailureMessages():Array
-    {
-        if (model_internal::_NOMBRE_BOLSAValidationFailureMessages == null)
-            model_internal::calculateNOMBRE_BOLSAIsValid();
-
-        return _NOMBRE_BOLSAValidationFailureMessages;
-    }
-
-    model_internal function set NOMBRE_BOLSAValidationFailureMessages_der(value:Array) : void
-    {
-        var oldValue:Array = model_internal::_NOMBRE_BOLSAValidationFailureMessages;
-
-        var needUpdate : Boolean = false;
-        if (oldValue == null)
-            needUpdate = true;
-    
-        // avoid firing the event when old and new value are different empty arrays
-        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
-        {
-            if (oldValue.length == value.length)
-            {
-                for (var a:int=0; a < oldValue.length; a++)
-                {
-                    if (oldValue[a] !== value[a])
-                    {
-                        needUpdate = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                needUpdate = true;
-            }
-        }
-
-        if (needUpdate)
-        {
-            model_internal::_NOMBRE_BOLSAValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "NOMBRE_BOLSAValidationFailureMessages", oldValue, value));
-            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
-            // the entire entity.
-            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
-            {
-                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
-            }
-        }
-    }
-
-    [Bindable(event="propertyChange")]   
-    public function get NOMBRE_FANTASIAStyle():com.adobe.fiber.styles.Style
-    {
-        return model_internal::_nullStyle;
-    }
-
-    public function get NOMBRE_FANTASIAValidator() : StyleValidator
-    {
-        return model_internal::_NOMBRE_FANTASIAValidator;
-    }
-
-    model_internal function set _NOMBRE_FANTASIAIsValid_der(value:Boolean):void 
-    {
-        var oldValue:Boolean = model_internal::_NOMBRE_FANTASIAIsValid;         
-        if (oldValue !== value)
-        {
-            model_internal::_NOMBRE_FANTASIAIsValid = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "NOMBRE_FANTASIAIsValid", oldValue, value));
-        }                             
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get NOMBRE_FANTASIAIsValid():Boolean
-    {
-        if (!model_internal::_NOMBRE_FANTASIAIsValidCacheInitialized)
-        {
-            model_internal::calculateNOMBRE_FANTASIAIsValid();
-        }
-
-        return model_internal::_NOMBRE_FANTASIAIsValid;
-    }
-
-    model_internal function calculateNOMBRE_FANTASIAIsValid():void
-    {
-        var valRes:ValidationResultEvent = model_internal::_NOMBRE_FANTASIAValidator.validate(model_internal::_instance.NOMBRE_FANTASIA)
-        model_internal::_NOMBRE_FANTASIAIsValid_der = (valRes.results == null);
-        model_internal::_NOMBRE_FANTASIAIsValidCacheInitialized = true;
-        if (valRes.results == null)
-             model_internal::NOMBRE_FANTASIAValidationFailureMessages_der = emptyArray;
-        else
-        {
-            var _valFailures:Array = new Array();
-            for (var a:int = 0 ; a<valRes.results.length ; a++)
-            {
-                _valFailures.push(valRes.results[a].errorMessage);
-            }
-            model_internal::NOMBRE_FANTASIAValidationFailureMessages_der = _valFailures;
-        }
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get NOMBRE_FANTASIAValidationFailureMessages():Array
-    {
-        if (model_internal::_NOMBRE_FANTASIAValidationFailureMessages == null)
-            model_internal::calculateNOMBRE_FANTASIAIsValid();
-
-        return _NOMBRE_FANTASIAValidationFailureMessages;
-    }
-
-    model_internal function set NOMBRE_FANTASIAValidationFailureMessages_der(value:Array) : void
-    {
-        var oldValue:Array = model_internal::_NOMBRE_FANTASIAValidationFailureMessages;
-
-        var needUpdate : Boolean = false;
-        if (oldValue == null)
-            needUpdate = true;
-    
-        // avoid firing the event when old and new value are different empty arrays
-        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
-        {
-            if (oldValue.length == value.length)
-            {
-                for (var a:int=0; a < oldValue.length; a++)
-                {
-                    if (oldValue[a] !== value[a])
-                    {
-                        needUpdate = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                needUpdate = true;
-            }
-        }
-
-        if (needUpdate)
-        {
-            model_internal::_NOMBRE_FANTASIAValidationFailureMessages = value;   
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "NOMBRE_FANTASIAValidationFailureMessages", oldValue, value));
-            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
-            // the entire entity.
-            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
-            {
-                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
-            }
-        }
-    }
-
-    [Bindable(event="propertyChange")]   
     public function get ID_EMPRESAStyle():com.adobe.fiber.styles.Style
     {
         return model_internal::_nullStyle;
+    }
+
+    public function get ID_EMPRESAValidator() : StyleValidator
+    {
+        return model_internal::_ID_EMPRESAValidator;
+    }
+
+    model_internal function set _ID_EMPRESAIsValid_der(value:Boolean):void 
+    {
+        var oldValue:Boolean = model_internal::_ID_EMPRESAIsValid;         
+        if (oldValue !== value)
+        {
+            model_internal::_ID_EMPRESAIsValid = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ID_EMPRESAIsValid", oldValue, value));
+        }                             
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get ID_EMPRESAIsValid():Boolean
+    {
+        if (!model_internal::_ID_EMPRESAIsValidCacheInitialized)
+        {
+            model_internal::calculateID_EMPRESAIsValid();
+        }
+
+        return model_internal::_ID_EMPRESAIsValid;
+    }
+
+    model_internal function calculateID_EMPRESAIsValid():void
+    {
+        var valRes:ValidationResultEvent = model_internal::_ID_EMPRESAValidator.validate(model_internal::_instance.ID_EMPRESA)
+        model_internal::_ID_EMPRESAIsValid_der = (valRes.results == null);
+        model_internal::_ID_EMPRESAIsValidCacheInitialized = true;
+        if (valRes.results == null)
+             model_internal::ID_EMPRESAValidationFailureMessages_der = emptyArray;
+        else
+        {
+            var _valFailures:Array = new Array();
+            for (var a:int = 0 ; a<valRes.results.length ; a++)
+            {
+                _valFailures.push(valRes.results[a].errorMessage);
+            }
+            model_internal::ID_EMPRESAValidationFailureMessages_der = _valFailures;
+        }
+    }
+
+    [Bindable(event="propertyChange")]
+    public function get ID_EMPRESAValidationFailureMessages():Array
+    {
+        if (model_internal::_ID_EMPRESAValidationFailureMessages == null)
+            model_internal::calculateID_EMPRESAIsValid();
+
+        return _ID_EMPRESAValidationFailureMessages;
+    }
+
+    model_internal function set ID_EMPRESAValidationFailureMessages_der(value:Array) : void
+    {
+        var oldValue:Array = model_internal::_ID_EMPRESAValidationFailureMessages;
+
+        var needUpdate : Boolean = false;
+        if (oldValue == null)
+            needUpdate = true;
+    
+        // avoid firing the event when old and new value are different empty arrays
+        if (!needUpdate && (oldValue !== value && (oldValue.length > 0 || value.length > 0)))
+        {
+            if (oldValue.length == value.length)
+            {
+                for (var a:int=0; a < oldValue.length; a++)
+                {
+                    if (oldValue[a] !== value[a])
+                    {
+                        needUpdate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                needUpdate = true;
+            }
+        }
+
+        if (needUpdate)
+        {
+            model_internal::_ID_EMPRESAValidationFailureMessages = value;   
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ID_EMPRESAValidationFailureMessages", oldValue, value));
+            // Only execute calculateIsValid if it has been called before, to update the validationFailureMessages for
+            // the entire entity.
+            if (model_internal::_instance.model_internal::_cacheInitialized_isValid)
+            {
+                model_internal::_instance.model_internal::isValid_der = model_internal::_instance.model_internal::calculateIsValid();
+            }
+        }
     }
 
 
@@ -1231,6 +1201,10 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
      {
          switch(propertyName)
          {
+            case("orden"):
+            {
+                return ordenValidationFailureMessages;
+            }
             case("RSO"):
             {
                 return RSOValidationFailureMessages;
@@ -1239,25 +1213,21 @@ internal class _EmpresaDatatypeEntityMetadata extends com.adobe.fiber.valueobjec
             {
                 return colorValidationFailureMessages;
             }
-            case("TIPO_IFRS"):
+            case("vigencia"):
             {
-                return TIPO_IFRSValidationFailureMessages;
+                return vigenciaValidationFailureMessages;
             }
-            case("TIPO_BALANCE"):
+            case("tipoEntidad"):
             {
-                return TIPO_BALANCEValidationFailureMessages;
+                return tipoEntidadValidationFailureMessages;
             }
             case("RUT"):
             {
                 return RUTValidationFailureMessages;
             }
-            case("NOMBRE_BOLSA"):
+            case("ID_EMPRESA"):
             {
-                return NOMBRE_BOLSAValidationFailureMessages;
-            }
-            case("NOMBRE_FANTASIA"):
-            {
-                return NOMBRE_FANTASIAValidationFailureMessages;
+                return ID_EMPRESAValidationFailureMessages;
             }
             default:
             {

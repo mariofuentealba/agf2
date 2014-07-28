@@ -51,14 +51,12 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
     /**
      * properties
      */
-    private var _internal_ID_SUBGRUPO : String;
-    private var _internal_RSO : String;
+    private var _internal_orden : String;
+    private var _internal_RSO : Object;
     private var _internal_color : String;
-    private var _internal_TIPO_IFRS : String;
-    private var _internal_TIPO_BALANCE : String;
+    private var _internal_vigencia : String;
+    private var _internal_tipoEntidad : String;
     private var _internal_RUT : String;
-    private var _internal_NOMBRE_BOLSA : String;
-    private var _internal_NOMBRE_FANTASIA : String;
     private var _internal_ID_EMPRESA : String;
 
     private static var emptyArray:Array = new Array();
@@ -76,13 +74,13 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         _model = new _EmpresaDatatypeEntityMetadata(this);
 
         // Bind to own data or source properties for cache invalidation triggering
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "orden", model_internal::setterListenerOrden));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "RSO", model_internal::setterListenerRSO));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "color", model_internal::setterListenerColor));
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "TIPO_IFRS", model_internal::setterListenerTIPO_IFRS));
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "TIPO_BALANCE", model_internal::setterListenerTIPO_BALANCE));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "vigencia", model_internal::setterListenerVigencia));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "tipoEntidad", model_internal::setterListenerTipoEntidad));
         model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "RUT", model_internal::setterListenerRUT));
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "NOMBRE_BOLSA", model_internal::setterListenerNOMBRE_BOLSA));
-        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "NOMBRE_FANTASIA", model_internal::setterListenerNOMBRE_FANTASIA));
+        model_internal::_changeWatcherArray.push(mx.binding.utils.ChangeWatcher.watch(this, "ID_EMPRESA", model_internal::setterListenerID_EMPRESA));
 
     }
 
@@ -91,13 +89,13 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
      */
 
     [Bindable(event="propertyChange")]
-    public function get ID_SUBGRUPO() : String
+    public function get orden() : String
     {
-        return _internal_ID_SUBGRUPO;
+        return _internal_orden;
     }
 
     [Bindable(event="propertyChange")]
-    public function get RSO() : String
+    public function get RSO() : Object
     {
         return _internal_RSO;
     }
@@ -109,33 +107,21 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
     }
 
     [Bindable(event="propertyChange")]
-    public function get TIPO_IFRS() : String
+    public function get vigencia() : String
     {
-        return _internal_TIPO_IFRS;
+        return _internal_vigencia;
     }
 
     [Bindable(event="propertyChange")]
-    public function get TIPO_BALANCE() : String
+    public function get tipoEntidad() : String
     {
-        return _internal_TIPO_BALANCE;
+        return _internal_tipoEntidad;
     }
 
     [Bindable(event="propertyChange")]
     public function get RUT() : String
     {
         return _internal_RUT;
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get NOMBRE_BOLSA() : String
-    {
-        return _internal_NOMBRE_BOLSA;
-    }
-
-    [Bindable(event="propertyChange")]
-    public function get NOMBRE_FANTASIA() : String
-    {
-        return _internal_NOMBRE_FANTASIA;
     }
 
     [Bindable(event="propertyChange")]
@@ -152,19 +138,19 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
      * data/source property setters
      */
 
-    public function set ID_SUBGRUPO(value:String) : void
+    public function set orden(value:String) : void
     {
-        var oldValue:String = _internal_ID_SUBGRUPO;
+        var oldValue:String = _internal_orden;
         if (oldValue !== value)
         {
-            _internal_ID_SUBGRUPO = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ID_SUBGRUPO", oldValue, _internal_ID_SUBGRUPO));
+            _internal_orden = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "orden", oldValue, _internal_orden));
         }
     }
 
-    public function set RSO(value:String) : void
+    public function set RSO(value:Object) : void
     {
-        var oldValue:String = _internal_RSO;
+        var oldValue:Object = _internal_RSO;
         if (oldValue !== value)
         {
             _internal_RSO = value;
@@ -182,23 +168,23 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         }
     }
 
-    public function set TIPO_IFRS(value:String) : void
+    public function set vigencia(value:String) : void
     {
-        var oldValue:String = _internal_TIPO_IFRS;
+        var oldValue:String = _internal_vigencia;
         if (oldValue !== value)
         {
-            _internal_TIPO_IFRS = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "TIPO_IFRS", oldValue, _internal_TIPO_IFRS));
+            _internal_vigencia = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "vigencia", oldValue, _internal_vigencia));
         }
     }
 
-    public function set TIPO_BALANCE(value:String) : void
+    public function set tipoEntidad(value:String) : void
     {
-        var oldValue:String = _internal_TIPO_BALANCE;
+        var oldValue:String = _internal_tipoEntidad;
         if (oldValue !== value)
         {
-            _internal_TIPO_BALANCE = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "TIPO_BALANCE", oldValue, _internal_TIPO_BALANCE));
+            _internal_tipoEntidad = value;
+            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "tipoEntidad", oldValue, _internal_tipoEntidad));
         }
     }
 
@@ -209,26 +195,6 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         {
             _internal_RUT = value;
             this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "RUT", oldValue, _internal_RUT));
-        }
-    }
-
-    public function set NOMBRE_BOLSA(value:String) : void
-    {
-        var oldValue:String = _internal_NOMBRE_BOLSA;
-        if (oldValue !== value)
-        {
-            _internal_NOMBRE_BOLSA = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "NOMBRE_BOLSA", oldValue, _internal_NOMBRE_BOLSA));
-        }
-    }
-
-    public function set NOMBRE_FANTASIA(value:String) : void
-    {
-        var oldValue:String = _internal_NOMBRE_FANTASIA;
-        if (oldValue !== value)
-        {
-            _internal_NOMBRE_FANTASIA = value;
-            this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "NOMBRE_FANTASIA", oldValue, _internal_NOMBRE_FANTASIA));
         }
     }
 
@@ -254,6 +220,11 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
      *  - the validity of the property (and the containing entity) if the given data property is required.
      */
 
+    model_internal function setterListenerOrden(value:flash.events.Event):void
+    {
+        _model.invalidateDependentOnOrden();
+    }
+
     model_internal function setterListenerRSO(value:flash.events.Event):void
     {
         _model.invalidateDependentOnRSO();
@@ -264,14 +235,14 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         _model.invalidateDependentOnColor();
     }
 
-    model_internal function setterListenerTIPO_IFRS(value:flash.events.Event):void
+    model_internal function setterListenerVigencia(value:flash.events.Event):void
     {
-        _model.invalidateDependentOnTIPO_IFRS();
+        _model.invalidateDependentOnVigencia();
     }
 
-    model_internal function setterListenerTIPO_BALANCE(value:flash.events.Event):void
+    model_internal function setterListenerTipoEntidad(value:flash.events.Event):void
     {
-        _model.invalidateDependentOnTIPO_BALANCE();
+        _model.invalidateDependentOnTipoEntidad();
     }
 
     model_internal function setterListenerRUT(value:flash.events.Event):void
@@ -279,14 +250,9 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         _model.invalidateDependentOnRUT();
     }
 
-    model_internal function setterListenerNOMBRE_BOLSA(value:flash.events.Event):void
+    model_internal function setterListenerID_EMPRESA(value:flash.events.Event):void
     {
-        _model.invalidateDependentOnNOMBRE_BOLSA();
-    }
-
-    model_internal function setterListenerNOMBRE_FANTASIA(value:flash.events.Event):void
-    {
-        _model.invalidateDependentOnNOMBRE_FANTASIA();
+        _model.invalidateDependentOnID_EMPRESA();
     }
 
 
@@ -310,6 +276,11 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         var validationFailureMessages:Array = new Array();
 
         var propertyValidity:Boolean = true;
+        if (!_model.ordenIsValid)
+        {
+            propertyValidity = false;
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_ordenValidationFailureMessages);
+        }
         if (!_model.RSOIsValid)
         {
             propertyValidity = false;
@@ -320,30 +291,25 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_colorValidationFailureMessages);
         }
-        if (!_model.TIPO_IFRSIsValid)
+        if (!_model.vigenciaIsValid)
         {
             propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_TIPO_IFRSValidationFailureMessages);
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_vigenciaValidationFailureMessages);
         }
-        if (!_model.TIPO_BALANCEIsValid)
+        if (!_model.tipoEntidadIsValid)
         {
             propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_TIPO_BALANCEValidationFailureMessages);
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_tipoEntidadValidationFailureMessages);
         }
         if (!_model.RUTIsValid)
         {
             propertyValidity = false;
             com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_RUTValidationFailureMessages);
         }
-        if (!_model.NOMBRE_BOLSAIsValid)
+        if (!_model.ID_EMPRESAIsValid)
         {
             propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_NOMBRE_BOLSAValidationFailureMessages);
-        }
-        if (!_model.NOMBRE_FANTASIAIsValid)
-        {
-            propertyValidity = false;
-            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_NOMBRE_FANTASIAValidationFailureMessages);
+            com.adobe.fiber.util.FiberUtils.arrayAdd(validationFailureMessages, _model.model_internal::_ID_EMPRESAValidationFailureMessages);
         }
 
         model_internal::_cacheInitialized_isValid = true;
@@ -424,12 +390,39 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         }
     }
 
+    model_internal var _doValidationCacheOfOrden : Array = null;
+    model_internal var _doValidationLastValOfOrden : String;
+
+    model_internal function _doValidationForOrden(valueIn:Object):Array
+    {
+        var value : String = valueIn as String;
+
+        if (model_internal::_doValidationCacheOfOrden != null && model_internal::_doValidationLastValOfOrden == value)
+           return model_internal::_doValidationCacheOfOrden ;
+
+        _model.model_internal::_ordenIsValidCacheInitialized = true;
+        var validationFailures:Array = new Array();
+        var errorMessage:String;
+        var failure:Boolean;
+
+        var valRes:ValidationResult;
+        if (_model.isOrdenAvailable && _internal_orden == null)
+        {
+            validationFailures.push(new ValidationResult(true, "", "", "orden is required"));
+        }
+
+        model_internal::_doValidationCacheOfOrden = validationFailures;
+        model_internal::_doValidationLastValOfOrden = value;
+
+        return validationFailures;
+    }
+    
     model_internal var _doValidationCacheOfRSO : Array = null;
-    model_internal var _doValidationLastValOfRSO : String;
+    model_internal var _doValidationLastValOfRSO : Object;
 
     model_internal function _doValidationForRSO(valueIn:Object):Array
     {
-        var value : String = valueIn as String;
+        var value : Object = valueIn as Object;
 
         if (model_internal::_doValidationCacheOfRSO != null && model_internal::_doValidationLastValOfRSO == value)
            return model_internal::_doValidationCacheOfRSO ;
@@ -478,56 +471,56 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         return validationFailures;
     }
     
-    model_internal var _doValidationCacheOfTIPO_IFRS : Array = null;
-    model_internal var _doValidationLastValOfTIPO_IFRS : String;
+    model_internal var _doValidationCacheOfVigencia : Array = null;
+    model_internal var _doValidationLastValOfVigencia : String;
 
-    model_internal function _doValidationForTIPO_IFRS(valueIn:Object):Array
+    model_internal function _doValidationForVigencia(valueIn:Object):Array
     {
         var value : String = valueIn as String;
 
-        if (model_internal::_doValidationCacheOfTIPO_IFRS != null && model_internal::_doValidationLastValOfTIPO_IFRS == value)
-           return model_internal::_doValidationCacheOfTIPO_IFRS ;
+        if (model_internal::_doValidationCacheOfVigencia != null && model_internal::_doValidationLastValOfVigencia == value)
+           return model_internal::_doValidationCacheOfVigencia ;
 
-        _model.model_internal::_TIPO_IFRSIsValidCacheInitialized = true;
+        _model.model_internal::_vigenciaIsValidCacheInitialized = true;
         var validationFailures:Array = new Array();
         var errorMessage:String;
         var failure:Boolean;
 
         var valRes:ValidationResult;
-        if (_model.isTIPO_IFRSAvailable && _internal_TIPO_IFRS == null)
+        if (_model.isVigenciaAvailable && _internal_vigencia == null)
         {
-            validationFailures.push(new ValidationResult(true, "", "", "TIPO_IFRS is required"));
+            validationFailures.push(new ValidationResult(true, "", "", "vigencia is required"));
         }
 
-        model_internal::_doValidationCacheOfTIPO_IFRS = validationFailures;
-        model_internal::_doValidationLastValOfTIPO_IFRS = value;
+        model_internal::_doValidationCacheOfVigencia = validationFailures;
+        model_internal::_doValidationLastValOfVigencia = value;
 
         return validationFailures;
     }
     
-    model_internal var _doValidationCacheOfTIPO_BALANCE : Array = null;
-    model_internal var _doValidationLastValOfTIPO_BALANCE : String;
+    model_internal var _doValidationCacheOfTipoEntidad : Array = null;
+    model_internal var _doValidationLastValOfTipoEntidad : String;
 
-    model_internal function _doValidationForTIPO_BALANCE(valueIn:Object):Array
+    model_internal function _doValidationForTipoEntidad(valueIn:Object):Array
     {
         var value : String = valueIn as String;
 
-        if (model_internal::_doValidationCacheOfTIPO_BALANCE != null && model_internal::_doValidationLastValOfTIPO_BALANCE == value)
-           return model_internal::_doValidationCacheOfTIPO_BALANCE ;
+        if (model_internal::_doValidationCacheOfTipoEntidad != null && model_internal::_doValidationLastValOfTipoEntidad == value)
+           return model_internal::_doValidationCacheOfTipoEntidad ;
 
-        _model.model_internal::_TIPO_BALANCEIsValidCacheInitialized = true;
+        _model.model_internal::_tipoEntidadIsValidCacheInitialized = true;
         var validationFailures:Array = new Array();
         var errorMessage:String;
         var failure:Boolean;
 
         var valRes:ValidationResult;
-        if (_model.isTIPO_BALANCEAvailable && _internal_TIPO_BALANCE == null)
+        if (_model.isTipoEntidadAvailable && _internal_tipoEntidad == null)
         {
-            validationFailures.push(new ValidationResult(true, "", "", "TIPO_BALANCE is required"));
+            validationFailures.push(new ValidationResult(true, "", "", "tipoEntidad is required"));
         }
 
-        model_internal::_doValidationCacheOfTIPO_BALANCE = validationFailures;
-        model_internal::_doValidationLastValOfTIPO_BALANCE = value;
+        model_internal::_doValidationCacheOfTipoEntidad = validationFailures;
+        model_internal::_doValidationLastValOfTipoEntidad = value;
 
         return validationFailures;
     }
@@ -559,56 +552,29 @@ public class _Super_EmpresaDatatype extends flash.events.EventDispatcher impleme
         return validationFailures;
     }
     
-    model_internal var _doValidationCacheOfNOMBRE_BOLSA : Array = null;
-    model_internal var _doValidationLastValOfNOMBRE_BOLSA : String;
+    model_internal var _doValidationCacheOfID_EMPRESA : Array = null;
+    model_internal var _doValidationLastValOfID_EMPRESA : String;
 
-    model_internal function _doValidationForNOMBRE_BOLSA(valueIn:Object):Array
+    model_internal function _doValidationForID_EMPRESA(valueIn:Object):Array
     {
         var value : String = valueIn as String;
 
-        if (model_internal::_doValidationCacheOfNOMBRE_BOLSA != null && model_internal::_doValidationLastValOfNOMBRE_BOLSA == value)
-           return model_internal::_doValidationCacheOfNOMBRE_BOLSA ;
+        if (model_internal::_doValidationCacheOfID_EMPRESA != null && model_internal::_doValidationLastValOfID_EMPRESA == value)
+           return model_internal::_doValidationCacheOfID_EMPRESA ;
 
-        _model.model_internal::_NOMBRE_BOLSAIsValidCacheInitialized = true;
+        _model.model_internal::_ID_EMPRESAIsValidCacheInitialized = true;
         var validationFailures:Array = new Array();
         var errorMessage:String;
         var failure:Boolean;
 
         var valRes:ValidationResult;
-        if (_model.isNOMBRE_BOLSAAvailable && _internal_NOMBRE_BOLSA == null)
+        if (_model.isID_EMPRESAAvailable && _internal_ID_EMPRESA == null)
         {
-            validationFailures.push(new ValidationResult(true, "", "", "NOMBRE_BOLSA is required"));
+            validationFailures.push(new ValidationResult(true, "", "", "ID_EMPRESA is required"));
         }
 
-        model_internal::_doValidationCacheOfNOMBRE_BOLSA = validationFailures;
-        model_internal::_doValidationLastValOfNOMBRE_BOLSA = value;
-
-        return validationFailures;
-    }
-    
-    model_internal var _doValidationCacheOfNOMBRE_FANTASIA : Array = null;
-    model_internal var _doValidationLastValOfNOMBRE_FANTASIA : String;
-
-    model_internal function _doValidationForNOMBRE_FANTASIA(valueIn:Object):Array
-    {
-        var value : String = valueIn as String;
-
-        if (model_internal::_doValidationCacheOfNOMBRE_FANTASIA != null && model_internal::_doValidationLastValOfNOMBRE_FANTASIA == value)
-           return model_internal::_doValidationCacheOfNOMBRE_FANTASIA ;
-
-        _model.model_internal::_NOMBRE_FANTASIAIsValidCacheInitialized = true;
-        var validationFailures:Array = new Array();
-        var errorMessage:String;
-        var failure:Boolean;
-
-        var valRes:ValidationResult;
-        if (_model.isNOMBRE_FANTASIAAvailable && _internal_NOMBRE_FANTASIA == null)
-        {
-            validationFailures.push(new ValidationResult(true, "", "", "NOMBRE_FANTASIA is required"));
-        }
-
-        model_internal::_doValidationCacheOfNOMBRE_FANTASIA = validationFailures;
-        model_internal::_doValidationLastValOfNOMBRE_FANTASIA = value;
+        model_internal::_doValidationCacheOfID_EMPRESA = validationFailures;
+        model_internal::_doValidationLastValOfID_EMPRESA = value;
 
         return validationFailures;
     }

@@ -22,7 +22,6 @@ import mx.rpc.remoting.Operation;
 import mx.rpc.remoting.RemoteObject;
 import valueObjects.AgfDatatype;
 import valueObjects.EmpresaDatatype;
-import valueObjects.EmpresaGrillaDatatype;
 import valueObjects.EmpresaSinDatatype;
 import valueObjects.EmpresasDelGrupoDatatype;
 import valueObjects.GrupoIndiceFinancieroDatatype;
@@ -153,12 +152,11 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         _serviceControl = new mx.rpc.remoting.RemoteObject();
 
         // initialize RemoteClass alias for all entities returned by functions of this service
-        valueObjects.EmpresaDatatype._initRemoteClassAlias();
         valueObjects.GrupoIndicesDataType._initRemoteClassAlias();
         valueObjects.ItemDatatype._initRemoteClassAlias();
         valueObjects.SubGruposDatatype._initRemoteClassAlias();
         valueObjects.AgfDatatype._initRemoteClassAlias();
-        valueObjects.EmpresaGrillaDatatype._initRemoteClassAlias();
+        valueObjects.EmpresaDatatype._initRemoteClassAlias();
         valueObjects.EmpresasDelGrupoDatatype._initRemoteClassAlias();
         valueObjects.EmpresaSinDatatype._initRemoteClassAlias();
         valueObjects.IndicesFinancieros2Datatype._initRemoteClassAlias();
@@ -176,7 +174,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultType = Object;
         operations["actualizarCascada"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "comboEmpresa");
-         operation.resultElementType = valueObjects.EmpresaDatatype;
+         operation.resultElementType = Object;
         operations["comboEmpresa"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "comboGrupoIndicesFinancieros");
          operation.resultElementType = valueObjects.GrupoIndicesDataType;
@@ -230,7 +228,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultElementType = valueObjects.AgfDatatype;
         operations["grillaAgf"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaEmpresa");
-         operation.resultElementType = valueObjects.EmpresaGrillaDatatype;
+         operation.resultElementType = valueObjects.EmpresaDatatype;
         operations["grillaEmpresa"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaEmpresaDelSubGrupo");
          operation.resultElementType = valueObjects.EmpresasDelGrupoDatatype;
@@ -257,7 +255,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultElementType = valueObjects.SubGruposDatatype;
         operations["grillaSubGrupos"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaTodasEmpresa");
-         operation.resultElementType = valueObjects.EmpresaDatatype;
+         operation.resultElementType = Object;
         operations["grillaTodasEmpresa"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaTodoIndicesFinancieros");
          operation.resultElementType = valueObjects.IndicesFinancierosDatatype;

@@ -28,6 +28,7 @@
 			import Componentes.SelectorList;
 			import Componentes.SelectorList2;
 			
+			import VO.EmpresaVO;
 			import VO.FormulaVO;
 			
 			import com.as3xls.xls.Sheet;
@@ -893,15 +894,38 @@
 				descargaSVSResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
 			}
 			
-			[Bindable] private var arrRut:ArrayCollection = new ArrayCollection();
+			
 			
 			private function listarEmpresas(event:ResultEvent):void{
 				var xml:XML=new XML(event.result);
+				
+				trace(event.result);
+				
 				var rutList:XMLList = xml.children();
 				for each(var node:XML in rutList){
 					//arrRut.addItem({rut: node.toString()});
-					arrRut.addItem({rut: node.@id, nombre: node.@nombre, tipoEntidad: node.@tipoEntidad, vigencia: node.@vigencia});
+					var empVO:EmpresaVO = new EmpresaVO();
+					empVO.fillAttributes = node;
+					empVO.incluida = node.@incluida == 'true' ? true : false;
+					//arrRut.addItem({rut: node.@id, nombre: node.@nombre, tipoEntidad: node.@tipoEntidad, vigencia: node.@vigencia});
+					modelApp.arrRut.addItem(empVO);
+				} 
+				
+				for each(node in rutList){
+					//arrRut.addItem({rut: node.toString()});
+					empVO = new EmpresaVO();
+					empVO.fillAttributes = node;
+					empVO.incluida = node.@incluida == 'true' ? true : false;
+					//arrRut.addItem({rut: node.@id, nombre: node.@nombre, tipoEntidad: node.@tipoEntidad, vigencia: node.@vigencia});
+					modelApp.arrEmpresasASelec.addItem(empVO);
 				}
+				
+				modelApp.arrEmpresasASelec.filterFunction = no_incluidos;
+				modelApp.arrEmpresasASelec.refresh();
+			}
+			
+			private function no_incluidos(item:EmpresaVO):Boolean{
+				return !item.incluida;
 			}
 			
 			protected function btnProcXBRL_clickHandler(event:MouseEvent):void
@@ -1126,7 +1150,7 @@
 				selectorEmpresas.width = this.width;
 				selectorEmpresas.height = this.height;
 				selectorEmpresas.fnPost = cierraPoPup;
-				selectorEmpresas.arrTodos = arrRut;
+				selectorEmpresas.arrTodos = modelApp.arrEmpresasASelec;
 				selectorEmpresas.conPram = false;
 				selectorEmpresas.labelInsert="nombre";
 				selectorEmpresas.modelo = xbrlCarga;
@@ -1136,10 +1160,9 @@
 			
 			private function cierraPoPup(pop:*, datosFormula:ArrayCollection):void{		
 				dgEmpresa.dataProvider = datosFormula;
-				
+				var xmlParam:XMLDocument = new XMLDocument();
 				if(datosFormula.length > 0){
 					var xml:XML;
-					var xmlParam:XMLDocument;
 					var xmlParamSub:XMLNode;
 					xmlParamSub = new XMLNode(1, 'Empresas');
 					xmlParam.appendChild(xmlParamSub);
@@ -1147,7 +1170,7 @@
 					var xmlNode:XMLNode;				
 					for(var i:int = 0; i < datosFormula.length; i++){
 						xmlNode = new XMLNode(1, 'empresa');
-						xmlNode.attributes = {ID_EMPRESA : datosFormula.getItemAt(i)['ID_EMPRESA'] , RUT : datosFormula.getItemAt(i)['RUT'], RSO : datosFormula.getItemAt(i)['RSO'],  color : 0, orden : 0, tipoEntidad : datosFormula.getItemAt(i)['tipoEntidad'], vigencia : datosFormula.getItemAt(i)['vigencia']};
+						xmlNode.attributes = {ID_EMPRESA : datosFormula.getItemAt(i)['idInterno'] , RUT : datosFormula.getItemAt(i)['id'], RSO : datosFormula.getItemAt(i)['nombre'],  color : 0, orden : 0, tipoEntidad : datosFormula.getItemAt(i)['tipoEntidad'], vigencia : datosFormula.getItemAt(i)['vigencia']};
 						xmlParamSub.appendChild(xmlNode);
 					}
 					
@@ -1165,7 +1188,7 @@
 			}
 			
 			private function terminaCargaEmpresa(event:ResultEvent):void{
-				
+				grillaEmpresaResult.token = modelo.grillaEmpresa();
 			}
 		
 			
@@ -1725,9 +1748,9 @@
 					<s:NavigatorContent width="100%" height="100%" label="Empresas">
 						<mx:TabNavigator id="tnEmpresas" left="0" right="0" top="0" bottom="0">
 							<s:NavigatorContent label="Listado" >
-								<s:DataGrid id="dgEmpresa" x="23" top="0" bottom="20" width="100%"
-											creationComplete="dgEmpresa_creationCompleteHandler(event)"
-											doubleClick="dgGrupo_doubleClickHandler(event)"
+								<s:DataGrid id="dgEmpresa" x="23" top="25" bottom="-5" width="100%"
+											dataProvider="{modelApp.arrEmpresas}"
+											doubleClick="dgEmpresa_doubleClickHandler(event)"
 											doubleClickEnabled="true" requestedRowCount="4">
 									<s:columns>
 										
@@ -1741,13 +1764,16 @@
 														  headerText="ID_EMPRESA"></s:GridColumn>
 										</s:ArrayList>
 									</s:columns>
-									<s:AsyncListView list="{grillaEmpresaResult.lastResult}"/>
 									
 									
 									
 									
-								</s:DataGrid>	
-								<s:Button label="Agregar Empresa" click="button11_clickHandler(event)"/>
+								</s:DataGrid>
+								<s:HGroup>
+									<s:Button label="Agregar" click="button11_clickHandler(event)"/>
+									<s:Button id="btnEliminarEmpresa" label="Eliminar"/>	
+								</s:HGroup>
+								
 								<s:TextInput text="grillaEmpresaResult" visible="false">
 									
 								</s:TextInput>
@@ -1799,28 +1825,28 @@
 									<s:TextInput name="ID_EMPRESA" visible="false" y="193" left="10" right="10" text="{dgEmpresa.selectedItem['ID_EMPRESA']}"/>
 									<s:Label y="24" left="10" fontWeight="bold" text="Rut:"/>
 									
-									<s:TextInput name="RUT" id="txtGruposNombre1" y="43" left="10" right="10" text="{dgEmpresa.selectedItem['RUT']}"/>
+									<s:TextInput name="RUT" id="txtGruposNombre1" editable="false" y="43" left="10" right="10" text="{dgEmpresa.selectedItem['RUT']}"/>
 									<s:Label y="73" left="10" fontWeight="bold" text="Razón Social:"/>
 									
 									<s:Button x="29" bottom="10" label="Guardar"
 											  click="editar_clickHandler(event)"/>
-									<s:TextInput name="RSO" y="93" left="10" right="10" text="{dgEmpresa.selectedItem['RSO']}"/>
+									<s:TextInput name="RSO" y="93" editable="false" left="10" right="10" text="{dgEmpresa.selectedItem['RSO']}"/>
 									<s:Label y="123" left="10" fontWeight="bold"
-											 text="Nombre Fantasía:"/>
-									<s:TextInput name="NOMBRE_FANTASIA" y="143" left="10" right="10" text="{dgEmpresa.selectedItem['NOMBRE_FANTASIA']}"/>
+											 text="Tipo Entidad:"/>
+									<s:TextInput name="NOMBRE_FANTASIA" editable="false" y="143" left="10" right="10" text="{dgEmpresa.selectedItem['tipoEntidad']}"/>
 									<s:Label y="173" left="10" fontWeight="bold"
-											 text="Sigla en Bolsa:"/>
-									<s:TextInput name="NOMBRE_BOLSA" y="193" left="10" right="10" text="{dgEmpresa.selectedItem['NOMBRE_BOLSA']}"/>
+											 text="Estado:"/>
+									<s:TextInput name="NOMBRE_BOLSA" editable="false" y="193" left="10" right="10" text="{dgEmpresa.selectedItem['vigencia']}"/>
 									<s:TextInput name="VALOR_ACCION" visible="false" y="193" left="10" right="10" text="0"/>
-									<s:Label y="223" left="10" fontWeight="bold" text="Tipo Balance:"/>
-									<s:DropDownList name="TIPO_BALANCE" y="243" left="10" labelField="label" selectedIndex="{dgEmpresa.selectedItem['TIPO_BALANCE'] == 'I' ? 0 : 1}">
+									<s:Label visible="false" y="223" left="10" fontWeight="bold" text="Tipo Balance:"/>
+									<s:DropDownList visible="false" name="TIPO_BALANCE" y="243" left="10" labelField="label" selectedIndex="{dgEmpresa.selectedItem['TIPO_BALANCE'] == 'I' ? 0 : 1}">
 										<s:ArrayCollection>
 											<fx:Object data="I" label="Individual"></fx:Object>
 											<fx:Object data="C" label="Consolidado"></fx:Object>
 										</s:ArrayCollection>
 									</s:DropDownList>
-									<s:Label y="272" left="10" fontWeight="bold" text="Tipo IFRS:"/>
-									<s:DropDownList name="TIPO_IFRS" y="292" left="10" selectedIndex="{dgEmpresa.selectedItem['TIPO_IFRS'] == 'Full' ? 0 : 1}">
+									<s:Label visible="false" y="272" left="10" fontWeight="bold" text="Tipo IFRS:"/>
+									<s:DropDownList visible="false" name="TIPO_IFRS" y="292" left="10" selectedIndex="{dgEmpresa.selectedItem['TIPO_IFRS'] == 'Full' ? 0 : 1}">
 										<s:ArrayCollection>
 											<fx:Object data="Full" label="Full"></fx:Object>
 											<fx:Object data="Pyme" label="Pyme"></fx:Object>
@@ -2266,7 +2292,7 @@
 					<s:Button x="39" y="63" label="descargar Información de SVS" id="btnDescarga" click="btnDescarga_clickHandler(event)"/>	
 				</s:VGroup>
 				
-				<s:DataGrid id="dgEmpresas"  requestedRowCount="4" dataProvider="{arrRut}" selectionMode="multipleRows" creationComplete="dgEmpresas_creationCompleteHandler(event)">
+				<s:DataGrid id="dgEmpresas"  requestedRowCount="4" dataProvider="{modelApp.arrRut}" selectionMode="multipleRows" creationComplete="dgEmpresas_creationCompleteHandler(event)">
 					<s:columns>
 						<s:ArrayList>
 							<s:GridColumn dataField="rut" headerText="Rut"></s:GridColumn>
