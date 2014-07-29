@@ -1,17 +1,6 @@
-
-use agf
-
--- ================================================
--- Template generated from Template Explorer using:
--- Create Procedure (New Menu).SQL
---
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
--- values below.
---
--- This block of comments will not be included in
--- the definition of the procedure.
--- ================================================
+USE [agf]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_xbrl_rescata_empresas]    Script Date: 07/27/2014 21:31:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -21,7 +10,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-alter PROCEDURE sp_xbrl_rescata_empresas 
+ALTER PROCEDURE [dbo].[sp_xbrl_rescata_empresas] 
 	-- Add the parameters for the stored procedure here
 	
 AS
@@ -39,11 +28,15 @@ BEGIN
     
     if @cant > 0
     begin
-		SELECT  [rut] id
-			  ,[nombre]
-			  ,[tipoEntidad]
-			  ,[vigencia]
-		  FROM [agf].[dbo].[xbrl_empresas] as rut FOR XML AUTO, TYPE,ROOT('Resp');	
+		SELECT [id] idInterno
+			  ,rut.[rut] id
+			  ,rut.[nombre]
+			  ,rut.[tipoEntidad]
+			  ,rut.[vigencia]
+			  ,case isnull(e.id_empresa, 0) when 0 then 'false' else 'true' end incluida
+		  FROM [agf].[dbo].[xbrl_empresas] as rut 
+				left join [agf].[dbo].[empresas] e on e.id_empresa = rut.id
+			FOR XML AUTO, TYPE,ROOT('Resp')	 
     end
     else
     begin
@@ -59,4 +52,3 @@ BEGIN
   
   
 END
-GO

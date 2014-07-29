@@ -2,15 +2,19 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="600" height="500"  xmlns:Componentes="Componentes.*"
-		 creationComplete="bordercontainer1_creationCompleteHandler(event)" xmlns:modelo="services.modelo.*"
+		 creationComplete="bordercontainer1_creationCompleteHandler(event)" xmlns:modelo="services.modelo.*" xmlns:ns="http://code.google.com/p/flexlib/"
 		 >
 	<fx:Script>
 		<![CDATA[
+			import VO.EmpresaVO;
+			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.DragEvent;
 			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
 			import mx.rpc.events.ResultEvent;
+			import mx.utils.StringUtil;
 			
 			import services.modelo.Modelo;
 			
@@ -82,6 +86,61 @@
 				}
 			}
 			
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				PopUpManager.removePopUp(this);
+			}
+			
+			
+			protected function tiBuscar_changeHandler(event:Event):void
+			{
+				//recuperamos el texto de la caja de busqueda y lo convierto a minusculas
+				str2search = StringUtil.trim(tiBuscar.text).toLowerCase();
+				//validamos que no este vacia
+				if (str2search != "")
+				{
+					//si no esta vacia, aplicamos la funcion
+					arrTodos.filterFunction = busca;
+				}
+				else
+				{
+					//si esta vacia, quitamos la funcion de filtrado
+					arrTodos.filterFunction = null;
+				}
+				//despues de cualquier filterFunction, se tiene que aplicar el metodo refresh
+				arrTodos.refresh();
+			}
+			private var str2search:String = "";
+			private function busca(item:EmpresaVO):Boolean
+			{
+				//variable de retorno
+				var ret:Boolean = false;
+				//variable que almacenara el nombre de cada indice del elemento
+				var p:String = "";
+				//variable que almacenara el valor del elemento
+				var str:String = "";
+				//recorro cada indice del elemento
+				
+				//no quiero que busque en la propiedad mx_internal_uid
+				if (!item.incluida)
+				{
+					//recupero el valor del elemento y lo convierto a minusculas
+					str = String(item.nombre).toLowerCase();
+					//veo si la cadena de busqueda existe en el valor del elemento
+					if (str.indexOf(str2search) != -1)
+					{
+						//si existe, regreso un true para que el elemento sea agregado al proveedor
+						ret = true;
+						//termino el ciclo, no hay necesidad de seguir buscando
+						
+					}
+				}
+				
+				//regreso el valor Boolean
+				return ret;
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -97,8 +156,10 @@
 	</s:Rect>
 	<s:BorderContainer top="50" width="600" height="500" cornerRadius="5" horizontalCenter="0">
 		
-		
-		<Componentes:TitledBorderBox title="Selección de Empresas" left="15" right="15" bottom="15" top="15">
+		<s:HGroup width="100%" horizontalAlign="right">
+			<ns:PromptingTextInput id="tiBuscar" prompt="Buscar..." change="tiBuscar_changeHandler(event)"/>
+		</s:HGroup>
+		<Componentes:TitledBorderBox title="Selección de Empresas" left="15" right="15" bottom="15" top="50">
 			<s:Group width="100%" height="100%">
 				<s:List id="lTodos" left="15" top="42" bottom="40" width="250" height="100%"
 						creationComplete="lTodos_creationCompleteHandler(event)" dataProvider="{arrTodos}"
@@ -118,7 +179,7 @@
 			</s:Group>
 			
 		</Componentes:TitledBorderBox>
-		<s:Button x="518" y="0" label="Cerrar"/>
+		<s:Button x="518" y="0" label="Cerrar" click="button2_clickHandler(event)"/>
 		
 		
 	</s:BorderContainer>

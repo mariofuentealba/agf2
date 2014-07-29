@@ -9,6 +9,7 @@ package VO
 		public var tipoEntidad:String;
 		public var vigencia:String;
 		public var incluida:Boolean;
+		public var idSubgrupo:Array = new Array();
 		
 		
 		

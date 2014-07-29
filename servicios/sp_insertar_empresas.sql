@@ -10,7 +10,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-create PROCEDURE [dbo].[sp_insertar_empresas] 
+alter PROCEDURE [dbo].[sp_insertar_empresas] 
 	-- Add the parameters for the stored procedure here
 	@xmlParam xml
 AS
@@ -25,7 +25,7 @@ BEGIN
 
 
 INSERT INTO empresas (ID_EMPRESA, RUT, rso, color,	orden, tipoEntidad, vigencia) 
-SELECT NODO.ITEM.value('@ID_EMPRESA','int'), NODO.ITEM.value('@RUT','VARCHAR(10)'), NODO.ITEM.value('@rso','VARCHAR(100)'), 0, 0, NODO.ITEM.value('@tipoEntidad','VARCHAR(100)'), NODO.ITEM.value('@vigencia','VARCHAR(20)')
+SELECT NODO.ITEM.value('@ID_EMPRESA','int'), NODO.ITEM.value('@RUT','VARCHAR(10)'), NODO.ITEM.value('@RSO','VARCHAR(100)'), 0, 0, NODO.ITEM.value('@tipoEntidad','VARCHAR(100)'), NODO.ITEM.value('@vigencia','VARCHAR(20)')
 FROM   @xmlParam.nodes('/Empresas/empresa') AS NODO(ITEM)
 --where NODO.ITEM.value('@idTag','VARCHAR(50)') = 'Assets'
 

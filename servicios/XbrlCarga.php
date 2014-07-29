@@ -597,6 +597,238 @@ class XbrlCarga{
 		return "mal 2";//$xmlParam->xmlParam;
 	}
 	
+	public function insertarEmpresas2($xmlParam){//$etiqueta, $valor, $rut, $periodo){
+		
+		try { 
+		//return 'hola' ;
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
+			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
+			$con->beginTransaction(); 		
+			
+			
+			
+			
+			
+			
+
+			$sql = "exec [dbo].[sp_insertar_empresas]  ?";
+			
+			
+			
+			$sql2 = str_replace("'", "''", $sql);
+			$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+			$stmtlog->execute();
+			$stmtlog = $con->prepare("INSERT INTO logs values ('" . $xmlParam . "');");
+			$stmtlog->execute();
+			
+			$stmt = $con->prepare($sql);				
+			$stmt->bindParam(1, $xmlParam); 
+			$stmt->execute();
+			
+			$ultimo_id = $con->lastInsertId();
+			
+			/*$arr = array();
+				//Ingresa valores para todos los tag ingresados de tipo xbrl y estimadores manuales
+				$sql = "exec spInsertaValoresItemEmpresaNueva ?";
+				
+				$sql2 = str_replace("'", "''", $sql);
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
+				$stmt = $con->prepare($sql);				
+				$stmt->bindParam(1, $ultimo_id); 
+				$stmt->execute();
+
+				//Carga las formulas por default para la nueva empresa
+				$sql = "INSERT INTO empresa_indice(id_empresa, id_indice_financiero, num_formula, id_formula) 
+						SELECT " . $ultimo_id . ", id_indice_financiero, 0, id_formula 
+						FROM formulas;";
+				$sql2 = str_replace("'", "''", $sql);
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
+				$stmt = $con->prepare($sql);
+				$stmt->execute();
+				$sql = "sp_rescata_formula_simple ? ";
+				$sql2 = str_replace("'", "''", $sql);
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
+				$stmtq = $con->prepare($sql);
+				$stmtq->bindParam(1, $ultimo_id);
+				$stmtq->execute();
+				$arrResult = array();	
+				while($row = $stmtq->fetch()){
+					$operacion = $row[10];
+					if(!isset($row[3]))
+						$row[3] = 0;
+					$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
+					if(!isset($row[4]))
+						$row[4] = 0;
+					$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
+					if(!isset($row[5]))			
+						$row[5] = 0;
+					$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
+					if(!isset($row[6]))
+						$row[6] = 0;
+					$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
+					if(!isset($row[7]))
+						$row[7] = 0;
+					$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
+
+						
+					$evaluacionDiv = explode('/', $operacion);
+					if(count($evaluacionDiv) > 1){					
+						@eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+						if($resultDiv != 0){
+							@eval( '$res = ' . $operacion . ';');		
+						} else {
+							$res = 0;
+						}
+					} else {
+					$stmtlog = $con->prepare("INSERT INTO logs values ('RES = " . $operacion . ";');");
+					$stmtlog->execute();
+						@eval( '$res = ' . $operacion . ';');		
+					}
+					$nuevoValor = (float)$res;					
+					$sql = "INSERT INTO valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula, HIST_FORMULA) 
+											VALUES (" . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",'1900-01-01',2, " . $row[11] . ", '" . $row[14] . "|" . $row[15] . "|" . $row[16] . "|" . $row[17] . "|" . $row[18] . "');";
+					$sql2 = str_replace("'", "''", $sql);
+					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+					$stmtlog->execute();
+					$stmt = $con->prepare($sql);
+					$stmt->execute();
+					//$this->insertaCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
+				}	
+
+				$sql = "exec sp_rescata_formulas_complejas";
+				$sql2 = str_replace("'", "''", $sql);
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
+				$stmtq = $con->prepare($sql);
+				$stmtq->execute();			
+				while($rowInd = $stmtq->fetch()){	
+
+					//$stmtlog = $con->prepare("INSERT INTO logs values ('INDICE PROCESADO = " . $rowInd[0] . "');");
+					//$stmtlog->execute();
+					$sql = "exec sp_procesa_formulas_complejas ?, ?";	
+					$sql2 = str_replace("'", "''", $sql);
+					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+					$stmtlog->execute();
+					$stmtq2 = $con->prepare($sql);
+					$stmtq2->bindParam(1,  $rowInd[0]); 
+					$stmtq2->bindParam(2, $ultimo_id); 
+					$stmtq2->execute();			
+					$arrResult = array();	
+					while($row = $stmtq2->fetch()){
+						$operacion = $row[10];
+						if(!isset($row[3]))
+							$row[3] = 0;
+						$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
+						if(!isset($row[4]))
+							$row[4] = 0;
+						$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
+						if(!isset($row[5]))			
+							$row[5] = 0;
+						$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
+						if(!isset($row[6]))
+							$row[6] = 0;
+						$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
+						if(!isset($row[7]))
+							$row[7] = 0;
+						$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
+
+							
+						$evaluacionDiv = explode('/', $operacion);
+						if(count($evaluacionDiv) > 1){					
+							@eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+							if($resultDiv != 0){
+								@eval( '$res = ' . $operacion . ';');		
+							} else {
+								$res = 0;
+							}
+						} else {
+							@eval( '$res = ' . $operacion . ';');		
+						}
+						$nuevoValor = (float)$res;
+
+						$sql = "INSERT INTO valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula, hist_formula) 
+												VALUES (" . $row[0] . ", " . $row[1] . "," . $row[2] . ", 'TRIMESTRAL', " . $nuevoValor . ",SYSDATETIME(), 2, " . $row[11] . ", '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "');";
+						$sql2 = str_replace("'", "''", $sql);
+						$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+						$stmtlog->execute();
+						$stmtins = $con->prepare($sql);
+						$stmtins->execute();
+						//$this->insertaCascada($nuevoValor, $row[0], $arrInf[1], $arrInf[2], $mysqli);
+					}	
+				}	*/
+				$con->commit();
+				/*$stmtlog = $con->prepare("INSERT INTO logs values ('TERMINE');");
+				$stmtlog->execute();*/
+				return true;//$arr;
+			
+		        
+		     			
+		} catch( PDOExecption $e ) {
+			
+			print "Error!: " . $e->getMessage() . "</br>";
+		
+			$con->rollback();
+			return "bien";//$xmlParam->xmlParam;
+		    
+		} 	
+
+		unset($con); 
+		unset($stmt);
+		
+		
+		
+		
+		return "mal 2";//$xmlParam->xmlParam;
+	}
+	
+	public function actualizaEmpresa($id, $color){//$etiqueta, $valor, $rut, $periodo){
+		
+		try { 
+		//return 'hola' ;
+			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
+			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
+			$con->beginTransaction(); 			
+
+			$sql = "UPDATE empresas SET color =  " . $color . " WHERE id_empresa = " . $id . "";
+			
+			
+			
+			$sql2 = str_replace("'", "''", $sql);
+			$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+			$stmtlog->execute();
+			
+			$stmt = $con->prepare($sql);				
+			//$stmt->bindParam(2, $id); 
+			//$stmt->bindParam(1, $color); 
+			$stmt->execute();
+			
+			$con->commit();
+			/*$stmtlog = $con->prepare("INSERT INTO logs values ('TERMINE');");
+			$stmtlog->execute();*/
+			return true;//$arr;
+			
+		        
+		     			
+		} catch( PDOExecption $e ) {
+			
+			print "Error!: " . $e->getMessage() . "</br>";
+		
+			$con->rollback();
+			return "bien";//$xmlParam->xmlParam;
+		    
+		} 	
+
+		unset($con); 
+		unset($stmt);
+		
+		
+		
+		
+		return "mal 2";//$xmlParam->xmlParam;
+	}
 	
 }
 ?>

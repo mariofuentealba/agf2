@@ -15,6 +15,11 @@ package model
 		public var arrXBRL:ArrayCollection = new ArrayCollection();
 		public var arrFormulas:ArrayCollection = new ArrayCollection();
 		public var arrFormulasIndice:ArrayCollection;
+		public var arrEmpresas:ArrayCollection;
+		
+		public var arrRut:ArrayCollection = new ArrayCollection();
+		public var arrEmpresasASelec:ArrayCollection = new ArrayCollection();
+		public var arrSubGrupo:ArrayCollection = new ArrayCollection();
 		
 		public static function getInstance():ModelApp
 		{

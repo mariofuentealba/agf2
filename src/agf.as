@@ -105,7 +105,7 @@ import VO.IndiceVO;
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
 public var _cant:Array = [];
-private var modelApp:ModelApp = model.ModelApp.getInstance();
+[Bindable] private var modelApp:ModelApp = model.ModelApp.getInstance();
 
 
 /*private var _arr:ArrayCollection;
@@ -239,6 +239,17 @@ protected function dgGrupo_doubleClickHandler(event:MouseEvent):void
 					
 				break;
 		}
+	}
+}
+
+protected function dgEmpresa_doubleClickHandler(event:MouseEvent):void
+{
+	// TODO Auto-generated method stub
+	var tn:TabNavigator = event.currentTarget.parent.parent.parent.parent;
+	if((event.currentTarget as spark.components.DataGrid).selectedIndex != -1){
+		(tn.getElementAt(1) as NavigatorContent).enabled = true;
+		tn.selectedIndex = 1;
+		
 	}
 }
 
@@ -558,10 +569,12 @@ protected function dgGrupo0_creationCompleteHandler(event:FlexEvent):void
 	grillaIndicesFinancierosResult.token = modelo.grillaIndicesFinancieros();
 }
 
-protected function dgEmpresa_creationCompleteHandler(event:FlexEvent):void
-{
-	grillaEmpresaResult.token = modelo.grillaEmpresa();
+
+private function llenaEmpresas(event:ResultEvent):void{
+	modelApp.arrEmpresas =  grillaEmpresaResult.lastResult;	
 }
+
+
 
 public function myRendererFunction(item:*):IFactory
 {
@@ -668,15 +681,16 @@ protected function dropDownList9_creationCompleteHandler(event:FlexEvent):void
 
 
 private function llenaSubGrupos(event:ResultEvent):void{
-	dgSubGrupo.dataProvider = event.result as ArrayCollection;
+	//dgSubGrupo.dataProvider = event.result as ArrayCollection;
+	modelApp.arrSubGrupo = event.result as ArrayCollection;
 }
 
 
-protected function dgSubGrupo_creationCompleteHandler(event:FlexEvent):void
+/*protected function dgSubGrupo_creationCompleteHandler(event:FlexEvent):void
 {
-	grillaSubGruposResult.token = modelo.grillaSubGrupos();
+	
 	grillaSubGruposResult.addEventListener(ResultEvent.RESULT, llenaSubGrupos);
-}
+}*/
 
 
 protected function completaIndices(event:ResultEvent):void{
@@ -808,22 +822,23 @@ protected function crearEsquema_creationCompleteHandler(event:FlexEvent):void
 {
 	// TODO Auto-generated method stub
 	//Alert.show('' + ExternalInterface.available);
+	grillaEmpresaResult.token = modelo.grillaEmpresa();
 	rescataEmpresasResult.token = xbrlCarga.rescataEmpresas();
-	rescataEmpresasResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
+	//rescataEmpresasResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
 	comboItemsAdvResult.token = componentesFormula.comboItems();
-	
+	grillaSubGruposResult.token = modelo.grillaSubGrupos();
 	
 	
 	gruposFinancierosResult.token = modelo.grillaTodosGrupos();
 	subGruposFinancierosResult.token = modelo.grillaTodoSubGrupos();
-	empresasResult.token = modelo.grillaTodasEmpresa();
+	/*empresasResult.token = modelo.grillaTodasEmpresa();
 	
 	gruposFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina);
 	subGruposFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina);
 	empresasResult.addEventListener(ResultEvent.RESULT, generaPagina);
 	
-	comboItemsResult.token = modelo.comboItems();
-	comboItemsResult.addEventListener(ResultEvent.RESULT, itemsXBRL);
+	/*comboItemsResult.token = modelo.comboItems();
+	comboItemsResult.addEventListener(ResultEvent.RESULT, itemsXBRL);*/
 }
 
 private function itemsXBRL(event:ResultEvent):void{

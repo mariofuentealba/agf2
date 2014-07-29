@@ -202,22 +202,22 @@ class Modelo
 		    $sql2 = str_replace("'", "", $sql);
 			try {
 				$con->beginTransaction(); 
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmlog->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
 				$sql = "delete from GRUPOS_SUBGRUPOS WHERE  " . $where . ";";
 				$sql2 = str_replace("'", "", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute(); 		    
-				$stmt = $con->prepare("INSERT INTO logs values ('" . print_r($param, 1) . "');");
-				$stmt->execute();				
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . print_r($param, 1) . "');");
+				$stmtlog->execute();				
 				$sql = "INSERT INTO GRUPOS_SUBGRUPOS VALUES (" . $param[0] . ", " . $id . ");";
 				$sql2 = str_replace("'", "", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();   
 				$con->commit();
@@ -242,13 +242,19 @@ class Modelo
 		try {
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	
-			$sql = "INSERT INTO " . $table . " VALUES (null";
+			$sql = "INSERT INTO " . $table . " VALUES (";
 			for($i = 0; $i < count($arrInf); $i++){
-				$sql .= ", '" . $arrInf[$i] . "'";
+				$sql .= " '" . $arrInf[$i] . "',";
 			}
-			$sql .= ");";	
+
+				
+			$sql = substr($sql, 0, - 1);
+			$sql .= ");";
 			try {
 				$con->beginTransaction(); 
+				$sql2 = str_replace("'", "", $sql);
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
 		        $ultimo_id = $con->lastInsertId();
@@ -364,7 +370,7 @@ class Modelo
 				$con->beginTransaction(); 
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . print_r($arrInf, true) . "');");
 				$stmtlog->execute();			
-				$sql = "INSERT INTO " . $table . " VALUES ('" .$arrInf[0] ."'";
+				$sql = "INSERT INTO empresas VALUES ('" .$arrInf[0] ."'";
 				for($i = 1; $i < count($arrInf); $i++){
 					$sql .= ", '" . $arrInf[$i] . "'";
 				}
@@ -649,9 +655,10 @@ class Modelo
 					$sql = "INSERT INTO subgrupos_empresas VALUES ( " . $grupo . " , " .  $empresas[$i]. " );";
 					$stmt = $con->prepare($sql);
 					$stmt->execute();
-					$con->commit();
+					
 					$ultimo_id = $con->lastInsertId();		
-				}		              
+				}	
+				$con->commit();
 				$arr = array();
 				$arr[0]['ID'] = $ultimo_id;
 				return $arr;	
@@ -674,7 +681,7 @@ class Modelo
 	        $arr = array();	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
-			$stmt = $con->prepare("SELECT b.ID_EMPRESA , RUT , RSO , NOMBRE_FANTASIA , NOMBRE_BOLSA , VALOR_ACCION , TIPO_BALANCE , TIPO_IFRS , color
+			$stmt = $con->prepare("SELECT b.ID_EMPRESA , RUT , RSO, color, orden , tipoEntidad , vigencia
 			FROM empresas b ");
 			$stmt->execute();
 			$i=0;
@@ -682,12 +689,11 @@ class Modelo
 			{					
 				$arr[$i]['ID_EMPRESA']=$row[0];
 				$arr[$i]['RUT']=$row[1];
-				$arr[$i]['RSO']=$row[2];
-				$arr[$i]['NOMBRE_FANTASIA']=$row[3];
-				$arr[$i]['NOMBRE_BOLSA']=$row[4];
-				$arr[$i]['TIPO_BALANCE']=$row[6];			     
-				$arr[$i]['TIPO_IFRS']=$row[7];					
-				$arr[$i]['color']=$row[8];
+				$arr[$i]['RSO']=$row[2];				
+				$arr[$i]['color']=$row[3];
+				$arr[$i]['orden']=$row[4];
+				$arr[$i]['tipoEntidad']=$row[5];				
+				$arr[$i]['vigencia']=$row[6];
 				$i++; 
 			}	
 			return $arr;							
@@ -705,44 +711,36 @@ class Modelo
 			$arr = array();	    	        
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');
-	    	try {
-				$con->beginTransaction(); 
-				$sql = "SELECT  ID_EMPRESA, RUT, RSO, NOMBRE_FANTASIA, NOMBRE_BOLSA, VALOR_ACCION, TIPO_BALANCE, TIPO_IFRS, color, MONEDA, ESTADOS, ORIGEN, OA
-					   FROM Empresas 
-				   Where id_empresa not in (select id_empresa from subgrupos_empresas WHERE id_subgrupo = " . $id . ")
-				   Order by NOMBRE_FANTASIA";
-				$sql2 = str_replace("'", "''", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
-				$stmt = $con->prepare($sql);
-				$stmt->execute();	
-				$con->commit();				
-				$i=0;
-				while($row = $stmt->fetch()){
-					$arr[$i]['ID_EMPRESA']=$row[0];
-					$arr[$i]['RUT']=$row[1];
-					$arr[$i]['RSO']=$row[2];
-					$arr[$i]['NOMBRE_FANTASIA']=$row[3];
-					$arr[$i]['NOMBRE_BOLSA']=$row[4];
-					$arr[$i]['TIPO_BALANCE']=$row[6];			     
-					$arr[$i]['TIPO_IFRS']=$row[7];
-					$arr[$i]['color']=$row[8];
-					$i++; 
-				}
-				
-				return $arr;
-			} catch(PDOExecption $e) {
-		        $con->rollback();
-		        print "Error!: " . $e->getMessage() . "</br>";
-				return 0;
-		    }       
-			
+	    
+			$con->beginTransaction(); 
+			$sql = "SELECT  ID_EMPRESA, RUT, RSO, color, orden , tipoEntidad , vigencia
+				   FROM Empresas 
+			   Where id_empresa not in (select id_empresa from subgrupos_empresas WHERE id_subgrupo = " . $id . ")
+			   Order by RSO";
+			$sql2 = str_replace("'", "''", $sql);
+			$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+			$stmt->execute();
+			$stmt = $con->prepare($sql);
+			$stmt->execute();
+    	    $i=0;
+    	    while($row = $stmt->fetch())
+    	    {    	    
+				$arr[$i]['ID_EMPRESA']=$row[0];
+				$arr[$i]['RUT']=$row[1];
+				$arr[$i]['RSO']=$row[2];				
+				$arr[$i]['color']=$row[3];
+				$arr[$i]['orden']=$row[4];
+				$arr[$i]['tipoEntidad']=$row[5];				
+				$arr[$i]['vigencia']=$row[6];
+    	        $i++; 
+    	    }
+    	    return $arr;
 		} catch( PDOExecption $e ) {
 			print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
 		} 	
 		unset($con); 
-		unset($stmt);	
+		unset($stmt);   
 	}
 
 
@@ -752,7 +750,7 @@ class Modelo
     	    $arr = array();    	    
     	    $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');    	           
-			$sql = "SELECT  ID_EMPRESA, RUT, RSO, NOMBRE_FANTASIA, NOMBRE_BOLSA, VALOR_ACCION, TIPO_BALANCE, TIPO_IFRS, color, MONEDA, ESTADOS, ORIGEN, OA  
+			$sql = "SELECT ID_EMPRESA, RUT, RSO, color, orden , tipoEntidad , vigencia
 						FROM Empresas 
 					Where id_empresa in (select id_empresa from subgrupos_empresas where id_subgrupo = " . $cod . ")";
 			$sql2 = str_replace("'", "''", $sql);
@@ -764,13 +762,12 @@ class Modelo
     	    while($row = $stmt->fetch())
     	    {    	    
 				$arr[$i]['ID_EMPRESA']=$row[0];
-    			$arr[$i]['RUT']=$row[1];
-    	        $arr[$i]['RSO']=$row[2];
-    	        $arr[$i]['NOMBRE_FANTASIA']=$row[3];
-    			$arr[$i]['NOMBRE_BOLSA']=$row[4];
-    			$arr[$i]['TIPO_BALANCE']=$row[6];			     
-    			$arr[$i]['TIPO_IFRS']=$row[7];
-			    $arr[$i]['color']=$row[8];
+				$arr[$i]['RUT']=$row[1];
+				$arr[$i]['RSO']=$row[2];				
+				$arr[$i]['color']=$row[3];
+				$arr[$i]['orden']=$row[4];
+				$arr[$i]['tipoEntidad']=$row[5];				
+				$arr[$i]['vigencia']=$row[6];
     	        $i++; 
     	    }
     	    return $arr;
@@ -787,19 +784,13 @@ class Modelo
 		try {		
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	        	        
-			$stmt = $con->prepare("SELECT b.ID_EMPRESA , RUT , RSO , NOMBRE_FANTASIA , NOMBRE_BOLSA , VALOR_ACCION , TIPO_BALANCE , TIPO_IFRS , color
+			$stmt = $con->prepare("SELECT *
 									FROM empresas b");
 			$stmt->execute();
 	        $i=0;
 	        while($row = $stmt->fetch())
 	        {	        
-				$arr[$i]['ID_EMPRESA']=$row[0];
-				$arr[$i]['RUT']=$row[1];
-				$arr[$i]['RSO']=$row[2];
-				$arr[$i]['NOMBRE_FANTASIA']=$row[4];
-				$arr[$i]['NOMBRE_BOLSA']=$row[6];
-				$arr[$i]['TIPO_BALANCE']=$row[7];			     
-				$arr[$i]['TIPO_IFRS']=$row[8];
+				
 	            $i++; 
 	        }
 			return count($arr);
@@ -824,7 +815,7 @@ class Modelo
 		    $arr = array();	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');
-	        $sql = "SELECT a.ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, formula, ID_GRUPO_INDICE_FINANCIERO,
+	        $sql = "SELECT a.ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, DESCRIPCION, formula, decimales, ID_GRUPO_INDICE_FINANCIERO, formula_desc, rango_superior, rango_inferior,rangos_desc,
 							campo1, campo2, campo3, campo4, campo5
 	                	                    FROM indices_financieros a, formulas b
 	                	                    WHERE a.id_formula = b.id_formula";
@@ -849,18 +840,18 @@ class Modelo
 			    $arr[$i]['id_formula']=$row[1];
 	            $arr[$i]['NOMBRE']=$row[2];
 	            //$arr[$i]['DESCRIPCION']=$row[3];
-			    $arr[$i]['formula']=$row[3];
+			    $arr[$i]['formula']=$row[4];
 			    //$arr[$i]['decimales']=$row[5];
-			    $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[4];
+			    $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[6];
 			    //$arr[$i]['formula_desc']=$row[7];
 	            //$arr[$i]['rango_superior']=$row[8];
 	            //$arr[$i]['rango_inferior']=$row[9];
 			    //$arr[$i]['rangos_desc']=$row[10];
-			    $arr[$i]['campo1']=$row[5];
-			    $arr[$i]['campo2']=$row[6];
-			    $arr[$i]['campo3']=$row[7];
-				$arr[$i]['campo4']=$row[8];
-			    $arr[$i]['campo5']=$row[9];
+			    $arr[$i]['campo1']=$row[11];
+			    $arr[$i]['campo2']=$row[12];
+			    $arr[$i]['campo3']=$row[13];
+				$arr[$i]['campo4']=$row[14];
+			    $arr[$i]['campo5']=$row[15];
 	            $i++; 
 	        }
 	        return $arr;
@@ -970,7 +961,7 @@ class Modelo
 	}
 
 
-	public function insertarIndicesFinancieros($arrInf, $tabla, $arrEmp, $tipo, $formulas, $formulasCampos){
+	public function insertarIndicesFinancieros($arrInf, $arrEmp, $formulas, $formulasCampos){
 		try {
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');				
@@ -990,7 +981,7 @@ class Modelo
 				$con->beginTransaction(); 
 				$sql = "INSERT INTO indices_financieros (ID_GRUPO_INDICE_FINANCIERO, 
 					ID_COMPONENTE, NOMBRE, ID_FORMULA, OA) 
-						VALUES ('" . $arrInf[4] . "', 4, '" . $arrInf[0] . "', 
+						VALUES ('" . $arrInf[1] . "', 4, '" . $arrInf[0] . "', 
 						'0', 1);";
 				$sql2 = str_replace("'", "''", $sql);
 				/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
@@ -1101,7 +1092,7 @@ class Modelo
 				$stmt->execute();
 
 				for($i = 0; $i < count($arrEmp); $i++){
-					$sql = "INSERT INTO indice_empresa values ('" . $indiceNuevo . "', '" . $arrEmp[$i] . "', '" . $tipo ."');";
+					$sql = "INSERT INTO indice_empresa (id_indice, id_empresa) values ('" . $indiceNuevo . "', '" . $arrEmp[$i] . "');";
 					$sql2 = str_replace("'", "''", $sql);
 					/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 						$stmt->execute();	*/			
@@ -1656,23 +1647,9 @@ class Modelo
 	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	         
-			$stmt = $con->prepare("SELECT a.ID_EMPRESA , RUT , RSO , NOMBRE_FANTASIA , NOMBRE_BOLSA , VALOR_ACCION , TIPO_BALANCE , TIPO_IFRS , a.ID_SUBGRUPO
-			FROM subgrupos_empresas a, empresas b
-			WHERE a.ID_EMPRESA = b.ID_EMPRESA");
+			$stmt = $con->prepare("exec [dbo].[sp_rescata_empresas]");
 			$stmt->execute();		
-			$i=0;
-			while($row = $stmt->fetch())
-			{				
-				$arr[$i]['ID_EMPRESA']=$row[0];
-				$arr[$i]['RUT']=$row[1];
-				$arr[$i]['RSO']=$row[2];
-				$arr[$i]['NOMBRE_FANTASIA']=$row[3];
-				$arr[$i]['NOMBRE_BOLSA']=$row[4];
-				$arr[$i]['TIPO_BALANCE']=$row[6];			     
-				$arr[$i]['TIPO_IFRS']=$row[7];
-				$arr[$i]['ID_SUBGRUPO']=$row[8];
-				$i++; 
-			}	             
+			       
 			return $arr;
 		} catch( PDOExecption $e ) {
 			print "Error!: " . $e->getMessage() . "</br>";

@@ -174,7 +174,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultType = Object;
         operations["actualizarCascada"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "comboEmpresa");
-         operation.resultElementType = Object;
+         operation.resultType = Object;
         operations["comboEmpresa"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "comboGrupoIndicesFinancieros");
          operation.resultElementType = valueObjects.GrupoIndicesDataType;
@@ -255,7 +255,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultElementType = valueObjects.SubGruposDatatype;
         operations["grillaSubGrupos"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaTodasEmpresa");
-         operation.resultElementType = Object;
+         operation.resultType = Object;
         operations["grillaTodasEmpresa"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaTodoIndicesFinancieros");
          operation.resultElementType = valueObjects.IndicesFinancierosDatatype;
