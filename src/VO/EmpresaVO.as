@@ -9,12 +9,36 @@ package VO
 		public var tipoEntidad:String;
 		public var vigencia:String;
 		public var incluida:Boolean;
-		public var idSubgrupo:Array = new Array();
+		public var idSubgrupo:Object = {};
+		private var _SubGrupos:XML;
 		
 		
 		
 		public function EmpresaVO()
 		{
 		}
+		
+		public function get SubGrupos():XML
+		{
+			return _SubGrupos;
+		}
+
+		public function set SubGrupos(value:XML):void
+		{
+			_SubGrupos = value;
+			
+			var list:XMLList = value..subgrupo;
+			for each(var node:XML in list){
+				idSubgrupo[node.@ID_SUBGRUPO[0]] = node.@ID_SUBGRUPO[0];
+			}
+			
+		}
+
+		/*override public function set fill(xml:XML):void
+		{
+			// TODO Auto Generated method stub
+			super.fill = xml;
+		}*/
+		
 	}
 }

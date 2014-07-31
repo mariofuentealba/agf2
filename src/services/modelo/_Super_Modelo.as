@@ -255,7 +255,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultElementType = valueObjects.SubGruposDatatype;
         operations["grillaSubGrupos"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaTodasEmpresa");
-         operation.resultType = Object;
+         operation.resultType = String;
         operations["grillaTodasEmpresa"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaTodoIndicesFinancieros");
          operation.resultElementType = valueObjects.IndicesFinancierosDatatype;

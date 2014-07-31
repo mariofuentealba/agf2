@@ -101,6 +101,8 @@ import services.formulasservice.FormulasService;
 import flash.xml.XMLDocument;
 import VO.Item_Xbrl;
 import VO.IndiceVO;
+import VO.EmpresaVO;
+import spark.primitives.supportClasses.FilledElement;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
@@ -716,7 +718,17 @@ private function generaPagina(event:ResultEvent):void{
 	if(gruposFinancierosResult.lastResult != null && subGruposFinancierosResult.lastResult && empresasResult.lastResult){
 		var arrGrupos:ArrayCollection = gruposFinancierosResult.lastResult;
 		var arrSubGrupo:ArrayCollection = subGruposFinancierosResult.lastResult;
-		var arrEmpresas:ArrayCollection = empresasResult.lastResult;
+		var arrEmpresas:ArrayCollection = new ArrayCollection();
+		var xmlEmpresas:XMLList = XML(empresasResult.lastResult)..empresa;
+		
+		for each(var node:XML in xmlEmpresas){
+			var empresa:EmpresaVO = new EmpresaVO();
+			empresa.fillAttributes = node;
+			empresa.fill = node;
+			arrEmpresas.addItem(empresa);
+		}
+		
+		
 		try{
 			for(var i:int = 0; i < arrGrupos.length; i++){
 				var comp:ContenidoAcordeon = new ContenidoAcordeon();
@@ -736,9 +748,9 @@ private function generaPagina(event:ResultEvent):void{
 							
 							try{
 								for(var x:int = 0; x < arrEmpresas.length; x++){
-									if(arrEmpresas.getItemAt(x)['ID_SUBGRUPO'] == arrSubGrupo.getItemAt(j)['ID_SUBGRUPO']){
+									if(arrEmpresas.getItemAt(x)['idSubgrupo'][arrSubGrupo.getItemAt(j)['ID_SUBGRUPO']] != null){
 										var chk:CheckBox = new CheckBox();
-										chk.label = arrEmpresas.getItemAt(x)['RSO'];	
+										chk.label = arrEmpresas.getItemAt(x)['nombre'];	
 										chk.data = arrEmpresas.getItemAt(x);
 										chk.addEventListener(MouseEvent.CLICK, agregaEmpresa);
 										chk.height = 20;
@@ -831,14 +843,14 @@ protected function crearEsquema_creationCompleteHandler(event:FlexEvent):void
 	
 	gruposFinancierosResult.token = modelo.grillaTodosGrupos();
 	subGruposFinancierosResult.token = modelo.grillaTodoSubGrupos();
-	/*empresasResult.token = modelo.grillaTodasEmpresa();
+	empresasResult.token = modelo.grillaTodasEmpresa();
 	
 	gruposFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina);
 	subGruposFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina);
 	empresasResult.addEventListener(ResultEvent.RESULT, generaPagina);
 	
-	/*comboItemsResult.token = modelo.comboItems();
-	comboItemsResult.addEventListener(ResultEvent.RESULT, itemsXBRL);*/
+	comboItemsResult.token = modelo.comboItems();
+	comboItemsResult.addEventListener(ResultEvent.RESULT, itemsXBRL);
 }
 
 private function itemsXBRL(event:ResultEvent):void{
@@ -857,7 +869,7 @@ private function agregaEmpresa(event:MouseEvent):void{
 		if(!listEmpresaSelect.dataProvider){
 			listEmpresaSelect.dataProvider = new ArrayCollection();
 		}
-		listEmpresaSelect.dataProvider.addItem({label:(event.target as CheckBox).data['NOMBRE_FANTASIA'], cod:(event.target as CheckBox).data['ID_EMPRESA']});
+		listEmpresaSelect.dataProvider.addItem({label:(event.target as CheckBox).data['nombre'], cod:(event.target as CheckBox).data['idInterno']});
 		/*for each(var o:Object in listEmpresasPreseleccion.dataProvider){
 			o['sel'] = false;
 			for each(var o2:Object in listEmpresaSelect.dataProvider){
@@ -871,7 +883,7 @@ private function agregaEmpresa(event:MouseEvent):void{
 		
 	} else{
 		for(var i:int = 0; i < listEmpresaSelect.dataProvider.length; i++){
-			if(listEmpresaSelect.dataProvider[i]['cod'] == (event.target as CheckBox).data['ID_EMPRESA']){
+			if(listEmpresaSelect.dataProvider[i]['cod'] == (event.target as CheckBox).data['idInterno']){
 				listEmpresaSelect.dataProvider.removeItemAt(i);
 			}
 		}
@@ -993,14 +1005,14 @@ protected function llenaComboEmpresas(event:ResultEvent):void{
 	var arrtxtEmpresaPrincipal:Array = new Array();
 	for each(o in arrEmpresas){
 		
-		arrtxtEmpresaPrincipal.push({RSO: o['RSO'], ID_EMPRESA: o['ID_EMPRESA']});
+		arrtxtEmpresaPrincipal.push({nombre: o['nombre'], idInterno: o['idInterno']});
 	}
 	
 	
 	
 	var pp:CompletionInput = new CompletionInput();
 	pp.dataProvider = arrtxtEmpresaPrincipal;
-	pp.labelField = 'RSO';
+	pp.labelField = 'nombre';
 	pp.ignoreThe = true;
 	pp.keepSorted = true;
 	pp.mustPick = true;
@@ -1010,7 +1022,7 @@ protected function llenaComboEmpresas(event:ResultEvent):void{
 	
 	pp = new CompletionInput();
 	pp.dataProvider = arrtxtEmpresaPrincipal;
-	pp.labelField = 'RSO';
+	pp.labelField = 'nombre';
 	pp.ignoreThe = true;
 	pp.keepSorted = true;
 	//pp.mustPick = true;
@@ -1021,7 +1033,7 @@ protected function llenaComboEmpresas(event:ResultEvent):void{
 	
 	var i:int = 0;
 	for each(var o:Object in arrEmpresasTotal){
-		if(o['ID_EMPRESA'] == 730){
+		if(o['id'] == 730){
 			ComboBoxEmpresaPrincipalSelectedIndex = i;
 			break;
 		}
@@ -1049,7 +1061,7 @@ protected function comboBox_keyDownHandler(event:KeyboardEvent):void
 	arrEmpresas = new ArrayCollection();
 	var patt:RegExp = new RegExp("(^)" + event.target.text, 'i');
 	for(var i:int = 0; i < arrEmpresasTotal.length; i++){
-		if((arrEmpresasTotal.getItemAt(i)['NOMBRE_FANTASIA'] as String).search(patt) > -1){
+		if((arrEmpresasTotal.getItemAt(i)['nombre'] as String).search(patt) > -1){
 			arrEmpresas.addItem(arrEmpresasTotal.getItemAt(i));
 		}
 	}
@@ -1064,13 +1076,13 @@ protected function comboBoxEmpresa_changeHandler(event:*):void
 	if(txtEmpresa.selectedIndex > -1){
 		var aux:Boolean = false;
 		for each(var o:Object in listEmpresaSelect.dataProvider){
-			if(txtEmpresa.selectedItem['ID_EMPRESA'] == o['cod']){
+			if(txtEmpresa.selectedItem['idInterno'] == o['cod']){
 				aux = true;
 				break;
 			}
 		}
 		if(!aux){
-			o = {label:txtEmpresa.selectedItem['RSO'], cod:txtEmpresa.selectedItem['ID_EMPRESA']};
+			o = {label:txtEmpresa.selectedItem['nombre'], cod:txtEmpresa.selectedItem['idInterno']};
 			//var o:Object = {label:comboBoxEmpresa.selectedItem['NOMBRE_FANTASIA'], cod:comboBoxEmpresa.selectedItem['ID_EMPRESA']};
 			
 			//Alert.show('' + o.className)
