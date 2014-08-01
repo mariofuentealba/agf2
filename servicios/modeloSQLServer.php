@@ -1649,8 +1649,8 @@ class Modelo
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	         
 			$stmt = $con->prepare("exec [dbo].[sp_rescata_empresas]");
 			$stmt->execute();		
-			       
-			return $arr;
+			$row = $stmt->fetch();       
+			return '' . $row[0];
 		} catch( PDOExecption $e ) {
 			print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
@@ -1777,21 +1777,17 @@ class Modelo
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');	 
 				
-			$stmt = $con->prepare("SELECT ID_EMPRESA , RUT , RSO , NOMBRE_FANTASIA , NOMBRE_BOLSA , VALOR_ACCION , TIPO_BALANCE , TIPO_IFRS, color 
+			$stmt = $con->prepare("SELECT id_empresa id , RUT , rso nombre , color 
 								FROM empresas 
 			");
 			$stmt->execute();
 			$i=0;
 			while($row = $stmt->fetch())
 			{				
-				$arr[$i]['ID_EMPRESA']=$row[0];
-				$arr[$i]['RUT']=$row[1];
-				$arr[$i]['RSO']=$row[2];
-				$arr[$i]['NOMBRE_FANTASIA']=$row[3];
-				$arr[$i]['NOMBRE_BOLSA']=$row[4];
-				$arr[$i]['TIPO_BALANCE']=$row[6];			     
-				$arr[$i]['TIPO_IFRS']=$row[7];
-				$arr[$i]['color']=$row[8];
+				$arr[$i]['idInterno']=$row[0];
+				$arr[$i]['id']=$row[1];
+				$arr[$i]['nombre']=$row[2];				
+				$arr[$i]['color']=$row[3];
 				$i++; 
 			}
 	        return $arr;
@@ -2356,15 +2352,16 @@ class Modelo
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');
 			try{
 				$con->beginTransaction(); 
-				$sql = "INSERT INTO " . $table . " VALUES (null";
+				$sql = "INSERT INTO " . $table . " VALUES (";
 			    for($i = 0; $i < count($arrInf); $i++){
-			    	$sql .= ", '" . $arrInf[$i] . "'";
+			    	$sql .= "'" . $arrInf[$i] . "',";
 			    }
+				$sql = substr($sql, 0, -1);
 			    $sql .= ");";
 
 				/*$stmt = $con->prepare($sql)
 					or die(mysql_error());*/
-			    $sql2 = str_replace("'", "", $sql);
+			    $sql2 = str_replace("'", "''", $sql);
 			    $stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
 			    $stmt = $con->prepare($sql);
@@ -2380,7 +2377,7 @@ class Modelo
 				$stmt->execute();
 
 			    $sql = "INSERT INTO formulario_item (id_empresa, id_tag_agf, fecha_insert, nun_item) VALUES (" . $empresa . ", " . $ultimo_id . ", '1900-01-01', " . $r[0] . ");";
-			    $sql2 = str_replace("'", "", $sql);
+			    $sql2 = str_replace("'", "''", $sql);
 			    $stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();
 			    $stmt = $con->prepare($sql);
@@ -2388,9 +2385,9 @@ class Modelo
 				$arr = array();
 			    $arr[0]['ID'] = $ultimo_id;
 
-				$sql = "INSERT INTO valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen) 
-				select " . $ultimo_id .", id_empresa, id_periodo, 'TRIMESTRAL', 0.00, '1900-01-01', 1
-				from periodos a inner join empresas
+				$sql = "INSERT INTO valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula) 
+				select " . $ultimo_id .", id_empresa, id_periodo, 'Cierre Trimestre Actual', 0.00, '1900-01-01', 1, 0
+				from periodos a cross join empresas
 				";
 				/*$sql = "INSERT INTO valores(ID_VALOR, ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen) 
 				select null, " . $ultimo_id .", id_empresa, id_periodo, 'TRIMESTRAL', 0.00, '1900-01-01', 1
@@ -2398,7 +2395,7 @@ class Modelo
 				";*/
 
 				$stmt = $con->prepare($sql);
-				$stmt->execute();
+				//$stmt->execute();
 				$sql2 = str_replace("'", "''", $sql);
 				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmt->execute();	

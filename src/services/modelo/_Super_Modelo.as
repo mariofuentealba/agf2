@@ -8,6 +8,7 @@ import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.services.wrapper.RemoteObjectServiceWrapper;
 import com.adobe.fiber.valueobjects.IValueObject;
 import com.adobe.serializers.utility.TypeUtility;
+import mx.collections.ArrayCollection;
 import mx.collections.ListCollectionView;
 import mx.data.DataManager;
 import mx.data.IManaged;
@@ -288,7 +289,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultType = Object;
         operations["insertarIndicesFinancieros"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "insertarItem");
-         operation.resultType = Object;
         operations["insertarItem"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "insertarItemExistente");
          operation.resultType = Object;
@@ -1115,7 +1115,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function insertarItem(arrInf:Object, table:Object, empresa:Object) : mx.rpc.AsyncToken
+    public function insertarItem(arrInf:Array, table:String, empresa:Object) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarItem");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,table,empresa) ;

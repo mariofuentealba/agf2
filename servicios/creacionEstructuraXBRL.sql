@@ -5887,7 +5887,11 @@ drop table empresas
 	[vigencia] [varchar](20) NULL,
 )  
 
+alter table valores
+alter column tipo varchar(30)
 
+alter table valores2
+alter column tipo varchar(30)
 
 /*
   update [agf].[dbo].[periodos]

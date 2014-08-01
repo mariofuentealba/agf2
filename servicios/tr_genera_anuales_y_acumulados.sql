@@ -36,7 +36,8 @@ BEGIN
 	set @tipo = (Select tipo From Inserted )
 	set @orden = (Select (select orden from periodos p where p.id_periodo = i.id_periodo) From Inserted i)
 	
-	if	@origen = 'XBRL' and @tipo = 'TRIMESTRAL'
+	--if	@origen = 'MANUAL' and @tipo = 'TRIMESTRAL'--version antigua
+	if	@tipo = 'Cierre Trimestre Actual'
 	begin
 		declare @valoresPer TABLE (
 			[id_empresa] [int] NOT NULL,
@@ -48,7 +49,7 @@ BEGIN
 			[valor] [int] NOT NULL)
 		
 		
-	/*	INSERT INTO [agf].[dbo].[valores2]
+		INSERT INTO [agf].[dbo].[valores2]
            ([ID_TAG_AGF]
            ,[ID_EMPRESA]
            ,[ID_PERIODO]
@@ -78,7 +79,7 @@ BEGIN
 				inner join inserted i
 					ON 	v.id_tag_agf = i.id_tag_agf AND v.id_empresa = i.id_empresa and p.orden between @orden - 3 and @orden
 			where v.origen = 1	
-				and v.tipo = 'TRIMESTRAL'*/
+				and v.tipo = 'Cierre Trimestre Actual'
 				
 				
 		INSERT INTO @valoresPer 
@@ -90,7 +91,7 @@ BEGIN
 				inner join inserted i
 					ON 	v.id_tag_agf = i.id_tag_agf AND v.id_empresa = i.id_empresa and p.orden between @orden - 3 and @orden
 			where v.origen = 1	
-				and v.tipo = 'TRIMESTRAL'		
+				and v.tipo = 'Cierre Trimestre Actual'		
 	
 		INSERT INTO [agf].[dbo].[valores]
            ([ID_TAG_AGF]
@@ -107,7 +108,7 @@ BEGIN
 					inner join @valoresPer i 
 						ON v.id_tag_agf = i.id_tag_agf and v.id_empresa = i.id_empresa					
 				where v.origen = 1	
-					and v.tipo = 'TRIMESTRAL'				
+					and v.tipo = 'Cierre Trimestre Actual'				
 		group by i.id_tag_agf, i.id_empresa, v.id_periodo
 		
 		

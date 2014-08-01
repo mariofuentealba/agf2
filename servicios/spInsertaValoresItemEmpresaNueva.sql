@@ -41,7 +41,7 @@ declare @valoresPer TABLE (
 
 
 INSERT INTO @valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula) 
-select a.id_tag_agf, @idEmp, b.id_periodo, 'TRIMESTRAL', 0, SYSDATETIME(), 1, 0
+select a.id_tag_agf, @idEmp, b.id_periodo, 'Cierre Trimestre Actual', 0, SYSDATETIME(), 1, 0
 from tag_agf a, periodos b
 where a.oa = 1
 	AND a.ORIGEN = 'MANUAL'

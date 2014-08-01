@@ -651,6 +651,9 @@ protected function button2_clickHandler(event:MouseEvent):void
 
 protected function insertComplete(event:ResultEvent):void{
 	Alert.show('Transacción exitosa');
+	gruposFinancierosResult.token = modelo.grillaTodosGrupos();
+	subGruposFinancierosResult.token = modelo.grillaTodoSubGrupos();
+	empresasResult.token = modelo.grillaTodasEmpresa();
 }
 
 protected function button3_clickHandler(event:MouseEvent):void
@@ -1754,7 +1757,7 @@ protected function button6_clickHandler(event:MouseEvent):void
 
 private function guardaItem(event:MouseEvent):void{
 	//Alert.show('' + event.target);
-	insertarResult.token = modelo.insertarItem([(event.target.parent.parent as ItemFormulario).txtAgregarItem.text, (event.target.parent.parent as ItemFormulario).txtAgregarItem.text, 'NO ESPECIFICA', 'MANUAL', 1], 'tag_agf', dropDownListEmpresa.selectedItem['ID_EMPRESA']);
+	insertarResult.token = modelo.insertarItem([(event.target.parent.parent as ItemFormulario).txtAgregarItem.text, (event.target.parent.parent as ItemFormulario).txtAgregarItem.text, 'NO ESPECIFICA', 'MANUAL', 1], 'tag_agf', dropDownListEmpresa.selectedItem['idInterno']);
 	(event.target.parent.parent as ItemFormulario).currentState = 'normal';
 	insertarResult.addEventListener(ResultEvent.RESULT, reCreaForm);
 }
@@ -1929,7 +1932,7 @@ protected function dropDownListEmpresa_changeHandler(event:IndexChangeEvent):voi
 		tbFormulario.addElement(v);
 		v.layout = new VerticalLayout;
 		v.label = 'Parte ' + tbFormulario.numElements;
-		valores2Result.token = modelo.valores2(dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo']);
+		valores2Result.token = modelo.valores2(dropDownListEmpresa.selectedItem['idInterno'], dropDownListPeriodo.selectedItem['id_periodo']);
 	}
 }
 

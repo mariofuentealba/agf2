@@ -1607,19 +1607,19 @@
 					<s:NavigatorContent width="100%" height="100%" label="Asociar Empresa-Formula">
 						<s:Panel x="3" y="55" width="437" height="314"
 								 title="Asociar Empresa-Formula">
-							<s:DropDownList id="ddlIndices" x="122" y="10"
+							<s:DropDownList id="ddlIndices" y="10" right="15" width="320"
+											close="seleccionFormula_closeHandler(event)"
 											creationComplete="ddlIndices_creationCompleteHandler(event)"
-											labelField="NOMBRE" prompt="Seleccione"
-											close="seleccionFormula_closeHandler(event)">
+											labelField="NOMBRE" prompt="Seleccione">
 								<s:AsyncListView list="{grillaIndicesFinancierosResult2.lastResult}"/>
 								
 							</s:DropDownList>
 							<s:Label x="25" y="15" text="Indice"/>
 							<s:Label x="25" y="45" text="Empresa"/>
-							<s:DropDownList id="ddlEmpresas" x="122" y="39"
+							<s:DropDownList id="ddlEmpresas" y="39" right="15" width="320"
+											close="seleccionFormula_closeHandler(event)"
 											creationComplete="ddlEmpresas_creationCompleteHandler(event)"
-											labelField="RSO" prompt="Seleccione"
-											close="seleccionFormula_closeHandler(event)">
+											labelField="nombre" prompt="Seleccione">
 								<s:AsyncListView list="{comboEmpresaResult.lastResult}"/>
 							</s:DropDownList>
 							<!--<c:CheckList id="clFormulas" bottom="35" width="305" horizontalCenter="0" labelField="formula"/>-->
@@ -1675,7 +1675,7 @@
 												creationComplete="dropDownListxxx_creationCompleteHandler(event)"
 												dataProvider="{arrEmpresas2}"
 												keyUp="comboBox_keyDownHandler(event)"
-												labelField="NOMBRE_FANTASIA">
+												labelField="nombre">
 									</s:ComboBox>
 									<s:DropDownList id="dropDownListPeriodo" x="74" y="58" labelField="RSO" creationComplete="dropDownListPeriodo_creationCompleteHandler(event)"  change="dropDownListEmpresa_changeHandler(event)">
 										<s:AsyncListView list="{arrTrimestre}"/>
@@ -1864,8 +1864,8 @@
 										   borderVisible="true" cornerRadius="15" direction="ltr"
 										   dropShadowVisible="true" horizontalCenter="0"
 										   textDecoration="underline">
-							<s:VGroup top="20" width="100%" horizontalCenter="0"
-									  textDecoration="none">
+							<s:VGroup top="20" width="100%" horizontalCenter="0" bottom="20"
+									  textDecoration="none" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 								<s:DropDownList id="dropDownList2" left="40" top="26" bottom="340"
 												labelField="nombre" change="dropDownList2_changeHandler(event)">
 									<s:AsyncListView list="{modelApp.arrSubGrupo}"/>
