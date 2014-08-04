@@ -5757,7 +5757,9 @@ where a.id_traduccion in (select id_traduccion from [dbo].[xbrl_tag_traduccion] 
 
 drop table [dbo].[xbrl_contexto]
 
-CREATE TABLE [dbo].[xbrl_contexto](
+use agf
+
+CREATE TABLE [xbrl_contexto](
 	[id] [int] identity(1,1) PRIMARY KEY NOT NULL,	
 	[nombre] [varchar](500)  NOT NULL	,
 	[id_periodo] int,
