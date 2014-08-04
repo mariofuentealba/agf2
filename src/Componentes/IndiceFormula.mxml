@@ -37,11 +37,11 @@
 			
 			private function list_itemRendererFunc(item:Object):ClassFactory {
 				var cla:Class = DefaultItemRenderer;
-				switch (item.num) {
-					case 1:// Item
+				switch (item.origen) {
+					case '1':// Item
 						cla = CampoItem;
 						break;
-					case 2://Indice formula
+					case '2'://Indice formula
 						cla = CampoIndice;
 						break;
 					default:

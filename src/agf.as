@@ -1805,7 +1805,7 @@ protected function btnAccion_clickHandler(event:MouseEvent):void
 				for(var j:int = 0; j < n; j++){
 					if(((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).txtValorItem.text != ''){
 						//arrRes.push(({label : ((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).lblItem.text, valor : ((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).txtValorItem.text});
-						valoresGuardadosResult.token = modelo.insertarValor([((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).lblItem.text,  dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo'], ((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).txtValorItem.text]);
+						valoresGuardadosResult.token = modelo.insertarValor([((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).lblItem.text,  dropDownListEmpresa.selectedItem['idInterno'], dropDownListPeriodo.selectedItem['id_periodo'], ((arr[i] as NavigatorContent).getElementAt(j) as ItemFormulario).txtValorItem.text]);
 						valoresGuardadosResult.addEventListener(ResultEvent.RESULT, valorGuardado);
 					}
 					
@@ -1850,7 +1850,7 @@ protected function button5_clickHandler(dataGrid:spark.components.DataGrid):void
 			tbFormulario.selectedIndex = tbFormulario.numElements - 1;
 			(tbFormulario.getElementAt(tbFormulario.selectedIndex) as NavigatorContent).addElement(item);
 			PopUpManager.removePopUp(agregaItem);
-			insertarResult.token = modelo.insertarItemExistente(dropDownListEmpresa.selectedItem['ID_EMPRESA'], o['id_tag_agf']);
+			insertarResult.token = modelo.insertarItemExistente(dropDownListEmpresa.selectedItem['idInterno'], o['id_tag_agf']);
 			
 		}
 	//	tbFormulario.removeAll();
@@ -1870,14 +1870,14 @@ protected function titlewindow1_closeHandler():void
 private function reCreaForm(event:ResultEvent):void{
 	//tbFormulario.removeAllElements();
 	if(dropDownListPeriodo.selectedIndex > -1){
-		valores2Result.token = modelo.valores2(dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo']);	
+		valores2Result.token = modelo.valores2(dropDownListEmpresa.selectedItem['idInterno'], dropDownListPeriodo.selectedItem['id_periodo']);	
 	}
 		
 }
 
 private function EliminaItemFormulario(event:MouseEvent):void{
 	//Alert.show(event.target.parent.parent);
-	formGuardadosResult.token = modelo.deleteFormularioItem(dropDownListEmpresa.selectedItem['ID_EMPRESA'], (event.target.parent as ItemFormulario).idTagAgf);
+	formGuardadosResult.token = modelo.deleteFormularioItem(dropDownListEmpresa.selectedItem['idInterno'], (event.target.parent as ItemFormulario).idTagAgf);
 	formGuardadosResult.addEventListener(ResultEvent.RESULT, reCreaForm);
 	(event.target.parent.parent.parent.parent as NavigatorContent).removeAllElements();
 	

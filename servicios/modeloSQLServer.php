@@ -910,17 +910,17 @@ class Modelo
 			$arr = array();
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
-			$stmt = $con->prepare("SELECT ID_TAG_AGF, etiqueta + '(' + origen + ')' as etiqueta,1 
+			$stmt = $con->prepare("SELECT ID_TAG_AGF as codigo, etiqueta + '(' + origen + ')' as etiqueta,1 num 
 									FROM tag_agf
 									UNION
-									SELECT id_indice_financiero, nombre, 2
+									SELECT id_indice_financiero, nombre, 2 
 									from indices_financieros 
 									order by 2");
 			$stmt->execute();
 			$i=0;
 			while($row = $stmt->fetch())
 			{			
-				$arr[$i]['ID_tag_agf']=$row[0];				
+				$arr[$i]['codigo']=$row[0];				
 				$arr[$i]['etiqueta']=$row[1];				
 				$arr[$i]['origen']=$row[2];			                     
 				$i++; 
@@ -2362,8 +2362,8 @@ class Modelo
 				/*$stmt = $con->prepare($sql)
 					or die(mysql_error());*/
 			    $sql2 = str_replace("'", "''", $sql);
-			    $stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
+			    $stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
 			    $stmt = $con->prepare($sql);
 				$stmt->execute();
 	            $ultimo_id = $con->lastInsertId();
@@ -2373,18 +2373,19 @@ class Modelo
 				$stmt->execute();			    		
 			    $r = $stmt->fetch();
 			    
-			    $stmt = $con->prepare("INSERT INTO logs values ('" . print_r($r[0], 1) . "');");
-				$stmt->execute();
+			    $stmtlog = $con->prepare("INSERT INTO logs values ('" . print_r($r[0], 1) . "');");
+				$stmtlog->execute();
 
 			    $sql = "INSERT INTO formulario_item (id_empresa, id_tag_agf, fecha_insert, nun_item) VALUES (" . $empresa . ", " . $ultimo_id . ", '1900-01-01', " . $r[0] . ");";
 			    $sql2 = str_replace("'", "''", $sql);
-			    $stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
+			    $stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
 			    $stmt = $con->prepare($sql);
 				$stmt->execute();			    
 				$arr = array();
 			    $arr[0]['ID'] = $ultimo_id;
-
+				$con->commit();
+				$con->beginTransaction(); 
 				$sql = "INSERT INTO valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula) 
 				select " . $ultimo_id .", id_empresa, id_periodo, 'Cierre Trimestre Actual', 0.00, '1900-01-01', 1, 0
 				from periodos a cross join empresas
@@ -2395,10 +2396,10 @@ class Modelo
 				";*/
 
 				$stmt = $con->prepare($sql);
-				//$stmt->execute();
+				$stmt->execute();
 				$sql2 = str_replace("'", "''", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();	
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();	
 				$con->commit();
 			} catch(PDOExecption $e) {
 		        $con->rollback();
@@ -2470,8 +2471,8 @@ class Modelo
 				$sql = "SELECT id_tag_agf 
 						FROM tag_agf 
 						WHERE (nombre like '" . $arrInf[0] . "') 
-							or (concat(nombre,'(', origen, ')') like '" . $arrInf[0] . "')
-							or id_tag_agf = '" . $arrInf[0] . "'";
+							or (nombre + '(' + origen + ')' like '" . $arrInf[0] . "')
+							or convert(varchar(30), id_tag_agf) = '" . $arrInf[0] . "'";
 				$sql2 = str_replace("'", "''", $sql);
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmtlog->execute();
@@ -2485,7 +2486,8 @@ class Modelo
 						WHERE id_empresa = " . $arrInf[1] . " 
 							AND id_periodo = " . $arrInf[2] . " 
 							AND	id_tag_agf = " .  $arrInf[0] . " 
-							AND	origen = 1";		
+							AND	origen = 1
+							AND tipo = 'Cierre Trimestre Actual'";		
 
 				$sql2 = str_replace("'", "''", $sql);
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
@@ -2501,12 +2503,29 @@ class Modelo
 						WHERE id_empresa = " . $arrInf[1] . " 
 							AND id_periodo = " . $arrInf[2] . " 
 							AND	id_tag_agf = " .  $arrInf[0] . " 
-							AND	origen = 1";		
+							AND	origen = 1
+							AND tipo = 'Cierre Trimestre Actual'";		
 				$sql2 = str_replace("'", "''", $sql);
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmtlog->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();	
+				$con->commit();	
+				$sql = "UPDATE v  
+						SET v.valor =  " . ($arrInf[3] / 2) . " + v.valor 
+						from valores v
+						WHERE id_empresa = " . $arrInf[1] . " 
+							AND id_periodo = " . $arrInf[2] . " 
+							AND	id_tag_agf = " .  $arrInf[0] . " 
+							AND	origen = 1
+							AND tipo <> 'Cierre Trimestre Actual'";		
+				$sql2 = str_replace("'", "''", $sql);
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
+				$stmt = $con->prepare($sql);
+				$stmt->execute();	
+				
+				
 				$sql = "SELECT id_valor, id_formula, hist_formula
 						FROM valores
 						WHERE id_empresa = " . $arrInf[1] . " 
@@ -2519,7 +2538,7 @@ class Modelo
 				$stmtlog->execute();
 				$stmtq = $con->prepare($sql);
 				$stmt->execute();	
-
+$con->beginTransaction();
 				while($row = $stmtq->fetch()){
 					$arrCampos = explode("|", $row[2]);
 					for($y = 0; $y < 5; $y++){

@@ -8,7 +8,6 @@ import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.services.wrapper.RemoteObjectServiceWrapper;
 import com.adobe.fiber.valueobjects.IValueObject;
 import com.adobe.serializers.utility.TypeUtility;
-import mx.collections.ArrayCollection;
 import mx.collections.ListCollectionView;
 import mx.data.DataManager;
 import mx.data.IManaged;
@@ -22,6 +21,7 @@ import mx.rpc.AsyncToken;
 import mx.rpc.remoting.Operation;
 import mx.rpc.remoting.RemoteObject;
 import valueObjects.AgfDatatype;
+import valueObjects.CamposDatatype;
 import valueObjects.EmpresaDatatype;
 import valueObjects.EmpresaSinDatatype;
 import valueObjects.EmpresasDelGrupoDatatype;
@@ -30,7 +30,6 @@ import valueObjects.GrupoIndicesDataType;
 import valueObjects.IndicesDatatype;
 import valueObjects.IndicesFinancieros2Datatype;
 import valueObjects.IndicesFinancierosDatatype;
-import valueObjects.ItemDatatype;
 import valueObjects.RescataFormulaDatatype;
 import valueObjects.SubGrupoDatatype1;
 import valueObjects.SubGruposDatatype;
@@ -154,7 +153,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
 
         // initialize RemoteClass alias for all entities returned by functions of this service
         valueObjects.GrupoIndicesDataType._initRemoteClassAlias();
-        valueObjects.ItemDatatype._initRemoteClassAlias();
+        valueObjects.CamposDatatype._initRemoteClassAlias();
         valueObjects.SubGruposDatatype._initRemoteClassAlias();
         valueObjects.AgfDatatype._initRemoteClassAlias();
         valueObjects.EmpresaDatatype._initRemoteClassAlias();
@@ -184,7 +183,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultType = Object;
         operations["comboGrupos"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "comboItems");
-         operation.resultElementType = valueObjects.ItemDatatype;
+         operation.resultElementType = valueObjects.CamposDatatype;
         operations["comboItems"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "comboSubGrupos");
          operation.resultElementType = valueObjects.SubGruposDatatype;
@@ -289,6 +288,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultType = Object;
         operations["insertarIndicesFinancieros"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "insertarItem");
+         operation.resultType = Object;
         operations["insertarItem"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "insertarItemExistente");
          operation.resultType = Object;
@@ -1115,7 +1115,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function insertarItem(arrInf:Array, table:String, empresa:Object) : mx.rpc.AsyncToken
+    public function insertarItem(arrInf:Object, table:Object, empresa:Object) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarItem");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,table,empresa) ;

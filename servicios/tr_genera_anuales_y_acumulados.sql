@@ -23,43 +23,47 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-ALTER TRIGGER tr_genera_anuales_y_acumulados 
+ALTER TRIGGER tr_genera_anuales_y_acumulados
    ON  [agf].[dbo].[valores]
    AFTER INSERT
 AS 
 BEGIN
-	declare @origen varchar(20)
-	declare @tipo varchar(20)
-	declare @orden varchar(20)
-	
-	set @origen = (Select (select origen from tag_agf t where t.id_tag_agf = i.id_tag_agf) From Inserted i)
-	set @tipo = (Select tipo From Inserted )
-	set @orden = (Select (select orden from periodos p where p.id_periodo = i.id_periodo) From Inserted i)
-	
-	--if	@origen = 'MANUAL' and @tipo = 'TRIMESTRAL'--version antigua
-	if	@tipo = 'Cierre Trimestre Actual'
-	begin
+	--BEGIN TRANSACTION
+
+
+
+
+		
 		declare @valoresPer TABLE (
-			[id_empresa] [int] NOT NULL,
-			[ID_VALOR] [int] NOT NULL,
-			[ID_TAG_AGF] [int] NULL,			
-			[orden] [int] NULL,    
-			[anio] [int] NULL,
-			[mes] [int] NOT NULL,
-			[valor] [int] NOT NULL)
+				ID_VALOR int null,			
+				[ID_TAG_AGF] [int] NULL,
+				[ID_EMPRESA] [int] NULL,
+				[ID_PERIODO] [int] NULL,
+				[orden] [int] NOT NULL,				
+				[VALOR] [decimal](25, 2) NOT NULL,				
+				[anio] [int] NULL,
+				[mes] [int] NOT NULL
+			)
 		
 		
-		INSERT INTO [agf].[dbo].[valores2]
+	
+				
+				
+				
+		INSERT INTO @valoresPer 
+		
+			SELECT  v.ID_VALOR, v.ID_TAG_AGF, v.id_empresa, v.ID_PERIODO, p.orden, v.valor, p.ANO, p.MES
+			from Inserted v 
+				inner join periodos p 
+					on v.ID_PERIODO = p.ID_PERIODO					
+			where v.origen = 1	
+				and v.tipo = 'Cierre Trimestre Actual'		
+				
+			
+		
+		
+	INSERT INTO [agf].[dbo].[valores]
            ([ID_TAG_AGF]
-           ,[ID_EMPRESA]
-           ,[ID_PERIODO]
-           ,[tipo]
-           ,[VALOR]
-           ,[DT_MODIFICACION]
-           ,[origen]
-           ,[id_formula]
-           ,[hist_formula])	 
-			select [ID_TAG_AGF]
            ,[ID_EMPRESA]
            ,[ID_PERIODO]
            ,[tipo]
@@ -68,69 +72,86 @@ BEGIN
            ,[origen]
            ,[id_formula]
            ,[hist_formula]
-			from inserted
-			
-		INSERT INTO valoresPer 
+           )	 
+		select i.id_tag_agf, i.id_empresa, i.id_periodo, 'ANUAL', 
+		(select sum(v.valor)
+		 from valores v 
+			inner join periodos p
+				on v.id_periodo = p.id_periodo
+		 where p.orden between i.orden - 3 and i.orden
+				and v.ID_EMPRESA = i.ID_EMPRESA
+				and v.ID_TAG_AGF = i.ID_TAG_AGF
+		 ),	
 		
-			SELECT v.id_empresa, v.ID_VALOR, v.ID_TAG_AGF, p.orden, p.ANO, p.MES, v.valor
-			from valores v 
-				inner join periodos p 
-					on v.ID_PERIODO = p.ID_PERIODO	
-				inner join inserted i
-					ON 	v.id_tag_agf = i.id_tag_agf AND v.id_empresa = i.id_empresa and p.orden between @orden - 3 and @orden
-			where v.origen = 1	
-				and v.tipo = 'Cierre Trimestre Actual'
-				
-				
-		INSERT INTO @valoresPer 
+		sysdatetime(), 1, 0, 
+			isnull((select convert(varchar(20), v.ID_VALOR)
+					 from valores v 
+						inner join periodos p
+							on v.id_periodo = p.id_periodo
+					 where p.orden = i.orden - 3 
+							and v.ID_EMPRESA = i.ID_EMPRESA
+							and v.ID_TAG_AGF = i.ID_TAG_AGF
+					 ), '') + '|' + 
+			isnull((select convert(varchar(20), v.ID_VALOR)
+					 from valores v 
+						inner join periodos p
+							on v.id_periodo = p.id_periodo
+					 where p.orden = i.orden - 2 
+							and v.ID_EMPRESA = i.ID_EMPRESA
+							and v.ID_TAG_AGF = i.ID_TAG_AGF
+					 ), '') + '|' + 
+			isnull((select convert(varchar(20), v.ID_VALOR)
+					 from valores v 
+						inner join periodos p
+							on v.id_periodo = p.id_periodo
+					 where p.orden = i.orden - 1 
+							and v.ID_EMPRESA = i.ID_EMPRESA
+							and v.ID_TAG_AGF = i.ID_TAG_AGF
+					 ), '')
+		from @valoresPer i 				
+union	 
+		select i.id_tag_agf, i.id_empresa, i.id_periodo, 'ACUMULADO', 
+		(select sum(v.valor)
+		 from valores v 
+			inner join periodos p
+				on v.id_periodo = p.id_periodo
+		 where p.orden between i.orden - 3 and i.orden
+				and p.ANO = i.anio
+				and v.ID_EMPRESA = i.ID_EMPRESA
+				and v.ID_TAG_AGF = i.ID_TAG_AGF
+		 ),	
 		
-			SELECT v.id_empresa, v.ID_VALOR, v.ID_TAG_AGF, p.orden, p.ANO, p.MES, v.valor
-			from valores v 
-				inner join periodos p 
-					on v.ID_PERIODO = p.ID_PERIODO	
-				inner join inserted i
-					ON 	v.id_tag_agf = i.id_tag_agf AND v.id_empresa = i.id_empresa and p.orden between @orden - 3 and @orden
-			where v.origen = 1	
-				and v.tipo = 'Cierre Trimestre Actual'		
-	
-		INSERT INTO [agf].[dbo].[valores]
-           ([ID_TAG_AGF]
-           ,[ID_EMPRESA]
-           ,[ID_PERIODO]
-           ,[tipo]
-           ,[VALOR]
-           ,[DT_MODIFICACION]
-           ,[origen]
-           ,[id_formula]
-           ,[hist_formula])	 
-		select i.id_tag_agf, i.id_empresa, v.id_periodo, 'ANUAL', sum(i.valor), sysdatetime(), 1, 0, isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = i.ID_TAG_AGF and vp.orden = @orden -1), '') + '|' + isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = i.ID_TAG_AGF and vp.orden = @orden -2), '') + '|' + isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = i.ID_TAG_AGF and vp.orden = @orden -3), '')
-				from inserted v 
-					inner join @valoresPer i 
-						ON v.id_tag_agf = i.id_tag_agf and v.id_empresa = i.id_empresa					
-				where v.origen = 1	
-					and v.tipo = 'Cierre Trimestre Actual'				
-		group by i.id_tag_agf, i.id_empresa, v.id_periodo
+		sysdatetime(), 1, 0, 
+			isnull((select convert(varchar(20), v.ID_VALOR)
+					 from valores v 
+						inner join periodos p
+							on v.id_periodo = p.id_periodo
+					 where p.orden = i.orden - 3 
+							and p.ANO = i.anio
+							and v.ID_EMPRESA = i.ID_EMPRESA
+							and v.ID_TAG_AGF = i.ID_TAG_AGF
+					 ), '') + '|' + 
+			isnull((select convert(varchar(20), v.ID_VALOR)
+					 from valores v 
+						inner join periodos p
+							on v.id_periodo = p.id_periodo
+					 where p.orden = i.orden - 2 
+							and p.ANO = i.anio
+							and v.ID_EMPRESA = i.ID_EMPRESA
+							and v.ID_TAG_AGF = i.ID_TAG_AGF
+					 ), '') + '|' + 
+			isnull((select convert(varchar(20), v.ID_VALOR)
+					 from valores v 
+						inner join periodos p
+							on v.id_periodo = p.id_periodo
+					 where p.orden = i.orden - 1 
+							and p.ANO = i.anio
+							and v.ID_EMPRESA = i.ID_EMPRESA
+							and v.ID_TAG_AGF = i.ID_TAG_AGF
+					 ), '')
+		from @valoresPer i		
 		
 		
-		INSERT INTO [agf].[dbo].[valores]
-           ([ID_TAG_AGF]
-           ,[ID_EMPRESA]
-           ,[ID_PERIODO]
-           ,[tipo]
-           ,[VALOR]
-           ,[DT_MODIFICACION]
-           ,[origen]
-           ,[id_formula]
-           ,[hist_formula])	 
-		select i.id_tag_agf, i.id_empresa, v.id_periodo, 'ACUMULADO', sum(i.valor), sysdatetime(), 1, 0, isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = i.ID_TAG_AGF and vp.orden = @orden -1 and vp.anio = p.ano), '') + '|' + isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = i.ID_TAG_AGF and vp.orden = @orden -2 and vp.anio = p.ano), '') + '|' + isnull((SELECT convert(varchar(20), vp.ID_VALOR) FROM @valoresPer vp WHERE vp.ID_TAG_AGF = i.ID_TAG_AGF and vp.orden = @orden -3 and vp.anio = p.ano), '')
-				from inserted v  inner join periodos p ON v.id_periodo = p.id_periodo 
-					inner join @valoresPer i 
-						ON v.id_tag_agf = i.id_tag_agf and v.id_empresa = i.id_empresa	and p.ANO = i.anio						
-				where v.origen = 1					
-		group by i.id_tag_agf, i.id_empresa, v.id_periodo, p.ano
 		
-		
-	end
-
 END
 GO

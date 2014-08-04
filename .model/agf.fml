@@ -614,7 +614,7 @@
         <item name="returnType">opaque</item>
       </annotation>
     </function>
-    <function name="comboItems" return-type="ItemDatatype[]">
+    <function name="comboItems" return-type="CamposDatatype[]">
       <annotation name="analyze group">
         <item name="analyzed">true</item>
       </annotation>
@@ -622,7 +622,7 @@
         <item name="returnType">opaque</item>
       </annotation>
       <annotation name="ValidProperties">
-        <item name="propertySpecifier">ID_tag_agf,etiqueta,origen</item>
+        <item name="propertySpecifier">codigo,etiqueta,origen</item>
       </annotation>
     </function>
     <function name="comboSubGrupos" return-type="SubGruposDatatype[]">
@@ -995,16 +995,16 @@
       <parameter name="formulas" type="opaque"/>
       <parameter name="formulasCampos" type="opaque"/>
     </function>
-    <function name="insertarItem" return-type="void">
+    <function name="insertarItem" return-type="opaque">
       <annotation name="analyze group">
-        <item name="analyzed">true</item>
+        <item name="analyzed">false</item>
       </annotation>
       <annotation name="original signature">
         <item name="inputParams">opaque,opaque,opaque</item>
         <item name="returnType">opaque</item>
       </annotation>
-      <parameter name="arrInf" type="string[]"/>
-      <parameter name="table" type="string"/>
+      <parameter name="arrInf" type="opaque"/>
+      <parameter name="table" type="opaque"/>
       <parameter name="empresa" type="opaque"/>
     </function>
     <function name="insertarItemExistente" return-type="opaque">
@@ -1389,12 +1389,32 @@
     <id name="ID_INDICE_FINANCIERO" type="string"/>
     <property name="formula" type="string" required="true"/>
   </entity>
+  <entity name="CamposDatatype">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">CamposDatatype</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Modelo</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="comboItems">
+      <item name="propertySpecifier">codigo,etiqueta,origen</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="codigo" type="string" required="true"/>
+    <property name="etiqueta" type="string" required="true"/>
+    <property name="origen" type="string" required="true"/>
+  </entity>
   <entity name="ItemDatatype">
     <annotation name="EntityProperties">
       <item name="EntityOriginalName">ItemDatatype</item>
     </annotation>
     <annotation name="service Group">
-      <item name="service">Modelo,ModeloDummy</item>
+      <item name="service">Modelo</item>
     </annotation>
     <annotation name="ServerProperties">
       <item name="IncludeRemoteClass">nonempty</item>
