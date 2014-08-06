@@ -781,6 +781,8 @@ private function generaPagina(event:ResultEvent):void{
 			Alert.show('' + e);
 		}
 		
+		
+		
 	}
 	
 }

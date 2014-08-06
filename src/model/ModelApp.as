@@ -21,6 +21,10 @@ package model
 		public var arrEmpresasASelec:ArrayCollection = new ArrayCollection();
 		public var arrSubGrupo:ArrayCollection = new ArrayCollection();
 		
+		public var xmlEmpresas:XML;
+		public var arrdropDownListEmpresa:ArrayCollection = new ArrayCollection();
+		
+		
 		public static function getInstance():ModelApp
 		{
 			if ( modelLocator == null ){

@@ -898,7 +898,7 @@
 			
 			private function listarEmpresas(event:ResultEvent):void{
 				var xml:XML=new XML(event.result);
-				
+				modelApp.xmlEmpresas = new XML(event.result);
 				trace(event.result);
 				
 				var rutList:XMLList = xml.children();
@@ -910,6 +910,17 @@
 					//arrRut.addItem({rut: node.@id, nombre: node.@nombre, tipoEntidad: node.@tipoEntidad, vigencia: node.@vigencia});
 					modelApp.arrRut.addItem(empVO);
 				} 
+				
+				
+				for each(node in rutList){
+					//arrRut.addItem({rut: node.toString()});
+					empVO = new EmpresaVO();
+					empVO.fillAttributes = node;
+					empVO.incluida = node.@incluida == 'true' ? true : false;
+					//arrRut.addItem({rut: node.@id, nombre: node.@nombre, tipoEntidad: node.@tipoEntidad, vigencia: node.@vigencia});
+					modelApp.arrdropDownListEmpresa.addItem(empVO);
+				} 
+				
 				
 				for each(node in rutList){
 					//arrRut.addItem({rut: node.toString()});
@@ -1673,7 +1684,7 @@
 								<s:BorderContainer x="18" y="10" width="315" height="99">
 									<s:ComboBox id="dropDownListEmpresa" x="74" y="29" width="227" change="dropDownListEmpresa_changeHandler(event)"
 												creationComplete="dropDownListxxx_creationCompleteHandler(event)"
-												dataProvider="{modelApp.arrEmpresas}"
+												dataProvider="{modelApp.arrdropDownListEmpresa}"
 												keyUp="comboBox_keyDownHandler(event)"
 												labelField="nombre">
 									</s:ComboBox>
