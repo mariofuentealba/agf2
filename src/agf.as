@@ -561,8 +561,8 @@ private function llenaEmp(event:ResultEvent):void{
 
 protected function dropDownListxxx_creationCompleteHandler(event:FlexEvent):void
 {
-	grillaTodasEmpresaResult2.token = modelo.comboEmpresa();
-	grillaTodasEmpresaResult2.addEventListener(ResultEvent.RESULT, llenaEmp);
+	/*grillaTodasEmpresaResult2.token = modelo.comboEmpresa();
+	grillaTodasEmpresaResult2.addEventListener(ResultEvent.RESULT, llenaEmp);*/
 }
 protected function dgGrupo0_creationCompleteHandler(event:FlexEvent):void
 {
@@ -837,7 +837,7 @@ protected function crearEsquema_creationCompleteHandler(event:FlexEvent):void
 {
 	// TODO Auto-generated method stub
 	//Alert.show('' + ExternalInterface.available);
-	grillaEmpresaResult.token = modelo.grillaEmpresa();
+	//grillaEmpresaResult.token = modelo.grillaEmpresa();
 	rescataEmpresasResult.token = xbrlCarga.rescataEmpresas();
 	//rescataEmpresasResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
 	comboItemsAdvResult.token = componentesFormula.comboItems();
@@ -852,8 +852,8 @@ protected function crearEsquema_creationCompleteHandler(event:FlexEvent):void
 	subGruposFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina);
 	empresasResult.addEventListener(ResultEvent.RESULT, generaPagina);
 	
-	comboItemsResult.token = modelo.comboItems();
-	comboItemsResult.addEventListener(ResultEvent.RESULT, itemsXBRL);
+	/*comboItemsResult.token = modelo.comboItems();
+	comboItemsResult.addEventListener(ResultEvent.RESULT, itemsXBRL);*/
 }
 
 private function itemsXBRL(event:ResultEvent):void{

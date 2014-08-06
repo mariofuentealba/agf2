@@ -6,7 +6,7 @@ package VO
 	{
 		public var id:int;
 		public var etiqueta:String;
-		public var num:int;
+		public var origen:int;
 		public var arrContexto:Array = [];
 		public var contexto:String;
 		public var codigo:String = 'C';

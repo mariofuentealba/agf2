@@ -988,7 +988,7 @@
 				flag = true;
 				if(dgEmpresas.selectedItems != null && dgEmpresas.selectedItems.length > 0){
 					for(var i:int = 0; i < dgEmpresas.selectedItems.length; i++){
-						arrRutMasivo.push(String(dgEmpresas.selectedItems[i]['rut']));
+						arrRutMasivo.push(String(dgEmpresas.selectedItems[i]['id']));
 					}
 					rutMasivo = '' + arrRutMasivo.pop();
 					procesoMasivo();
@@ -1673,7 +1673,7 @@
 								<s:BorderContainer x="18" y="10" width="315" height="99">
 									<s:ComboBox id="dropDownListEmpresa" x="74" y="29" width="227" change="dropDownListEmpresa_changeHandler(event)"
 												creationComplete="dropDownListxxx_creationCompleteHandler(event)"
-												dataProvider="{arrEmpresas2}"
+												dataProvider="{modelApp.arrEmpresas}"
 												keyUp="comboBox_keyDownHandler(event)"
 												labelField="nombre">
 									</s:ComboBox>
@@ -2286,10 +2286,10 @@
 					<s:Button x="39" y="63" label="descargar Información de SVS" id="btnDescarga" click="btnDescarga_clickHandler(event)"/>	
 				</s:VGroup>
 				
-				<s:DataGrid id="dgEmpresas"  requestedRowCount="4" dataProvider="{modelApp.arrRut}" selectionMode="multipleRows" creationComplete="dgEmpresas_creationCompleteHandler(event)">
+				<s:DataGrid id="dgEmpresas" height="500"  requestedRowCount="4" dataProvider="{modelApp.arrRut}" selectionMode="multipleRows" creationComplete="dgEmpresas_creationCompleteHandler(event)">
 					<s:columns>
 						<s:ArrayList>
-							<s:GridColumn dataField="rut" headerText="Rut"></s:GridColumn>
+							<s:GridColumn dataField="id" headerText="Rut"></s:GridColumn>
 							<s:GridColumn dataField="nombre" headerText="Nombre"></s:GridColumn>
 							<s:GridColumn dataField="tipoEntidad" headerText="Tipo Entidad"></s:GridColumn>
 							<s:GridColumn dataField="vigencia" headerText="Vigencia"></s:GridColumn>

@@ -2473,12 +2473,12 @@ group by tag, traduccion, id_xbrl_contenedor
 
 
 
-/*DECLARE @etiquetasXBRL table(
+DECLARE @etiquetasXBRL table(
                   [tag] [varchar](500)  NOT NULL,
 					[traduccion] [varchar](500)  NOT NULL,
 					[id_xbrl_contenedor] int NOT NULL		
             )
-*/
+
 
 
 INSERT INTO @etiquetasXBRL values ('ManagementCommentaryExplanatory','Comentarios de la gerencia [bloque de texto]',105000)

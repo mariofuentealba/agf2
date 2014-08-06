@@ -614,7 +614,7 @@
         <item name="returnType">opaque</item>
       </annotation>
     </function>
-    <function name="comboItems" return-type="CamposDatatype[]">
+    <function name="comboItems" return-type="string">
       <annotation name="analyze group">
         <item name="analyzed">true</item>
       </annotation>
@@ -1477,4 +1477,35 @@
     <property name="NOMBRE_FANTASIA" type="string" required="true"/>
     <id name="ID_EMPRESA" type="string"/>
   </entity>
+  <service name="ComponentesFormula">
+    <annotation name="ActionScriptGeneration">
+      <item name="Source">ComponentesFormula</item>
+      <item name="ServiceType">RemoteObject</item>
+      <item name="Package">services.componentesformula</item>
+      <item name="Endpoint">gateway.php</item>
+      <item name="Destination">ComponentesFormula</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">PHP</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="PHP_RELATIVE_LOCATION">servicios/ComponentesFormula.php</item>
+      <item name="PHP_SERVER_ROOT">C:/xampp/htdocs</item>
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="PHP_SERVICES_FOLDER">C:/xampp/htdocs/agf/services</item>
+      <item name="PHP_LOCATION">C:/xampp/htdocs/servicios/ComponentesFormula.php</item>
+      <item name="LINKED_FILE">ComponentesFormula.php</item>
+      <item name="PHP_SERVER_ROOT_URL">http://localhost:8888/</item>
+      <item name="ABSOLUTE_ENDPOINT">http://localhost:8888/agf/gateway.php</item>
+      <item name="PHP_CLASS_NAME">ComponentesFormula</item>
+    </annotation>
+    <function name="comboItems" return-type="string">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+  </service>
 </model>

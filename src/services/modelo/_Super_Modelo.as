@@ -21,7 +21,6 @@ import mx.rpc.AsyncToken;
 import mx.rpc.remoting.Operation;
 import mx.rpc.remoting.RemoteObject;
 import valueObjects.AgfDatatype;
-import valueObjects.CamposDatatype;
 import valueObjects.EmpresaDatatype;
 import valueObjects.EmpresaSinDatatype;
 import valueObjects.EmpresasDelGrupoDatatype;
@@ -153,7 +152,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
 
         // initialize RemoteClass alias for all entities returned by functions of this service
         valueObjects.GrupoIndicesDataType._initRemoteClassAlias();
-        valueObjects.CamposDatatype._initRemoteClassAlias();
         valueObjects.SubGruposDatatype._initRemoteClassAlias();
         valueObjects.AgfDatatype._initRemoteClassAlias();
         valueObjects.EmpresaDatatype._initRemoteClassAlias();
@@ -183,7 +181,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultType = Object;
         operations["comboGrupos"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "comboItems");
-         operation.resultElementType = valueObjects.CamposDatatype;
+         operation.resultType = String;
         operations["comboItems"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "comboSubGrupos");
          operation.resultElementType = valueObjects.SubGruposDatatype;
