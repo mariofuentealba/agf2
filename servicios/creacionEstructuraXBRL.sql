@@ -5895,6 +5895,26 @@ alter column tipo varchar(30)
 alter table valores2
 alter column tipo varchar(30)
 
+alter table tag_agf
+add  id_xbrl int
+
+
+INSERT INTO [agf].[dbo].[tag_agf]
+           ([NOMBRE]
+           ,[ETIQUETA]
+           ,[COMPONENTE]
+           ,[ORIGEN]
+           ,[OA]
+           ,id_xbrl)
+select traduccion,  traduccion,  'NO ESPECIFICA', 'XBRL', 1, t.id
+  from xbrl_tag t 
+		inner join (select id_tag, min(id_traduccion) id_traduccion
+					from xbrl_tag_traduccion
+					group by id_tag) tt on t.id = tt.id_tag
+		inner join xbrl_traduccion tr on tt.id_traduccion = tr.id
+
+
+
 /*
   update [agf].[dbo].[periodos]
   set label = '0' + convert(varchar(2), MES) + '-' + convert(varchar(4), ANO)

@@ -846,6 +846,9 @@ protected function crearEsquema_creationCompleteHandler(event:FlexEvent):void
 	grillaSubGruposResult.token = modelo.grillaSubGrupos();
 	
 	
+	grillaEmpresaResult.token = modelo.grillaEmpresa();
+	grillaEmpresaResult.token = modelo.grillaEmpresa();
+	
 	gruposFinancierosResult.token = modelo.grillaTodosGrupos();
 	subGruposFinancierosResult.token = modelo.grillaTodoSubGrupos();
 	empresasResult.token = modelo.grillaTodasEmpresa();

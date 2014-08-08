@@ -24,6 +24,18 @@ package model
 		public var xmlEmpresas:XML;
 		public var arrdropDownListEmpresa:ArrayCollection = new ArrayCollection();
 		
+		/*******************************************************************/
+		
+		public var arrEmpresas2:ArrayCollection = new ArrayCollection();
+		public var arrItemManual:ArrayCollection = new ArrayCollection();
+		public var arrIndice:ArrayCollection = new ArrayCollection();
+		public var arrItemXBRL:ArrayCollection = new ArrayCollection();
+		public var arrContextos:ArrayCollection = new ArrayCollection();
+		public var arrPeriodos:ArrayCollection = new ArrayCollection();
+		
+		
+		
+		/*******************************************************************/
 		
 		public static function getInstance():ModelApp
 		{
