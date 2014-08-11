@@ -10,6 +10,7 @@ package VO
 		public var arrContexto:Array = [];
 		public var contexto:String;
 		public var codigo:String = 'C';
+		public var tipo:String;
 		
 		public function Item_Xbrl()
 		{

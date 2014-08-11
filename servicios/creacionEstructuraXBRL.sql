@@ -5785,7 +5785,7 @@ CREATE TABLE [dbo].[valoresResp](
 	[ID_TAG_AGF] [int] NULL,
 	[ID_EMPRESA] [int] NULL,
 	[ID_PERIODO] [int] NULL,
-	[tipo] [int] NOT NULL,
+	[tipo] [varchar](50) NOT NULL,
 	[VALOR] [decimal](25, 2) NOT NULL,
 	[DT_MODIFICACION] [datetime] NULL,
 	[origen] [int] NOT NULL,
@@ -5912,6 +5912,23 @@ select traduccion,  traduccion,  'NO ESPECIFICA', 'XBRL', 1, t.id
 					from xbrl_tag_traduccion
 					group by id_tag) tt on t.id = tt.id_tag
 		inner join xbrl_traduccion tr on tt.id_traduccion = tr.id
+
+
+
+alter table dbo.formulas
+alter column cod1 varchar(50)
+
+alter table dbo.formulas
+alter column cod2 varchar(50)
+
+alter table dbo.formulas
+alter column cod3 varchar(50)
+
+alter table dbo.formulas
+alter column cod4 varchar(50)
+
+alter table dbo.formulas
+alter column cod5 varchar(50)
 
 
 

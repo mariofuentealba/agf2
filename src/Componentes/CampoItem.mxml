@@ -50,7 +50,10 @@
 			protected function contexto_closeHandler(event:DropDownEvent):void
 			{
 				// TODO Auto-generated method stub
-				this.data.contexto = contexto.selectedItem.toString();
+				if(contexto.selectedIndex > -1){
+					this.data.contexto = contexto.selectedItem.toString();	
+				}
+				
 			}
 			
 		]]>
@@ -67,7 +70,7 @@
 			<s:Label text="{txtTipo}" top="3" left="3"/>
 			<s:Label id="lblEtiqueta" text="{data.etiqueta}" width="250" fontWeight="bold" fontSize="12" toolTip="{lblEtiqueta.text}"/>
 			<s:DropDownList id="contexto" dataProvider="{arrContextos}" width="100%" close="contexto_closeHandler(event)"></s:DropDownList>
-			<s:Button label="X" fontSize="14" click="button1_clickHandler(event)" width="30"/>
+			<s:Button label="X" fontSize="14" click="button1_clickHandler(event)" width="40"/>
 		</s:HGroup>
 		<s:Rect width="100%" height="0.5" bottom="0">
 			<s:stroke>

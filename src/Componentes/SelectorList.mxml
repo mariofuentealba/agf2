@@ -6,6 +6,8 @@
 		 >
 	<fx:Script>
 		<![CDATA[
+			import VO.EmpresaVO;
+			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.DragEvent;
@@ -51,7 +53,7 @@
 			{
 				// TODO Auto-generated method stub
 				
-				if(arrTodos == null){
+				if(arrTodos == null || arrTodos.length < 1){
 					if(conPram){
 						infoResult.token = modelo[servicioInvocado](idn);	
 					} else {
@@ -66,11 +68,17 @@
 			}
 			
 			private function llenaList(event:ResultEvent):void{
-				var arr:ArrayCollection = event.result as ArrayCollection;
-				for each(var o:Object in arr){
-					arrTodos.addItem(o);
-					
+				
+				
+				var xmlEmpresas:XMLList = XML(event.target.lastResult)..empresa;
+				
+				for each(var node:XML in xmlEmpresas){
+					var empresa:EmpresaVO = new EmpresaVO();
+					empresa.fillAttributes = node;
+					empresa.fill = node;
+					arrTodos.addItem(empresa);
 				}
+				
 			}
 			
 			protected function button1_clickHandler(event:MouseEvent):void

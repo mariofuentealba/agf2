@@ -799,6 +799,9 @@ protected function comboItemsResult_resultHandler(event:ResultEvent):void
 	
 	xmlList = XML(event.result as String)..indices_financieros;
 	modelApp.arrFormulasIndice = new ArrayCollection(xmllistToArrayIndice(xmlList));
+	
+	xmlList = XML(event.result as String)..tag_manual;
+	modelApp.arrItemManual = new ArrayCollection(xmllistToArrayItem(xmlList));
 }
 
 private function xmllistToArrayItem(list:XMLList):Array

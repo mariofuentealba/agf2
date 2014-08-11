@@ -13,6 +13,7 @@ package model
 	{
 		private static var modelLocator:ModelApp;
 		public var arrXBRL:ArrayCollection = new ArrayCollection();
+		public var arrXbrl:ArrayCollection = new ArrayCollection();
 		public var arrFormulas:ArrayCollection = new ArrayCollection();
 		public var arrFormulasIndice:ArrayCollection;
 		public var arrEmpresas:ArrayCollection;

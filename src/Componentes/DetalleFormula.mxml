@@ -26,10 +26,10 @@
 				selectorEmpresas.width = this.parentApplication.width;
 				selectorEmpresas.height = this.parentApplication.height;
 				selectorEmpresas.fnPost = cierraPoPup;
-				
-				selectorEmpresas.labelInsert="NOMBRE_FANTASIA";
+				selectorEmpresas.conPram = false;
+				selectorEmpresas.labelInsert="nombre";
 				selectorEmpresas.modelo = agf(this.parentApplication).modelo;
-				selectorEmpresas.servicioInvocado = "listEmpresa"
+				selectorEmpresas.servicioInvocado = "grillaTodasEmpresa"
 				PopUpManager.centerPopUp(selectorEmpresas);
 			}
 			
@@ -62,7 +62,7 @@
 					</s:ArrayList>
 				</s:columns>
 			</s:DataGrid>
-			<s:List x="579" y="69" width="30%" height="121" labelField="NOMBRE_FANTASIA" dataProvider="{formula.arrEmpresas}"></s:List>	
+			<s:List x="579" y="69" width="30%" height="121" labelField="nombre" dataProvider="{formula.arrEmpresas}"></s:List>	
 		</s:HGroup>
 		
 		<s:Label visible="{formula._default}" y="10" right="25" text="Default"/>

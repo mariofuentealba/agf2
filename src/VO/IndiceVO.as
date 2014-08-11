@@ -8,6 +8,7 @@ package VO
 		public var arrContexto:Array = [];
 		public var codigo:String = 'F';
 		public var contexto:String = 'no';
+		public var tipo:String;
 		
 		public function IndiceVO()
 		{

@@ -18,6 +18,7 @@
 			
 			import spark.skins.spark.DefaultItemRenderer;
 			[Bindable] public var arrXbrl:ArrayCollection = new ArrayCollection();
+			[Bindable] public var arrManual:ArrayCollection = new ArrayCollection();
 			[Bindable] public var arrIndices:ArrayCollection = new ArrayCollection();
 			[Bindable] private var add:Number = 0;
 			
@@ -37,13 +38,14 @@
 			
 			private function list_itemRendererFunc(item:Object):ClassFactory {
 				var cla:Class = DefaultItemRenderer;
-				switch (item.origen) {
+				switch ('' + item.origen) {
 					case '1':// Item
 						cla = CampoItem;
 						break;
 					case '2'://Indice formula
 						cla = CampoIndice;
 						break;
+					
 					default:
 						break;
 				}
@@ -203,7 +205,7 @@
 						dragMoveEnabled="true">
 					
 				</s:List>
-				<s:List id="lstItemManual" dataProvider="{arrXbrl}" height="150" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
+				<s:List id="lstItemManual" dataProvider="{arrManual}" height="150" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
 					
 				</s:List>
 				<s:List id="lstIndice" dataProvider="{arrIndices}" height="150" labelField="etiqueta" width="100%" itemRenderer="Componentes.ItemList" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
