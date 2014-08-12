@@ -8,6 +8,7 @@ import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.services.wrapper.RemoteObjectServiceWrapper;
 import com.adobe.fiber.valueobjects.IValueObject;
 import com.adobe.serializers.utility.TypeUtility;
+import mx.collections.ArrayCollection;
 import mx.collections.ListCollectionView;
 import mx.data.DataManager;
 import mx.data.IManaged;
@@ -1095,7 +1096,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function insertarIndicesFinancieros(arrInf:Object, arrEmp:Object, formulas:Object, formulasCampos:Object) : mx.rpc.AsyncToken
+    public function insertarIndicesFinancieros(arrInf:Array, arrEmp:Array, formulas:Array, formulasCampos:Array) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarIndicesFinancieros");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,arrEmp,formulas,formulasCampos) ;
@@ -1329,7 +1330,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function valores2(empresa:Object, periodo:Object) : mx.rpc.AsyncToken
+    public function valores2(empresa:String, periodo:String) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("valores2");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(empresa,periodo) ;

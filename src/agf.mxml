@@ -920,7 +920,8 @@
 					//arrRut.addItem({rut: node.@id, nombre: node.@nombre, tipoEntidad: node.@tipoEntidad, vigencia: node.@vigencia});
 					modelApp.arrdropDownListEmpresa.addItem(empVO);
 				} 
-				
+				modelApp.arrdropDownListEmpresa.filterFunction = incluidos;
+				modelApp.arrdropDownListEmpresa.refresh();
 				
 				for each(node in rutList){
 					//arrRut.addItem({rut: node.toString()});
@@ -935,8 +936,15 @@
 				modelApp.arrEmpresasASelec.refresh();
 			}
 			
+			
+			
+			
 			private function no_incluidos(item:EmpresaVO):Boolean{
 				return !item.incluida;
+			}
+			
+			private function incluidos(item:EmpresaVO):Boolean{
+				return item.incluida;
 			}
 			
 			protected function btnProcXBRL_clickHandler(event:MouseEvent):void
@@ -1684,9 +1692,9 @@
 								<s:BorderContainer x="18" y="10" width="315" height="99">
 									<s:ComboBox id="dropDownListEmpresa" x="74" y="29" width="227" change="dropDownListEmpresa_changeHandler(event)"
 												creationComplete="dropDownListxxx_creationCompleteHandler(event)"
-												dataProvider="{modelApp.arrdropDownListEmpresa}"
+												dataProvider="{modelApp.arrEmpresas}"
 												keyUp="comboBox_keyDownHandler(event)"
-												labelField="nombre">
+												labelField="RSO">
 									</s:ComboBox>
 									<s:DropDownList id="dropDownListPeriodo" x="74" y="58" labelField="RSO" creationComplete="dropDownListPeriodo_creationCompleteHandler(event)"  change="dropDownListEmpresa_changeHandler(event)">
 										<s:AsyncListView list="{arrTrimestre}"/>
