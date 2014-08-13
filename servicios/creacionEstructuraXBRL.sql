@@ -5912,6 +5912,10 @@ select traduccion,  traduccion,  'NO ESPECIFICA', 'XBRL', 1, t.id
 					from xbrl_tag_traduccion
 					group by id_tag) tt on t.id = tt.id_tag
 		inner join xbrl_traduccion tr on tt.id_traduccion = tr.id
+		
+		
+		
+		
 
 
 

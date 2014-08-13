@@ -65,7 +65,7 @@ from @tag a
 	inner join [agf].[dbo].[valoresResp] v on v.ID_TAG_AGF = b.id and v.tipo = a1.id and  @validaRut = v.ID_EMPRESA and @idPer = v.ID_PERIODO and 1 = v.origen
 
 
-INSERT INTO [agf].[dbo].[valoresResp]
+INSERT INTO [agf].[dbo].[valores]
            ([ID_TAG_AGF]
            ,[ID_EMPRESA]
            ,[ID_PERIODO]

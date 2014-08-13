@@ -1878,14 +1878,15 @@ protected function titlewindow1_closeHandler():void
 private function reCreaForm(event:ResultEvent):void{
 	//tbFormulario.removeAllElements();
 	if(dropDownListPeriodo.selectedIndex > -1){
-		valores2Result.token = modelo.valores2(dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo']);	
+		valores2Result.token = modelo.valores2(dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo']);
+		comboItemsAdvResult.token = componentesFormula.comboItems();
 	}
 		
 }
 
 private function EliminaItemFormulario(event:MouseEvent):void{
 	//Alert.show(event.target.parent.parent);
-	formGuardadosResult.token = modelo.deleteFormularioItem(dropDownListEmpresa.selectedItem['idInterno'], (event.target.parent as ItemFormulario).idTagAgf);
+	formGuardadosResult.token = modelo.deleteFormularioItem(dropDownListEmpresa.selectedItem['ID_EMPRESA'], (event.target.parent as ItemFormulario).idTagAgf);
 	formGuardadosResult.addEventListener(ResultEvent.RESULT, reCreaForm);
 	(event.target.parent.parent.parent.parent as NavigatorContent).removeAllElements();
 	
