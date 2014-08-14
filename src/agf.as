@@ -1772,6 +1772,7 @@ private function guardaItem(event:MouseEvent):void{
 
 private function valorGuardado(event:ResultEvent):void{
 	Alert.show('Formulario Guardado con Exito');
+	
 }
 
 
@@ -1877,6 +1878,7 @@ protected function titlewindow1_closeHandler():void
 
 private function reCreaForm(event:ResultEvent):void{
 	//tbFormulario.removeAllElements();
+	crearEsquema_creationCompleteHandler(new FlexEvent(FlexEvent.CREATION_COMPLETE));
 	if(dropDownListPeriodo.selectedIndex > -1){
 		valores2Result.token = modelo.valores2(dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo']);
 		comboItemsAdvResult.token = componentesFormula.comboItems();

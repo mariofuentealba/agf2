@@ -67,7 +67,7 @@ class Modelo
 		try { 
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
-			$sql = "INSERT INTO " . $table . " VALUES (null";
+			$sql = "INSERT INTO " . $table . " VALUES (";
 			for($i = 0; $i < count($arrInf); $i++){
 				$sql .= ", '" . $arrInf[$i] . "'";
 			}
@@ -681,7 +681,7 @@ class Modelo
 	        $arr = array();	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
-			$stmt = $con->prepare("SELECT b.ID_EMPRESA , RUT , RSO, color, orden , tipoEntidad , vigencia
+			$stmt = $con->prepare("SELECT b.ID_EMPRESA id, RUT idInterno, RSO nombre, color, orden , tipoEntidad , vigencia
 			FROM empresas b ");
 			$stmt->execute();
 			$i=0;
@@ -815,7 +815,7 @@ class Modelo
 		    $arr = array();	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');
-	        $sql = "SELECT a.ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, DESCRIPCION, formula, decimales, ID_GRUPO_INDICE_FINANCIERO, formula_desc, rango_superior, rango_inferior,rangos_desc,
+	        $sql = "SELECT a.ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, formula, ID_GRUPO_INDICE_FINANCIERO, 
 							campo1, campo2, campo3, campo4, campo5
 	                	                    FROM indices_financieros a, formulas b
 	                	                    WHERE a.id_formula = b.id_formula";
@@ -840,18 +840,18 @@ class Modelo
 			    $arr[$i]['id_formula']=$row[1];
 	            $arr[$i]['NOMBRE']=$row[2];
 	            //$arr[$i]['DESCRIPCION']=$row[3];
-			    $arr[$i]['formula']=$row[4];
+			    $arr[$i]['formula']=$row[3];
 			    //$arr[$i]['decimales']=$row[5];
-			    $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[6];
+			    $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[4];
 			    //$arr[$i]['formula_desc']=$row[7];
 	            //$arr[$i]['rango_superior']=$row[8];
 	            //$arr[$i]['rango_inferior']=$row[9];
 			    //$arr[$i]['rangos_desc']=$row[10];
-			    $arr[$i]['campo1']=$row[11];
-			    $arr[$i]['campo2']=$row[12];
-			    $arr[$i]['campo3']=$row[13];
-				$arr[$i]['campo4']=$row[14];
-			    $arr[$i]['campo5']=$row[15];
+			    $arr[$i]['campo1']=$row[5];
+			    $arr[$i]['campo2']=$row[6];
+			    $arr[$i]['campo3']=$row[7];
+				$arr[$i]['campo4']=$row[8];
+			    $arr[$i]['campo5']=$row[9];
 	            $i++; 
 	        }
 	        return $arr;
@@ -910,23 +910,21 @@ class Modelo
 			$arr = array();
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
-			$stmt = $con->prepare("SELECT ID_TAG_AGF as codigo, etiqueta + '(' + origen + ')' as etiqueta,1 num 
+			$stmt = $con->prepare("SELECT ID_TAG_AGF as id, etiqueta + '(' + origen + ')' as etiqueta,1 num, (select distinct contexto.tipo from xbrl_contexto contexto where ISNULL(contexto.tipo, '0') <> '0' FOR XML AUTO, TYPE,ROOT('contextos'))
 									FROM tag_agf
-									UNION
-									SELECT id_indice_financiero, nombre, 2 
-									from indices_financieros 
-									order by 2");
+		
+		FOR XML AUTO, TYPE,ROOT('Item')		");
 			$stmt->execute();
 			$i=0;
-			while($row = $stmt->fetch())
+		/*	while($row = $stmt->fetch())
 			{			
 				$arr[$i]['codigo']=$row[0];				
 				$arr[$i]['etiqueta']=$row[1];				
 				$arr[$i]['origen']=$row[2];			                     
 				$i++; 
-			}
-			
-			return $arr;
+			}*/
+			$row = $stmt->fetch();
+			return $row[0];
 		} catch( PDOExecption $e ) {
 			print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
@@ -963,6 +961,15 @@ class Modelo
 
 	public function insertarIndicesFinancieros($arrInf, $arrEmp, $formulas, $formulasCampos){
 		try {
+		
+		
+			$log = fopen('xbrl\\log.txt', 'a');	
+			fwrite($log, "arrInf" . print_r($arrInf, true) . "\r\n\r\n\r\n\r\n\r\n");
+			fwrite($log, "arrEmp" . print_r($arrEmp, true) . "\r\n\r\n\r\n\r\n\r\n");
+			fwrite($log, "formulas" . print_r($formulas, true) . "\r\n\r\n\r\n\r\n\r\n");
+			fwrite($log, "formulasCampos" . print_r($formulasCampos, true) . "\r\n\r\n\r\n\r\n\r\n");
+			
+			
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');				
 			//$mysqli->autocommit(FALSE);		
@@ -980,10 +987,12 @@ class Modelo
 			try {
 				$con->beginTransaction(); 
 				$sql = "INSERT INTO indices_financieros (ID_GRUPO_INDICE_FINANCIERO, 
-					ID_COMPONENTE, NOMBRE, ID_FORMULA, OA) 
-						VALUES ('" . $arrInf[1] . "', 4, '" . $arrInf[0] . "', 
+					NOMBRE, ID_FORMULA, OA) 
+						VALUES ('" . $arrInf[1] . "', '" . $arrInf[0] . "', 
 						'0', 1);";
 				$sql2 = str_replace("'", "''", $sql);
+				fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
+				
 				/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 						$stmt->execute();*/
 				$stmt = $con->prepare($sql);
@@ -1058,7 +1067,8 @@ class Modelo
 
 
 					$arrInf[6] = str_replace('_', '', $formulas[$ii]);
-
+					fwrite($log, "XXXX" . print_r($arrInf, true) . "\r\n\r\n\r\n\r\n\r\n");
+					fwrite($log, "XXXX" . print_r($arr, true) . "\r\n\r\n\r\n\r\n\r\n");
 					$sql = "INSERT INTO formulas (CAMPO1, CAMPO2, CAMPO3, CAMPO4, CAMPO5, tipoc1, tipoc2, 
 							tipoc3, tipoc4, tipoc5, FORMULA, CANTIDAD_CAMPOS, DECIMALES, cod1, cod2, cod3, cod4, 
 							cod5, id_indice_financiero, num_formula) values 
@@ -1066,10 +1076,11 @@ class Modelo
 							$arr[2] . "', '" . $arr[3] . "', '" . $arr[4] .
 							"', '" . $arr[5] . "', '" . $arr[6] . "', '" . 
 							$arr[7] . "', '" . $arr[8] . "', '" . $arr[9]. "', '" . 
-							$arrInf[6] . "', '" . $sum . "', '" . $arrInf[7]. "', '" . 
+							$arrInf[6] . "', '" . $sum . "', '0', '" . 
 							$arr[10]. "', '" . $arr[11]. "', '" . $arr[12]. "', '" . 
 							$arr[13]. "', '" . $arr[14] . "', " . $indiceNuevo . ", " . $ii . " );";
 					$sql2 = str_replace("'", "''", $sql);
+					fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
 					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 					$stmtlog->execute();
 					$stmt = $con->prepare($sql);
@@ -1086,6 +1097,7 @@ class Modelo
 							SELECT id_empresa, " . $indiceNuevo . ", 0, " . $ultimo . " 
 							FROM empresas;";
 				$sql2 = str_replace("'", "''", $sql);
+				fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmtlog->execute();
 				$stmt = $con->prepare($sql);
@@ -1094,6 +1106,7 @@ class Modelo
 				for($i = 0; $i < count($arrEmp); $i++){
 					$sql = "INSERT INTO indice_empresa (id_indice, id_empresa) values ('" . $indiceNuevo . "', '" . $arrEmp[$i] . "');";
 					$sql2 = str_replace("'", "''", $sql);
+					fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
 					/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 						$stmt->execute();	*/			
 					$stmt = $con->prepare($sql);
@@ -1109,11 +1122,11 @@ class Modelo
 				////$mysqli->query("INSERT INTO logs values ('formula1 = " . print_r($formula1, 1) . "');");
 
 
-
+				$comp1 = 'Cierre Trimestre Actual';
 				if(count($formula1) > 1){
 					switch($formula1[2]){
-						case 'NN':
-								$comp1 = 'TRIMESTRAL';
+						case 'Cierre Trimestre Actual':
+								$comp1 = 'Cierre Trimestre Actual';
 								break;
 						case 'AN':
 								$comp1 = "(SELECT id_tag_agf, id_empresa, origen, SUM(valor) valor
@@ -1151,11 +1164,11 @@ class Modelo
 
 					}
 				}
-							
+				$comp2 = 'Cierre Trimestre Actual';			
 				if(count($formula2) > 1){
 					switch($formula2[2]){
-						case 'NN':
-								$comp2 = 'TRIMESTRAL';
+						case 'Cierre Trimestre Actual':
+								$comp2 = 'Cierre Trimestre Actual';
 								break;
 						case 'AN':
 								$comp2 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
@@ -1173,11 +1186,11 @@ class Modelo
 
 					}
 				}
-							
+				$comp3 = 'Cierre Trimestre Actual';			
 				if(count($formula3) > 1){
 					switch($formula3[2]){
-						case 'NN':
-								$comp3 = 'TRIMESTRAL';
+						case 'Cierre Trimestre Actual':
+								$comp3 = 'Cierre Trimestre Actual';
 								break;
 						case 'AN':
 								$comp3 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
@@ -1196,11 +1209,11 @@ class Modelo
 					}
 				}
 							////$mysqli->query("INSERT INTO logs values ('" . $formula4[0] . "');");
-							
+				$comp4 = 'Cierre Trimestre Actual';			
 				if(count($formula4) > 1){
 					switch($formula4[2]){
-						case 'NN':
-								$comp4 = 'TRIMESTRAL';
+						case 'Cierre Trimestre Actual':
+								$comp4 = 'Cierre Trimestre Actual';
 								break;
 						case 'AN':
 								$comp4 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
@@ -1218,11 +1231,11 @@ class Modelo
 
 					}
 				}
-							
+				$comp5 = 'Cierre Trimestre Actual';			
 				if(count($formula5) > 1){
 					switch($formula5[2]){
-						case 'NN':
-								$comp5 = 'TRIMESTRAL';
+						case 'Cierre Trimestre Actual':
+								$comp5 = 'Cierre Trimestre Actual';
 								break;
 						case 'AN':
 								$comp5 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
@@ -1252,7 +1265,7 @@ class Modelo
 						x.valor C3,                        
 						y.valor C4,         
 						z.valor C5, 
-						concat(d.rso, ': ', b.nombre), 
+						d.rso + ': ' +  b.nombre, 
 						label, 
 						formula, 
 						a.id_formula, 
@@ -1310,6 +1323,7 @@ class Modelo
 
 
 				$sql2 = str_replace("'", "''", $sql);
+				fwrite($log, "" . print_r($sql, true) . "\r\n\r\n\r\n\r\n\r\n");
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmtlog->execute();			
 
@@ -1317,9 +1331,12 @@ class Modelo
 				$stmtq->execute();
 
 				
-				$stmtlog = $con->prepare("INSERT INTO logs values ('Nº de rows = " . $stmtq->rowCount . "');");
+				//$stmtlog = $con->prepare("INSERT INTO logs values ('Nº de rows = " . $stmtq->rowCount . "');");
+				//fwrite($log, "" . print_r($sql, true) . "\r\n\r\n\r\n\r\n\r\n");
+				//fwrite($log, "NRO" . $stmtq->rowCount . "\r\n\r\n\r\n\r\n\r\n");
 				$stmtlog->execute();
-
+				$row = $stmtq->fetch();
+				fwrite($log, "NRO::" . print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
 				$i = 0;
 				$formula = '';
 				$operacion = array();
@@ -1331,9 +1348,11 @@ class Modelo
 					 $arr[$i]['id_tag_agf']=$row[0];
 					 $arr[$i]['id_empresa']=$row[1];
 							 $arr[$i]['id_periodo']=$row[2];	     */
+					fwrite($log, "" .  print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
 					$operacion = $row[10];
 					
 					$stmtlog = $con->prepare("INSERT INTO logs values ('operacion = " . $operacion . "');");
+					fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
 					$stmtlog->execute();
 					if(!isset($row[3]))
 						$row[3] = 0;
@@ -1353,6 +1372,7 @@ class Modelo
 					$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
 
 					$stmtlog = $con->prepare("INSERT INTO logs values ('operacion = " . $operacion . "');");
+					fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
 					$stmtlog->execute();
 					
 					$res = 0;
@@ -1368,14 +1388,15 @@ class Modelo
 						@eval( '$res = ' . $operacion . ';');		
 					}
 					////$mysqli->query("INSERT INTO logs values ('operacion = " . $operacion . "');");	
-					
+					fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
 					$stmtlog = $con->prepare("INSERT INTO logs values ('res = " . $res . "');");
 					$stmtlog->execute();
 
 
 					$sql = "INSERT INTO valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula, hist_formula) 
-					VALUES (" . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'TRIMESTRAL'," . $res . ",'2013',2, " . $row[11] . ", '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "');";
+					VALUES (" . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'Cierre Trimestre Actual'," . $res . ",'2013',2, " . $row[11] . ", '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "');";
 					$sql2 = str_replace("'", "''", $sql);
+					fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
 					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 					$stmtlog->execute();			
 					$stmt = $con->prepare($sql);
@@ -1385,12 +1406,13 @@ class Modelo
 						SET id_formula =  " . $ultimo . "
 						WHERE id_indice_financiero = " . $indiceNuevo . ";";
 				$sql2 = str_replace("'", "''", $sql);
+				fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmtlog->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();	
 				$con->commit();
-				return $ultimo;
+				return true;
 
 			} catch(PDOExecption $e) {
 		        $con->rollback();
@@ -2352,7 +2374,11 @@ class Modelo
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');
 			try{
 				$con->beginTransaction(); 
-				$sql = "INSERT INTO " . $table . " VALUES (";
+				$sql = "INSERT INTO tag_agf ([NOMBRE]
+										           ,[ETIQUETA]
+										           ,[COMPONENTE]
+										           ,[ORIGEN]
+										           ,[OA]) VALUES (";
 			    for($i = 0; $i < count($arrInf); $i++){
 			    	$sql .= "'" . $arrInf[$i] . "',";
 			    }
@@ -2400,7 +2426,11 @@ class Modelo
 				$sql2 = str_replace("'", "''", $sql);
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmtlog->execute();	
-				$con->commit();
+				
+				
+				
+				$con->commit();			
+				$this->insertarIndicesFinancieros(array($arrInf[0], '2'), array(), array('C1'), array('' . $ultimo_id . ';-1;-1;-1;-1;C;0;0;0;0;C.1.Cierre Trimestre Actual;no;no;no;no'));
 			} catch(PDOExecption $e) {
 		        $con->rollback();
 		        print "Error!: " . $e->getMessage() . "</br>";
@@ -2510,7 +2540,7 @@ class Modelo
 				$stmtlog->execute();
 				$stmt = $con->prepare($sql);
 				$stmt->execute();	
-				$con->commit();	
+				//$con->commit();	
 				$sql = "UPDATE v  
 						SET v.valor =  " . ($arrInf[3] / 2) . " + v.valor 
 						from valores v
@@ -2537,9 +2567,12 @@ class Modelo
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmtlog->execute();
 				$stmtq = $con->prepare($sql);
-				$stmt->execute();	
-$con->beginTransaction();
+				$stmtq->execute();	
+				
+				//$con->beginTransaction();
 				while($row = $stmtq->fetch()){
+					$log = fopen('xbrl\\log.txt', 'a');
+					fwrite($log, "\r\n\r\n\r\n\r\n\r\n" . print_r($row, true) . "\r\n\r\n\r\n\r\n\r\n");
 					$arrCampos = explode("|", $row[2]);
 					for($y = 0; $y < 5; $y++){
 						if($arrCampos[$y] != ''){
@@ -2726,12 +2759,12 @@ $con->beginTransaction();
 			try {
 				$con->beginTransaction();
 				$sql = "SELECT (select nombre + '(' + origen + ')' 
-					from tag_agf b 
-					where  b.id_tag_agf = a.id_tag_agf) nombre , 
+								from tag_agf b 
+								where  b.id_tag_agf = a.id_tag_agf) nombre , 
 					(select valor 
 					from valores c 
 					where c.id_empresa = a.id_empresa 
-						and c.tipo = 'TRIMESTRAL' 
+						and c.tipo = 'Cierre Trimestre Actual' 
 						and origen = 1
 						and c.id_periodo = 
 						" . $periodo. " and c.id_tag_agf = a.id_tag_agf) valor,  nun_item, id_tag_agf

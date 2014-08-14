@@ -31,14 +31,9 @@
 			protected function columnseries1_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
-				var txt:Label = new Label();
+				
 				//Alert.show('' + this.x);
-				var cnv:BorderContainer = new BorderContainer();
-				txt.text = 'hola';
-				cnv.addElement(txt);
-				cnv.x = this.x;
-				cnv.y = this.y;
-				this.parentApplication.addElement(cnv);
+				
 				this.addEventListener(Event.ADDED, datas);
 			}
 			
