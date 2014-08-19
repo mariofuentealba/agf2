@@ -62,7 +62,7 @@ set valor = a.valor,
 from @tag a  
 	inner join xbrl_tag b on a.idTag = b.tag
 	inner join xbrl_contexto a1 on a1.nombre = a.contextRef-- and a1.id_periodo = @idPer
-	inner join [agf].[dbo].[valoresResp] v on v.ID_TAG_AGF = b.id and v.tipo = a1.id and  @validaRut = v.ID_EMPRESA and @idPer = v.ID_PERIODO and 1 = v.origen
+	inner join [agf].[dbo].[valores] v on v.ID_TAG_AGF = b.id and v.tipo = a1.id and  @validaRut = v.ID_EMPRESA and @idPer = v.ID_PERIODO and 1 = v.origen
 
 
 INSERT INTO [agf].[dbo].[valores]
@@ -75,7 +75,7 @@ INSERT INTO [agf].[dbo].[valores]
            ,[origen]
            ,[id_formula]
            )
-select  b.id as id_tag, @validaRut, @idPer, case a1.tipo when null then CONVERT(varchar(50), a1.id) else a1.tipo end  as id_contexto, a.valor, @fechaActual, 1, 0
+select (select ID_TAG_AGF from tag_agf where id_xbrl = b.id), @validaRut, @idPer, case a1.tipo when null then CONVERT(varchar(50), a1.id) else a1.tipo end  as id_contexto, a.valor, @fechaActual, 1, 0
 from @tag a 
 	inner join xbrl_tag b on a.idTag = b.tag
 	inner join xbrl_contexto a1 on a1.nombre = a.contextRef and isnull(tipo, '0') <> '0'--and a1.id_periodo = @idPer

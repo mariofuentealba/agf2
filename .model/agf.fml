@@ -421,120 +421,6 @@
     <id name="ID_TIPO_EMPRESA" type="string"/>
     <property name="descripcion" type="string" required="true"/>
   </entity>
-  <service name="XbrlCarga">
-    <annotation name="ActionScriptGeneration">
-      <item name="Source">XbrlCarga</item>
-      <item name="ServiceType">RemoteObject</item>
-      <item name="Package">services.xbrlcarga</item>
-      <item name="Endpoint">gateway.php</item>
-      <item name="Destination">XbrlCarga</item>
-    </annotation>
-    <annotation name="ServiceTypeGroup">
-      <item name="ServiceBackendType">PHP</item>
-    </annotation>
-    <annotation name="ServiceConfig">
-      <item name="PHP_RELATIVE_LOCATION">servicios/XbrlCarga.php</item>
-      <item name="PHP_SERVER_ROOT">C:/xampp/htdocs</item>
-      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
-      <item name="PHP_SERVICES_FOLDER">C:/xampp/htdocs/agf/services</item>
-      <item name="PHP_LOCATION">C:/xampp/htdocs/servicios/XbrlCarga.php</item>
-      <item name="LINKED_FILE">XbrlCarga.php</item>
-      <item name="PHP_SERVER_ROOT_URL">http://localhost:8888/</item>
-      <item name="ABSOLUTE_ENDPOINT">http://localhost:8888/agf/gateway.php</item>
-      <item name="PHP_CLASS_NAME">XbrlCarga</item>
-    </annotation>
-    <function name="insertarValor" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="xmlParam" type="opaque"/>
-      <parameter name="contextos" type="opaque"/>
-    </function>
-    <function name="descargaSVS" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="periodo" type="opaque"/>
-    </function>
-    <function name="cargaEmpresas" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="periodo" type="opaque"/>
-    </function>
-    <function name="preparaCarga" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="periodo" type="opaque"/>
-    </function>
-    <function name="descargaSeleccion" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="data" type="opaque"/>
-      <parameter name="periodo" type="opaque"/>
-    </function>
-    <function name="rescataEmpresas" return-type="string">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="insertarErrorFormato" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="xmlParam" type="opaque"/>
-    </function>
-    <function name="insertarEmpresas2" return-type="string">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="xmlParam" type="string"/>
-    </function>
-    <function name="actualizaEmpresa" return-type="opaque">
-      <annotation name="analyze group">
-        <item name="analyzed">false</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <parameter name="id" type="opaque"/>
-      <parameter name="color" type="opaque"/>
-    </function>
-  </service>
   <service name="ComponentesFormula">
     <annotation name="ActionScriptGeneration">
       <item name="Source">ComponentesFormula</item>
@@ -1508,4 +1394,118 @@
     <property name="NOMBRE_FANTASIA" type="string" required="true"/>
     <id name="ID_EMPRESA" type="string"/>
   </entity>
+  <service name="XbrlCarga">
+    <annotation name="ActionScriptGeneration">
+      <item name="Source">XbrlCarga</item>
+      <item name="ServiceType">RemoteObject</item>
+      <item name="Package">services.xbrlcarga</item>
+      <item name="Endpoint">gateway.php</item>
+      <item name="Destination">XbrlCarga</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">PHP</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="PHP_RELATIVE_LOCATION">servicios/XbrlCarga.php</item>
+      <item name="PHP_SERVER_ROOT">C:/xampp/htdocs</item>
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="PHP_SERVICES_FOLDER">C:/xampp/htdocs/agf/services</item>
+      <item name="PHP_LOCATION">C:/xampp/htdocs/servicios/XbrlCarga.php</item>
+      <item name="LINKED_FILE">XbrlCarga.php</item>
+      <item name="PHP_SERVER_ROOT_URL">http://localhost:8888/</item>
+      <item name="ABSOLUTE_ENDPOINT">http://localhost:8888/agf/gateway.php</item>
+      <item name="PHP_CLASS_NAME">XbrlCarga</item>
+    </annotation>
+    <function name="insertarValor" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="xmlParam" type="opaque"/>
+      <parameter name="contextos" type="opaque"/>
+    </function>
+    <function name="descargaSVS" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="periodo" type="opaque"/>
+    </function>
+    <function name="cargaEmpresas" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="periodo" type="opaque"/>
+    </function>
+    <function name="preparaCarga" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="periodo" type="opaque"/>
+    </function>
+    <function name="descargaSeleccion" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="data" type="opaque"/>
+      <parameter name="periodo" type="opaque"/>
+    </function>
+    <function name="rescataEmpresas" return-type="string">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="insertarErrorFormato" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="xmlParam" type="opaque"/>
+    </function>
+    <function name="insertarEmpresas2" return-type="string">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="xmlParam" type="string"/>
+    </function>
+    <function name="actualizaEmpresa" return-type="opaque">
+      <annotation name="analyze group">
+        <item name="analyzed">false</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <parameter name="id" type="opaque"/>
+      <parameter name="color" type="opaque"/>
+    </function>
+  </service>
 </model>
