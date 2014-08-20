@@ -59,6 +59,17 @@ BEGIN
 			where v.origen = 1	
 				and v.tipo = 'Cierre Trimestre Actual'		
 				
+				
+				
+		INSERT INTO valoresPer 
+		
+			SELECT  v.ID_VALOR, v.ID_TAG_AGF, v.id_empresa, v.ID_PERIODO, p.orden, v.valor, p.ANO, p.MES
+			from Inserted v 
+				inner join periodos p 
+					on v.ID_PERIODO = p.ID_PERIODO					
+			where v.origen = 1	
+				and v.tipo = 'Cierre Trimestre Actual'			
+				
 			
 		
 		
@@ -81,6 +92,7 @@ BEGIN
 		 where p.orden between i.orden - 3 and i.orden
 				and v.ID_EMPRESA = i.ID_EMPRESA
 				and v.ID_TAG_AGF = i.ID_TAG_AGF
+				and v.tipo = 'Cierre Trimestre Actual'
 		 ),	
 		
 		sysdatetime(), 1, 0, 
@@ -91,6 +103,7 @@ BEGIN
 					 where p.orden = i.orden - 3 
 							and v.ID_EMPRESA = i.ID_EMPRESA
 							and v.ID_TAG_AGF = i.ID_TAG_AGF
+							and v.tipo = 'Cierre Trimestre Actual'
 					 ), '') + '|' + 
 			isnull((select convert(varchar(20), v.ID_VALOR)
 					 from valores v 
@@ -99,6 +112,7 @@ BEGIN
 					 where p.orden = i.orden - 2 
 							and v.ID_EMPRESA = i.ID_EMPRESA
 							and v.ID_TAG_AGF = i.ID_TAG_AGF
+							and v.tipo = 'Cierre Trimestre Actual'
 					 ), '') + '|' + 
 			isnull((select convert(varchar(20), v.ID_VALOR)
 					 from valores v 
@@ -107,6 +121,16 @@ BEGIN
 					 where p.orden = i.orden - 1 
 							and v.ID_EMPRESA = i.ID_EMPRESA
 							and v.ID_TAG_AGF = i.ID_TAG_AGF
+							and v.tipo = 'Cierre Trimestre Actual'
+					 ), '') + '|' + 
+			isnull((select convert(varchar(20), v.ID_VALOR)
+					 from valores v 
+						inner join periodos p
+							on v.id_periodo = p.id_periodo
+					 where p.orden = i.orden 
+							and v.ID_EMPRESA = i.ID_EMPRESA
+							and v.ID_TAG_AGF = i.ID_TAG_AGF
+							and v.tipo = 'Cierre Trimestre Actual'
 					 ), '')
 		from @valoresPer i 				
 union	 
@@ -119,6 +143,7 @@ union
 				and p.ANO = i.anio
 				and v.ID_EMPRESA = i.ID_EMPRESA
 				and v.ID_TAG_AGF = i.ID_TAG_AGF
+				and v.tipo = 'Cierre Trimestre Actual'
 		 ),	
 		
 		sysdatetime(), 1, 0, 
@@ -130,6 +155,7 @@ union
 							and p.ANO = i.anio
 							and v.ID_EMPRESA = i.ID_EMPRESA
 							and v.ID_TAG_AGF = i.ID_TAG_AGF
+							and v.tipo = 'Cierre Trimestre Actual'
 					 ), '') + '|' + 
 			isnull((select convert(varchar(20), v.ID_VALOR)
 					 from valores v 
@@ -139,6 +165,7 @@ union
 							and p.ANO = i.anio
 							and v.ID_EMPRESA = i.ID_EMPRESA
 							and v.ID_TAG_AGF = i.ID_TAG_AGF
+							and v.tipo = 'Cierre Trimestre Actual'
 					 ), '') + '|' + 
 			isnull((select convert(varchar(20), v.ID_VALOR)
 					 from valores v 
@@ -148,7 +175,19 @@ union
 							and p.ANO = i.anio
 							and v.ID_EMPRESA = i.ID_EMPRESA
 							and v.ID_TAG_AGF = i.ID_TAG_AGF
+							and v.tipo = 'Cierre Trimestre Actual'
+					 ), '') + '|' + 
+			isnull((select convert(varchar(20), v.ID_VALOR)
+					 from valores v 
+						inner join periodos p
+							on v.id_periodo = p.id_periodo
+					 where p.orden = i.orden 
+							and p.ANO = i.anio
+							and v.ID_EMPRESA = i.ID_EMPRESA
+							and v.ID_TAG_AGF = i.ID_TAG_AGF
+							and v.tipo = 'Cierre Trimestre Actual'
 					 ), '')
+					 
 		from @valoresPer i		
 		
 		

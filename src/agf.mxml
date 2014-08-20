@@ -1083,9 +1083,11 @@
 								}
 							}
 						}
+						
+						
 						xmlParam.appendChild(xmlParamSub);
 						insertarValorResult.token = xbrlCarga.insertarValor({xmlParam: String(xmlParam)}, xmlContextos.toString()); 
-						
+						objContextos = {};
 						
 						s++;
 					} else {

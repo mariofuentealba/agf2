@@ -19,8 +19,8 @@ AS
 
 BEGIN
 
-INSERT INTO xbrl_contexto ([nombre],[inicio],[fin], periodo) 
-SELECT NODO.ITEM.value('@idTag','VARCHAR(50)'), NODO.ITEM.value('@inicio','VARCHAR(10)'), NODO.ITEM.value('@fin','VARCHAR(10)'), NODO.ITEM.value('@periodo','VARCHAR(10)')
+INSERT INTO xbrl_contexto ([nombre],[inicio],[fin], periodo, id_empresa, id_periodo) 
+SELECT NODO.ITEM.value('@idTag','VARCHAR(50)'), NODO.ITEM.value('@inicio','VARCHAR(10)'), NODO.ITEM.value('@fin','VARCHAR(10)'), NODO.ITEM.value('@periodo','VARCHAR(10)'), (SELECT id from xbrl_empresas where rut = left(NODO.ITEM.value('@entity','VARCHAR(15)'), len(NODO.ITEM.value('@entity','VARCHAR(15)')) - 2)), (select ID_PERIODO from periodos where label = NODO.ITEM.value('@periodo','VARCHAR(10)'))
 FROM   @xmlParam.nodes('/tag') AS NODO(ITEM)
 --where NODO.ITEM.value('@idTag','VARCHAR(50)') not in(select nombre from xbrl_contexto)
 

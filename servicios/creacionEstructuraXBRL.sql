@@ -5934,7 +5934,20 @@ alter column cod4 varchar(50)
 alter table dbo.formulas
 alter column cod5 varchar(50)
 
+create table valoresPer  (
+				ID_VALOR int null,			
+				[ID_TAG_AGF] [int] NULL,
+				[ID_EMPRESA] [int] NULL,
+				[ID_PERIODO] [int] NULL,
+				[orden] [int] NOT NULL,				
+				[VALOR] [decimal](25, 2) NOT NULL,				
+				[anio] [int] NULL,
+				[mes] [int] NOT NULL)
+				
+				
 
+alter table xbrl_contexto
+add  id_empresa int
 
 /*
   update [agf].[dbo].[periodos]
