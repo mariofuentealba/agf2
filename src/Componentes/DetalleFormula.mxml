@@ -21,7 +21,7 @@
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				var selectorEmpresas:SelectorList = new SelectorList();
+				/*var selectorEmpresas:SelectorList = new SelectorList();
 				PopUpManager.addPopUp(selectorEmpresas, agf(this.parentApplication));
 				selectorEmpresas.width = this.parentApplication.width;
 				selectorEmpresas.height = this.parentApplication.height;
@@ -30,7 +30,10 @@
 				selectorEmpresas.labelInsert="nombre";
 				selectorEmpresas.modelo = agf(this.parentApplication).modelo;
 				selectorEmpresas.servicioInvocado = "grillaTodasEmpresa"
-				PopUpManager.centerPopUp(selectorEmpresas);
+				PopUpManager.centerPopUp(selectorEmpresas);*/
+				
+				
+				
 			}
 			
 			private function cierraPoPup(pop:*, datosFormula:ArrayCollection):void{		
@@ -47,7 +50,7 @@
 		
 		<s:Label x="19" y="10" fontSize="12" fontWeight="bold" text="Formula Principal"/>
 		<s:HGroup left="10" right="10" bottom="10" gap="15">
-			<s:DataGrid left="10" bottom="10" width="70%" height="121" dataProvider="{formula.arrCampos}">
+			<s:DataGrid left="10" bottom="10" width="698" height="121" dataProvider="{formula.arrCampos}">
 				<s:columns>
 					<s:ArrayList>
 						<s:GridColumn visible="true" dataField="codigo"
@@ -62,12 +65,11 @@
 					</s:ArrayList>
 				</s:columns>
 			</s:DataGrid>
-			<s:List x="579" y="69" width="30%" height="121" labelField="nombre" dataProvider="{formula.arrEmpresas}"></s:List>	
 		</s:HGroup>
 		
 		<s:Label visible="{formula._default}" y="10" right="25" text="Default"/>
 		<s:Label x="10" y="52" fontSize="12" fontWeight="bold" text="Campos"/>
-		<s:Button y="28" right="21" label="Empresas Asociadas" click="button1_clickHandler(event)"/>
+		<s:Button y="28" right="21" label="Editar" click="button1_clickHandler(event)"/>
 		<s:Label x="19" y="30" fontSize="16" fontWeight="bold" text="{formula.formula}"/>
 		
 	</s:Group>

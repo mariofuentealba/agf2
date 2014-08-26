@@ -8,7 +8,6 @@ import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.services.wrapper.RemoteObjectServiceWrapper;
 import com.adobe.fiber.valueobjects.IValueObject;
 import com.adobe.serializers.utility.TypeUtility;
-import mx.collections.ArrayCollection;
 import mx.collections.ListCollectionView;
 import mx.data.DataManager;
 import mx.data.IManaged;
@@ -27,6 +26,7 @@ import valueObjects.EmpresaSinDatatype;
 import valueObjects.EmpresasDelGrupoDatatype;
 import valueObjects.GrupoIndiceFinancieroDatatype;
 import valueObjects.GrupoIndicesDataType;
+import valueObjects.IndFinancierosDatatype;
 import valueObjects.IndicesDatatype;
 import valueObjects.IndicesFinancieros2Datatype;
 import valueObjects.IndicesFinancierosDatatype;
@@ -158,6 +158,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         valueObjects.EmpresaDatatype._initRemoteClassAlias();
         valueObjects.EmpresasDelGrupoDatatype._initRemoteClassAlias();
         valueObjects.EmpresaSinDatatype._initRemoteClassAlias();
+        valueObjects.IndFinancierosDatatype._initRemoteClassAlias();
         valueObjects.IndicesFinancieros2Datatype._initRemoteClassAlias();
         valueObjects.IndicesFinancierosDatatype._initRemoteClassAlias();
         valueObjects.IndicesDatatype._initRemoteClassAlias();
@@ -236,7 +237,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultElementType = valueObjects.EmpresaSinDatatype;
         operations["grillaEmpresaSinSubGrupo"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaGrupoIndices");
-         operation.resultElementType = valueObjects.GrupoIndicesDataType;
+         operation.resultElementType = valueObjects.IndFinancierosDatatype;
         operations["grillaGrupoIndices"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaGrupoIndices2");
          operation.resultType = Object;
@@ -1096,7 +1097,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function insertarIndicesFinancieros(arrInf:Array, arrEmp:Array, formulas:Array, formulasCampos:Array) : mx.rpc.AsyncToken
+    public function insertarIndicesFinancieros(arrInf:Object, arrEmp:Object, formulas:Object, formulasCampos:Object) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("insertarIndicesFinancieros");
 		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,arrEmp,formulas,formulasCampos) ;

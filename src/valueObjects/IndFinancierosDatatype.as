@@ -1,5 +1,5 @@
 /**
- * This is a generated sub-class of _Formulas.as and is intended for behavior
+ * This is a generated sub-class of _IndFinancierosDatatype.as and is intended for behavior
  * customization.  This class is only generated when there is no file already present
  * at its target location.  Thus custom behavior that you add here will survive regeneration
  * of the super-class. 
@@ -15,7 +15,7 @@ package valueObjects
 
 import com.adobe.fiber.core.model_internal;
 
-public class Formulas extends _Super_Formulas
+public class IndFinancierosDatatype extends _Super_IndFinancierosDatatype
 {
     /** 
      * DO NOT MODIFY THIS STATIC INITIALIZER - IT IS NECESSARY
@@ -30,17 +30,17 @@ public class Formulas extends _Super_Formulas
      */     
     public static function _initRemoteClassAlias() : void
     {
-        _Super_Formulas.model_internal::initRemoteClassAliasSingle(valueObjects.Formulas);
-        _Super_Formulas.model_internal::initRemoteClassAliasAllRelated();
+        _Super_IndFinancierosDatatype.model_internal::initRemoteClassAliasSingle(valueObjects.IndFinancierosDatatype);
+        _Super_IndFinancierosDatatype.model_internal::initRemoteClassAliasAllRelated();
     }
      
     model_internal static function initRemoteClassAliasSingleChild() : void
     {
-        _Super_Formulas.model_internal::initRemoteClassAliasSingle(valueObjects.Formulas);
+        _Super_IndFinancierosDatatype.model_internal::initRemoteClassAliasSingle(valueObjects.IndFinancierosDatatype);
     }
     
     {
-        _Super_Formulas.model_internal::initRemoteClassAliasSingle(valueObjects.Formulas);
+        _Super_IndFinancierosDatatype.model_internal::initRemoteClassAliasSingle(valueObjects.IndFinancierosDatatype);
     }
     /** 
      * END OF DO NOT MODIFY SECTION

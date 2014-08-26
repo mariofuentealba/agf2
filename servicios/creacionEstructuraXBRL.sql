@@ -5949,6 +5949,10 @@ create table valoresPer  (
 alter table xbrl_contexto
 add  id_empresa int
 
+
+alter table dbo.indice_empresa
+alter column tipo varchar(50) NULL
+
 /*
   update [agf].[dbo].[periodos]
   set label = '0' + convert(varchar(2), MES) + '-' + convert(varchar(4), ANO)

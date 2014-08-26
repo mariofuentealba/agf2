@@ -97,7 +97,6 @@ import mx.events.IndexChangedEvent;
 import model.ModelApp;
 import valueObjects.IndicesFinancierosDatatype;
 import valueObjects.IndicesFinancieros2Datatype;
-import services.formulasservice.FormulasService;
 import flash.xml.XMLDocument;
 import VO.Item_Xbrl;
 import VO.IndiceVO;
@@ -235,8 +234,8 @@ protected function dgGrupo_doubleClickHandler(event:MouseEvent):void
 				break;
 			case 'tnIndicesFinancieros':
 				if(event.target.data is IndicesFinancieros2Datatype){
-					formulasIndiceResult.token = formulasServices.getFormulasByID(event.target.data['ID_INDICE_FINANCIERO']);
-					formulasIndiceResult.addEventListener(ResultEvent.RESULT, obtenFormulas);	
+			/*		formulasIndiceResult.token = formulasServices.getFormulasByID(event.target.data['ID_INDICE_FINANCIERO']);
+					formulasIndiceResult.addEventListener(ResultEvent.RESULT, obtenFormulas);*/	
 				}
 					
 				break;
@@ -1919,12 +1918,17 @@ private function creaForm(event:ResultEvent):void{
 		item.lblItem.text = o['nombre'];
 		item.txtValorItem = new spark.components.TextInput();
 		item.deleteGuardar = EliminaItemFormulario;
+		
 		if(o['valor'] == null){
 			o['valor'] = '';
 		}
 		item.valor = '' + o['valor'];
 		tbFormulario.selectedIndex = tbFormulario.numElements - 1;
 		(tbFormulario.getElementAt(tbFormulario.selectedIndex) as NavigatorContent).addElement(item);
+		if(String(o['nombre']).indexOf('(XBRL)') > -1){
+			item.txtValorItem.editable = false;
+			item.txtValorItem.enabled = false;
+		}
 	}
 	//modelo.comboItems();
 	if(tbFormulario.numElements > 0){

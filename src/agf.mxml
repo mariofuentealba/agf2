@@ -803,7 +803,7 @@
 			{
 				// TODO Auto-generated method stub
 				if(ddlEmpresas.selectedIndex > -1 && ddlIndices.selectedIndex > -1){
-					rescataFormulasResult.token = modelo.rescataFormulas(ddlIndices.selectedItem['ID_INDICE_FINANCIERO'], ddlEmpresas.selectedItem['ID_EMPRESA']);
+					rescataFormulasResult.token = modelo.rescataFormulas(ddlIndices.selectedItem['ID_INDICE_FINANCIERO'], ddlEmpresas.selectedItem['idInterno']);
 					rescataFormulasResult.addEventListener(ResultEvent.RESULT, llenaFormulas);
 				}
 			}
@@ -1280,7 +1280,7 @@
 				<editItem label="Guardar Formulario"/>
 			</root>
 		</fx:XML>
-		<formulasservice:FormulasService id="formulasServices" showBusyCursor="true"/>
+		
 		<modelo:Modelo id="modelo"
 					   fault="modelo_faultHandler(event)"
 					   showBusyCursor="true"/>
@@ -1364,7 +1364,7 @@
 	<fx:Binding source="contMasivo" destination="masivo"/>
 	<mx:OLAPDataGrid id="olap" left="10" top="10" height="300" dataProvider="{olapData}" visible="false"/>
 	
-	<s:Image left="0" right="0" top="0" source="assets/dsicback1.jpg"/>
+	<s:Image left="-97" right="97" top="57" source="assets/dsicback1.jpg"/>
 	<s:Image left="0" top="150" source="assets/dsicback2.jpg"/>
 	<s:Image left="0" top="0" width="256" alpha=".7" source="assets/chico 12.jpg"/>
 	

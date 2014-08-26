@@ -62,6 +62,9 @@
 						infoResult.token = modelo[servicioInvocado]();
 					}
 					infoResult.addEventListener(ResultEvent.RESULT, llenaList);
+				} else {
+					arrTodos.filterFunction = null;
+					arrTodos.refresh();
 				}
 				
 				
@@ -89,6 +92,11 @@
 			protected function button2_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
+				if(lSelect.dataProvider.length > 0){
+					for each(var o:Object in arrSelect){
+						arrTodos.addItem(o);
+					}
+				}
 				PopUpManager.removePopUp(this);
 			}
 			

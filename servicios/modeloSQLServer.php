@@ -69,8 +69,10 @@ class Modelo
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');			
 			$sql = "INSERT INTO " . $table . " VALUES (";
 			for($i = 0; $i < count($arrInf); $i++){
-				$sql .= ", '" . $arrInf[$i] . "'";
+				$sql .= "'" . $arrInf[$i] . "',";
 			}
+			
+			$sql = substr($sql, 0, -1);
 			$sql .= ");";
 			$sql2 = str_replace("'", "''", $sql);		
 			try {
@@ -1103,6 +1105,17 @@ class Modelo
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
 
+				$sql = "INSERT INTO indice_empresa (id_indice, id_empresa) 
+						SELECT " . $indiceNuevo . ", id_empresa
+						FROM empresas;";
+				$sql2 = str_replace("'", "''", $sql);
+				fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
+				/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+					$stmt->execute();	*/			
+				$stmt = $con->prepare($sql);
+				$stmt->execute();
+				
+				
 				for($i = 0; $i < count($arrEmp); $i++){
 					$sql = "INSERT INTO indice_empresa (id_indice, id_empresa) values ('" . $indiceNuevo . "', '" . $arrEmp[$i] . "');";
 					$sql2 = str_replace("'", "''", $sql);
@@ -2528,6 +2541,21 @@ class Modelo
 				if($r[1] == $arrInf[3]){
 					return true;
 				}
+			/*	if(!isset($r[1])){
+					$sql = "INSERT INTO valores VALUES () 
+							SET valor = " . $arrInf[3] . " 
+							WHERE id_empresa = " . $arrInf[1] . " 
+								AND id_periodo = " . $arrInf[2] . " 
+								AND	id_tag_agf = " .  $arrInf[0] . " 
+								AND	origen = 1
+								AND tipo = 'Cierre Trimestre Actual'";		
+					$sql2 = str_replace("'", "''", $sql);
+					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+					$stmtlog->execute();
+					$stmt = $con->prepare($sql);
+					$stmt->execute();				
+				}*/
+				
 				$sql = "UPDATE valores 
 						SET valor = " . $arrInf[3] . " 
 						WHERE id_empresa = " . $arrInf[1] . " 
@@ -2768,6 +2796,7 @@ class Modelo
 						and origen = 1
 						and c.id_periodo = 
 						" . $periodo. " and c.id_tag_agf = a.id_tag_agf) valor,  nun_item, id_tag_agf
+						
                 	                FROM formulario_item a
 					where a.id_empresa = " . $empresa . "
 					      AND a.estado = 'A'									
@@ -3000,7 +3029,7 @@ class Modelo
 					FROM indices_financieros a inner join 
 						 indice_empresa b on id_indice_financiero = id_indice inner join 
 						 empresas c on b.id_empresa = c.id_empresa
-					WHERE b.tipo = 0					
+								
 					UNION
 					SELECT a.id_indice_financiero, a.nombre, c.id_subgrupo, c.nombre, 1,ID_GRUPO_INDICE_FINANCIERO
 					FROM indices_financieros a inner join 
