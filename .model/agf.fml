@@ -759,7 +759,7 @@
         <item name="propertySpecifier">nombre,ID_TIPO_EMPRESA,descripcion</item>
       </annotation>
     </function>
-    <function name="grillaIndicesFinancieros" return-type="IndicesFinancieros2Datatype[]">
+    <function name="grillaIndicesFinancieros" return-type="string">
       <annotation name="analyze group">
         <item name="analyzed">true</item>
       </annotation>
@@ -1146,7 +1146,7 @@
       <item name="EntityOriginalName">IndicesFinancieros2Datatype</item>
     </annotation>
     <annotation name="service Group">
-      <item name="service">Modelo,ModeloDummy</item>
+      <item name="service">Modelo</item>
     </annotation>
     <annotation name="ServerProperties">
       <item name="IncludeRemoteClass">nonempty</item>

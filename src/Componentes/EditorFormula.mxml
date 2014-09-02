@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:Componentes="Componentes.*"
+		 width="100%" height="100%">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import VO.FormulaVO;
+			import VO.IndiceFinanciero;
+			import VO.IndiceVO;
+			import VO.Item_Xbrl;
+			
+			import model.ModelApp;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			
+			[Bindable] public var comboGrupoIndicesFinancieros:ArrayCollection;
+			[Bindable] public var indice:IndiceFinanciero;
+			[Bindable] private var modelApp:ModelApp = model.ModelApp.getInstance();
+			
+			private function guardarIndice_clickHandler(event:MouseEvent):void{
+				
+			}
+			
+			private function dropDownList9_creationCompleteHandler(event:Event):void{
+				for(var i:int = 0; i < ArrayCollection(DD_ID_GRUPO_INDICE_FINANCIERO.dataProvider).length; i++){
+					if(ArrayCollection(DD_ID_GRUPO_INDICE_FINANCIERO.dataProvider).getItemAt(i)['ID_GRUPO_INDICE_FINANCIERO'] == indice.id_grupo_indice_financiero){
+						DD_ID_GRUPO_INDICE_FINANCIERO.selectedIndex = i;	
+					}
+					
+				}
+			}
+			
+			
+			private function llenaFormulas(event:FlexEvent):void{
+				var obj:*;
+				
+				for each(var formula:FormulaVO in indice.arrFormulas){
+					obj = null;
+					if(formula.cod1 != 'no'){
+						switch(formula.cod1.charAt(0)){
+							case 'C':
+								var objXBRL:Item_Xbrl = new Item_Xbrl();
+								
+								for each(objXBRL in modelApp.arrXBRL){
+									if(objXBRL.id.toString() == formula.CAMPO1){
+										objXBRL.contexto = formula.cod1.split('.')[2];
+										objXBRL.codigo +=  formula.cod1.split('.')[1];
+										obj = objXBRL;
+										break;
+									}
+								}
+								if(obj == null){
+									for each(objXBRL in modelApp.arrItemManual){
+										if(objXBRL.id.toString() == formula.CAMPO1){
+											objXBRL.contexto = formula.cod1.split('.')[2];
+											objXBRL.codigo +=  formula.cod1.split('.')[1];
+											obj = objXBRL;
+											break;
+										}
+									}	
+								}
+								
+								
+								break;
+							case 'F':
+								var objndice:IndiceVO = new IndiceVO();
+								for each(objndice in modelApp.arrIndice){
+									if(objndice.id.toString() == formula.CAMPO1){
+										obj = objXBRL;
+										break;
+									}
+								}
+								obj = objndice;
+								break;
+						}
+					}
+					
+					formula.arrCampos.addItem(obj);
+					
+					
+					obj = null;
+					if(formula.cod2 != 'no'){
+						switch(formula.cod2.charAt(0)){
+							case 'C':
+								objXBRL = new Item_Xbrl();
+								
+								for each(objXBRL in modelApp.arrXBRL){
+								if(objXBRL.id.toString() == formula.CAMPO2){
+									objXBRL.contexto = formula.cod2.split('.')[2];
+									objXBRL.codigo +=  formula.cod1.split('.')[1];
+									obj = objXBRL;
+									break;
+								}
+							}
+								if(obj == null){
+									for each(objXBRL in modelApp.arrItemManual){
+										if(objXBRL.id.toString() == formula.CAMPO2){
+											objXBRL.contexto = formula.cod2.split('.')[2];
+											objXBRL.codigo +=  formula.cod1.split('.')[1];
+											obj = objXBRL;
+											break;
+										}
+									}	
+								}
+								
+								
+								break;
+							case 'F':
+								objndice = new IndiceVO();
+								for each(objndice in modelApp.arrIndice){
+								if(objndice.id.toString() == formula.CAMPO2){
+									obj = objXBRL;
+									break;
+								}
+							}
+								obj = objndice;
+								break;
+						}
+					}
+					if(obj != null){
+						formula.arrCampos.addItem(obj);	
+					}
+					
+					
+					
+					
+					
+					
+					obj = null;
+					if(formula.cod3 != 'no'){
+						switch(formula.cod3.charAt(0)){
+							case 'C':
+								objXBRL = new Item_Xbrl();
+								
+								for each(objXBRL in modelApp.arrXBRL){
+								if(objXBRL.id.toString() == formula.CAMPO3){
+									objXBRL.contexto = formula.cod3.split('.')[2];
+									objXBRL.codigo +=  formula.cod1.split('.')[1];
+									obj = objXBRL;
+									break;
+								}
+							}
+								if(obj == null){
+									for each(objXBRL in modelApp.arrItemManual){
+										if(objXBRL.id.toString() == formula.CAMPO3){
+											objXBRL.contexto = formula.cod3.split('.')[2];
+											objXBRL.codigo +=  formula.cod1.split('.')[1];
+											obj = objXBRL;
+											break;
+										}
+									}	
+								}
+								
+								
+								break;
+							case 'F':
+								objndice = new IndiceVO();
+								for each(objndice in modelApp.arrIndice){
+								if(objndice.id.toString() == formula.CAMPO1){
+									obj = objXBRL;
+									break;
+								}
+							}
+								obj = objndice;
+								break;
+						}
+					}
+					
+					if(obj != null){
+						formula.arrCampos.addItem(obj);	
+					}
+					
+					
+					
+					
+					
+					obj = null;
+					if(formula.cod4 != 'no'){
+						switch(formula.cod4.charAt(0)){
+							case 'C':
+								objXBRL = new Item_Xbrl();
+								
+								for each(objXBRL in modelApp.arrXBRL){
+								if(objXBRL.id.toString() == formula.CAMPO4){
+									objXBRL.contexto = formula.cod4.split('.')[2];
+									objXBRL.codigo +=  formula.cod1.split('.')[1];
+									obj = objXBRL;
+									break;
+								}
+							}
+								if(obj == null){
+									for each(objXBRL in modelApp.arrItemManual){
+										if(objXBRL.id.toString() == formula.CAMPO4){
+											objXBRL.contexto = formula.cod4.split('.')[2];
+											objXBRL.codigo +=  formula.cod1.split('.')[1];
+											obj = objXBRL;
+											break;
+										}
+									}	
+								}
+								
+								
+								break;
+							case 'F':
+								objndice = new IndiceVO();
+								for each(objndice in modelApp.arrIndice){
+								if(objndice.id.toString() == formula.CAMPO4){
+									obj = objXBRL;
+									break;
+								}
+							}
+								obj = objndice;
+								break;
+						}
+					}
+					
+					if(obj != null){
+						formula.arrCampos.addItem(obj);	
+					}
+					
+					
+					
+					
+					obj = null;
+					if(formula.cod5 != 'no'){
+						switch(formula.cod5.charAt(0)){
+							case 'C':
+								objXBRL = new Item_Xbrl();
+								
+								for each(objXBRL in modelApp.arrXBRL){
+								if(objXBRL.id.toString() == formula.CAMPO5){
+									objXBRL.contexto = formula.cod5.split('.')[2];
+									objXBRL.codigo +=  formula.cod1.split('.')[1];
+									obj = objXBRL;
+									break;
+								}
+							}
+								if(obj == null){
+									for each(objXBRL in modelApp.arrItemManual){
+										if(objXBRL.id.toString() == formula.CAMPO5){
+											objXBRL.contexto = formula.cod5.split('.')[2];
+											objXBRL.codigo +=  formula.cod1.split('.')[1];
+											obj = objXBRL;
+											break;
+										}
+									}	
+								}
+								
+								
+								break;
+							case 'F':
+								objndice = new IndiceVO();
+								for each(objndice in modelApp.arrIndice){
+								if(objndice.id.toString() == formula.CAMPO5){
+									obj = objXBRL;
+									break;
+								}
+							}
+								obj = objndice;
+								break;
+						}
+					}
+					
+					if(obj != null){
+						formula.arrCampos.addItem(obj);	
+					}
+					
+					
+					
+					tnFormulas.llenaFormulas(formula);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:BorderContainer x="93" top="20" width="700" height="558"
+					   cornerRadius="15">
+		
+		
+		
+		<s:Button bottom="20" label="Guardar"
+				  click="guardarIndice_clickHandler(event)"
+				  enabled="true" horizontalCenter="0"/>
+		<s:VGroup left="20" right="20" top="5" horizontalAlign="left">
+			<s:Label fontWeight="bold" text="Grupo:"/>
+			<s:DropDownList id="DD_ID_GRUPO_INDICE_FINANCIERO"
+							width="200"
+							creationComplete="dropDownList9_creationCompleteHandler(event)"
+							labelField="nombre"
+							name="ID_GRUPO_INDICE_FINANCIERO"
+							prompt="Seleccione"
+							dataProvider="{comboGrupoIndicesFinancieros}">
+			</s:DropDownList>
+			
+			<s:Label y="20" left="20" height="13" fontWeight="bold"
+					 text="Nombre:"/>
+			<s:TextInput id="Ind1" y="32" left="20" right="20" text="{indice.nombre}"
+						 width="100%" height="25"/>	
+			<Componentes:FormulaAdv id="tnFormulas" width="100%" height="400" creationComplete="llenaFormulas(event)"/>
+		</s:VGroup>
+	</s:BorderContainer>
+	<s:Label x="23" y="10" fontSize="20" text="Indice"/>
+</s:Group>

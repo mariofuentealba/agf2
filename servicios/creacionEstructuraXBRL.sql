@@ -5890,10 +5890,10 @@ drop table empresas
 )  
 
 alter table valores
-alter column tipo varchar(30)
+alter column tipo varchar(50)
 
 alter table valores2
-alter column tipo varchar(30)
+alter column tipo varchar(50)
 
 alter table tag_agf
 add  id_xbrl int
@@ -5914,6 +5914,8 @@ select traduccion,  traduccion,  'NO ESPECIFICA', 'XBRL', 1, t.id
 		inner join xbrl_traduccion tr on tt.id_traduccion = tr.id
 		
 		
+		select *
+		from valores
 		
 		
 
@@ -5952,6 +5954,28 @@ add  id_empresa int
 
 alter table dbo.indice_empresa
 alter column tipo varchar(50) NULL
+
+
+CREATE TABLE [dbo].[Contextos](
+	[id] [int] identity(1,1) PRIMARY key NOT NULL, 
+	[contexto] [varchar](80) NULL
+) 
+
+Insert into [dbo].[Contextos] 
+SELECT distinct
+      [tipo]      
+  FROM [agf].[dbo].[xbrl_contexto]
+  where [tipo] is not null
+  
+  
+  alter table valores
+alter column hist_formula varchar(50)
+
+alter table valores2
+alter column hist_formula varchar(50)
+ 
+--truncate table [dbo].[Contextos] 
+
 
 /*
   update [agf].[dbo].[periodos]

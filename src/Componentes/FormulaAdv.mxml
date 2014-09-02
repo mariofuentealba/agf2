@@ -77,10 +77,15 @@
 			
 			
 			private function cierraPoPup(pop:*, datosFormula:FormulaVO):void{
+				llenaFormulas(datosFormula);
+				PopUpManager.removePopUp(pop);
+			}
+			
+			
+			public function llenaFormulas(datosFormula:FormulaVO):void{
 				var detalleFormula:DetalleFormula = new DetalleFormula();
 				detalleFormula.formula = datosFormula;
 				this.addElementos(detalleFormula);
-				PopUpManager.removePopUp(pop);
 			}
 			
 			

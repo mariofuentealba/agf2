@@ -102,6 +102,7 @@ import VO.Item_Xbrl;
 import VO.IndiceVO;
 import VO.EmpresaVO;
 import spark.primitives.supportClasses.FilledElement;
+import VO.IndiceFinanciero;
 
 private var alert:Formula = new Formula();
 private var agregaItem:SelectItem = new SelectItem();
@@ -209,6 +210,10 @@ protected function dgGrupo_clickHandler(event:MouseEvent):void
 	}
 }
 
+
+
+[Bindable] private var editandoIndice:IndiceFinanciero;
+
 protected function dgGrupo_doubleClickHandler(event:MouseEvent):void
 {
 	// TODO Auto-generated method stub
@@ -233,9 +238,10 @@ protected function dgGrupo_doubleClickHandler(event:MouseEvent):void
 				
 				break;
 			case 'tnIndicesFinancieros':
-				if(event.target.data is IndicesFinancieros2Datatype){
+				if(event.target.data is IndiceFinanciero){
 			/*		formulasIndiceResult.token = formulasServices.getFormulasByID(event.target.data['ID_INDICE_FINANCIERO']);
-					formulasIndiceResult.addEventListener(ResultEvent.RESULT, obtenFormulas);*/	
+					formulasIndiceResult.addEventListener(ResultEvent.RESULT, obtenFormulas);*/
+					editandoIndice = event.target.data; 
 				}
 					
 				break;
@@ -839,6 +845,9 @@ private function xmllistToArrayIndice(list:XMLList):Array
 
 protected function crearEsquema_creationCompleteHandler(event:FlexEvent):void
 {
+	
+	dropDownList9_creationCompleteHandler(null);
+	
 	// TODO Auto-generated method stub
 	//Alert.show('' + ExternalInterface.available);
 	//grillaEmpresaResult.token = modelo.grillaEmpresa();
@@ -1229,7 +1238,7 @@ protected function button4_clickHandler(event:MouseEvent):void
 			
 			
 			
-			valoresResult.token = modelo.valores(fn.selectedItem['ID_EMPRESA'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
+			valoresResult.token = modelo.valores(fn.selectedItem['idInterno'], empresas, periodos, tagAgf, ddlPeriodo.selectedItem['data']);
 			valoresResult.addEventListener(ResultEvent.RESULT, grafica_);
 			/*
 			nvGrafico.removeAllElements();
@@ -1960,7 +1969,17 @@ protected function dgGrupo_creationCompleteHandler(event:FlexEvent):void
 
 protected function indicesResult(event:ResultEvent):void
 {
-	dgIndicesFinancieros.dataProvider = (event.result as ArrayCollection);
+	var xmlIndices:XMLList = XML(event.target.lastResult)..indices_financieros;
+	var arrIndices:ArrayCollection = new ArrayCollection();
+	for each(var node:XML in xmlIndices){
+		var indice:IndiceFinanciero = new IndiceFinanciero();
+		indice.fillAttributes = node;
+		indice.fill = node;
+		arrIndices.addItem(indice);
+	}	
+	
+	
+	dgIndicesFinancieros.dataProvider = arrIndices;
 	tnIndicesFinancieros.selectedIndex = 0;
 }
 

@@ -28,7 +28,6 @@ import valueObjects.GrupoIndiceFinancieroDatatype;
 import valueObjects.GrupoIndicesDataType;
 import valueObjects.IndFinancierosDatatype;
 import valueObjects.IndicesDatatype;
-import valueObjects.IndicesFinancieros2Datatype;
 import valueObjects.IndicesFinancierosDatatype;
 import valueObjects.RescataFormulaDatatype;
 import valueObjects.SubGrupoDatatype1;
@@ -159,7 +158,6 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
         valueObjects.EmpresasDelGrupoDatatype._initRemoteClassAlias();
         valueObjects.EmpresaSinDatatype._initRemoteClassAlias();
         valueObjects.IndFinancierosDatatype._initRemoteClassAlias();
-        valueObjects.IndicesFinancieros2Datatype._initRemoteClassAlias();
         valueObjects.IndicesFinancierosDatatype._initRemoteClassAlias();
         valueObjects.IndicesDatatype._initRemoteClassAlias();
         valueObjects.RescataFormulaDatatype._initRemoteClassAlias();
@@ -246,7 +244,7 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
          operation.resultType = Object;
         operations["grillaGrupos"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaIndicesFinancieros");
-         operation.resultElementType = valueObjects.IndicesFinancieros2Datatype;
+         operation.resultType = String;
         operations["grillaIndicesFinancieros"] = operation;
         operation = new mx.rpc.remoting.Operation(null, "grillaMonedas");
          operation.resultType = Object;

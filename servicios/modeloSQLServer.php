@@ -817,16 +817,13 @@ class Modelo
 		    $arr = array();	        
 	        $con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
 			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');
-	        $sql = "SELECT a.ID_INDICE_FINANCIERO,a.id_formula,NOMBRE, formula, ID_GRUPO_INDICE_FINANCIERO, 
-							campo1, campo2, campo3, campo4, campo5
-	                	                    FROM indices_financieros a, formulas b
-	                	                    WHERE a.id_formula = b.id_formula";
+	        $sql = "exec sp_rescata_indices";
 	        
-			$sql2 = str_replace("'", "", $sql);
+			$sql2 = str_replace("'", "''", $sql);
 			try {
 				$con->beginTransaction(); 
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
 				$con->commit();
 			} catch(PDOExecption $e) {
 		        $con->rollback();
@@ -836,27 +833,11 @@ class Modelo
 			$stmt = $con->prepare($sql);			
 			$stmt->execute();
 	        $i=0;
-	        while($row = $stmt->fetch())
-	        {	        
-			    $arr[$i]['ID_INDICE_FINANCIERO']=$row[0];
-			    $arr[$i]['id_formula']=$row[1];
-	            $arr[$i]['NOMBRE']=$row[2];
-	            //$arr[$i]['DESCRIPCION']=$row[3];
-			    $arr[$i]['formula']=$row[3];
-			    //$arr[$i]['decimales']=$row[5];
-			    $arr[$i]['ID_GRUPO_INDICE_FINANCIERO']=$row[4];
-			    //$arr[$i]['formula_desc']=$row[7];
-	            //$arr[$i]['rango_superior']=$row[8];
-	            //$arr[$i]['rango_inferior']=$row[9];
-			    //$arr[$i]['rangos_desc']=$row[10];
-			    $arr[$i]['campo1']=$row[5];
-			    $arr[$i]['campo2']=$row[6];
-			    $arr[$i]['campo3']=$row[7];
-				$arr[$i]['campo4']=$row[8];
-			    $arr[$i]['campo5']=$row[9];
-	            $i++; 
-	        }
-	        return $arr;
+			
+			$row = $stmt->fetch();
+			
+			return '' . $row[0];
+	        
 		} catch( PDOExecption $e ) {
 			print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
@@ -2429,11 +2410,7 @@ class Modelo
 				select " . $ultimo_id .", id_empresa, id_periodo, 'Cierre Trimestre Actual', 0.00, '1900-01-01', 1, 0
 				from periodos a cross join empresas
 				";
-				/*$sql = "INSERT INTO valores(ID_VALOR, ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen) 
-				select null, " . $ultimo_id .", id_empresa, id_periodo, 'TRIMESTRAL', 0.00, '1900-01-01', 1
-				from periodos a inner join empresas
-				";*/
-
+				
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
 				$sql2 = str_replace("'", "''", $sql);

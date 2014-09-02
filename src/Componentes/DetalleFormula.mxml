@@ -50,7 +50,7 @@
 		
 		<s:Label x="19" y="10" fontSize="12" fontWeight="bold" text="Formula Principal"/>
 		<s:HGroup left="10" right="10" bottom="10" gap="15">
-			<s:DataGrid left="10" bottom="10" width="698" height="121" dataProvider="{formula.arrCampos}">
+			<s:DataGrid left="10" bottom="10" width="500" height="121" dataProvider="{formula.arrCampos}">
 				<s:columns>
 					<s:ArrayList>
 						<s:GridColumn visible="true" dataField="codigo"

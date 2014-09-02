@@ -62,10 +62,10 @@ set valor = a.valor,
 from @tag a  
 	inner join xbrl_tag b on a.idTag = b.tag
 	inner join xbrl_contexto a1 on a1.nombre = a.contextRef and a1.id_periodo = @idPer and a1.id_empresa = @validaRut
-	inner join [agf].[dbo].[valores] v on v.ID_TAG_AGF = b.id and v.tipo = a1.id and  @validaRut = v.ID_EMPRESA and @idPer = v.ID_PERIODO and 1 = v.origen
+	inner join [agf].[dbo].[valores] v on v.ID_TAG_AGF = b.id and v.tipo = a1.tipo and  @validaRut = v.ID_EMPRESA and @idPer = v.ID_PERIODO and 1 = v.origen
 
 
-
+/*
 INSERT INTO [agf].[dbo].[valoresResp]
            ([ID_TAG_AGF]
            ,[ID_EMPRESA]
@@ -106,6 +106,23 @@ from [agf].[dbo].[valores]
 
 
 
+INSERT INTO [agf].[dbo].[valores]
+           ([ID_TAG_AGF]
+           ,[ID_EMPRESA]
+           ,[ID_PERIODO]
+           ,[tipo]
+           ,[VALOR]
+           ,[DT_MODIFICACION]
+           ,[origen]
+           ,[id_formula]
+           )
+select (select ID_TAG_AGF from tag_agf where id_xbrl = b.id), @validaRut, @idPer, case a1.tipo when null then CONVERT(varchar(50), a1.id) else a1.tipo end  as id_contexto, a.valor, @fechaActual, 1, 0
+from @tag a 
+	inner join xbrl_tag b on a.idTag = b.tag
+	inner join xbrl_contexto a1 on a1.nombre = a.contextRef and isnull(tipo, '0') <> '0' and a1.id_periodo = @idPer and a1.id_empresa = (select id from xbrl_empresas where rut = @rut)
+except
+select [ID_TAG_AGF],[ID_EMPRESA],[ID_PERIODO],[tipo],[VALOR],@fechaActual,[origen],[id_formula]
+from [agf].[dbo].[valores]*/
 
 	
 END
