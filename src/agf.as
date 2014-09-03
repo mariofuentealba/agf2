@@ -241,7 +241,11 @@ protected function dgGrupo_doubleClickHandler(event:MouseEvent):void
 				if(event.target.data is IndiceFinanciero){
 			/*		formulasIndiceResult.token = formulasServices.getFormulasByID(event.target.data['ID_INDICE_FINANCIERO']);
 					formulasIndiceResult.addEventListener(ResultEvent.RESULT, obtenFormulas);*/
-					editandoIndice = event.target.data; 
+					
+					
+					/*editandoIndice = new IndiceFinanciero();
+					editandoIndice.fillAttributes = event.target.data.clone;*/
+					editandoIndice = event.target.data;
 				}
 					
 				break;
@@ -816,7 +820,7 @@ private function xmllistToArrayItem(list:XMLList):Array
 	for each(var node :XML in list){
 		item = new Item_Xbrl();
 		item.fillAttributes = node;
-		
+		item.clone = node;
 		var xmlContextos:XMLList = node..xbrl_contexto;
 		//
 		for each(var contex:XML in xmlContextos) {				//
@@ -837,6 +841,7 @@ private function xmllistToArrayIndice(list:XMLList):Array
 	for each(var node :XML in list){
 		item = new IndiceVO();
 		item.fillAttributes = node;
+		item.clone = node;
 		arr.push(item);
 	}
 	return arr;
@@ -1975,6 +1980,7 @@ protected function indicesResult(event:ResultEvent):void
 		var indice:IndiceFinanciero = new IndiceFinanciero();
 		indice.fillAttributes = node;
 		indice.fill = node;
+		indice.clone = node;
 		arrIndices.addItem(indice);
 	}	
 	

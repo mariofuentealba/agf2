@@ -9,6 +9,7 @@ package VO
 		public var codigo:String = 'F';
 		public var contexto:String = 'no';
 		public var tipo:String;
+		public var clone:XML;
 		
 		public function IndiceVO()
 		{

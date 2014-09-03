@@ -17,6 +17,7 @@ package VO
 		public var arrFormulas:Array = new Array();
 		public var empresas:Array = new Array();
 		private var _Formulas:XML;
+		public var clone:XML;
 		
 		public function IndiceFinanciero()
 		{

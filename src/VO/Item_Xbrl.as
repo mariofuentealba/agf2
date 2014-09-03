@@ -11,6 +11,7 @@ package VO
 		public var contexto:String;
 		public var codigo:String = 'C';
 		public var tipo:String;
+		public var clone:XML;
 		
 		public function Item_Xbrl()
 		{
