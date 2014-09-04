@@ -12,6 +12,8 @@
 	<fx:Script>
 		<![CDATA[
 			import VO.FormulaVO;
+			import VO.IndiceVO;
+			import VO.Item_Xbrl;
 			
 			import model.ModelApp;
 			
@@ -63,9 +65,44 @@
 				//this.currentState = 'campos';
 				
 				var opcionesFormula:IndiceFormula = new IndiceFormula();
-				opcionesFormula.arrXbrl = modelApp.arrXBRL;
-				opcionesFormula.arrIndices = modelApp.arrFormulasIndice;
-				opcionesFormula.arrManual = modelApp.arrItemManual;
+				var arr:ArrayCollection = new ArrayCollection();
+				
+				for each(var obj:* in modelApp.arrXBRL){
+					var xb:Item_Xbrl = new Item_Xbrl();
+					xb.fillAttributes = obj.clone;
+					var xmlContextos:XMLList = obj.clone..xbrl_contexto;
+					//
+					for each(var contex:XML in xmlContextos) {				//
+						xb.arrContexto.push(contex.@tipo[0]);
+					}
+					arr.addItem(xb);
+				}
+				
+				opcionesFormula.arrXbrl = arr;
+				arr = new ArrayCollection();
+				
+				for each(obj in modelApp.arrFormulasIndice){
+					var ind:IndiceVO = new IndiceVO();
+					ind.fillAttributes = obj.clone;
+					arr.addItem(ind);
+				}
+				
+				opcionesFormula.arrIndices = arr;
+				arr = new ArrayCollection();
+				for each(obj in modelApp.arrItemManual){
+					xb = new Item_Xbrl();
+					xb.fillAttributes = obj.clone;
+					xmlContextos = obj.clone..xbrl_contexto;
+					//
+					for each(contex in xmlContextos) {				//
+						xb.arrContexto.push(contex.@tipo[0]);
+					}
+					arr.addItem(xb);
+				}
+				
+				opcionesFormula.arrManual = arr;
+				
+				
 				PopUpManager.addPopUp(opcionesFormula, agf(this.parentApplication));
 				opcionesFormula.width = this.parentApplication.width;
 				opcionesFormula.height = this.parentApplication.height;

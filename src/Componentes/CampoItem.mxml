@@ -5,6 +5,8 @@
 				autoDrawBackground="true" creationComplete="group1_creationCompleteHandler(event)">
 	<fx:Script>
 		<![CDATA[
+			import VO.Item_Xbrl;
+			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			
@@ -14,17 +16,31 @@
 			[Bindable] public var txtTipo:String;
 			[Bindable] public var arrContextos:ArrayCollection = new ArrayCollection();
 			public var fnElim:Function;
+			[Bindable] public var selec:int = -1;
+			[Bindable] public var item:Item_Xbrl;
 			
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
 				try{
+					
+					item = Item_Xbrl(this.data);
 					arrContextos = new ArrayCollection(data.arrContexto);
 					
 					if(this.parent != null && this.parent.parent.parent.parent.parent['className'] == 'List'){
 						//txtTipo = '' + ArrayCollection(List(this.parent.parent.parent.parent.parent).dataProvider).length;	
 						txtTipo = '' + data['codigo'];
 					}	
+					
+					
+					for(var i:int = 0; i < arrContextos.length; i++){
+						if(arrContextos.getItemAt(i) == item.contexto){
+							selec = i;	
+						}
+						
+					}
+					
+					
 				} catch(e:*){
 					
 				}
@@ -69,7 +85,7 @@
 			<s:Label text="Identificador:" top="3" left="3"/>
 			<s:Label text="{txtTipo}" top="3" left="3"/>
 			<s:Label id="lblEtiqueta" text="{data.etiqueta}" width="250" fontWeight="bold" fontSize="12" toolTip="{lblEtiqueta.text}"/>
-			<s:DropDownList id="contexto" dataProvider="{arrContextos}" width="100%" close="contexto_closeHandler(event)"></s:DropDownList>
+			<s:DropDownList id="contexto" dataProvider="{arrContextos}" selectedIndex="{selec}" width="100%" close="contexto_closeHandler(event)"></s:DropDownList>
 			<s:Button label="X" fontSize="14" click="button1_clickHandler(event)" width="40"/>
 		</s:HGroup>
 		<s:Rect width="100%" height="0.5" bottom="0">

@@ -66,7 +66,7 @@
 			public var olapx:IList;
 			public var olapy:IList;*/
 			public var bloqueo:Bloqueo = new Bloqueo();
-			public var config:ConfigExport = new ConfigExport();
+			//public var config:ConfigExport = new ConfigExport();
 			[Bindable] private var arrListIndicesGrafico:ArrayCollection;
 			[Bindable] private var flatData:ArrayCollection;
 			[Bindable]public var olapData:OLAPResult;
@@ -204,7 +204,7 @@
 				var formulas:Array = [];
 				var formulasCampos:Array = [];
 				
-				for(var i:int = 1; i < tnFormulas.numElements; i++){
+				for(var i:int = 1; i < tnFormulas.gFormulas.numElements; i++){
 					var arrForm:String = '';
 					
 					
@@ -308,10 +308,10 @@
 				
 			}
 			
-			public function finConfig():void{
+	/*		public function finConfig():void{
 				PopUpManager.removePopUp(config);
 			}
-			
+		*/	
 /*			protected function formulaIndice_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub

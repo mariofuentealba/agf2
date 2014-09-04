@@ -6,11 +6,17 @@
 	<fx:Script>
 		<![CDATA[
 			import VO.FormulaVO;
+			import VO.IndiceVO;
+			import VO.Item_Xbrl;
+			
+			import model.ModelApp;
 			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			[Bindable] public var formula:FormulaVO;
+			public var fnClick:Function;
+			private var modelApp:ModelApp = model.ModelApp.getInstance();
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
@@ -21,17 +27,64 @@
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				/*var selectorEmpresas:SelectorList = new SelectorList();
-				PopUpManager.addPopUp(selectorEmpresas, agf(this.parentApplication));
-				selectorEmpresas.width = this.parentApplication.width;
-				selectorEmpresas.height = this.parentApplication.height;
-				selectorEmpresas.fnPost = cierraPoPup;
-				selectorEmpresas.conPram = false;
-				selectorEmpresas.labelInsert="nombre";
-				selectorEmpresas.modelo = agf(this.parentApplication).modelo;
-				selectorEmpresas.servicioInvocado = "grillaTodasEmpresa"
-				PopUpManager.centerPopUp(selectorEmpresas);*/
+				var opcionesFormula:IndiceFormula = new IndiceFormula();
 				
+				var objFiltro:Object ={};
+				for each(var obj:* in this.formula.arrCampos){
+					objFiltro[obj.id + ':' + obj.tipo] = obj;
+				}
+				
+				
+				opcionesFormula.formula = this.formula;
+				var arr:ArrayCollection = new ArrayCollection();
+				
+				for each(obj in modelApp.arrXBRL){
+					var xb:Item_Xbrl = new Item_Xbrl();
+					xb.fillAttributes = obj.clone;
+					if(objFiltro[obj.id + ':' + obj.tipo] == null){
+						var xmlContextos:XMLList = obj.clone..xbrl_contexto;
+						//
+						for each(var contex:XML in xmlContextos) {				//
+							xb.arrContexto.push(contex.@tipo[0]);
+						}
+						arr.addItem(xb);
+					}
+					
+				}
+				
+				opcionesFormula.arrXbrl = arr;
+				arr = new ArrayCollection();
+				
+				for each(obj in modelApp.arrFormulasIndice){
+					var ind:IndiceVO = new IndiceVO();
+					ind.fillAttributes = obj.clone;
+					if(objFiltro[obj.id + ':' + obj.tipo] == null){
+						arr.addItem(xb);
+					}
+				}
+				
+				opcionesFormula.arrIndices = arr;
+				arr = new ArrayCollection();
+				for each(obj in modelApp.arrItemManual){
+					xb = new Item_Xbrl();
+					xb.fillAttributes = obj.clone;
+					if(objFiltro[obj.id + ':' + obj.tipo] == null){
+						xmlContextos = obj.clone..xbrl_contexto;
+						//
+						for each(contex in xmlContextos) {				//
+							xb.arrContexto.push(contex.@tipo[0]);
+						}
+						arr.addItem(xb);
+						arr.addItem(xb);
+					}
+				}
+				
+				opcionesFormula.arrManual = arr;
+				PopUpManager.addPopUp(opcionesFormula, agf(this.parentApplication));
+				opcionesFormula.width = this.parentApplication.width;
+				opcionesFormula.height = this.parentApplication.height;
+				opcionesFormula.fnPost = cierraPoPup;
+				PopUpManager.centerPopUp(opcionesFormula);
 				
 				
 			}
