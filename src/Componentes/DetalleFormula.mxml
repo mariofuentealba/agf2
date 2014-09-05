@@ -16,6 +16,7 @@
 			import mx.managers.PopUpManager;
 			[Bindable] public var formula:FormulaVO;
 			public var fnClick:Function;
+			public var fnDefault:Function;
 			private var modelApp:ModelApp = model.ModelApp.getInstance();
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
@@ -43,7 +44,7 @@
 					xb.fillAttributes = obj.clone;
 					if(objFiltro[obj.id + ':' + obj.tipo] == null){
 						var xmlContextos:XMLList = obj.clone..xbrl_contexto;
-						//
+						xb.clone = obj.clone;
 						for each(var contex:XML in xmlContextos) {				//
 							xb.arrContexto.push(contex.@tipo[0]);
 						}
@@ -58,6 +59,7 @@
 				for each(obj in modelApp.arrFormulasIndice){
 					var ind:IndiceVO = new IndiceVO();
 					ind.fillAttributes = obj.clone;
+					xb.clone = obj.clone;
 					if(objFiltro[obj.id + ':' + obj.tipo] == null){
 						arr.addItem(xb);
 					}
@@ -68,6 +70,7 @@
 				for each(obj in modelApp.arrItemManual){
 					xb = new Item_Xbrl();
 					xb.fillAttributes = obj.clone;
+					xb.clone = obj.clone;
 					if(objFiltro[obj.id + ':' + obj.tipo] == null){
 						xmlContextos = obj.clone..xbrl_contexto;
 						//
@@ -85,13 +88,20 @@
 				opcionesFormula.height = this.parentApplication.height;
 				opcionesFormula.fnPost = cierraPoPup;
 				PopUpManager.centerPopUp(opcionesFormula);
-				
+				if(event == null){
+					PopUpManager.removePopUp(opcionesFormula);
+				}
 				
 			}
 			
-			private function cierraPoPup(pop:*, datosFormula:ArrayCollection):void{		
-				formula.arrEmpresas = datosFormula;
+			private function cierraPoPup(pop:*, datosFormula:FormulaVO):void{		
+				
 				PopUpManager.removePopUp(pop);
+				if(datosFormula._default){
+					fnDefault.call(this, datosFormula);
+				}
+				button1_clickHandler(null)
+				
 			}
 			
 		]]>

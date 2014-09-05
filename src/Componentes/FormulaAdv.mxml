@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
-				   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" cornerRadius="0">
-	<s:states>
-		<s:State name="State1"/>
-		<s:State name="campos"/>
-	</s:states>
+				   xmlns:mx="library://ns.adobe.com/flex/mx" width="400" cornerRadius="0">
+	
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
@@ -26,38 +23,6 @@
 			public var hgBotones:ArrayCollection = new ArrayCollection();
 			[Bindable] public var dataProvider:Array;
 			
-			protected function linkbutton1_clickHandler(datos:ArrayCollection, s:String):void
-			{
-				if(c < 6){
-					this._s = s;
-					var cb:ComponenteFormula = new ComponenteFormula();
-					cb.cb.dataProvider = datos;
-					cb.cb.labelField = 'etiqueta';
-					cb.bt = new Button();
-					cb.bt.label = 'C' + c;
-					/******bt.name = this._s + cb.ddl.selectedItem['label'] + '.' + c;*/
-					cb.campo = this._s + '.' + c;
-					cb.ddl.name = this._s + '.' + c + '.NN';
-					cb.name = cb.bt.name; 
-					vgCombos.addElement(cb);
-					hgBotones.addItem(cb.bt);
-					cb.bt.percentWidth = 100;
-					cb.percentWidth = 100;
-					c++;
-					cb.name = cb.bt.name; 
-					vgCombos.addElement(cb);
-					cb.bt.percentWidth = 100;
-					cb.percentWidth = 100;	
-				} else {
-					var a:Alert = new Alert();
-					a.move(200,200);
-					
-					Alert.show('Maximo cinco Campos', 'Atención');
-				}
-				
-				
-				
-			}
 			
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
@@ -102,7 +67,7 @@
 				
 				opcionesFormula.arrManual = arr;
 				
-				
+				opcionesFormula.formula = new FormulaVO();
 				PopUpManager.addPopUp(opcionesFormula, agf(this.parentApplication));
 				opcionesFormula.width = this.parentApplication.width;
 				opcionesFormula.height = this.parentApplication.height;
@@ -115,6 +80,7 @@
 			
 			private function cierraPoPup(pop:*, datosFormula:FormulaVO):void{
 				llenaFormulas(datosFormula);
+				fnDefault(datosFormula);
 				PopUpManager.removePopUp(pop);
 			}
 			
@@ -122,7 +88,20 @@
 			public function llenaFormulas(datosFormula:FormulaVO):void{
 				var detalleFormula:DetalleFormula = new DetalleFormula();
 				detalleFormula.formula = datosFormula;
+				detalleFormula.fnDefault = fnDefault;
 				this.addElementos(detalleFormula);
+				//dataProvider.push(detalleFormula);
+			}
+			
+			
+			private function fnDefault(datosFormula:FormulaVO):void{
+				for(var i:int = 0; i < gFormulas.numElements; i++){
+					var det:* = gFormulas.getElementAt(i);
+					if(det.className == 'DetalleFormula'){
+						DetalleFormula(det).formula._default = false;
+					}
+				}
+				datosFormula._default = true;
 			}
 			
 			
@@ -159,14 +138,13 @@
 				</s:entries>
 			</s:LinearGradient>
 		</s:backgroundFill>
-		<s:Label color="#F2F9FA" fontSize="18" text="Registro de formulas asociadas" width.State1="100%"
-				 text.campos="Campos Fórmula"/>
-		<s:Button includeIn="State1" width="35" label="+" click="button1_clickHandler(event)"
+		<s:Label color="#F2F9FA" fontSize="18" text="Registro de formulas asociadas" width="100%"
+				 />
+		<s:Button width="35" label="+" click="button1_clickHandler(event)"
 				  fontSize="15"/>
 		
 	</s:BorderContainer> 
-	<s:Scroller includeIn="State1" y="63" left="10" right="10" height="200"
-				left.State1="10" right.State1="10">
+	<s:Scroller bottom="0" height="85%" width="100%">
 		<s:Group id="gFormulas" width="100%">
 			<s:layout>
 				<s:VerticalLayout/>
@@ -174,57 +152,7 @@
 			<s:Label id="lblVacio" text="No existe fórmula asociada"/>
 		</s:Group>
 	</s:Scroller>
-	<s:BorderContainer includeIn="campos" x="170" y="260" width="58" height="26" borderStyle="inset"
-					   borderWeight="2" cornerRadius="4">
-		<s:layout>
-			<s:HorizontalLayout gap="10" paddingLeft="5" paddingRight="5" paddingTop="5" paddingBottom="5" verticalAlign="middle"/>
-		</s:layout>
-		<s:backgroundFill>
-			<s:LinearGradient rotation="270">
-				<s:entries>
-					<s:GradientEntry color="0x000000" ratio="0.00" alpha="0.5"/>
-					<s:GradientEntry color="0x333333" ratio="0.33" alpha="0.5"/>
-					<s:GradientEntry color="0x666666" ratio="0.66" alpha="0.5"/>
-				</s:entries>
-			</s:LinearGradient>
-		</s:backgroundFill>
-		<s:Label color="#F2F9FA" fontSize="14" text="Paso 1"/>
 		
-	</s:BorderContainer>
-	<s:RichText includeIn="campos" y="62" horizontalCenter="0"
-				text="Seleccione los campos que que conforman la fórmula"/>
-	<s:HGroup includeIn="campos" x="0" y="76" width="100%" horizontalAlign="center">
-		
-		<s:BorderContainer>
-			<s:layout>
-				<s:VerticalLayout paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
-			</s:layout>
-			<s:backgroundFill> 
-				<s:SolidColor 
-					color="0x666666" 
-					alpha="0.5"/> 
-			</s:backgroundFill> 
-			
-			<mx:LinkButton width="100%" label="Agregar Campo"
-						   click="linkbutton1_clickHandler(modelApp.arrXBRL, 'C')"
-						   rollOverColor="#F6C877" selectionColor="#9B9999"
-						   themeColor="#149E24" fontWeight="bold"/>	
-		</s:BorderContainer>
-		<s:BorderContainer>
-			<s:layout>
-				<s:VerticalLayout paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
-			</s:layout>
-			<s:backgroundFill> 
-				<s:SolidColor 
-					color="0x666666" 
-					alpha="0.5"/> 
-			</s:backgroundFill> 
-
-			<mx:LinkButton width="100%" label="Agregar Fórmula" click="linkbutton1_clickHandler(modelApp.arrFormulas, 'F')" fontWeight="bold"/>	
-		</s:BorderContainer>
-		
-	</s:HGroup>
-	<s:VGroup id="vgCombos" includeIn="campos" top="119" width="100%" horizontalCenter="0" paddingBottom="5" paddingLeft="20" paddingRight="20" paddingTop="0">
-		
-	</s:VGroup>
+	
+	
 </s:BorderContainer>

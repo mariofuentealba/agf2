@@ -82,8 +82,11 @@
 			{
 				// TODO Auto-generated method stub
 				if(fnPost != null){
-					formula = new FormulaVO();
-					formula.arrCampos = lstCampos.dataProvider as ArrayCollection;
+					if(formula == null){
+						formula = new FormulaVO();
+						formula.arrCampos = lstCampos.dataProvider as ArrayCollection;
+					}
+					
 					formula.formula = txtFormula.text;
 					formula._default = chk.selected;
 					fnPost.apply(this, [this, formula]);
