@@ -1423,93 +1423,666 @@ class Modelo
 
 	}
 
-	public function editarIndicesFinancieros($arrInf2, $table, $where){
-	    try {
+	public function editarIndicesFinancieros($arrInf, $arrEmp, $formulas, $formulasCampos, $id){
+		try {
+		
+		
+			
+			$log = fopen('xbrl\\log.txt', 'a');	
+			fwrite($log, "arrInf" . print_r($arrInf, true) . "\r\n\r\n\r\n\r\n\r\n");
+			fwrite($log, "arrEmp" . print_r($arrEmp, true) . "\r\n\r\n\r\n\r\n\r\n");
+			fwrite($log, "formulas" . print_r($formulas, true) . "\r\n\r\n\r\n\r\n\r\n");
+			fwrite($log, "formulasCampos" . print_r($formulasCampos, true) . "\r\n\r\n\r\n\r\n\r\n");
+			fwrite($log, "formulasCampos" . print_r($id, true) . "\r\n\r\n\r\n\r\n\r\n");
+			
+			$arrNuevas = array();
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
-			//$con = new PDO('sqlsrv:Server=MFUENTEALBA\WOTAN;Database=agf');              
-			/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();*/
-			$arrInf = array();
-   			foreach($arrInf2 as $key => $value){
-				$arrInf[$key] = $value;
-			}	    
+
+			for($i = 0; $i < count($formulasCampos); $i++){
+				$formulasCampos[$i] = explode(';', $formulasCampos[$i]);
+			}
+			//exit(0);
+
 			try {
 				$con->beginTransaction(); 
-				$stmt = $con->prepare("INSERT INTO logs values ('" . print_r($arrInf, 1) . "')");
-				$stmt->execute();
-				$sum = 0;   
-				for($i = 1; $i < 6 ; $i++){
-					if($arrInf['campo' . $i] != -1){
-
-						$sum++;
-					}
-				}   
-
-				$sql = "select id_formula from indices_financieros where ". $where .";";
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql . "');");
-				$stmt->execute();
-
-				$stmt = $con->prepare($sql);
-				$stmt->execute();			    		
-				$row = $stmt->fetch();
-				
-				$stmt = $con->prepare("INSERT INTO logs values ('" . print_r($result, 1) . "');");
-				$stmt->execute();
-				
-				$sql = "delete from formulas where id_formula = " . $row[0] .";";
+				$sql = "INSERT INTO indices_financieros (ID_GRUPO_INDICE_FINANCIERO, 
+					NOMBRE, ID_FORMULA, OA) 
+						VALUES ('" . $arrInf[1] . "', '" . $arrInf[0] . "', 
+						'0', 1);";
+						
+				$sql = "UPDATE indices_financieros 
+						SET ID_GRUPO_INDICE_FINANCIERO = '" . $arrInf[1] . "', 
+							NOMBRE = '" . $arrInf[0] . "', 
+							ID_FORMULA = 0, 
+							OA = 1
+						WHERE id_indice_financiero = " . $id . "";		
+						
+						
 				$sql2 = str_replace("'", "''", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
-				/*$stmt = $con->prepare($sql);
-				$stmt->execute();*/
+				fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
+				
+				/*$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+						$stmt->execute();*/
 				$stmt = $con->prepare($sql);
 				$stmt->execute();			    
-				$a = isset($arrInf['campo1']) ? $arrInf['campo1'] : -1;
-				$b = isset($arrInf['campo2']) ? $arrInf['campo2'] : -1;
-				$c = isset($arrInf['campo3']) ? $arrInf['campo3'] : -1;
+				$indiceNuevo = $id;
+				//$mysqli->query("INSERT INTO logs values ('arrInf[6] = " . count($arrInf[6]) . "');");
+				$nn = count($formulas);//$arrInf[6]);
+				for($ii = 0; $ii < $nn; $ii++){
+					$arr = array();
+					$arr = $formulasCampos[$ii];//$arrInf[8][$ii];
+					//$mysqli->query("INSERT INTO logs values ('formulasCampos = " . print_r($formulasCampos, true) . "');");
+					//$mysqli->query("INSERT INTO logs values ('arr = " . print_r($arr, true) . "');");
+					$formula1 = explode(".", $arr[10]);
+					$formula2 = explode(".", $arr[11]);
+					$formula3 = explode(".", $arr[12]);
+					$formula4 = explode(".", $arr[13]);
+					$formula5 = explode(".", $arr[14]);
 
-				$sql = "INSERT INTO formulas values ('" . $a . "', '" . $b . "', '" . $c . "', 0, 0, '" . $arrInf['formula'] . "', '" . $sum . "', '" . $arrInf['decimales'] . "');";
-				$sql2 = str_replace("'", "", $sql);
+					$formula1[0] = $formula1[0] == 'C' ? 1 : 2;
+					$formula2[0] = $formula2[0] == 'C' ? 1 : 2;
+					$formula3[0] = $formula3[0] == 'C' ? 1 : 2;
+					$formula4[0] = $formula4[0] == 'C' ? 1 : 2;
+					$formula5[0] = $formula5[0] == 'C' ? 1 : 2;
+
+					if($arr[5] == 'C'){
+						$arr[5] = 1;						
+					} elseif($arr[5] == 'F'){
+						$arr[5] = 2;
+					} else {
+						$arr[5] = 0;
+					}
+
+					if($arr[6] == 'C'){
+						$arr[6] = 1;
+					} elseif($arr[6] == 'F'){
+						$arr[6] = 2;
+					} else {
+						$arr[6] = 0;
+					}
+
+					if($arr[7] == 'C'){
+						$arr[7] = 1;
+					} elseif($arr[7] == 'F'){
+						$arr[7] = 2;
+					} else {
+						$arr[7] = 0;
+					}
+
+					if($arr[8] == 'C'){
+						$arr[8] = 1;
+					} elseif($arr[8] == 'F'){
+						$arr[8] = 2;
+					} else {
+						$arr[8] = 0;
+					}
+
+					if($arr[9] == 'C'){
+						$arr[9] = 1;
+					} elseif($arr[9] == 'F'){
+						$arr[9] = 2;
+					} else {
+						$arr[9] = 0;
+					}
+
+					$sum = 0;   
+					for($i = 0; $i < 5; $i++){
+						if($arr[$i] != -1){
+							$sum++;
+						}
+					}   
+
+
+
+					$arrInf[6] = str_replace('_', '', $formulas[$ii]);
+					fwrite($log, "XXXX" . print_r($arrInf, true) . "\r\n\r\n\r\n\r\n\r\n");
+					fwrite($log, "XXXX" . print_r($arr, true) . "\r\n\r\n\r\n\r\n\r\n");
+					
+					if($arr[15] == 'nuevo'){
+						$sql = "INSERT INTO formulas (CAMPO1, CAMPO2, CAMPO3, CAMPO4, CAMPO5, tipoc1, tipoc2, 
+								tipoc3, tipoc4, tipoc5, FORMULA, CANTIDAD_CAMPOS, DECIMALES, cod1, cod2, cod3, cod4, 
+								cod5, id_indice_financiero, num_formula) values 
+								('" . $arr[0] . "', '" . $arr[1] . "', '" . 
+								$arr[2] . "', '" . $arr[3] . "', '" . $arr[4] .
+								"', '" . $arr[5] . "', '" . $arr[6] . "', '" . 
+								$arr[7] . "', '" . $arr[8] . "', '" . $arr[9]. "', '" . 
+								$arrInf[6] . "', '" . $sum . "', '0', '" . 
+								$arr[10]. "', '" . $arr[11]. "', '" . $arr[12]. "', '" . 
+								$arr[13]. "', '" . $arr[14] . "', " . $indiceNuevo . ", " . $ii . " );";
+						$sql2 = str_replace("'", "''", $sql);
+						fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
+						$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+						$stmtlog->execute();
+						$stmt = $con->prepare($sql);
+						$stmt->execute();
+						$ultimo_id = $con->lastInsertId();
+						if($ii == 0){
+							$ultimo = $ultimo_id;
+						}		
+						$arrNuevas[count($arrNuevas)] =	$ultimo_id;
+					} else {
+						$sql = "UPDATE formulas SET 
+									CAMPO1 = '" . $arr[0] . "', 
+									CAMPO2 = '" . $arr[1] . "', 
+									CAMPO3 = '" . $arr[2] . "', 
+									CAMPO4 = '" . $arr[3] . "', 
+									CAMPO5 = '" . $arr[4] .	"', 
+									tipoc = '" . $arr[5] . "', 
+									tipoc2 = '" . $arr[6] . "', 
+									tipoc3 = '" . $arr[7] . "', 
+									tipoc4 = '" . $arr[8] . "', 
+									tipoc5 = '" . $arr[9]. "', 
+									FORMULA = '" . $arrInf[6] . "', 
+									CANTIDAD_CAMPOS = '" . $sum . "', 
+									DECIMALES = '0', 
+									cod1 = '" . $arr[10]. "', 
+									cod2 = '" . $arr[11]. "', 
+									cod3 = '" . $arr[12]. "', 
+									cod4 = '" . $arr[13]. "', 
+									cod5 = '" . $arr[14] . "', 
+									id_indice_financiero = " . $indiceNuevo . ", 
+									num_formula = " . $ii . " 
+								WHERE
+									id_formula = " . $arr[15] . ";";		
+									
+						$sql2 = str_replace("'", "''", $sql);
+						fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
+						$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+						$stmtlog->execute();
+						$stmt = $con->prepare($sql);
+						$stmt->execute();								
+					
+					}
+					
+					
+							
+							
+					
+							
+					
+					/*$stmt = $con->prepare($sql);
+					$stmt->execute();*/
+				}
+				////$mysqli->query("INSERT INTO logs values ('ii = " . $ii . "');");
+				$sql = "INSERT INTO empresa_indice(id_empresa, id_indice_financiero, num_formula, id_formula) 
+							SELECT id_empresa, " . $indiceNuevo . ", 0, " . $ultimo . " 
+							FROM empresas;";
+				$sql2 = str_replace("'", "''", $sql);
+				fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
 				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
 				$stmtlog->execute();
-				/*$stmt = $con->prepare($sql);
-				$stmt->execute();*/
 				$stmt = $con->prepare($sql);
 				$stmt->execute();
-		        $ultimo_id = $con->lastInsertId();
 
-				$sql = "update indices_financieros 
-						SET ID_GRUPO_INDICE_FINANCIERO = '" . $arrInf['ID_GRUPO_INDICE_FINANCIERO'] . "', 
-							nombre = '" . $arrInf['NOMBRE'] . "',  
-							descripcion ='" . $arrInf['DESCRIPCION'] . "', 
-							id_formula = '" . $ultimo_id . "', 
-							formula_desc ='" . $arrInf['formula_desc'] . "', 
-							rango_superior = '" . (int)$arrInf['rango_superior'] . "', 
-							rango_inferior' = " . (int)$arrInf['rango_inferior'] . "', 
-							rangos_desc = '" . $arrInf['rangos_desc'] . "' 
-						where " . $where. ";";
-				$sql2 = str_replace("'", "", $sql);
-				$stmt = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
-				$stmt->execute();
+				
+				
+				
+				
 
+				$comp1 = ' AND x.id_periodo = c.id_periodo ';
+				$comp2 = ' AND x.id_periodo = c.id_periodo ';
+				$comp3 = ' AND x.id_periodo = c.id_periodo ';
+				$comp4 = ' AND x.id_periodo = c.id_periodo ';
+				$comp5 = ' AND x.id_periodo = c.id_periodo ';
+
+				////$mysqli->query("INSERT INTO logs values ('formula1 = " . print_r($formula1, 1) . "');");
+
+
+				$comp1 = 'Cierre Trimestre Actual';
+				if(count($formula1) > 1){
+					switch($formula1[2]){
+						case 'Cierre Trimestre Actual':
+								$comp1 = 'Cierre Trimestre Actual';
+								break;
+						case 'AN':
+								$comp1 = "(SELECT id_tag_agf, id_empresa, origen, SUM(valor) valor
+											FROM valores 
+											WHERE tipo = 'TRIMESTRAL '
+												AND id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																	FROM periodos m WHERE m.id_periodo = c.id_periodo) 
+											GROUP BY id_tag_agf, id_empresa, origen)";
+								break;
+						case 'AA':
+								$comp1 = "ACUMULADO";/*"(SELECT id_tag_agf, id_empresa, origen, SUM(valor) valor
+											FROM valores 
+											WHERE tipo = 'TRIMESTRAL '
+												AND id_periodo in (SELECT r.id_periodo
+																		FROM periodos r, periodos p
+																		WHERE r.ano = p.ano
+																				  AND r.mes < p.mes
+																				  AND r.oa = 1
+																				  AND p.id_periodo = c.id_periodo) 
+											GROUP BY id_tag_agf, id_empresa, origen)";									  */
+								break;
+						case 'AC':
+							$comp1 = 'ANUAL';/*" (SELECT id_tag_agf, id_empresa, origen, SUM(valor) valor
+											FROM valores 
+											WHERE tipo = 'TRIMESTRAL '				
+												AND id_periodo in (SELECT r.id_periodo
+																	FROM periodos r
+																	WHERE r.oa = 1
+																		AND r.orden in (e.orden, e.orden - 1, e.orden - 2,e.orden - 3)) 
+										GROUP BY id_tag_agf, id_empresa, origen)";        */
+							break;
+						case 'AS':
+								$comp1 = " AND 'QUERY' ";
+								break;        
+
+					}
+				}
+				$comp2 = 'Cierre Trimestre Actual';			
+				if(count($formula2) > 1){
+					switch($formula2[2]){
+						case 'Cierre Trimestre Actual':
+								$comp2 = 'Cierre Trimestre Actual';
+								break;
+						case 'AN':
+								$comp2 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+											FROM periodos m WHERE m.id_periodo = c.id_periodo) ';
+								break;
+						case 'AA':
+								$comp2 = 'ACUMULADO';
+								break;
+						case 'AC':
+								$comp2 = 'ANUAL';        
+								break;        
+						case 'AS':
+								$comp2 = " AND 'QUERY' ";
+								break;        
+
+					}
+				}
+				$comp3 = 'Cierre Trimestre Actual';			
+				if(count($formula3) > 1){
+					switch($formula3[2]){
+						case 'Cierre Trimestre Actual':
+								$comp3 = 'Cierre Trimestre Actual';
+								break;
+						case 'AN':
+								$comp3 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																																FROM periodos m WHERE m.id_periodo = c.id_periodo) ';
+								break;
+						case 'AA':
+								$comp3 = 'ACUMULADO';
+								break;
+						case 'AC':
+								$comp3 = 'ANUAL';        
+						break;
+						case 'AS':
+								$comp3 = " AND 'QUERY' ";
+								break;        
+
+					}
+				}
+							////$mysqli->query("INSERT INTO logs values ('" . $formula4[0] . "');");
+				$comp4 = 'Cierre Trimestre Actual';			
+				if(count($formula4) > 1){
+					switch($formula4[2]){
+						case 'Cierre Trimestre Actual':
+								$comp4 = 'Cierre Trimestre Actual';
+								break;
+						case 'AN':
+								$comp4 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+											FROM periodos m WHERE m.id_periodo = c.id_periodo) ';
+								break;
+						case 'AA':
+								$comp4 = 'ACUMULADO';
+								break;
+						case 'AC':
+								$comp4 = 'ANUAL';        
+								break;
+						case 'AS':
+								$comp4 = " AND 'QUERY' ";
+								break;        
+
+					}
+				}
+				$comp5 = 'Cierre Trimestre Actual';			
+				if(count($formula5) > 1){
+					switch($formula5[2]){
+						case 'Cierre Trimestre Actual':
+								$comp5 = 'Cierre Trimestre Actual';
+								break;
+						case 'AN':
+								$comp5 = ' AND x.id_periodo = (SELECT (SELECT MAX(id_periodo) FROM periodos WHERE orden = m.orden - 1) 
+																																FROM periodos m WHERE m.id_periodo = c.id_periodo) ';
+								break;
+						case 'AA':
+								$comp5 = 'ACUMULADO';
+								break;
+						case 'AC':
+								$comp5 = 'ANUAL';        
+								break;        
+						case 'AS':
+								$comp5 = " AND 'QUERY' ";
+								break;        
+
+					}
+				}
+
+
+				
+				$sql = "SELECT a.id_indice_financiero, 
+						b.id_empresa, 
+						b.id_periodo,						
+						v.valor C1,
+						w.valor C2,
+						x.valor C3,                        
+						y.valor C4,         
+						z.valor C5, 
+						': ', 
+						'label', 
+						formula, 
+						a.id_formula, 
+						'mes',						
+						'color', 
+						'rso', 
+						'num', 				   
+						v.id_valor C1H, 
+						w.id_valor C2H,
+						x.id_valor C3H,
+						y.id_valor C4H,
+						z.id_valor C5H,
+						b.ID_VALOR
+					FROM valores b 
+						inner join formulas a on a.id_formula = b.ID_FORMULA				   						
+						LEFT JOIN valores v ON v.id_tag_agf = a.campo1 
+							AND v.tipo = '" . $comp1 . "' 
+							AND v.id_empresa = b.id_empresa                             
+							AND v.origen = a.tipoc1                          	
+														
+							AND v.id_periodo = b.id_periodo
+						LEFT JOIN valores w ON w.id_tag_agf = a.campo2 
+							AND w.tipo = '" . $comp2 . "'
+							AND w.id_empresa = b.id_empresa                             
+							AND w.origen = a.tipoc2                          	
+														
+							AND w.id_periodo = b.id_periodo
+						LEFT JOIN valores x ON x.id_tag_agf = a.campo3 
+							AND x.tipo = '" . $comp3 . "'
+							AND x.id_empresa = b.id_empresa                             
+							AND x.origen = a.tipoc3                          	
+														
+							AND x.id_periodo = b.id_periodo
+						LEFT JOIN valores y ON y.id_tag_agf = a.campo4 
+							AND y.tipo = '" . $comp4 . "'
+							AND y.id_empresa = b.id_empresa                             
+							AND y.origen = a.tipoc4                          	
+														
+							AND y.id_periodo = b.id_periodo
+						LEFT JOIN valores z ON z.id_tag_agf = a.campo5 
+							AND z.tipo = '" . $comp5 . "' 
+							AND z.id_empresa = b.id_empresa                             
+							AND z.origen = a.tipoc5                          	
+														
+							AND z.id_periodo = b.id_periodo	
+					WHERE a.id_indice_financiero = " . $indiceNuevo . "
+							
+						;";  
+
+				$sql2 = str_replace("'", "''", $sql);
+				fwrite($log, "" . print_r($sql, true) . "\r\n\r\n\r\n\r\n\r\n");
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();			
+
+				$stmtq = $con->prepare($sql);
+				$stmtq->execute();
+
+				
+				//$stmtlog = $con->prepare("INSERT INTO logs values ('Nº de rows = " . $stmtq->rowCount . "');");
+				//fwrite($log, "" . print_r($sql, true) . "\r\n\r\n\r\n\r\n\r\n");
+				//fwrite($log, "NRO" . $stmtq->rowCount . "\r\n\r\n\r\n\r\n\r\n");
+				$stmtlog->execute();
+				$row = $stmtq->fetch();
+				fwrite($log, "NRO::" . print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
+				$i = 0;
+				$formula = '';
+				$operacion = array();
+				//$arrInf = array();	
+				while($row = $stmtq->fetch())
+				{
+							
+					/* //$mysqli->query("INSERT INTO logs values ('" . print_r($row, 1) . "');");
+					 $arr[$i]['id_tag_agf']=$row[0];
+					 $arr[$i]['id_empresa']=$row[1];
+							 $arr[$i]['id_periodo']=$row[2];	     */
+					fwrite($log, "" .  print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
+					$operacion = $row[10];
+					
+					$stmtlog = $con->prepare("INSERT INTO logs values ('operacion = " . $operacion . "');");
+					fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
+					$stmtlog->execute();
+					if(!isset($row[3]))
+						$row[3] = 0;
+					////$mysqli->query("INSERT INTO logs values ('r3(C1) = " . $row[3] . "');");	
+					$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
+					if(!isset($row[4]))
+						$row[4] = 0;
+					$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
+					if(!isset($row[5]))			
+						$row[5] = 0;
+					$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
+					if(!isset($row[6]))
+						$row[6] = 0;
+					$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
+					if(!isset($row[7]))
+						$row[7] = 0;
+					$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
+
+					$stmtlog = $con->prepare("INSERT INTO logs values ('operacion = " . $operacion . "');");
+					fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
+					$stmtlog->execute();
+					
+					$res = 0;
+					$evaluacionDiv = explode('/', $operacion);
+					if(count($evaluacionDiv) > 1){					
+						@eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+						if($resultDiv != 0){
+							@eval( '$res = ' . $operacion . ';');		
+						} else {
+							$res = 0;
+						}
+					} else {
+						@eval( '$res = ' . $operacion . ';');		
+					}
+					////$mysqli->query("INSERT INTO logs values ('operacion = " . $operacion . "');");	
+					fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
+					$stmtlog = $con->prepare("INSERT INTO logs values ('res = " . $res . "');");
+					$stmtlog->execute();
+
+
+					$sql = "UPDATE valores
+								SET VALOR = " . $res . ", 
+									DT_MODIFICACION = '2013', 
+									hist_formula = '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "'
+							WHERE id_valor = " . $row[21] . ";";
+					
+					
+					
+					$sql2 = str_replace("'", "''", $sql);
+					fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
+					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+					$stmtlog->execute();			
+					$stmt = $con->prepare($sql);
+					$stmt->execute();
+				}
+				
+				
+				for($h = 0; $h < count($arrNuevas); $h++){
+					$sql = "SELECT b.id_indice_financiero, 
+							d.id_empresa, 
+							c.id_periodo,						
+							v.valor C1,
+							w.valor C2,
+							x.valor C3,                        
+							y.valor C4,         
+							z.valor C5, 
+							d.rso + ': ' +  b.nombre, 
+							label, 
+							formula, 
+							a.id_formula, 
+							c.mes,						
+							d.color, d.rso, b.nombre, 				   
+							v.id_valor C1H, 
+							w.id_valor C2H,
+							x.id_valor C3H,
+							y.id_valor C4H,
+							z.id_valor C5H
+						FROM formulas a
+							INNER JOIN indices_financieros b 
+							 ON a.id_indice_financiero = b.id_indice_financiero					   
+							CROSS JOIN periodos c
+							CROSS JOIN empresas d 
+							LEFT JOIN valores v ON v.id_tag_agf = a.campo1 
+								AND v.tipo = '" . $comp1 . "' 
+								AND v.id_empresa = d.id_empresa                             
+								AND v.origen = a.tipoc1                          	
+															
+								AND v.id_periodo = c.id_periodo
+							LEFT JOIN valores w ON w.id_tag_agf = a.campo2 
+								AND w.tipo = '" . $comp2 . "' 
+								AND w.id_empresa = d.id_empresa                             
+								AND w.origen = a.tipoc2                          	
+															
+								AND w.id_periodo = c.id_periodo
+							LEFT JOIN valores x ON x.id_tag_agf = a.campo3 
+								AND x.tipo = '" . $comp3 . "' 
+								AND x.id_empresa = d.id_empresa                             
+								AND x.origen = a.tipoc3                          	
+															
+								AND x.id_periodo = c.id_periodo
+							LEFT JOIN valores y ON y.id_tag_agf = a.campo4 
+								AND y.tipo = '" . $comp4 . "' 
+								AND y.id_empresa = d.id_empresa                             
+								AND y.origen = a.tipoc4                          	
+															
+								AND y.id_periodo = c.id_periodo
+							LEFT JOIN valores z ON z.id_tag_agf = a.campo5 
+								AND z.tipo = '" . $comp5 . "' 
+								AND z.id_empresa = d.id_empresa                             
+								AND z.origen = a.tipoc5                          	
+															
+								AND z.id_periodo = c.id_periodo	
+						WHERE b.id_indice_financiero = " . $indiceNuevo . "
+								AND a.id_formula = " . $arrNueva[$h] . "
+							;";  
+
+					$sql2 = str_replace("'", "''", $sql);
+					fwrite($log, "" . print_r($sql, true) . "\r\n\r\n\r\n\r\n\r\n");
+					$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+					$stmtlog->execute();			
+
+					$stmtq = $con->prepare($sql);
+					$stmtq->execute();
+
+					
+					//$stmtlog = $con->prepare("INSERT INTO logs values ('Nº de rows = " . $stmtq->rowCount . "');");
+					//fwrite($log, "" . print_r($sql, true) . "\r\n\r\n\r\n\r\n\r\n");
+					//fwrite($log, "NRO" . $stmtq->rowCount . "\r\n\r\n\r\n\r\n\r\n");
+					$stmtlog->execute();
+					$row = $stmtq->fetch();
+					fwrite($log, "NRO::" . print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
+					$i = 0;
+					$formula = '';
+					$operacion = array();
+					//$arrInf = array();	
+					while($row = $stmtq->fetch())
+					{
+								
+						/* //$mysqli->query("INSERT INTO logs values ('" . print_r($row, 1) . "');");
+						 $arr[$i]['id_tag_agf']=$row[0];
+						 $arr[$i]['id_empresa']=$row[1];
+								 $arr[$i]['id_periodo']=$row[2];	     */
+						fwrite($log, "" .  print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
+						$operacion = $row[10];
+						
+						$stmtlog = $con->prepare("INSERT INTO logs values ('operacion = " . $operacion . "');");
+						fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
+						$stmtlog->execute();
+						if(!isset($row[3]))
+							$row[3] = 0;
+						////$mysqli->query("INSERT INTO logs values ('r3(C1) = " . $row[3] . "');");	
+						$operacion = str_replace('C1', '(' . $row[3] . ')', $operacion);
+						if(!isset($row[4]))
+							$row[4] = 0;
+						$operacion = str_replace('C2', '(' . $row[4] . ')', $operacion);
+						if(!isset($row[5]))			
+							$row[5] = 0;
+						$operacion = str_replace('C3', '(' . $row[5] . ')', $operacion);
+						if(!isset($row[6]))
+							$row[6] = 0;
+						$operacion = str_replace('C4', '(' . $row[6] . ')', $operacion);
+						if(!isset($row[7]))
+							$row[7] = 0;
+						$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
+
+						$stmtlog = $con->prepare("INSERT INTO logs values ('operacion = " . $operacion . "');");
+						fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
+						$stmtlog->execute();
+						
+						$res = 0;
+						$evaluacionDiv = explode('/', $operacion);
+						if(count($evaluacionDiv) > 1){					
+							@eval('$resultDiv = ' . $evaluacionDiv[1] . ';');
+							if($resultDiv != 0){
+								@eval( '$res = ' . $operacion . ';');		
+							} else {
+								$res = 0;
+							}
+						} else {
+							@eval( '$res = ' . $operacion . ';');		
+						}
+						////$mysqli->query("INSERT INTO logs values ('operacion = " . $operacion . "');");	
+						fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
+						$stmtlog = $con->prepare("INSERT INTO logs values ('res = " . $res . "');");
+						$stmtlog->execute();
+
+
+						$sql = "INSERT INTO valores(ID_TAG_AGF, ID_EMPRESA, ID_PERIODO, tipo, VALOR, DT_MODIFICACION, origen, id_formula, hist_formula) 
+						VALUES (" . $indiceNuevo . "," . $row[1] . "," . $row[2] . ",'Cierre Trimestre Actual'," . $res . ",'2013',2, " . $row[11] . ", '" . $row[16] . "|" . $row[17] . "|" . $row[18] . "|" . $row[19] . "|" . $row[20] . "');";
+						$sql2 = str_replace("'", "''", $sql);
+						fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
+						$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+						$stmtlog->execute();			
+						$stmt = $con->prepare($sql);
+						$stmt->execute();
+					}	
+				}
+
+				
+				
+				
+					
+				
+				
+				
+				
+				
+				
+				$sql = "UPDATE indices_financieros 
+						SET id_formula =  " . $ultimo . "
+						WHERE id_indice_financiero = " . $indiceNuevo . ";";
+				$sql2 = str_replace("'", "''", $sql);
+				fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
+				$stmtlog = $con->prepare("INSERT INTO logs values ('" . $sql2 . "');");
+				$stmtlog->execute();
 				$stmt = $con->prepare($sql);
-				$stmt->execute();			               
-			    $arr = array();
-			    $arr[0]['ID'] = $ultimo_id;
+				$stmt->execute();	
 				$con->commit();
-			    return $arr;
+				return true;
 
 			} catch(PDOExecption $e) {
 		        $con->rollback();
 		        print "Error!: " . $e->getMessage() . "</br>";
 				return 0;
-		    } 
+		    }   
 		} catch( PDOExecption $e ) {
 			print "Error!: " . $e->getMessage() . "</br>";
 			return 0;
 		} 	
 		unset($con); 
-		unset($stmt);     
+		unset($stmt);		
+		unset($stmtlog);     
 		    
 
 	}

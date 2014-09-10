@@ -491,7 +491,7 @@ protected function editar_clickHandler(event:MouseEvent):void
 			modelo.editarSubGrupo(o, tabla, n1 + ' = ' + n2, param, int(n2)); 
 			break;
 		case 'tnIndicesFinancieros':
-			modelo.editarIndicesFinancieros(o, tabla, n1 + ' = ' + n2);
+			//modelo.editarIndicesFinancieros(o, tabla, n1 + ' = ' + n2);
 			break;
 		default:
 			modelo.editar(o, tabla, n1 + ' = ' + n2);		
@@ -1882,6 +1882,13 @@ protected function button5_clickHandler(dataGrid:spark.components.DataGrid):void
 		insertarResult.addEventListener(ResultEvent.RESULT, reCreaForm);	
 	}
 }
+
+
+
+
+
+
+
 protected function titlewindow1_closeHandler():void
 {
 	// TODO Auto-generated method stub

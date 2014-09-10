@@ -461,6 +461,39 @@
       </annotation>
     </function>
   </service>
+  <entity name="IndicesFinancieros2Datatype" persistent="true">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">IndicesFinancieros2Datatype</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Modelo</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="grillaIndicesFinancieros">
+      <item name="propertySpecifier">id_formula,NOMBRE,rangos_desc,rango_superior,DESCRIPCION,formula_desc,decimales,campo3,campo2,campo5,campo4,ID_GRUPO_INDICE_FINANCIERO,rango_inferior,campo1,ID_INDICE_FINANCIERO,formula</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="id_formula" type="string" required="true"/>
+    <property name="NOMBRE" type="string" required="true"/>
+    <property name="rangos_desc" type="string" required="true"/>
+    <property name="rango_superior" type="string" required="true"/>
+    <property name="DESCRIPCION" type="string" required="true"/>
+    <property name="formula_desc" type="string" required="true"/>
+    <property name="decimales" type="string" required="true"/>
+    <property name="campo3" type="string" required="true"/>
+    <property name="campo2" type="string" required="true"/>
+    <property name="campo5" type="string" required="true"/>
+    <property name="campo4" type="string" required="true"/>
+    <id name="ID_GRUPO_INDICE_FINANCIERO" type="string"/>
+    <property name="rango_inferior" type="string" required="true"/>
+    <property name="campo1" type="string" required="true"/>
+    <id name="ID_INDICE_FINANCIERO" type="string"/>
+    <id name="formula" type="string"/>
+  </entity>
   <service name="Modelo">
     <annotation name="ActionScriptGeneration">
       <item name="Source">modelo</item>
@@ -656,12 +689,14 @@
         <item name="analyzed">false</item>
       </annotation>
       <annotation name="original signature">
-        <item name="inputParams">opaque,opaque,opaque</item>
+        <item name="inputParams">opaque,opaque,opaque,opaque,opaque</item>
         <item name="returnType">opaque</item>
       </annotation>
-      <parameter name="arrInf2" type="opaque"/>
-      <parameter name="table" type="opaque"/>
-      <parameter name="where" type="opaque"/>
+      <parameter name="arrInf" type="opaque"/>
+      <parameter name="arrEmp" type="opaque"/>
+      <parameter name="formulas" type="opaque"/>
+      <parameter name="formulasCampos" type="opaque"/>
+      <parameter name="id" type="opaque"/>
     </function>
     <function name="editarSubGrupo" return-type="opaque">
       <annotation name="analyze group">
@@ -1140,39 +1175,6 @@
     <property name="tipoEntidad" type="string" required="true"/>
     <property name="RUT" type="string" required="true"/>
     <property name="ID_EMPRESA" type="string" required="true"/>
-  </entity>
-  <entity name="IndicesFinancieros2Datatype" persistent="true">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">IndicesFinancieros2Datatype</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">Modelo</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="grillaIndicesFinancieros">
-      <item name="propertySpecifier">id_formula,NOMBRE,rangos_desc,rango_superior,DESCRIPCION,formula_desc,decimales,campo3,campo2,campo5,campo4,ID_GRUPO_INDICE_FINANCIERO,rango_inferior,campo1,ID_INDICE_FINANCIERO,formula</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <property name="id_formula" type="string" required="true"/>
-    <property name="NOMBRE" type="string" required="true"/>
-    <property name="rangos_desc" type="string" required="true"/>
-    <property name="rango_superior" type="string" required="true"/>
-    <property name="DESCRIPCION" type="string" required="true"/>
-    <property name="formula_desc" type="string" required="true"/>
-    <property name="decimales" type="string" required="true"/>
-    <property name="campo3" type="string" required="true"/>
-    <property name="campo2" type="string" required="true"/>
-    <property name="campo5" type="string" required="true"/>
-    <property name="campo4" type="string" required="true"/>
-    <id name="ID_GRUPO_INDICE_FINANCIERO" type="string"/>
-    <property name="rango_inferior" type="string" required="true"/>
-    <property name="campo1" type="string" required="true"/>
-    <id name="ID_INDICE_FINANCIERO" type="string"/>
-    <id name="formula" type="string"/>
   </entity>
   <entity name="EmpresaSinDatatype" persistent="true">
     <annotation name="EntityProperties">

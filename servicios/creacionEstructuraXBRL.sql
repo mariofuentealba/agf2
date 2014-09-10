@@ -5912,13 +5912,61 @@ select traduccion,  traduccion,  'NO ESPECIFICA', 'XBRL', 1, t.id
 					from xbrl_tag_traduccion
 					group by id_tag) tt on t.id = tt.id_tag
 		inner join xbrl_traduccion tr on tt.id_traduccion = tr.id
-		
-		
-		select *
-		from valores
-		
-		
 
+
+/******AUDITORIA SQL SERVER**************/
+
+		
+		
+ALTER DATABASE agf
+SET RECOVERY simple
+GO
+		
+		
+DBCC SHRINKFILE (agf, 1);		
+		
+		
+SELECT DATABASEPROPERTYEX('agf', 'RECOVERY')	
+
+ DBCC UPDATEUSAGE (agf)
+
+SP_SPACEUSED	
+
+SP_HELPDB
+
+DBCC SQLPERF(LOGSPACE)
+
+DBCC LOGINFO	
+
+DBCC OPENTRAN 
+
+DBCC SHRINKFILE(agf_Log) --Minimiza el log transaccional
+
+/***********************************************************/		
+		SELECT *
+FROM [agf].[dbo].[valores] v 
+	INNER JOIN tag_agf t ON v.ID_TAG_AGF = t.ID_TAG_AGF
+	INNER JOIN periodos p ON p.ID_PERIODO = v.ID_PERIODO
+	inner join xbrl_tag x ON x.id = t.id_xbrl
+where x.id = 4
+	and v.ID_PERIODO = 4
+	
+	
+update valores
+set VALOR = 0	
+	
+	SELECT *
+FROM [agf].[dbo].[valores] v 	
+where v.ID_TAG_AGF = 2
+	and v.ID_PERIODO = 4
+	and v.origen = 2
+	
+	
+		SELECT distinct ID_EMPRESA
+FROM [agf].[dbo].[valores] v
+	
+	
+	
 
 
 alter table dbo.formulas

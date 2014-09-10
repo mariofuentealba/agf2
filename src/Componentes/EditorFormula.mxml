@@ -23,8 +23,67 @@
 			[Bindable] public var comboGrupoIndicesFinancieros:ArrayCollection;
 			[Bindable] public var indice:IndiceFinanciero;
 			[Bindable] private var modelApp:ModelApp = model.ModelApp.getInstance();
+			public var fnPos:Function;
 			
 			private function guardarIndice_clickHandler(event:MouseEvent):void{
+				var b:Boolean;
+				//Alert.show('' + event.target);
+				var tabla:String;
+				var fn:Function;
+				var arr:Array = []; 
+				
+				
+				
+				tabla = 'Indices_Financieros';/*
+				var c1:Object = formulaIndice.vgCombos.numElements > 0 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c2:Object = formulaIndice.vgCombos.numElements > 1 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c3:Object = formulaIndice.vgCombos.numElements > 2 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c4:Object = formulaIndice.vgCombos.numElements > 3 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				var c5:Object = formulaIndice.vgCombos.numElements > 4 ? {ID_tag_agf: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).campo.split('.')[0], campo: (formulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+				*/
+				
+				
+				var formulas:Array = [];
+				var formulasCampos:Array = [];
+				
+				for(var i:int = 1; i < tnFormulas.gFormulas.numElements; i++){
+					var arrForm:String = '';
+					
+					
+					/*var vformulaIndice:Formula2 = (tnFormulas.getElementAt(i) as NavigatorContent).getElementAt(0) as Formula2;
+					var c1:Object = vformulaIndice.vgCombos.numElements > 0 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(0) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c2:Object = vformulaIndice.vgCombos.numElements > 1 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(1) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c3:Object = vformulaIndice.vgCombos.numElements > 2 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(2) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c4:Object = vformulaIndice.vgCombos.numElements > 3 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c5:Object = vformulaIndice.vgCombos.numElements > 4 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;*/
+					
+					var vformulaIndice:FormulaVO = DetalleFormula(tnFormulas.gFormulas.getElementAt(i)).formula;
+					var c1:Object = vformulaIndice.arrCampos.length > 0 ? {ID_tag_agf: vformulaIndice.arrCampos[0]['id'], origen: String(vformulaIndice.arrCampos[0]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[0]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[0]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[0]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c2:Object = vformulaIndice.arrCampos.length > 1 ? {ID_tag_agf: vformulaIndice.arrCampos[1]['id'], origen: String(vformulaIndice.arrCampos[1]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[1]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[1]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[1]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c3:Object = vformulaIndice.arrCampos.length > 2 ? {ID_tag_agf: vformulaIndice.arrCampos[2]['id'], origen: String(vformulaIndice.arrCampos[2]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[2]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[2]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[2]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c4:Object = vformulaIndice.arrCampos.length > 3 ? {ID_tag_agf: vformulaIndice.arrCampos[3]['id'], origen: String(vformulaIndice.arrCampos[3]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[3]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[3]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[3]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					var c5:Object = vformulaIndice.arrCampos.length > 4 ? {ID_tag_agf: vformulaIndice.arrCampos[4]['id'], origen: String(vformulaIndice.arrCampos[4]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[4]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[4]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[4]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
+					
+					arrForm = c1['ID_tag_agf'] + ';' + c2['ID_tag_agf'] + ';' + c3['ID_tag_agf'] + ';' + c4['ID_tag_agf'] + ';' + c5['ID_tag_agf'] + ';' + c1['origen'] + ';' + c2['origen'] + ';' + c3['origen'] + ';' + c4['origen'] + ';' + c5['origen'] + ';' +  c1['campo'] + ';' + c2['campo'] + ';' + c3['campo'] + ';' + c4['campo'] + ';' + c5['campo'] + ';' + (indice.arrFormulas[i - 1] != null ? indice.arrFormulas[i - 1]['id_formula'] : 'nuevo');
+					formulasCampos.push(arrForm);
+					formulas.push(vformulaIndice.formula);
+				}
+				
+				
+				
+				arr.push(Ind1.text, DD_ID_GRUPO_INDICE_FINANCIERO.selectedItem['ID_GRUPO_INDICE_FINANCIERO']); 
+				var arrEmp:Array = [];
+				/*if(vwEmpresasIndice.selectedIndex == 0){
+				for each(var o:Object in listEmpresas.lSelect.dataProvider){
+				arrEmp.push(o['ID_EMPRESA']);
+				}
+				} else {
+				for each(o in listEmpresas.lSelect.dataProvider){
+				arrEmp.push(o['ID_SUBGRUPO']);
+				}	
+				}*/
+				
+				fnPos.call(this, arr, arrEmp, formulas, formulasCampos, indice);
 				
 			}
 			
