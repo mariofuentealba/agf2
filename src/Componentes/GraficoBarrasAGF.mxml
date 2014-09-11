@@ -30,6 +30,11 @@
 				 
 			}
 			
+			
+			private function formato(data:*):String{
+				return '55';
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -57,6 +62,9 @@
 					
 				</mx:CategoryAxis>
 			</mx:horizontalAxis>
+			<!--<mx:verticalAxis>
+				<mx:CategoryAxis labelFunction="formato"/>
+			</mx:verticalAxis>-->
 		</mx:ColumnChart>
 			
 		

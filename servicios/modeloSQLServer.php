@@ -1050,8 +1050,8 @@ class Modelo
 
 
 					$arrInf[6] = str_replace('_', '', $formulas[$ii]);
-					fwrite($log, "XXXX" . print_r($arrInf, true) . "\r\n\r\n\r\n\r\n\r\n");
-					fwrite($log, "XXXX" . print_r($arr, true) . "\r\n\r\n\r\n\r\n\r\n");
+					fwrite($log, "" . print_r($arrInf, true) . "\r\n\r\n\r\n\r\n\r\n");
+					fwrite($log, "" . print_r($arr, true) . "\r\n\r\n\r\n\r\n\r\n");
 					$sql = "INSERT INTO formulas (CAMPO1, CAMPO2, CAMPO3, CAMPO4, CAMPO5, tipoc1, tipoc2, 
 							tipoc3, tipoc4, tipoc5, FORMULA, CANTIDAD_CAMPOS, DECIMALES, cod1, cod2, cod3, cod4, 
 							cod5, id_indice_financiero, num_formula) values 
@@ -1423,7 +1423,7 @@ class Modelo
 
 	}
 
-	public function editarIndicesFinancieros($arrInf, $arrEmp, $formulas, $formulasCampos, $id){
+	public function editarIndicesFinancieros($arrInf, $arrEmp, $formulas, $formulasCampos, $id, $_default){
 		try {
 		
 		
@@ -1433,7 +1433,8 @@ class Modelo
 			fwrite($log, "arrEmp" . print_r($arrEmp, true) . "\r\n\r\n\r\n\r\n\r\n");
 			fwrite($log, "formulas" . print_r($formulas, true) . "\r\n\r\n\r\n\r\n\r\n");
 			fwrite($log, "formulasCampos" . print_r($formulasCampos, true) . "\r\n\r\n\r\n\r\n\r\n");
-			fwrite($log, "formulasCampos" . print_r($id, true) . "\r\n\r\n\r\n\r\n\r\n");
+			fwrite($log, "id" . print_r($id, true) . "\r\n\r\n\r\n\r\n\r\n");
+			fwrite($log, "fomula default" . $_default . "\r\n\r\n\r\n\r\n\r\n");
 			
 			$arrNuevas = array();
 			$con = new PDO('sqlsrv:Server=WOTAN-PC;Database=agf');	 
@@ -1445,17 +1446,24 @@ class Modelo
 
 			try {
 				$con->beginTransaction(); 
-				$sql = "INSERT INTO indices_financieros (ID_GRUPO_INDICE_FINANCIERO, 
-					NOMBRE, ID_FORMULA, OA) 
-						VALUES ('" . $arrInf[1] . "', '" . $arrInf[0] . "', 
-						'0', 1);";
-						
-				$sql = "UPDATE indices_financieros 
-						SET ID_GRUPO_INDICE_FINANCIERO = '" . $arrInf[1] . "', 
-							NOMBRE = '" . $arrInf[0] . "', 
-							ID_FORMULA = 0, 
-							OA = 1
-						WHERE id_indice_financiero = " . $id . "";		
+				
+				if(isset($_default)){
+					$sql = "UPDATE indices_financieros 
+							SET ID_GRUPO_INDICE_FINANCIERO = '" . $arrInf[1] . "', 
+								NOMBRE = '" . $arrInf[0] . "', 
+								ID_FORMULA = 0, 
+								OA = 1,
+								id_formula = " . $_default ."
+							WHERE id_indice_financiero = " . $id . "";		
+				} else {
+					$sql = "UPDATE indices_financieros 
+							SET ID_GRUPO_INDICE_FINANCIERO = '" . $arrInf[1] . "', 
+								NOMBRE = '" . $arrInf[0] . "', 
+								ID_FORMULA = 0, 
+								OA = 1								
+							WHERE id_indice_financiero = " . $id . "";		
+				}		
+				
 						
 						
 				$sql2 = str_replace("'", "''", $sql);
@@ -1556,6 +1564,8 @@ class Modelo
 						$stmt = $con->prepare($sql);
 						$stmt->execute();
 						$ultimo_id = $con->lastInsertId();
+						fwrite($log, "ultimo_id : " . print_r($ultimo_id, true) . "\r\n\r\n\r\n\r\n\r\n");
+						
 						if($ii == 0){
 							$ultimo = $ultimo_id;
 						}		
@@ -1567,7 +1577,7 @@ class Modelo
 									CAMPO3 = '" . $arr[2] . "', 
 									CAMPO4 = '" . $arr[3] . "', 
 									CAMPO5 = '" . $arr[4] .	"', 
-									tipoc = '" . $arr[5] . "', 
+									tipoc1 = '" . $arr[5] . "', 
 									tipoc2 = '" . $arr[6] . "', 
 									tipoc3 = '" . $arr[7] . "', 
 									tipoc4 = '" . $arr[8] . "', 
@@ -1605,7 +1615,7 @@ class Modelo
 				}
 				////$mysqli->query("INSERT INTO logs values ('ii = " . $ii . "');");
 				$sql = "INSERT INTO empresa_indice(id_empresa, id_indice_financiero, num_formula, id_formula) 
-							SELECT id_empresa, " . $indiceNuevo . ", 0, " . $ultimo . " 
+							SELECT id_empresa, " . $indiceNuevo . ", 0, " . $ultimo_id . " 
 							FROM empresas;";
 				$sql2 = str_replace("'", "''", $sql);
 				fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");
@@ -1906,7 +1916,7 @@ class Modelo
 					$stmt = $con->prepare($sql);
 					$stmt->execute();
 				}
-				
+				fwrite($log, "arrNuevas === " . print_r($arrNuevas, true) . "\r\n\r\n\r\n\r\n\r\n");
 				
 				for($h = 0; $h < count($arrNuevas); $h++){
 					$sql = "SELECT b.id_indice_financiero, 
@@ -1964,7 +1974,7 @@ class Modelo
 															
 								AND z.id_periodo = c.id_periodo	
 						WHERE b.id_indice_financiero = " . $indiceNuevo . "
-								AND a.id_formula = " . $arrNueva[$h] . "
+								AND a.id_formula = " . $arrNuevas[$h] . "
 							;";  
 
 					$sql2 = str_replace("'", "''", $sql);
@@ -2060,7 +2070,7 @@ class Modelo
 				
 				
 				$sql = "UPDATE indices_financieros 
-						SET id_formula =  " . $ultimo . "
+						SET id_formula =  " . $_default . "
 						WHERE id_indice_financiero = " . $indiceNuevo . ";";
 				$sql2 = str_replace("'", "''", $sql);
 				fwrite($log, "" . print_r($sql2, true) . "\r\n\r\n\r\n\r\n\r\n");

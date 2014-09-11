@@ -14,6 +14,7 @@
 			import mx.controls.Alert;
 			import mx.controls.Label;
 			import mx.events.FlexEvent;
+			import mx.formatters.Formatter;
 			
 			import spark.components.BorderContainer;
 			
@@ -24,7 +25,8 @@
 				if((this.parent.parent.parent.parent.parent as GraficoBarrasAGF).rbVariacion.selected == true){
 					return '' + chartItem.item[col] +  '%';	
 				}
-				return chartItem.item[col]
+				var form:NumberFormatter = new NumberFormatter("en-US");
+				return form.formatNumber(chartItem.item[col]);
 				
 			}
 			

@@ -699,10 +699,10 @@ internal class _Super_Modelo extends com.adobe.fiber.services.wrapper.RemoteObje
       *
       * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
       */
-    public function editarIndicesFinancieros(arrInf:Object, arrEmp:Object, formulas:Object, formulasCampos:Object, id:Object) : mx.rpc.AsyncToken
+    public function editarIndicesFinancieros(arrInf:Object, arrEmp:Object, formulas:Object, formulasCampos:Object, id:Object, _default:Object) : mx.rpc.AsyncToken
     {
         var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("editarIndicesFinancieros");
-		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,arrEmp,formulas,formulasCampos,id) ;
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(arrInf,arrEmp,formulas,formulasCampos,id,_default) ;
         return _internal_token;
     }
      

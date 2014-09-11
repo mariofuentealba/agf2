@@ -248,7 +248,14 @@
 			
 			
 			private function edit_indice(arr:Array, arrEmp:Array, formulas:Array, formulasCampos:Array, indice:IndiceFinanciero):void{
-				editarIndiceResult.token = modelo.editarIndicesFinancieros(arr, arrEmp, formulas, formulasCampos, indice.id_indice_financiero);
+				for each(var o:FormulaVO in indice.arrFormulas){
+					if(o._default){
+						var formDefault:String = o.id_formula;
+						break;
+					}
+				}
+				
+				editarIndiceResult.token = modelo.editarIndicesFinancieros(arr, arrEmp, formulas, formulasCampos, indice.id_indice_financiero, formDefault);
 			}
 			
 			private function indiceInsertado(event:ResultEvent):void{

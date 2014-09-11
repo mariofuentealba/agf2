@@ -430,37 +430,6 @@
       <parameter name="color" type="opaque"/>
     </function>
   </service>
-  <service name="ComponentesFormula">
-    <annotation name="ActionScriptGeneration">
-      <item name="Source">ComponentesFormula</item>
-      <item name="ServiceType">RemoteObject</item>
-      <item name="Package">services.componentesformula</item>
-      <item name="Endpoint">gateway.php</item>
-      <item name="Destination">ComponentesFormula</item>
-    </annotation>
-    <annotation name="ServiceTypeGroup">
-      <item name="ServiceBackendType">PHP</item>
-    </annotation>
-    <annotation name="ServiceConfig">
-      <item name="PHP_RELATIVE_LOCATION">servicios/ComponentesFormula.php</item>
-      <item name="PHP_SERVER_ROOT">C:\xampp\htdocs</item>
-      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
-      <item name="PHP_SERVICES_FOLDER">C:\xampp\htdocs\agf\services</item>
-      <item name="PHP_LOCATION">C:/xampp/htdocs/servicios/ComponentesFormula.php</item>
-      <item name="LINKED_FILE">ComponentesFormula.php</item>
-      <item name="PHP_SERVER_ROOT_URL">http://localhost:8888/</item>
-      <item name="ABSOLUTE_ENDPOINT">http://localhost:8888/agf/gateway.php</item>
-      <item name="PHP_CLASS_NAME">ComponentesFormula</item>
-    </annotation>
-    <function name="comboItems" return-type="string">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-  </service>
   <entity name="IndicesFinancieros2Datatype" persistent="true">
     <annotation name="EntityProperties">
       <item name="EntityOriginalName">IndicesFinancieros2Datatype</item>
@@ -494,6 +463,37 @@
     <id name="ID_INDICE_FINANCIERO" type="string"/>
     <id name="formula" type="string"/>
   </entity>
+  <service name="ComponentesFormula">
+    <annotation name="ActionScriptGeneration">
+      <item name="Source">ComponentesFormula</item>
+      <item name="ServiceType">RemoteObject</item>
+      <item name="Package">services.componentesformula</item>
+      <item name="Endpoint">gateway.php</item>
+      <item name="Destination">ComponentesFormula</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">PHP</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="PHP_RELATIVE_LOCATION">servicios/ComponentesFormula.php</item>
+      <item name="PHP_SERVER_ROOT">C:\xampp\htdocs</item>
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="PHP_SERVICES_FOLDER">C:\xampp\htdocs\agf\services</item>
+      <item name="PHP_LOCATION">C:/xampp/htdocs/servicios/ComponentesFormula.php</item>
+      <item name="LINKED_FILE">ComponentesFormula.php</item>
+      <item name="PHP_SERVER_ROOT_URL">http://localhost:8888/</item>
+      <item name="ABSOLUTE_ENDPOINT">http://localhost:8888/agf/gateway.php</item>
+      <item name="PHP_CLASS_NAME">ComponentesFormula</item>
+    </annotation>
+    <function name="comboItems" return-type="string">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+  </service>
   <service name="Modelo">
     <annotation name="ActionScriptGeneration">
       <item name="Source">modelo</item>
@@ -689,7 +689,7 @@
         <item name="analyzed">false</item>
       </annotation>
       <annotation name="original signature">
-        <item name="inputParams">opaque,opaque,opaque,opaque,opaque</item>
+        <item name="inputParams">opaque,opaque,opaque,opaque,opaque,opaque</item>
         <item name="returnType">opaque</item>
       </annotation>
       <parameter name="arrInf" type="opaque"/>
@@ -697,6 +697,7 @@
       <parameter name="formulas" type="opaque"/>
       <parameter name="formulasCampos" type="opaque"/>
       <parameter name="id" type="opaque"/>
+      <parameter name="_default" type="opaque"/>
     </function>
     <function name="editarSubGrupo" return-type="opaque">
       <annotation name="analyze group">
@@ -1322,7 +1323,7 @@
       <item name="EntityOriginalName">IndFinancierosDatatype</item>
     </annotation>
     <annotation name="service Group">
-      <item name="service">Modelo</item>
+      <item name="service">Modelo,ModeloDummy</item>
     </annotation>
     <annotation name="ServerProperties">
       <item name="IncludeRemoteClass">nonempty</item>
