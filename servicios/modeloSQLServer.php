@@ -1546,7 +1546,7 @@ class Modelo
 					fwrite($log, "XXXX" . print_r($arrInf, true) . "\r\n\r\n\r\n\r\n\r\n");
 					fwrite($log, "XXXX" . print_r($arr, true) . "\r\n\r\n\r\n\r\n\r\n");
 					
-					if($arr[15] == 'nuevo'){
+					if($arr[15] == 'nuevo' || $arr[15] == 'default'){
 						$sql = "INSERT INTO formulas (CAMPO1, CAMPO2, CAMPO3, CAMPO4, CAMPO5, tipoc1, tipoc2, 
 								tipoc3, tipoc4, tipoc5, FORMULA, CANTIDAD_CAMPOS, DECIMALES, cod1, cod2, cod3, cod4, 
 								cod5, id_indice_financiero, num_formula) values 
@@ -1566,8 +1566,8 @@ class Modelo
 						$ultimo_id = $con->lastInsertId();
 						fwrite($log, "ultimo_id : " . print_r($ultimo_id, true) . "\r\n\r\n\r\n\r\n\r\n");
 						
-						if($ii == 0){
-							$ultimo = $ultimo_id;
+						if($arr[15] == 'default'){
+							$_default = $ultimo_id;
 						}		
 						$arrNuevas[count($arrNuevas)] =	$ultimo_id;
 					} else {
@@ -1844,7 +1844,7 @@ class Modelo
 				//fwrite($log, "NRO" . $stmtq->rowCount . "\r\n\r\n\r\n\r\n\r\n");
 				$stmtlog->execute();
 				$row = $stmtq->fetch();
-				fwrite($log, "NRO::" . print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
+//				fwrite($log, "NRO::" . print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
 				$i = 0;
 				$formula = '';
 				$operacion = array();
@@ -1856,11 +1856,11 @@ class Modelo
 					 $arr[$i]['id_tag_agf']=$row[0];
 					 $arr[$i]['id_empresa']=$row[1];
 							 $arr[$i]['id_periodo']=$row[2];	     */
-					fwrite($log, "" .  print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
+	//				fwrite($log, "" .  print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
 					$operacion = $row[10];
 					
 					$stmtlog = $con->prepare("INSERT INTO logs values ('operacion = " . $operacion . "');");
-					fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
+	//				fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
 					$stmtlog->execute();
 					if(!isset($row[3]))
 						$row[3] = 0;
@@ -1880,7 +1880,7 @@ class Modelo
 					$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
 
 					$stmtlog = $con->prepare("INSERT INTO logs values ('operacion = " . $operacion . "');");
-					fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
+	//				fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
 					$stmtlog->execute();
 					
 					$res = 0;
@@ -1896,7 +1896,7 @@ class Modelo
 						@eval( '$res = ' . $operacion . ';');		
 					}
 					////$mysqli->query("INSERT INTO logs values ('operacion = " . $operacion . "');");	
-					fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
+//					fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
 					$stmtlog = $con->prepare("INSERT INTO logs values ('res = " . $res . "');");
 					$stmtlog->execute();
 
@@ -1991,7 +1991,7 @@ class Modelo
 					//fwrite($log, "NRO" . $stmtq->rowCount . "\r\n\r\n\r\n\r\n\r\n");
 					$stmtlog->execute();
 					$row = $stmtq->fetch();
-					fwrite($log, "NRO::" . print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
+		//			fwrite($log, "NRO::" . print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
 					$i = 0;
 					$formula = '';
 					$operacion = array();
@@ -2003,11 +2003,11 @@ class Modelo
 						 $arr[$i]['id_tag_agf']=$row[0];
 						 $arr[$i]['id_empresa']=$row[1];
 								 $arr[$i]['id_periodo']=$row[2];	     */
-						fwrite($log, "" .  print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
+			//			fwrite($log, "" .  print_r($row, 1) . "\r\n\r\n\r\n\r\n\r\n");
 						$operacion = $row[10];
 						
 						$stmtlog = $con->prepare("INSERT INTO logs values ('operacion = " . $operacion . "');");
-						fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
+				//		fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
 						$stmtlog->execute();
 						if(!isset($row[3]))
 							$row[3] = 0;
@@ -2027,7 +2027,7 @@ class Modelo
 						$operacion = str_replace('C5', '(' . $row[7] . ')', $operacion);
 
 						$stmtlog = $con->prepare("INSERT INTO logs values ('operacion = " . $operacion . "');");
-						fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
+					//	fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
 						$stmtlog->execute();
 						
 						$res = 0;
@@ -2043,7 +2043,7 @@ class Modelo
 							@eval( '$res = ' . $operacion . ';');		
 						}
 						////$mysqli->query("INSERT INTO logs values ('operacion = " . $operacion . "');");	
-						fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
+					//	fwrite($log, "operacion = " . $operacion . "\r\n\r\n\r\n\r\n\r\n");
 						$stmtlog = $con->prepare("INSERT INTO logs values ('res = " . $res . "');");
 						$stmtlog->execute();
 

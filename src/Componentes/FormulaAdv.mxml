@@ -23,6 +23,7 @@
 			public var hgBotones:ArrayCollection = new ArrayCollection();
 			[Bindable] public var dataProvider:Array;
 			
+			public var _default:Number;
 			
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
@@ -95,6 +96,7 @@
 			
 			
 			private function fnDefault(datosFormula:FormulaVO):void{
+				
 				for(var i:int = 0; i < gFormulas.numElements; i++){
 					var det:* = gFormulas.getElementAt(i);
 					if(det.className == 'DetalleFormula'){
@@ -102,6 +104,9 @@
 					}
 				}
 				datosFormula._default = true;
+				if(datosFormula.id_formula == null){
+					datosFormula.id_formula = 'default';
+				}
 			}
 			
 			

@@ -46,7 +46,11 @@
 				var formulas:Array = [];
 				var formulasCampos:Array = [];
 				
-				for(var i:int = 1; i < tnFormulas.gFormulas.numElements; i++){
+				for(i = indice.arrFormulas.length + 1; i < tnFormulas.gFormulas.numElements; i++){
+					indice.arrFormulas.push(DetalleFormula(tnFormulas.gFormulas.getElementAt(i)).formula);
+				}
+				
+				for(var i:int = 0; i < indice.arrFormulas.length; i++){
 					var arrForm:String = '';
 					
 					
@@ -57,14 +61,14 @@
 					var c4:Object = vformulaIndice.vgCombos.numElements > 3 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(3) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 					var c5:Object = vformulaIndice.vgCombos.numElements > 4 ? {ID_tag_agf: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).cb.selectedItem['ID_tag_agf'], origen: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).campo.split('.')[0], campo: (vformulaIndice.vgCombos.getElementAt(4) as ComponenteFormula).ddl.name} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;*/
 					
-					var vformulaIndice:FormulaVO = DetalleFormula(tnFormulas.gFormulas.getElementAt(i)).formula;
+					var vformulaIndice:FormulaVO = FormulaVO(indice.arrFormulas[i]);
 					var c1:Object = vformulaIndice.arrCampos.length > 0 ? {ID_tag_agf: vformulaIndice.arrCampos[0]['id'], origen: String(vformulaIndice.arrCampos[0]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[0]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[0]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[0]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 					var c2:Object = vformulaIndice.arrCampos.length > 1 ? {ID_tag_agf: vformulaIndice.arrCampos[1]['id'], origen: String(vformulaIndice.arrCampos[1]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[1]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[1]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[1]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 					var c3:Object = vformulaIndice.arrCampos.length > 2 ? {ID_tag_agf: vformulaIndice.arrCampos[2]['id'], origen: String(vformulaIndice.arrCampos[2]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[2]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[2]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[2]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 					var c4:Object = vformulaIndice.arrCampos.length > 3 ? {ID_tag_agf: vformulaIndice.arrCampos[3]['id'], origen: String(vformulaIndice.arrCampos[3]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[3]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[3]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[3]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 					var c5:Object = vformulaIndice.arrCampos.length > 4 ? {ID_tag_agf: vformulaIndice.arrCampos[4]['id'], origen: String(vformulaIndice.arrCampos[4]['codigo']).charAt(0), campo: '' + String(vformulaIndice.arrCampos[4]['codigo']).charAt(0) + '.' + String(vformulaIndice.arrCampos[4]['codigo']).substr(1) + '.' + vformulaIndice.arrCampos[4]['contexto']} : {ID_tag_agf : -1, origen : 0, campo : 'no'} ;
 					
-					arrForm = c1['ID_tag_agf'] + ';' + c2['ID_tag_agf'] + ';' + c3['ID_tag_agf'] + ';' + c4['ID_tag_agf'] + ';' + c5['ID_tag_agf'] + ';' + c1['origen'] + ';' + c2['origen'] + ';' + c3['origen'] + ';' + c4['origen'] + ';' + c5['origen'] + ';' +  c1['campo'] + ';' + c2['campo'] + ';' + c3['campo'] + ';' + c4['campo'] + ';' + c5['campo'] + ';' + (indice.arrFormulas[i - 1] != null ? indice.arrFormulas[i - 1]['id_formula'] : 'nuevo');
+					arrForm = c1['ID_tag_agf'] + ';' + c2['ID_tag_agf'] + ';' + c3['ID_tag_agf'] + ';' + c4['ID_tag_agf'] + ';' + c5['ID_tag_agf'] + ';' + c1['origen'] + ';' + c2['origen'] + ';' + c3['origen'] + ';' + c4['origen'] + ';' + c5['origen'] + ';' +  c1['campo'] + ';' + c2['campo'] + ';' + c3['campo'] + ';' + c4['campo'] + ';' + c5['campo'] + ';' + (vformulaIndice != null ? vformulaIndice.id_formula : (vformulaIndice._default == true ? 'default' : 'nuevo'));
 					formulasCampos.push(arrForm);
 					formulas.push(vformulaIndice.formula);
 				}
