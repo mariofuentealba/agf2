@@ -7,7 +7,7 @@ package VO
 		public var id_formula:String;
 		public var formula:String;
 		public var arrCampos:ArrayCollection = new ArrayCollection();
-		public var _default:Boolean;
+		private var _default:Boolean;
 		public var arrEmpresas:ArrayCollection;
 		public var CAMPO1:String;
 		public var CAMPO2:String;
@@ -30,5 +30,21 @@ package VO
 		public function FormulaVO()
 		{
 		}
+
+		public function get defaults():Boolean
+		{
+			return _default;
+		}
+
+		public function set defaults(value:*):void
+		{
+			if(String(value) == 'true'){
+				_default = true;	
+			} else {
+				_default = false;
+			}
+			
+		}
+
 	}
 }

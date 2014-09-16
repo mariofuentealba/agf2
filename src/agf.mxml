@@ -249,7 +249,7 @@
 			
 			private function edit_indice(arr:Array, arrEmp:Array, formulas:Array, formulasCampos:Array, indice:IndiceFinanciero):void{
 				for each(var o:FormulaVO in indice.arrFormulas){
-					if(o._default){
+					if(o.defaults){
 						var formDefault:String = o.id_formula;
 						break;
 					}
@@ -1242,6 +1242,14 @@
 				grillaEmpresaResult.token = modelo.grillaEmpresa();
 			}
 			
+			protected function editarIndiceResult_resultHandler(event:ResultEvent):void
+			{
+				// TODO Auto-generated method stub
+				tnIndicesFinancieros.selectedIndex = 0;
+				NavigatorContent(tnIndicesFinancieros.getElementAt(2)).enabled = false;
+				dgIndicesFinancieros_creationCompleteHandler(null);
+			}
+			
 		]]>
 	</fx:Script>
 	<s:states>
@@ -1331,7 +1339,7 @@
 		<s:CallResponder id="grillaAgfResult"/>
 		<s:CallResponder id="insertarResult"/>
 		
-		<s:CallResponder id="editarIndiceResult"/>
+		<s:CallResponder id="editarIndiceResult" result="editarIndiceResult_resultHandler(event)"/>
 		
 		
 		<s:CallResponder id="insertarEmpresaResult"/>

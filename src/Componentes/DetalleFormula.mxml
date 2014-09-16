@@ -97,7 +97,7 @@
 			private function cierraPoPup(pop:*, datosFormula:FormulaVO):void{		
 				
 				PopUpManager.removePopUp(pop);
-				if(datosFormula._default){
+				if(datosFormula.defaults){
 					fnDefault.call(this, datosFormula);
 				}
 				button1_clickHandler(null)
@@ -130,7 +130,7 @@
 			</s:DataGrid>
 		</s:HGroup>
 		
-		<s:Label visible="{formula._default}" y="10" right="25" text="Default"/>
+		<s:Label visible="{formula.defaults}" y="10" right="25" text="Default"/>
 		<s:Label x="10" y="52" fontSize="12" fontWeight="bold" text="Campos"/>
 		<s:Button y="28" right="21" label="Editar" click="button1_clickHandler(event)"/>
 		<s:Label x="19" y="30" fontSize="16" fontWeight="bold" text="{formula.formula}"/>

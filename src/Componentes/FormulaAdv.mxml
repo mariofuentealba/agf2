@@ -100,10 +100,10 @@
 				for(var i:int = 0; i < gFormulas.numElements; i++){
 					var det:* = gFormulas.getElementAt(i);
 					if(det.className == 'DetalleFormula'){
-						DetalleFormula(det).formula._default = false;
+						DetalleFormula(det).formula.defaults = false;
 					}
 				}
-				datosFormula._default = true;
+				datosFormula.defaults = true;
 				if(datosFormula.id_formula == null){
 					datosFormula.id_formula = 'default';
 				}

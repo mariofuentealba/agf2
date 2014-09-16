@@ -88,7 +88,7 @@
 					}
 					
 					formula.formula = txtFormula.text;
-					formula._default = chk.selected;
+					formula.defaults = chk.selected;
 					fnPost.apply(this, [this, formula]);
 				}
 			}
@@ -202,7 +202,7 @@
 		</s:layout>
 		<s:Label text="Escriba Fórmula" fontWeight="bold" fontSize="15"/>
 		<s:TextInput id="txtFormula" text="{formula.formula}" width="100%"/>
-		<s:CheckBox label="¿Es la fórmula por defecto?" id="chk" selected="{formula._default}"/>
+		<s:CheckBox label="¿Es la fórmula por defecto?" id="chk" selected="{formula.defaults}"/>
 		<s:Label text="Seleccione de la lista los campos de la fórmula y precione 'Aceptar' (Máximo 5)" fontWeight="bold" fontSize="15"/>		
 		<s:Button label="Aceptar" click="button1_clickHandler(event)" fontSize="14"/>
 		
