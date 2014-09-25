@@ -75,89 +75,7 @@
 			
 			public var olapx:IList;
 			public var olapy:IList;
-			
-			/*private function creationCompleteHandler():void {
-				// You must initialize the cube before you 
-				// can execute a query on it.
-				myMXMLCube.refresh();
-			}
-			
-			// Create the OLAP query.
-			private function getQuery(cube:IOLAPCube):IOLAPQuery {
-				// Create an instance of OLAPQuery to represent the query. 
-				var query:OLAPQuery = new OLAPQuery;
-				
-				// Get the row axis from the query instance.
-				var rowQueryAxis:IOLAPQueryAxis = 
-					query.getAxis(OLAPQuery.ROW_AXIS);
-				// Create an OLAPSet instance to configure the axis.
-				var productSet:OLAPSet = new OLAPSet;
-				// Add the Product to the row to aggregate data 
-				// by the Product dimension.
-				productSet.addElements(
-					cube.findDimension("RSODim").findAttribute("RSO").children);
-				// Add the OLAPSet instance to the axis.
-				rowQueryAxis.addSet(productSet);
-				
-				// Get the column axis from the query instance, and configure it
-				// to aggregate the columns by the Quarter dimension. 
-				var colQueryAxis:IOLAPQueryAxis = query.getAxis(OLAPQuery.COLUMN_AXIS);  
-				var yearSet:OLAPSet= new OLAPSet;
-				yearSet.addElements(
-					cube.findDimension("TimeDim").findAttribute("Year").children);
-				var quarterSet:OLAPSet= new OLAPSet;
-				quarterSet.addElements(
-					cube.findDimension("TimeDim").findAttribute("Periodo").children);
-				colQueryAxis.addSet(yearSet.crossJoin(quarterSet));
-				
-				olapx = cube.findDimension("TimeDim").findAttribute("Periodo").children
-				olapy = cube.findDimension("RSODim").findAttribute("RSO").children;
-				return query;       
-			}
-			
-			// Event handler to execute the OLAP query 
-			// after the cube completes initialization.
-			private function runQuery(event:CubeEvent):void {
-				// Get cube.
-				var cube:IOLAPCube = IOLAPCube(event.currentTarget);
-				// Create a query instance.
-				var query:IOLAPQuery = getQuery(cube);
-				// Execute the query.
-				var token:AsyncToken = cube.execute(query);
-				// Setup handlers for the query results.
-				token.addResponder(new AsyncResponder(showResult, showFault));
-			}
-			
-			// Handle a query fault.
-			private function showFault(result:Object, token:Object):void {
-				Alert.show("Error in query.");
-				PopUpManager.removePopUp(bloqueo);
-			}
-			
-			// Handle a successful query by passing the query results to 
-			// the OLAPDataGrid control..
-			private function showResult(result:Object, token:Object):void {
-				if (!result) {
-					Alert.show("No results from query.");
-					return;
-				}
-				olapData= result as OLAPResult;            
-			}   */     
-			
-	/*		private function items(datos:ResultEvent):void{
-				var vformulaIndice:Formula2 = (tnFormulas.getElementAt(tnFormulas.selectedIndex) as NavigatorContent).getElementAt(0) as Formula2;
-				vformulaIndice.cerrando = cerrando;
-				var arr:ArrayCollection = datos.result as ArrayCollection;
-				for each(var o:Object in arr){
-					if(o['origen'] == 1){
-						vformulaIndice.arrXBRL.addItem(o);
-					} else {
-						vformulaIndice.arrFormulas.addItem(o);
-					}
-				}
-			
-			}*/
-			
+	
 			public function cerrando(formula:String, vg:VGroup):void{
 /*				Ind7.text = formula;
 				var arr:ArrayCollection = new ArrayCollection();
@@ -815,7 +733,7 @@
 			{
 				// TODO Auto-generated method stub
 				if(ddlEmpresas.selectedIndex > -1 && ddlIndices.selectedIndex > -1){
-					rescataFormulasResult.token = modelo.rescataFormulas(ddlIndices.selectedItem['ID_INDICE_FINANCIERO'], ddlEmpresas.selectedItem['idInterno']);
+					rescataFormulasResult.token = modelo.rescataFormulas(ddlIndices.selectedItem['id_indice_financiero'], ddlEmpresas.selectedItem['idInterno']);
 					rescataFormulasResult.addEventListener(ResultEvent.RESULT, llenaFormulas);
 				}
 			}
@@ -832,7 +750,7 @@
 						break;
 					}
 				}
-				actualizaEmpresaIndiceResult.token = modelo.actualizaEmpresaIndice(ddlIndices.selectedItem['ID_INDICE_FINANCIERO'], ddlEmpresas.selectedItem['ID_EMPRESA'], o['num_formula'], o['id_formula']);
+				actualizaEmpresaIndiceResult.token = modelo.actualizaEmpresaIndice(ddlIndices.selectedItem['id_indice_financiero'], ddlEmpresas.selectedItem['ID_EMPRESA'], o['num_formula'], o['id_formula']);
 				actualizaEmpresaIndiceResult.addEventListener(ResultEvent.RESULT, transExitosa);
 			}
 			
@@ -1660,8 +1578,7 @@
 							<s:DropDownList id="ddlIndices" y="10" right="15" width="320"
 											close="seleccionFormula_closeHandler(event)"
 											creationComplete="ddlIndices_creationCompleteHandler(event)"
-											labelField="NOMBRE" prompt="Seleccione">
-								<s:AsyncListView list="{grillaIndicesFinancierosResult2.lastResult}"/>
+											labelField="nombre" prompt="Seleccione" dataProvider="{modelApp.arrIndice}">
 								
 							</s:DropDownList>
 							<s:Label x="25" y="15" text="Indice"/>
@@ -1967,9 +1884,9 @@
 								
 								
 								<s:DataGrid id="dgIndicesFinancieros" x="23" top="30" bottom="20" width="100%"
-											creationComplete="dgIndicesFinancieros_creationCompleteHandler(event)"
 											doubleClick="dgGrupo_doubleClickHandler(event)"
-											doubleClickEnabled="true" requestedRowCount="4">
+											doubleClickEnabled="true" requestedRowCount="4"
+											dataProvider="{modelApp.arrIndice}">
 									<s:columns>
 										<s:ArrayList>
 											<s:GridColumn visible="false" dataField="id_indice_financiero"

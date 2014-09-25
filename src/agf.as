@@ -852,12 +852,10 @@ protected function crearEsquema_creationCompleteHandler(event:FlexEvent):void
 {
 	
 	dropDownList9_creationCompleteHandler(null);
-	
+	dgIndicesFinancieros_creationCompleteHandler(null);
 	// TODO Auto-generated method stub
-	//Alert.show('' + ExternalInterface.available);
-	//grillaEmpresaResult.token = modelo.grillaEmpresa();
+	
 	rescataEmpresasResult.token = xbrlCarga.rescataEmpresas();
-	//rescataEmpresasResult.addEventListener(ResultEvent.RESULT, listarEmpresas);
 	comboItemsAdvResult.token = componentesFormula.comboItems();
 	grillaSubGruposResult.token = modelo.grillaSubGrupos();
 	
@@ -873,8 +871,6 @@ protected function crearEsquema_creationCompleteHandler(event:FlexEvent):void
 	subGruposFinancierosResult.addEventListener(ResultEvent.RESULT, generaPagina);
 	empresasResult.addEventListener(ResultEvent.RESULT, generaPagina);
 	
-	/*comboItemsResult.token = modelo.comboItems();
-	comboItemsResult.addEventListener(ResultEvent.RESULT, itemsXBRL);*/
 }
 
 private function itemsXBRL(event:ResultEvent):void{
@@ -1991,9 +1987,9 @@ protected function indicesResult(event:ResultEvent):void
 		arrIndices.addItem(indice);
 	}	
 	
-	
-	dgIndicesFinancieros.dataProvider = arrIndices;
-	tnIndicesFinancieros.selectedIndex = 0;
+	modelApp.arrIndice = arrIndices;
+	//dgIndicesFinancieros.dataProvider = arrIndices;
+	tnIndicesFinancieros != null ? tnIndicesFinancieros.selectedIndex = 0 : true;
 }
 
 protected function dgIndicesFinancieros_creationCompleteHandler(event:FlexEvent):void
