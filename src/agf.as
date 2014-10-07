@@ -1225,8 +1225,9 @@ protected function button4_clickHandler(event:MouseEvent):void
 		} else {
 			bloqueo.width = this.width;
 			bloqueo.height = this.height;
-			PopUpManager.addPopUp(bloqueo, this);
-			
+			PopUpManager.addPopUp(bloqueo, this, true);
+			//PopUpManager.centerPopUp(bloqueo);
+			//bloqueo.top = 200;
 			/*if(ComboBoxEmpresaPrincipal.selectedIndex == -1){
 			ComboBoxEmpresaPrincipal.selectedIndex = ComboBoxEmpresaPrincipalSelectedIndex; 
 			}*/
@@ -1894,7 +1895,7 @@ protected function titlewindow1_closeHandler():void
 
 private function reCreaForm(event:ResultEvent):void{
 	//tbFormulario.removeAllElements();
-	crearEsquema_creationCompleteHandler(new FlexEvent(FlexEvent.CREATION_COMPLETE));
+//	crearEsquema_creationCompleteHandler(new FlexEvent(FlexEvent.CREATION_COMPLETE));
 	if(dropDownListPeriodo.selectedIndex > -1){
 		valores2Result.token = modelo.valores2(dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo']);
 		comboItemsAdvResult.token = componentesFormula.comboItems();
@@ -1954,9 +1955,12 @@ private function creaForm(event:ResultEvent):void{
 	
 }
 
+[Bindable]
+private var emp:int;
 protected function dropDownListEmpresa_changeHandler(event:IndexChangeEvent):void
 {
 	// TODO Auto-generated method stub
+	//emp = dropDownListEmpresa.selectedIndex != -1 ? dropDownListEmpresa.selectedIndex : emp;
 	if(dropDownListEmpresa.selectedIndex > -1 && dropDownListPeriodo.selectedIndex > -1){
 		valores2Result.addEventListener(ResultEvent.RESULT, creaForm);
 		tbFormulario.removeAllElements();

@@ -1168,12 +1168,17 @@
 				dgIndicesFinancieros_creationCompleteHandler(null);
 			}
 			
+			
+			private function set datos(val:*):void{
+				emp = Number(val);
+			}
+			
 		]]>
 	</fx:Script>
 	<s:states>
 		<s:State name="State1"/>
 	</s:states>
-	
+	<fx:Binding source="dropDownListEmpresa.selectedIndex" destination="datos"/>
 	<fx:Declarations>
 			
 		<mx:OLAPCube name="FlatSchemaCube" dataProvider="{flatData}" id="myMXMLCube" complete="runQuery(event);">
@@ -1652,6 +1657,7 @@
 									<mx:HRule x="10" y="19" width="291"/>
 									<s:Label x="17" y="6" fontSize="15" text="Filtro"/>
 								</s:BorderContainer>
+								<s:TextArea x="336" id="txtEmp" y="4" height="38" text="{emp}"/>
 							</s:NavigatorContent>
 						</mx:TabNavigator>
 					</s:NavigatorContent>
@@ -2152,7 +2158,7 @@
 					<s:HorizontalLayout paddingLeft="20" paddingRight="20" paddingTop="30"/>
 				</s:layout>
 				<s:VGroup>
-					<s:DropDownList id="ddlPeriodoMasivo" x="39" y="33" dataProvider="{arrPer}" labelField="per"></s:DropDownList>
+					<s:DropDownList id="ddlPeriodoMasivo" x="39" y="33" dataProvider="{arrPer}" labelField="per" selectedIndex="{ddlPeriodoMasivo.dataProvider.length > 0 ? 0 : -1}"></s:DropDownList>
 					<s:Button id="btnDescarga" visible="false" x="39" y="63"
 							  label="descargar Información de SVS"
 							  click="btnDescarga_clickHandler(event)"/>	
