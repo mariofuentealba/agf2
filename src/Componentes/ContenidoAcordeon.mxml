@@ -5,8 +5,7 @@
 				   xmlns:Componentes="Componentes.*"
 				   width="100%" click="contenidoAcordeon_clickHandler(event)" cornerRadius="10"
 				   creationComplete="bordercontainer1_creationCompleteHandler(event)"
-				   height.normal="{btnExpandir.height}"
-				   height.click="{heightClick}">
+				   height.normal="{heightClick}" height.click="{heightClick}" enabled="{enTransicion ? false : true}">
 	
 	<fx:Script>
 		<![CDATA[
@@ -18,14 +17,17 @@
 			import mx.core.IVisualElement;
 			import mx.events.EffectEvent;
 			import mx.events.FlexEvent;
+			import mx.rpc.events.HeaderEvent;
 			import mx.rpc.events.ResultEvent;
 			
-			import valueObjects.SubGruposDatatype;
 			[Bindable]public var btnLabel:String;
-			[Bindable]public var heightClick:int;
+			[Bindable]public var heightClick:int = 20;
+			[Bindable] public var heightClickAux:Number;
 			public var contenido:Array = [];
 			public var claseDespliegue:String = 'ComboBox';
 			public var numElement:int;
+			[Bindable] public var enTransicion:Boolean = false;
+			public var estadoClick:Boolean = false;
 		
 			
 			
@@ -50,45 +52,113 @@
 					sw = eventoManual;
 					event.stopPropagation();
 				}
+				/*event.stopPropagation();
+				event.stopImmediatePropagation();*/
+				
+				if(this.btnExpandir == event.target || this.btnLink == event.target){
+					var _owner:Boolean = true;
+				} else {
+					_owner = false;
+				}
+				
 				switch(sw){
 					case 'Button':
-						currentState = 'click';
-					//	resizeShow.heightTo = vgOpciones.height;
+						heightClickAux = 0;
+						if(_owner){
+							estadoClick = true;
+						}
+						
+						//resizeShow.heightTo = vgOpciones.height;
 						//Alert.show('' + vgOpciones.height + ' ' + heightClick );
 						/*fadeResizeHide.end();
 						fadeResizeHide.play();*/
-						heightClick = 0;
+						
 						for(var i:int = 0; i  < vgOpciones.numElements; i++){
-							heightClick += vgOpciones.getElementAt(i).height	
+							if(vgOpciones.getElementAt(i) is ContenidoAcordeon){
+								heightClickAux += isNaN(ContenidoAcordeon(vgOpciones.getElementAt(i)).heightClickAux) == true ? 20 : ContenidoAcordeon(vgOpciones.getElementAt(i)).heightClickAux;	
+							} else {
+								heightClickAux += 20;
+							}
+								
 						}
-						heightClick += btnExpandir.height + 20;
+						heightClickAux +=  40;
+						enTransicion = true;
+						this.addEventListener(Event.ENTER_FRAME, ajustaTamano);
 						//heightClick = btnExpandir.height + vgOpciones.height;
 		//				Alert.show('' + heightClick);
 						//this.parentApplication.height += 100;
-						if(this.parent.parent.parent.parent['height'] == 'ContenidoAcordeon'){
+						/*if(this.parent.parent.parent.parent['height'] == 'ContenidoAcordeon'){
 							this.parent.parent.parent.parent['height'] += heightClick; 
 							
 							event.stopPropagation();
+						}*/
+						if(heightClickAux == 0){
+							heightClickAux = 20;
 						}
 						break;
 					case 'LinkButton':
 						
-						event.stopPropagation();
+						//event.stopPropagation();
+						/*
 						if(this.parent.parent.parent.parent['className'] == 'ContenidoAcordeon'){
 							this.parent.parent.parent.parent['height'] -= this.height;
 					//		this.parentApplication.height -= heightClick;
 							this.parent.parent.parent.parent['height'] += 20; 
 						}
 						currentState = 'normal';
+						heightClickAux = 20;*/
 						/*fadeResizeShow.end();
 						fadeResizeShow.play();*/
+						
+						if(_owner){
+							heightClickAux = 20;
+							currentState = 'normal';
+							this.height = heightClick;
+						} else {
+							heightClickAux = 0;
+							for(i = 0; i < vgOpciones.numElements; i++){
+								if(vgOpciones.getElementAt(i) is ContenidoAcordeon){
+									heightClickAux += isNaN(ContenidoAcordeon(vgOpciones.getElementAt(i)).heightClickAux) == true ? 20 : ContenidoAcordeon(vgOpciones.getElementAt(i)).heightClickAux;	
+								} else {
+									heightClickAux += 20;
+								}
+								
+							}
+							heightClickAux += 40;							
+						}
+						enTransicion = true;
+						this.addEventListener(Event.ENTER_FRAME, ajustaTamano);					
 						break;
 				}
+			}
+			
+			
+			private function ajustaTamano(event:Event):void{
+				if(heightClick == heightClickAux){
+					this.removeEventListener(Event.ENTER_FRAME, ajustaTamano);
+					enTransicion = false;
+					if(estadoClick){
+						currentState = 'click';
+						estadoClick = false;
+					}
+					
+					
+					
+				} else {
+					if(heightClick < heightClickAux){
+						heightClick += 20;	
+					} else {
+						heightClick -= 20;
+					}
+					
+				}
+				 
 			}
 			
 			protected function bordercontainer1_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
+				heightClick = 20;
 				var x:ContenidoAcordeon = new ContenidoAcordeon();
 				addItems();
 			}
@@ -115,7 +185,7 @@
 									grupo.height = 20;
 									grupo.width = this.width;
 									contenido[i] = grupo;
-									this.heightClick += grupo.height;
+									this.heightClickAux += grupo.height;
 									
 								}	
 							} catch(e:*) {
@@ -132,7 +202,9 @@
 			}
 			
 			
-			
+			private function set evalua(val:*):void{
+				
+			}
 			
 		]]>
 	</fx:Script>
@@ -177,19 +249,20 @@
 		</s:Transition-->
 		<s:CallResponder id="listAsync" result="listAsync_resultHandler(event)"/>
 	</fx:Declarations>
+	<fx:Binding source="heightClickAux" destination="evalua"/>
 	<s:layout>
 		<s:VerticalLayout/>
 	</s:layout>
 	
 			
-		<s:Button id="btnExpandir" includeIn="normal" width="100%" height="20" label="{btnLabel}"
+		<s:Button id="btnExpandir" includeIn="normal" width="100%" height="{heightClick}" label="{btnLabel}"
 				  digitWidth="default" dominantBaseline="auto"
 				  horizontalCenter="0" textAlignLast="center"/><!--cornerRadius="10"  iconPlacement="left"-->
 		<mx:LinkButton height="20" id="btnLink" includeIn="click" top="5" label="{btnLabel}" horizontalCenter="0"/>
 		
 		<s:VGroup id="vgOpciones" includeIn="click, normal" gap="0" horizontalCenter="0"
 				  horizontalCenter.click="0" paddingLeft.click="10" width="100%"
-				  alpha.normal="0" alpha.click="1" showEffect="{visible}"  visible.normal="false" visible.click="true">		
+				  alpha.normal="0" alpha.click="1" visible.normal="false" visible.click="true">		
 		</s:VGroup>
 		
 </s:BorderContainer>
