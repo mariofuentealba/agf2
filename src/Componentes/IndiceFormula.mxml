@@ -12,6 +12,7 @@
 			import VO.Item_Xbrl;
 			
 			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
 			import mx.events.DragEvent;
 			import mx.events.FlexEvent;
 			import mx.events.ToolTipEvent;
@@ -82,15 +83,26 @@
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
-				if(fnPost != null){
+				var swErrorContexto:Boolean = false;
+				for(var i:int = 0; i < lstCampos.dataProvider.length; i++){
+					var obj:* = ArrayCollection(lstCampos.dataProvider).getItemAt(i);
+					if(obj['contexto'] == null){
+						swErrorContexto = true;
+						break;
+					}
+				}
+				
+				if(fnPost != null && !swErrorContexto){
 					if(formula == null){
 						formula = new FormulaVO();
 						formula.arrCampos = lstCampos.dataProvider as ArrayCollection;
 					}
-					
+					//formula.arrCampos = lstCampos.dataProvider as ArrayCollection;//Se agrega porque debe mantener la edición
 					formula.formula = txtFormula.text;
 					formula.defaults = chk.selected;
 					fnPost.apply(this, [this, formula]);
+				} else {
+					Alert.show('Debe seleccionar un contexto para todos los campos que tengan habilitado este.', 'Atención');
 				}
 			}
 			
