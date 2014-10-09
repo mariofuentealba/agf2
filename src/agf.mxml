@@ -1325,8 +1325,7 @@
 						
 						<s:VGroup id="vgMenu" left="10" visible="true">
 							<s:Label height="15" fontSize="14" fontWeight="bold"
-									 text="Selección Previa"/>
-							<s:Label x="6" y="10" text="Datos de Gráfico"/>
+									 text="Datos del Gráfico"/>
 							<s:Label text="Empresa Principal"/>
 							<!--<s:ComboBox id="principal"
 										
@@ -1657,7 +1656,6 @@
 									<mx:HRule x="10" y="19" width="291"/>
 									<s:Label x="17" y="6" fontSize="15" text="Filtro"/>
 								</s:BorderContainer>
-								<s:TextArea x="336" id="txtEmp" y="4" height="38" text="{emp}"/>
 							</s:NavigatorContent>
 						</mx:TabNavigator>
 					</s:NavigatorContent>

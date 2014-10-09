@@ -1896,6 +1896,7 @@ protected function titlewindow1_closeHandler():void
 private function reCreaForm(event:ResultEvent):void{
 	//tbFormulario.removeAllElements();
 //	crearEsquema_creationCompleteHandler(new FlexEvent(FlexEvent.CREATION_COMPLETE));
+	dgIndicesFinancieros_creationCompleteHandler(null);
 	if(dropDownListPeriodo.selectedIndex > -1){
 		valores2Result.token = modelo.valores2(dropDownListEmpresa.selectedItem['ID_EMPRESA'], dropDownListPeriodo.selectedItem['id_periodo']);
 		comboItemsAdvResult.token = componentesFormula.comboItems();

@@ -20,6 +20,8 @@
 			import mx.rpc.events.HeaderEvent;
 			import mx.rpc.events.ResultEvent;
 			
+			import valueObjects.SubGruposDatatype;
+			
 			[Bindable]public var btnLabel:String;
 			[Bindable]public var heightClick:int = 20;
 			[Bindable] public var heightClickAux:Number;
