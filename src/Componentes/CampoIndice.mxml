@@ -61,11 +61,11 @@
 		
 		<s:HGroup verticalCenter="0" left="10" right="10">
 			<s:Label fontSize="9" text="Indice" top="3" left="20" color="0x666666"/>
-			<s:Label text="ID:" top="3" left="3"/>
+			<s:Label text="Identificador:" top="3" left="3"/>
 			<s:Label text="{txtTipo}" top="3" left="3"/>
-			<s:Label id="lblEtiqueta" text="{data.etiqueta}" width="250" fontWeight="bold" fontSize="12" toolTip="{lblEtiqueta.text}"/>
+			<s:Label id="lblEtiqueta" text="{data.etiqueta}" maxDisplayedLines="3" width="250" fontWeight="bold" fontSize="12" toolTip="{lblEtiqueta.text}"/>
 			<s:DropDownList dataProvider="{arrContextos}" width="100%" visible="false"></s:DropDownList>
-			<s:Button label="X" fontSize="14" width="30" click="button1_clickHandler(event)" right="10"/>
+			<s:Button label="X" fontSize="14" width="40" click="button1_clickHandler(event)" right="10"/>
 		</s:HGroup>
 		
 		<s:Rect width="100%" height="0.5" bottom="0">
