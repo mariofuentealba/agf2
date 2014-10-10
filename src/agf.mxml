@@ -1867,7 +1867,7 @@
 										
 									</c:CheckList>
 								</s:HGroup>
-								<s:HGroup>
+								<s:HGroup paddingLeft="10">
 									<s:Button x="29" bottom="10" label="Guardar"
 											  click="button3_clickHandler(event)"/>
 								</s:HGroup>

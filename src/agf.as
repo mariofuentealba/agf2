@@ -660,9 +660,11 @@ protected function button2_clickHandler(event:MouseEvent):void
 
 protected function insertComplete(event:ResultEvent):void{
 	Alert.show('Transacción exitosa');
-	gruposFinancierosResult.token = modelo.grillaTodosGrupos();
+	crearEsquema_creationCompleteHandler(null);
+	
+	/*gruposFinancierosResult.token = modelo.grillaTodosGrupos();
 	subGruposFinancierosResult.token = modelo.grillaTodoSubGrupos();
-	empresasResult.token = modelo.grillaTodasEmpresa();
+	empresasResult.token = modelo.grillaTodasEmpresa();*/
 }
 
 protected function button3_clickHandler(event:MouseEvent):void
@@ -850,7 +852,10 @@ private function xmllistToArrayIndice(list:XMLList):Array
 
 protected function crearEsquema_creationCompleteHandler(event:FlexEvent):void
 {
-	
+	gruposFinancierosResult.lastResult = null;
+	subGruposFinancierosResult.lastResult = null;
+	empresasResult.lastResult = null;
+	acGrupos.removeAllElements();
 	dropDownList9_creationCompleteHandler(null);
 	dgIndicesFinancieros_creationCompleteHandler(null);
 	// TODO Auto-generated method stub

@@ -62,9 +62,13 @@
 					
 				</mx:CategoryAxis>
 			</mx:horizontalAxis>
-			<!--<mx:verticalAxis>
-				<mx:CategoryAxis labelFunction="formato"/>
-			</mx:verticalAxis>-->
+			<!--<mx:verticalAxis>-->
+				<!--<mx:CategoryAxis labelFunction="formato"/>-->
+			<!--	<mx:CategoryAxis 
+					dataProvider="{expenses}" 
+					categoryField="Month"
+					/>-->
+			<!--</mx:verticalAxis>-->
 		</mx:ColumnChart>
 			
 		
