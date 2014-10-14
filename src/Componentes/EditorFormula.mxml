@@ -458,7 +458,7 @@
 		<s:VGroup left="20" right="20" top="5" horizontalAlign="left">
 			<s:Label fontWeight="bold" text="Grupo:"/>
 			<s:DropDownList id="DD_ID_GRUPO_INDICE_FINANCIERO"
-							width="200"
+							width="321"
 							creationComplete="dropDownList9_creationCompleteHandler(event)"
 							labelField="nombre"
 							name="ID_GRUPO_INDICE_FINANCIERO"

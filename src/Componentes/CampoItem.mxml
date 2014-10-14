@@ -84,8 +84,8 @@
 			<s:Label color="0x666666" fontSize="10" text="Item"/>
 			<s:Label text="Identificador:" top="3" left="3"/>
 			<s:Label text="{txtTipo}" top="3" left="3"/>
-			<s:Label id="lblEtiqueta" text="{data.etiqueta}" width="250" fontWeight="bold" fontSize="12" toolTip="{lblEtiqueta.text}" maxDisplayedLines="3"/>
-			<s:DropDownList id="contexto" dataProvider="{arrContextos}" selectedIndex="{selec}" width="100%" close="contexto_closeHandler(event)"></s:DropDownList>
+			<s:Label id="lblEtiqueta" text="{data.etiqueta}" width="234" fontWeight="bold" fontSize="12" toolTip="{lblEtiqueta.text}" maxDisplayedLines="3"/>
+			<s:DropDownList id="contexto" dataProvider="{arrContextos}" selectedIndex="{selec}" width="205" close="contexto_closeHandler(event)"></s:DropDownList>
 			<s:Button label="X" fontSize="14" click="button1_clickHandler(event)" width="40"/>
 		</s:HGroup>
 		<s:Rect width="100%" height="0.5" bottom="0">

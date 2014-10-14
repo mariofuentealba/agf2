@@ -14,5 +14,5 @@
 	</fx:Declarations>
 	<s:Label x="6" y="10" fontSize="9" text="{txtTipo}" top="3" left="3"/>
 	<s:Label x="25" text="Label" verticalCenter="0"/>
-	<s:DropDownList right="0" verticalCenter="0" dataProvider="{arrContextos}"></s:DropDownList>
+	<s:DropDownList id="ddlContexto" right="0" width="218" dataProvider="{arrContextos}" verticalCenter="0"></s:DropDownList>
 </s:Group>

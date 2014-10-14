@@ -60,8 +60,13 @@
 			{
 				// TODO Auto-generated method stub
 				//item['codigo'] = '' + ArrayCollection(lstCampos.dataProvider).length;
-				List(event.dragInitiator).selectedItem['codigo'] = String(List(event.dragInitiator).selectedItem['codigo']).charAt(0);
-				List(event.dragInitiator).selectedItem['codigo'] += '' + (lstCampos.dataProvider != null ? ArrayCollection(lstCampos.dataProvider).length + 1 : 1);
+				if(ArrayCollection(lstCampos.dataProvider).length < 5){
+					List(event.dragInitiator).selectedItem['codigo'] = String(List(event.dragInitiator).selectedItem['codigo']).charAt(0);
+					List(event.dragInitiator).selectedItem['codigo'] += '' + (lstCampos.dataProvider != null ? ArrayCollection(lstCampos.dataProvider).length + 1 : 1);	
+				} else {
+					Alert.show('No se puede cargar más de 5 campos a una fórmula', 'Atención');
+				}
+				
 			}
 			
 			

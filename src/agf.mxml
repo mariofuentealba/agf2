@@ -1838,7 +1838,9 @@
 							<s:VGroup top="20" width="100%" horizontalCenter="0" bottom="20"
 									  textDecoration="none" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 								<s:DropDownList id="dropDownList2" left="40" top="26" bottom="340"
-												labelField="nombre" change="dropDownList2_changeHandler(event)">
+												width="259"
+												change="dropDownList2_changeHandler(event)"
+												labelField="nombre">
 									<s:AsyncListView list="{modelApp.arrSubGrupo}"/>
 								</s:DropDownList>
 								<s:HGroup width="100%">
@@ -1926,7 +1928,7 @@
 									<s:VGroup left="20" right="20" top="5" horizontalAlign="left">
 										<s:Label fontWeight="bold" text="Grupo:"/>
 										<s:DropDownList id="DD_ID_GRUPO_INDICE_FINANCIERO"
-														width="200"
+														width="351"
 														
 														labelField="nombre"
 														name="ID_GRUPO_INDICE_FINANCIERO"
